@@ -1,0 +1,19 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "jsRules": {},
+  "rules": {
+    "member-access": false,
+    "ordered-imports": false,
+    "quotemark": false,
+    "no-console": false,
+    "semicolon": false,
+    "jsx-no-lambda": false,
+    "object-literal-sort-keys": false,
+    "interface-name": [true, "never-prefix"]
+  },
+  "rulesDirectory": [],
+  "linterOptions": {
+    "exclude": ["config/**/*.js", "node_modules/**/*.tsx"]
+  }
+}

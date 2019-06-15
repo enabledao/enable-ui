@@ -1,26 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment } from "react";
+import { NormalizeStyle } from "./styles/bases";
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <NormalizeStyle />
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi quidem
+        excepturi hic suscipit, illo dolorum est, fugiat nostrum assumenda
+        sapiente rerum magni. Excepturi, soluta. Quasi quia optio reprehenderit
+        deserunt repellendus.
+      </p>
+    </Fragment>
   );
-}
+};
 
 export default App;
