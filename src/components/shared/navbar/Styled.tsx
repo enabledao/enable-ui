@@ -1,0 +1,43 @@
+// Style of navbar component
+import styled from "styled-components";
+import { MaxWidth, MinWidth } from "../../../styles/utils";
+
+const NavbarWrapper = styled.div`
+  border-bottom: 1px solid #e7ebf2;
+`;
+
+const NavbarBox = styled.div`
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const NavbarBrand = styled.div`
+  font-size: 20px;
+  font-weight: 700;
+  ${MaxWidth.sm`
+    margin: auto;
+  `}
+`;
+
+const NavbarMenu = styled.ul`
+  list-style: none;
+  display: flex;
+`;
+
+const NavbarItems = styled.li`
+  padding: 0 12px;
+  font-weight: 700;
+  ${MinWidth.sm`
+    &:last-child {
+      padding-right: 0;
+    }
+  `}
+  ${MaxWidth.sm`
+    display: none;
+  `}
+`;
+
+export { NavbarWrapper, NavbarBox, NavbarBrand, NavbarMenu, NavbarItems };
