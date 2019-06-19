@@ -1,6 +1,5 @@
 // Style of navbar component
 import styled from "styled-components";
-import { MaxWidth, MinWidth } from "../../../styles/utils";
 
 const NavbarWrapper = styled.div`
   border-bottom: 1px solid #e7ebf2;
@@ -17,9 +16,6 @@ const NavbarBox = styled.div`
 const NavbarBrand = styled.div`
   font-size: 20px;
   font-weight: 700;
-  ${MaxWidth.sm`
-    margin: auto;
-  `}
 `;
 
 const NavbarMenu = styled.ul`
@@ -30,14 +26,9 @@ const NavbarMenu = styled.ul`
 const NavbarItems = styled.li`
   padding: 0 12px;
   font-weight: 700;
-  ${MinWidth.sm`
-    &:last-child {
-      padding-right: 0;
-    }
-  `}
-  ${MaxWidth.sm`
-    display: none;
-  `}
+  &:last-child {
+    padding-right: 0;
+  }
 `;
 
 export { NavbarWrapper, NavbarBox, NavbarBrand, NavbarMenu, NavbarItems };

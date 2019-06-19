@@ -249,6 +249,9 @@ const resetStyle = css`
   a {
     text-decoration: none;
     cursor: pointer;
+    &:hover {
+      color: blue;
+    }
   }
   label {
     font-size: 14px;
