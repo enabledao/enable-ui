@@ -1,7 +1,7 @@
+// Style utils of margin
 import styled, { css } from "styled-components";
 import { SizeProps } from "./interface";
 
-// Style utils of margin
 const MarginWrapper = styled.div<SizeProps>`
   ${props =>
     props.all &&

@@ -25,8 +25,13 @@ const Navbar: React.FC = () => {
           </NavbarBrand>
           <NavbarMenu>
             <NavbarItems>
-              <NavLink to="/loan/1" activeStyle={NavbarItemActive}>
-                Loan
+              <NavLink to="/" activeStyle={NavbarItemActive}>
+                About
+              </NavLink>
+            </NavbarItems>
+            <NavbarItems>
+              <NavLink to="/" activeStyle={NavbarItemActive}>
+                My Loan
               </NavLink>
             </NavbarItems>
           </NavbarMenu>

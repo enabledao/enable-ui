@@ -1,8 +1,8 @@
+// Margin utils
 import React from "react";
 import { SizeProps } from "./interface";
 import { MarginWrapper, PaddingWrapper } from "./Styled";
 
-// Margin utils
 const Margin: React.FC<SizeProps> = ({
   all,
   top,
