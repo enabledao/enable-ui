@@ -10,4 +10,5 @@ export interface ColProps {
   md?: any;
   sm?: any;
   xs?: any;
+  text?: string;
 }

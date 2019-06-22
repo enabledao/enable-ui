@@ -11,8 +11,8 @@ const Row: React.FC<RowProps> = ({ justify, align, text, children }) => {
   );
 };
 
-const Col: React.FC<ColProps> = ({ lg, md, sm, xs, children }) => (
-  <ColWrapper lg={lg} md={md} sm={sm} xs={xs}>
+const Col: React.FC<ColProps> = ({ lg, md, sm, xs, text, children }) => (
+  <ColWrapper lg={lg} md={md} sm={sm} xs={xs} text={text}>
     {children}
   </ColWrapper>
 );

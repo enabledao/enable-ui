@@ -12,7 +12,7 @@ import {
 
 const NavbarItemActive: any = {
   fontWeight: 700,
-  color: "blue"
+  color: "white"
 };
 
 const Navbar: React.FC = () => {

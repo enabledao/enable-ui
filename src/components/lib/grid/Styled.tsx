@@ -1,4 +1,4 @@
-// Style utils of grid, row and col
+// Style of grid, row and col
 import styled, { css } from "styled-components";
 import { MaxWidth } from "../../../styles/utils";
 import { RowProps, ColProps } from "./interface";
@@ -30,6 +30,13 @@ const GridWrapper = styled.div<RowProps>`
 
 const ColWrapper = styled.div<ColProps>`
   padding: 8px 16px;
+
+  ${props =>
+    props.text &&
+    css`
+      text-align: ${props.text};
+    `};
+
   ${props =>
     props.lg &&
     css`

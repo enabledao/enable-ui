@@ -2,7 +2,7 @@
 import styled from "styled-components";
 
 const NavbarWrapper = styled.div`
-  border-bottom: 1px solid #e7ebf2;
+  background-color: #0042eb;
 `;
 
 const NavbarBox = styled.div`
@@ -15,7 +15,10 @@ const NavbarBox = styled.div`
 
 const NavbarBrand = styled.div`
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
+  a {
+    color: white;
+  }
 `;
 
 const NavbarMenu = styled.ul`
@@ -25,7 +28,7 @@ const NavbarMenu = styled.ul`
 
 const NavbarItems = styled.li`
   padding: 0 12px;
-  font-weight: 700;
+  font-weight: 600;
   &:last-child {
     padding-right: 0;
   }
