@@ -4,10 +4,21 @@ import Linkedin from "../../../../images/socialMedia/linkedin.svg";
 import Instagram from "../../../../images/socialMedia/instagram.svg";
 import Twitter from "../../../../images/socialMedia/twitter.svg";
 import Facebook from "../../../../images/socialMedia/facebook.svg";
+import SocialCredit from "./socialCredit";
+import SimuLationReturn from "./simulation";
+import RepaymentTable from "./repayment";
+import ContributingLenders from "./lender";
+import LoanInfo from "./info";
 import { Container } from "../../../../styles/bases";
 import { Margin } from "../../../../styles/utils";
 import { Row, Col } from "../../../lib";
-import { DetailLoan, DetailLoanLeft, DetailLoanSocial } from "./Styled";
+import {
+  DetailLoan,
+  DetailLoanLeft,
+  DetailLoanSocial,
+  RenderDesktop,
+  RenderMobile
+} from "./Styled";
 
 export interface DetailLoanState {
   readMore: boolean;
@@ -63,7 +74,7 @@ class HomeDetailLoan extends React.Component<{}, DetailLoanState> {
                     <img src={Facebook} alt="Socila - Media" width={16} />
                   </a>
                 </DetailLoanSocial>
-                <Margin vertical={32} />
+                <Margin top={48} />
                 <p>
                   Hi, my name is Widya Imanesti but my nickname is Ines. I
                   studied Industrial Engineering at Institut Teknologi Bandung,
@@ -187,29 +198,36 @@ class HomeDetailLoan extends React.Component<{}, DetailLoanState> {
                 >
                   {readMore ? "Close detail ..." : "Read more ..."}
                 </div>
+                <RenderDesktop>
+                  <Margin top={48}>
+                    <RepaymentTable />
+                  </Margin>
+                </RenderDesktop>
+                <RenderDesktop>
+                  <Margin top={48}>
+                    <LoanInfo />
+                  </Margin>
+                </RenderDesktop>
               </DetailLoanLeft>
             </Col>
             <Col lg={4} sm={12}>
               <Margin bottom={48}>
-                <h5>Social Creadits</h5>
-                <p>2 people have recommended Ines</p>
-                <p>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Animi commodi est, culpa autem voluptatum nam reprehenderit
-                  minus magnam molestias temporibus beatae officiis minima,
-                  libero ut vel ipsa, odio provident placeat.
-                </p>
+                <SocialCredit />
               </Margin>
               <Margin bottom={48}>
-                <h5>Simulated Returns</h5>
-                <p>If you lend:</p>
-                <p>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Animi commodi est, culpa autem voluptatum nam reprehenderit
-                  minus magnam molestias temporibus beatae officiis minima,
-                  libero ut vel ipsa, odio provident placeat.
-                </p>
+                <SimuLationReturn />
               </Margin>
+              <RenderMobile>
+                <Margin bottom={48}>
+                  <RepaymentTable />
+                </Margin>
+              </RenderMobile>
+              <Margin bottom={48}>
+                <ContributingLenders />
+              </Margin>
+              <RenderMobile>
+                <LoanInfo />
+              </RenderMobile>
             </Col>
           </Row>
         </Container>

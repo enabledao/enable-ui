@@ -3,13 +3,14 @@ import styled from "styled-components";
 import { MaxWidth } from "../../../../styles/utils";
 
 const DetailLoan = styled.div`
-  padding: 260px 0;
+  padding-top: 260px;
+  padding-bottom: 80px;
   position: relative;
   ${MaxWidth.md`
-    padding: 320px 0;
+    padding-top: 320px;
   `}
   ${MaxWidth.sm`
-    padding: 340px 0;
+    padding-top: 340px;
   `}
 `;
 
@@ -39,4 +40,23 @@ const DetailLoanSocial = styled.div`
   `}
 `;
 
-export { DetailLoan, DetailLoanLeft, DetailLoanSocial };
+const RenderDesktop = styled.div`
+  ${MaxWidth.sm`
+    display: none;
+  `}
+`;
+
+const RenderMobile = styled.div`
+  display: none;
+  ${MaxWidth.sm`
+    display: block;
+  `}
+`;
+
+export {
+  DetailLoan,
+  DetailLoanLeft,
+  DetailLoanSocial,
+  RenderDesktop,
+  RenderMobile
+};

@@ -49,7 +49,7 @@ const HomeHeroLoan: React.FC = () => (
                 </HomeDesc>
                 <Margin top={16}>
                   <Margin top={24}>
-                    <Progress current={40} />
+                    <Progress current={20} />
                   </Margin>
                   <Margin top={16} bottom={24}>
                     <small>

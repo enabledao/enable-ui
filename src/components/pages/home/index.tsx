@@ -1,6 +1,6 @@
 // Pages home component
 import React from "react";
-import { withNavbar } from "../../hoc";
+import { withNavbarAndFooter } from "../../hoc";
 import HomeHeroLoan from "./heroLoan";
 import HomeDetailLoan from "./detailLoan";
 
@@ -11,4 +11,4 @@ const Home: React.FC = () => (
   </React.Fragment>
 );
 
-export default withNavbar(Home);
+export default withNavbarAndFooter(Home);
