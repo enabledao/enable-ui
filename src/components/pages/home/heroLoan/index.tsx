@@ -18,11 +18,8 @@ import {
 const HomeHeroLoan: React.FC = () => (
   <HomeHero>
     <Container>
-      <h1>Make change happen</h1>
-      <p>
-        Donate to project to help Widya Imanesti attend Corner University for a
-        Master in Human resources
-      </p>
+      <h1>Enabling Opportunity</h1>
+      <p>Extend a 60,000 Dai education loan to Widya Imanesti</p>
       <Row justify="center">
         <Col lg={8} md={10} sm={12} text="left">
           <HomeLoanWrapper>
@@ -40,11 +37,8 @@ const HomeHeroLoan: React.FC = () => (
               <HomeBoxInfo>
                 <HomeDesc>
                   <p>
-                    Hi, my name is Widya Imanesti but my nickname is Ines. I
-                    studied Industrial Engineering at Institut Teknologi
-                    Bandung, ranked #1 best university in Indonesia. I graduated
-                    circa 2009 and have been pursuing my career in Human
-                    Resources ever since.
+                    Ines is raising a 60,000 Dai loan to attend Cornell
+                    University for a Masters in HR
                   </p>
                 </HomeDesc>
                 <Margin top={16}>
@@ -59,15 +53,15 @@ const HomeHeroLoan: React.FC = () => (
                   <Row>
                     <Col lg={3} md={6}>
                       <h4>2,900</h4>
-                      <small>Dai Raised 0f 60,000 goals</small>
+                      <small>Dai Raised 0f 60,000 goal</small>
                     </Col>
                     <Col lg={3} md={6}>
                       <h4>6%</h4>
-                      <small>Interest per anum</small>
+                      <small>Interest per annum</small>
                     </Col>
                     <Col lg={3} md={6}>
                       <h4>12</h4>
-                      <small>Month of loan priode</small>
+                      <small>Month of loan period</small>
                     </Col>
                     <Col lg={3} md={6}>
                       <h4>29</h4>
