@@ -1,3 +1,4 @@
 import NormalizeStyle from "./Normalize";
+import { Container, ContainerFluid } from "./Common";
 
-export { NormalizeStyle };
+export { NormalizeStyle, Container, ContainerFluid };
