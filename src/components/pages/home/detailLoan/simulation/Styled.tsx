@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const RadioButton = styled.div`
   display: inline-flex;
-  margin-right: 8px;
+  margin: 8px 8px 0 0;
   input {
     visibility: hidden;
     position: absolute;

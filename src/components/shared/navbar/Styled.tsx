@@ -2,7 +2,17 @@
 import styled from "styled-components";
 
 const NavbarWrapper = styled.div`
-  background-color: #0042eb;
+  position: relative;
+  &:before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    content: "";
+    opacity: 0.2;
+    top: 0;
+    left: 0;
+    background-image: linear-gradient(157deg, #ffffff 0%, #f9cec3 86%);
+  }
 `;
 
 const NavbarBox = styled.div`
@@ -17,7 +27,7 @@ const NavbarBrand = styled.div`
   font-size: 20px;
   font-weight: 600;
   a {
-    color: white;
+    color: black;
   }
 `;
 
@@ -31,6 +41,9 @@ const NavbarItems = styled.li`
   font-weight: 600;
   &:last-child {
     padding-right: 0;
+  }
+  a {
+    color: black;
   }
 `;
 

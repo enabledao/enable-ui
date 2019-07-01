@@ -3,7 +3,7 @@ import { MinWidth, MaxWidth } from "../utils";
 
 const Container = styled.div`
   ${MinWidth.xxl`
-    max-width: 1480px;
+    max-width: 1440px;
   `}
   ${MaxWidth.xxl`
     max-width: 1366px;

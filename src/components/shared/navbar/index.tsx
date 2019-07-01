@@ -12,7 +12,7 @@ import {
 
 const NavbarItemActive: any = {
   fontWeight: 700,
-  color: "white"
+  color: "black"
 };
 
 const Navbar: React.FC = () => {
@@ -26,11 +26,16 @@ const Navbar: React.FC = () => {
           <NavbarMenu>
             <NavbarItems>
               <NavLink to="/" activeStyle={NavbarItemActive}>
+                Home
+              </NavLink>
+            </NavbarItems>
+            <NavbarItems>
+              <NavLink to="/about" activeStyle={NavbarItemActive}>
                 About
               </NavLink>
             </NavbarItems>
             <NavbarItems>
-              <NavLink to="/" activeStyle={NavbarItemActive}>
+              <NavLink to="/my-loan" activeStyle={NavbarItemActive}>
                 My Loan
               </NavLink>
             </NavbarItems>

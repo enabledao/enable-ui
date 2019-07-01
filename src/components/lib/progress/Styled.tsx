@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const ProgressWrapper = styled.div<{ current: number }>`
   position: relative;
-  background-color: #f8f9f9;
+  background-color: #f9cec3;
   width: 100%;
   height: 16px;
   border-radius: 100px;

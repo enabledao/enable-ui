@@ -2,8 +2,8 @@
 import React from "react";
 import { ButtonWrapper } from "./Styled";
 
-const Button: React.FC = ({ children }) => (
-  <ButtonWrapper>{children}</ButtonWrapper>
+const Button: React.FC<{ onClick: () => void }> = ({ onClick, children }) => (
+  <ButtonWrapper onClick={onClick}>{children}</ButtonWrapper>
 );
 
 export default Button;
