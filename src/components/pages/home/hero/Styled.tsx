@@ -3,6 +3,9 @@ import styled from "styled-components";
 const HeroWrapper = styled.div`
   padding: 80px 0;
   position: relative;
+  min-height: 100vh;
+  display: table;
+  width: 100%;
   &:before {
     position: absolute;
     width: 100%;
@@ -15,4 +18,9 @@ const HeroWrapper = styled.div`
   }
 `;
 
-export { HeroWrapper };
+const HeroCell = styled.div`
+  display: table-cell;
+  vertical-align: middle;
+`;
+
+export { HeroWrapper, HeroCell };

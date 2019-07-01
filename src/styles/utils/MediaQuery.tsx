@@ -2,7 +2,6 @@ import { css, ThemedCssFunction } from "styled-components";
 
 // Size of breakpoints
 const Size = {
-  xxl: 1700,
   xl: 1440,
   lg: 1200,
   md: 992,

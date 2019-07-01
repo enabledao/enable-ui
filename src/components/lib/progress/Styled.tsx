@@ -3,20 +3,29 @@ import styled from "styled-components";
 
 const ProgressWrapper = styled.div<{ current: number }>`
   position: relative;
-  background-color: #f9cec3;
   width: 100%;
   height: 16px;
   border-radius: 100px;
   overflow: hidden;
-  &:before {
+  &:after {
     position: absolute;
     border-radius: 100px;
     top: 0;
     left: 0;
     width: ${props => props.current && `${props.current}%`};
-    background-color: #0077f7;
+    background-color: #36b37e;
     height: 100%;
     content: "";
+  }
+  &:before {
+    position: absolute;
+    background-color: #f9cec3;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
   }
 `;
 

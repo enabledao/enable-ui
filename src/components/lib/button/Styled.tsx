@@ -11,14 +11,15 @@ const ButtonWrapper = styled.div`
   text-decoration: none;
   text-align: center;
   font-weight: 600;
-  background-color: #36b37e;
-  border: 1px solid #2a8c62;
+  background-color: #9544ed;
+  border: 1px solid #6713c4;
   color: white;
   width: 100%;
-  line-height: 20px;
+  line-height: 30px;
   transition: all ease-in-out 0.2s;
+  box-shadow: 0 2px 0 #6713c4, 1px 3px 6px #6713c4;
   &:hover {
-    background-color: #2a8c62;
+    background-color: #6713c4;
   }
 `;
 

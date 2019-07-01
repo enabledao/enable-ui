@@ -1,25 +1,26 @@
 import styled from "styled-components";
-import { MinWidth, MaxWidth } from "../utils";
+import { MinWidth } from "../utils";
 
 const Container = styled.div`
-  ${MinWidth.xxl`
-    max-width: 1440px;
+  ${MinWidth.xs`
+    max-width: auto;
+    min-width: auto;
   `}
-  ${MaxWidth.xxl`
-    max-width: 1366px;
-    min-width: 1366px;
+  ${MinWidth.sm`
+    max-width: 750px;
+    min-width: 750px;
   `}
-  ${MaxWidth.xl`
-    max-width: 1200px;
-    min-width: 1200px;
+  ${MinWidth.md`
+    max-width: 970px;
+    min-width: 970px;
   `}
-  ${MaxWidth.lg`
-    max-width: 960px;
-    min-width: 960px;
+  ${MinWidth.lg`
+    max-width: 1170px;
+    min-width: 1170px;
   `}
-  ${MaxWidth.md`
-    max-width: 100%;
-    min-width: 100%;
+  ${MinWidth.xl`
+    max-width: 1400px;
+    min-width: 1400px;
   `}
   padding: 0 16px;
   margin: 0 auto;
