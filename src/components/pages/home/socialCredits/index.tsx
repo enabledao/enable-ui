@@ -14,17 +14,12 @@ const SocialCredits: React.FC = () => (
           <img
             src={SocialIllustration}
             alt="HomeHero - Illustraion"
-            width={400}
+            width={300}
           />
         </Col>
         <Col lg={7} md={8} sm={12}>
           <h1>Things People Say</h1>
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic quam
-            nihil aspernatur veritatis explicabo? Inventore fugiat nam
-            recusandae mollitia, id voluptatum, itaque eum ex, ipsum aspernatur
-            nihil assumenda quidem nisi?
-          </p>
+          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
           <Margin vertical={32}>
             <TestimonialLinkedin />
           </Margin>

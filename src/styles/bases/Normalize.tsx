@@ -155,7 +155,7 @@ const resetStyle = css`
     font-size: 1.6rem;
   }
   p {
-    line-height: 1.6;
+    line-height: 2.2;
     margin-bottom: 4px;
   }
   a {

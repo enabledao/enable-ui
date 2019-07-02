@@ -12,7 +12,7 @@ import Facebook from "../../../../images/socialMedia/facebook.svg";
 const LoanDetail: React.FC = () => (
   <ProfileWrapper>
     <Container>
-      <Row align="center">
+      <Row>
         <Col lg={6} md={8} sm={12}>
           <h2>Profile of Widya Imanesti</h2>
           <p>
@@ -24,10 +24,27 @@ const LoanDetail: React.FC = () => (
               accepted into two-year Master’s of Industrial & Labor Relations
               (MILR) program at Cornell University. It is the best HR master’s
               program in the US with world-class faculty members. The program
-              will start in Fall Semester 2019.
+              will start in Fall Semester 2019. According to a report issued by
+              ILR School at Cornell University, from the Master's (MILR)
+              program, 98% went into employment, at a mean starting salary of
+              $86,320. You can check the report here.
+            </p>
+            <p>
+              To introduce myself further, I studied Industrial Engineering at
+              Institut Teknologi Bandung, ranked #1 best university in
+              Indonesia. I graduated circa 2009 and have been pursuing my career
+              in Human Resources ever since. I am also the first generation in
+              my family to get a bachelor degree.
             </p>
           </Margin>
-          <Margin top={32}>
+          <Row align="center">
+            <Col lg={4} md={12}>
+              <Margin top={16}>
+                <Button onClick={() => console.log("click")}>Read more</Button>
+              </Margin>
+            </Col>
+          </Row>
+          <Margin top={48}>
             <ProfileSocialLink
               href="https://id.linkedin.com/in/widya-imanesti"
               target="_blank"
@@ -57,19 +74,12 @@ const LoanDetail: React.FC = () => (
               <img src={Facebook} alt="Socila - Media" width={24} />
             </ProfileSocialLink>
           </Margin>
-          <Row align="center">
-            <Col lg={4} md={12}>
-              <Margin top={32}>
-                <Button onClick={() => console.log("click")}>Read more</Button>
-              </Margin>
-            </Col>
-          </Row>
         </Col>
         <Col lg={6} md={4} sm={12} text="center">
           <img
             src={ProfileIllustration}
             alt="HomeHero - Illustraion"
-            width={400}
+            width={300}
           />
         </Col>
       </Row>

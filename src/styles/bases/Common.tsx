@@ -18,10 +18,10 @@ const Container = styled.div`
     max-width: 1170px;
     min-width: 1170px;
   `}
-  ${MinWidth.xl`
-    max-width: 1400px;
-    min-width: 1400px;
-  `}
+  /* ${MinWidth.xl`
+    max-width: 1300px;
+    min-width: 1300px;
+  `} */
   padding: 0 16px;
   margin: 0 auto;
 `;

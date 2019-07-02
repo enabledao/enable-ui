@@ -9,12 +9,12 @@ const HomeHero: React.FC = () => (
   <HeroWrapper>
     <HeroCell>
       <Container>
-        <Row align="center">
-          <Col lg={5} md={4} sm={12}>
+        <Row>
+          <Col lg={5} md={4} sm={12} text="center">
             <img
               src={HeroIllustration}
               alt="HomeHero - Illustraion"
-              width={400}
+              width={300}
             />
           </Col>
           <Col lg={7} md={8} sm={12}>
@@ -31,7 +31,7 @@ const HomeHero: React.FC = () => (
                 <Row>
                   <Col lg={3} md={6}>
                     <h4>2,900</h4>
-                    <small>Dai Raised 0f 60,000 goal</small>
+                    <small>Raised 0f 60,000 goal</small>
                   </Col>
                   <Col lg={3} md={6}>
                     <h4>6%</h4>
