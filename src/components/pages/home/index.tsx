@@ -4,12 +4,16 @@ import { withNavbarAndFooter } from "../../hoc";
 import HomeHero from "./hero";
 import LoanDetail from "./profile";
 import SocialCredits from "./socialCredits";
+import SimuLationReturn from "./simulation";
+import Repayment from "./repayment";
 
 const Home: React.FC = () => (
   <React.Fragment>
     <HomeHero />
     <LoanDetail />
     <SocialCredits />
+    <SimuLationReturn />
+    <Repayment />
   </React.Fragment>
 );
 

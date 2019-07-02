@@ -14,7 +14,7 @@ const LoanDetail: React.FC = () => (
     <Container>
       <Row>
         <Col lg={6} md={8} sm={12}>
-          <h2>Profile of Widya Imanesti</h2>
+          <h2>Story of Widya Imanesti</h2>
           <p>
             <i>0x1293898123xxx</i>
           </p>
@@ -27,18 +27,11 @@ const LoanDetail: React.FC = () => (
               will start in Fall Semester 2019. According to a report issued by
               ILR School at Cornell University, from the Master's (MILR)
               program, 98% went into employment, at a mean starting salary of
-              $86,320. You can check the report here.
-            </p>
-            <p>
-              To introduce myself further, I studied Industrial Engineering at
-              Institut Teknologi Bandung, ranked #1 best university in
-              Indonesia. I graduated circa 2009 and have been pursuing my career
-              in Human Resources ever since. I am also the first generation in
-              my family to get a bachelor degree.
+              $86,320. You can check the report.
             </p>
           </Margin>
           <Row align="center">
-            <Col lg={4} md={12}>
+            <Col lg={5} md={12}>
               <Margin top={16}>
                 <Button onClick={() => console.log("click")}>Read more</Button>
               </Margin>

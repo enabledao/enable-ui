@@ -1,6 +1,10 @@
 // Style of simulation credit
 import styled from "styled-components";
 
+const SimulateWrapper = styled.div`
+  padding: 80px 0;
+`;
+
 const RadioButton = styled.div`
   display: inline-flex;
   margin: 8px 8px 0 0;
@@ -19,11 +23,11 @@ const RadioButton = styled.div`
 
     &:checked {
       + label {
-        background-color: #76bbe3;
+        background-color: #6713c4;
         color: white;
       }
     }
   }
 `;
 
-export { RadioButton };
+export { RadioButton, SimulateWrapper };

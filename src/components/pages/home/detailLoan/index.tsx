@@ -5,7 +5,7 @@ import Instagram from "../../../../images/socialMedia/instagram.svg";
 import Twitter from "../../../../images/socialMedia/twitter.svg";
 import Facebook from "../../../../images/socialMedia/facebook.svg";
 import SocialCredit from "./socialCredit";
-import SimuLationReturn from "./simulation";
+import SimuLationReturn from "../simulation";
 import RepaymentTable from "./repayment";
 import ContributingLenders from "./lender";
 import LoanInfo from "./info";

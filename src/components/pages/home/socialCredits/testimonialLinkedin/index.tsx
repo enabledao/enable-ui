@@ -88,7 +88,9 @@ class TestimonialLinkedin extends React.Component<
             {expanded === index && (
               <React.Fragment>
                 <h6>{list.name}</h6>
-                <small>{list.position}</small>
+                <small>
+                  <i>{list.position}</i>
+                </small>
                 <Margin top={16}>
                   <p>{list.desc}</p>
                 </Margin>

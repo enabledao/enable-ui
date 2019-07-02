@@ -60,7 +60,7 @@ const HomeHero: React.FC = () => (
                 </small>
               </Margin>
               <Row align="center">
-                <Col lg={4} md={12}>
+                <Col lg={6} md={12}>
                   <Margin top={16}>
                     <Button onClick={() => console.log("click")}>
                       Start lend now
