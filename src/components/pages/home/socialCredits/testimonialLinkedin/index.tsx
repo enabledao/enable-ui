@@ -56,7 +56,7 @@ class TestimonialLinkedin extends React.Component<
 > {
   constructor(props: {}) {
     super(props);
-    this.state = { expanded: 0 };
+    this.state = { expanded: 4 };
     this.handleExpand = this.handleExpand.bind(this);
   }
 

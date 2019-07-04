@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const ProfileWrapper = styled.div`
-  padding: 80px 0;
+  padding: 100px 0;
 `;
 
 const ProfileSocialLink = styled.a`

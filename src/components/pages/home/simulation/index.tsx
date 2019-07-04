@@ -19,8 +19,8 @@ class SimuLationReturn extends React.Component<{}, SimuLationReturnState> {
   render() {
     const { textfieldShow } = this.state;
     return (
-      <SimulateWrapper>
-        <Container>
+      <Container>
+        <SimulateWrapper>
           <Row justify="center">
             <Col lg={10} md={12}>
               <h1>Simulated Returns</h1>
@@ -107,8 +107,8 @@ class SimuLationReturn extends React.Component<{}, SimuLationReturnState> {
               </p>
             </Col>
           </Row>
-        </Container>
-      </SimulateWrapper>
+        </SimulateWrapper>
+      </Container>
     );
   }
 }
