@@ -1,21 +1,21 @@
 import React from "react";
 import HeroIllustration from "../../../../images/illustration/hero-welcome.svg";
-import { Container } from "../../../../styles/bases";
-import { Margin } from "../../../../styles/utils";
-import { HeroWrapper, HeroCell } from "./Styled";
-import { Row, Col, Progress, Button, Avatar } from "../../../lib";
 import avatarAlex from "../../../../images/avatar/alex.jpg";
 import avatarAverie from "../../../../images/avatar/averie.jpg";
 import avatarBrooke from "../../../../images/avatar/brooke.jpg";
 import avatarIvana from "../../../../images/avatar/ivana.jpg";
 import avatarShamanta from "../../../../images/avatar/shamanta.jpg";
+import { Container } from "../../../../styles/bases";
+import { Margin, MobileTextCenter } from "../../../../styles/utils";
+import { Row, Col, Progress, Button, Avatar } from "../../../lib";
+import { HeroWrapper, HeroCell, HeroButtonLendMobile } from "./Styled";
 
 const HomeHero: React.FC = () => (
   <HeroWrapper>
     <HeroCell>
       <Container>
         <Row>
-          <Col lg={5} md={4} sm={12} text="center">
+          <Col lg={5} md={4} sm="hidden" text="center">
             <img
               src={HeroIllustration}
               alt="HomeHero - Illustraion"
@@ -60,41 +60,52 @@ const HomeHero: React.FC = () => (
                 </Col>
               </Row>
               <Margin top={20}>
-                <Avatar size="sm" circle>
-                  <img src={avatarAlex} alt="Avatar - User" />
-                </Avatar>
-                <Avatar size="sm" circle>
-                  <img src={avatarAverie} alt="Avatar - User" />
-                </Avatar>
-                <Avatar size="sm" circle>
-                  <img src={avatarBrooke} alt="Avatar - User" />
-                </Avatar>
-                <Avatar size="sm" circle>
-                  <img src={avatarIvana} alt="Avatar - User" />
-                </Avatar>
-                <Avatar size="sm" circle>
-                  <img src={avatarShamanta} alt="Avatar - User" />
-                </Avatar>
+                <MobileTextCenter>
+                  <Avatar size="sm" circle={true} tooltip="Alex">
+                    <img src={avatarAlex} alt="Avatar - User" />
+                  </Avatar>
+                  <Avatar size="sm" circle={true} tooltip="Averie">
+                    <img src={avatarAverie} alt="Avatar - User" />
+                  </Avatar>
+                  <Avatar size="sm" circle={true} tooltip="Brooke">
+                    <img src={avatarBrooke} alt="Avatar - User" />
+                  </Avatar>
+                  <Avatar size="sm" circle={true} tooltip="Ivana">
+                    <img src={avatarIvana} alt="Avatar - User" />
+                  </Avatar>
+                  <Avatar size="sm" circle={true} tooltip="Shamanta">
+                    <img src={avatarShamanta} alt="Avatar - User" />
+                  </Avatar>
+                </MobileTextCenter>
               </Margin>
               <Margin top={16} bottom={24}>
-                <small>
-                  <a href="/">Powered by 39 contributors</a>
-                </small>
+                <MobileTextCenter>
+                  <small>
+                    <a href="/">Powered by 39 contributors</a>
+                  </small>
+                </MobileTextCenter>
               </Margin>
               <Row align="center">
-                <Col lg={6} md={12}>
+                <Col lg={6} md={12} sm="hidden">
                   <Margin top={16}>
                     <Button color="purple" onClick={() => console.log("click")}>
                       Start lend now
                     </Button>
                   </Margin>
                 </Col>
-                <Col lg={4} md={12}>
-                  <Margin top={16}>
-                    <a href="/">See the video</a>
-                  </Margin>
+                <Col lg={4} md={12} sm={12}>
+                  <MobileTextCenter>
+                    <Margin top={16}>
+                      <a href="/">See the video</a>
+                    </Margin>
+                  </MobileTextCenter>
                 </Col>
               </Row>
+              <HeroButtonLendMobile>
+                <Button color="purple" onClick={() => console.log("click")}>
+                  Start lend now
+                </Button>
+              </HeroButtonLendMobile>
             </Margin>
           </Col>
         </Row>

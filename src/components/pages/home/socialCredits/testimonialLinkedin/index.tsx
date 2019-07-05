@@ -84,7 +84,7 @@ class TestimonialLinkedin extends React.Component<
           </TestimonialAvatar>
         ))}
         {listTestimonial.map((list, index) => (
-          <Margin key={index} top={48}>
+          <Margin key={index} top={24}>
             {expanded === index && (
               <React.Fragment>
                 <h6>{list.name}</h6>

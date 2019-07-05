@@ -105,6 +105,11 @@ const resetStyle = css`
     -webkit-appearance: radio;
     -moz-appearance: radio;
   }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
   ul,
   ol {
     margin-left: 0;

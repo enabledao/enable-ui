@@ -32,7 +32,7 @@ const Repayment: React.FC = () => (
   <RepaymentWrapper>
     <Container>
       <Row>
-        <Col lg={5} md={4} sm={12} text="center">
+        <Col lg={5} md={4} sm="hidden" text="center">
           <img
             src={RepaymentIllustration}
             alt="Repayment - Illustraion"

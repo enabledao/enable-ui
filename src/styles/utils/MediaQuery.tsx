@@ -1,4 +1,4 @@
-import { css, ThemedCssFunction } from "styled-components";
+import styled, { css, ThemedCssFunction } from "styled-components";
 
 // Size of breakpoints
 const Size = {
@@ -37,4 +37,10 @@ const MaxWidth = (Object.keys(Size) as Array<keyof typeof Size>).reduce(
   {} as { [key in keyof typeof Size]: ThemedCssFunction<{ theme: any }> }
 );
 
-export { MinWidth, MaxWidth };
+const MobileTextCenter = styled.div`
+  ${MaxWidth.sm`
+    text-align: center;
+  `}
+`;
+
+export { MinWidth, MaxWidth, MobileTextCenter };

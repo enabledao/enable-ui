@@ -11,7 +11,7 @@ const SocialCredits: React.FC = () => (
     <Container>
       <SocialCreaditsContent>
         <Row>
-          <Col lg={5} md={4} sm={12} text="center">
+          <Col lg={5} md={4} sm="hidden" text="center">
             <img
               src={SocialIllustration}
               alt="HomeHero - Illustraion"

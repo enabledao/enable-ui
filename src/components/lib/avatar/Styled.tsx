@@ -7,10 +7,10 @@ const AvatarWrapper = styled.div`
 `;
 
 const AvatarBox = styled.div<AvatarProps>`
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   margin-right: -8px;
-  border: 2px solid white;
+  border: 4px solid white;
   ${props =>
     props.size === "sm" &&
     css`
@@ -31,7 +31,7 @@ const AvatarBox = styled.div<AvatarProps>`
     `}
 `;
 
-const AvatarTooltip = styled.span`
+const AvatarTooltip = styled.span<AvatarProps>`
   opacity: 0;
   visibility: hidden;
   position: absolute;
@@ -39,18 +39,34 @@ const AvatarTooltip = styled.span`
   padding: 8px 16px;
   color: white;
   z-index: 4;
-  top: -48px;
+  top: 56px;
   left: 50%;
   transform: translateX(-50%);
   border-radius: 4px;
   transition: all ease-in-out 0.4s;
-  width: 200px;
-  max-width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  ${props =>
+    props.size === "sm" &&
+    css`
+      top: 48px;
+    `}
+  ${props =>
+    props.size === "lg" &&
+    css`
+      top: 80px;
+    `}
+  &:before {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid black;
+    content: "";
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
   ${AvatarWrapper}:hover & {
-    display: block;
     opacity: 1;
     visibility: visible;
   }

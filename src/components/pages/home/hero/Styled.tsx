@@ -1,11 +1,20 @@
 import styled from "styled-components";
+import { MaxWidth, MinWidth } from "../../../../styles/utils";
 
 const HeroWrapper = styled.div`
-  padding: 80px 0;
+  padding: 100px 0;
   position: relative;
-  min-height: 100vh;
   display: table;
   width: 100%;
+  ${MinWidth.lg`
+    min-height: 100vh;
+  `}
+  ${MaxWidth.md`
+    padding: 80px 0;
+  `}
+  ${MaxWidth.sm`
+    padding: 60px 0;
+  `}
   &:before {
     position: absolute;
     width: 100%;
@@ -23,4 +32,19 @@ const HeroCell = styled.div`
   vertical-align: middle;
 `;
 
-export { HeroWrapper, HeroCell };
+const HeroButtonLendMobile = styled.div`
+  display: none;
+  ${MaxWidth.sm`
+    display: block;
+    position: fixed;
+    bottom: 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #e7ebf2;
+    width: 100%;
+    left: 0;
+    z-index: 4;
+  `}
+`;
+
+export { HeroWrapper, HeroCell, HeroButtonLendMobile };

@@ -2,5 +2,5 @@
 export interface AvatarProps {
   circle?: boolean;
   size?: string;
-  hover?: string;
+  tooltip?: string;
 }

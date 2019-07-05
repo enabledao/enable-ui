@@ -3,12 +3,12 @@ import React from "react";
 import { AvatarProps } from "./interface";
 import { AvatarWrapper, AvatarBox, AvatarTooltip } from "./Styled";
 
-const Avatar: React.FC<AvatarProps> = ({ circle, size, hover, children }) => (
+const Avatar: React.FC<AvatarProps> = ({ circle, size, tooltip, children }) => (
   <AvatarWrapper>
-    <AvatarBox circle={circle} size={size} hover={hover}>
+    <AvatarBox circle={circle} size={size} tooltip={tooltip}>
       {children}
     </AvatarBox>
-    {hover && <AvatarTooltip>{hover}</AvatarTooltip>}
+    {tooltip && <AvatarTooltip>{tooltip}</AvatarTooltip>}
   </AvatarWrapper>
 );
 

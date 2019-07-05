@@ -4,7 +4,7 @@ const TestimonialAvatar = styled.div<{ activeStyle: boolean }>`
   background-color: #fff;
   border: 1px solid #e7ebf2;
   margin-bottom: 24px;
-  margin-right: 24px;
+  margin-right: 16px;
   cursor: pointer;
   transition: all ease-in-out 0.4s;
   display: inline-flex;

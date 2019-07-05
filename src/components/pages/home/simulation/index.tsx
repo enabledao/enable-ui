@@ -86,7 +86,10 @@ class SimuLationReturn extends React.Component<{}, SimuLationReturnState> {
                   <Row>
                     <Col sm={12} lg={6}>
                       <Margin top={16}>
-                        <TextField />
+                        <TextField
+                          type="number"
+                          placeholder="Enter the number you want to lend"
+                        />
                       </Margin>
                     </Col>
                   </Row>

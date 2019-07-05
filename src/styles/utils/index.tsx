@@ -4,6 +4,6 @@
 // import { MinWidth } from '{path}/styles/utils';
 
 import { Margin, Padding } from "./space";
-import { MinWidth, MaxWidth } from "./MediaQuery";
+import { MinWidth, MaxWidth, MobileTextCenter } from "./MediaQuery";
 
-export { Margin, Padding, MinWidth, MaxWidth };
+export { Margin, Padding, MinWidth, MaxWidth, MobileTextCenter };
