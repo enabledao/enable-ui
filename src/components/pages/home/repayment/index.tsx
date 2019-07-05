@@ -42,7 +42,7 @@ const Repayment: React.FC = () => (
         <Col lg={7} md={10} sm={12}>
           <h1>Repayment Schedule</h1>
           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-          <Margin top={32}>
+          <Margin top={48}>
             <RepaymentTitleWrapper>
               <RepaymentTitle>
                 <p>Date</p>

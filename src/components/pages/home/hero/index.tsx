@@ -1,9 +1,14 @@
 import React from "react";
 import HeroIllustration from "../../../../images/illustration/hero-welcome.svg";
-import { Row, Col, Progress, Button } from "../../../lib";
 import { Container } from "../../../../styles/bases";
 import { Margin } from "../../../../styles/utils";
 import { HeroWrapper, HeroCell } from "./Styled";
+import { Row, Col, Progress, Button, Avatar } from "../../../lib";
+import avatarAlex from "../../../../images/avatar/alex.jpg";
+import avatarAverie from "../../../../images/avatar/averie.jpg";
+import avatarBrooke from "../../../../images/avatar/brooke.jpg";
+import avatarIvana from "../../../../images/avatar/ivana.jpg";
+import avatarShamanta from "../../../../images/avatar/shamanta.jpg";
 
 const HomeHero: React.FC = () => (
   <HeroWrapper>
@@ -54,6 +59,23 @@ const HomeHero: React.FC = () => (
                   </Margin>
                 </Col>
               </Row>
+              <Margin top={20}>
+                <Avatar size="sm" circle>
+                  <img src={avatarAlex} alt="Avatar - User" />
+                </Avatar>
+                <Avatar size="sm" circle>
+                  <img src={avatarAverie} alt="Avatar - User" />
+                </Avatar>
+                <Avatar size="sm" circle>
+                  <img src={avatarBrooke} alt="Avatar - User" />
+                </Avatar>
+                <Avatar size="sm" circle>
+                  <img src={avatarIvana} alt="Avatar - User" />
+                </Avatar>
+                <Avatar size="sm" circle>
+                  <img src={avatarShamanta} alt="Avatar - User" />
+                </Avatar>
+              </Margin>
               <Margin top={16} bottom={24}>
                 <small>
                   <a href="/">Powered by 39 contributors</a>
@@ -62,7 +84,7 @@ const HomeHero: React.FC = () => (
               <Row align="center">
                 <Col lg={6} md={12}>
                   <Margin top={16}>
-                    <Button onClick={() => console.log("click")}>
+                    <Button color="purple" onClick={() => console.log("click")}>
                       Start lend now
                     </Button>
                   </Margin>
