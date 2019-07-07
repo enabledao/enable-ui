@@ -9,6 +9,7 @@ import {
   NavbarMenu,
   NavbarItems
 } from "./styled";
+import { AppPath } from "../../../constant/appPath";
 
 const NavbarItemActive: any = {
   fontWeight: 700,
@@ -21,21 +22,21 @@ const Navbar: React.FC = () => {
       <Container>
         <NavbarBox>
           <NavbarBrand>
-            <NavLink to="/">Enable</NavLink>
+            <NavLink to={AppPath.home}>Enable</NavLink>
           </NavbarBrand>
           <NavbarMenu>
             <NavbarItems>
-              <NavLink to="/" activeStyle={NavbarItemActive}>
+              <NavLink to={AppPath.home} activeStyle={NavbarItemActive}>
                 Home
               </NavLink>
             </NavbarItems>
             <NavbarItems>
-              <NavLink to="/about" activeStyle={NavbarItemActive}>
+              <NavLink to={AppPath.about} activeStyle={NavbarItemActive}>
                 About
               </NavLink>
             </NavbarItems>
             <NavbarItems>
-              <NavLink to="/my-loan" activeStyle={NavbarItemActive}>
+              <NavLink to={AppPath.myLoan} activeStyle={NavbarItemActive}>
                 My Loan
               </NavLink>
             </NavbarItems>

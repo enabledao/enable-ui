@@ -9,9 +9,16 @@ const InputWrapper = styled.input`
   min-height: 38px;
   font-size: 14px;
   width: 100%;
+  transition: all ease-in-out 0.4s;
   &:focus,
   &:active {
+    border: 1px solid #76bbe3;
   }
 `;
 
-export { InputWrapper };
+const InputLabel = styled.label`
+  display: block;
+  margin-bottom: 8px;
+`;
+
+export { InputWrapper, InputLabel };

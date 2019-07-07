@@ -47,4 +47,9 @@ const HeroButtonLendMobile = styled.div`
   `}
 `;
 
-export { HeroWrapper, HeroCell, HeroButtonLendMobile };
+const HeroLink = styled.div`
+  color: #0042eb;
+  cursor: pointer;
+`;
+
+export { HeroWrapper, HeroCell, HeroButtonLendMobile, HeroLink };

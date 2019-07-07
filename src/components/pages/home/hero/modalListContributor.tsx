@@ -25,7 +25,7 @@ const ModalListContributor: React.FC = () => (
     </Margin>
     <Row>
       {listContributor.map(res => (
-        <Col lg={6} sm={12} key={res.name}>
+        <Col lg={4} md={6} sm={12} key={res.name}>
           <Avatar size="sm" circle={true} style={{ position: "absolute" }}>
             <img src={res.image} alt="Avatar - Ines" />
           </Avatar>

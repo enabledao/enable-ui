@@ -10,7 +10,16 @@ import ModalListContributor from "./modalListContributor";
 import { Container } from "../../../../styles/bases";
 import { Margin, MobileTextCenter, Padding } from "../../../../styles/utils";
 import { Row, Col, Progress, Button, Avatar, ShowModal } from "../../../lib";
-import { HeroWrapper, HeroCell, HeroButtonLendMobile } from "./styled";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import { AppPath } from "../../../../constant/appPath";
+import {
+  HeroWrapper,
+  HeroCell,
+  HeroButtonLendMobile,
+  HeroLink
+} from "./styled";
+
+interface HomeHeroProps extends RouteComponentProps<any> {}
 
 export interface HomeHeroState {
   showModal: boolean;
@@ -49,11 +58,12 @@ export const listContributor = [
   }
 ];
 
-class HomeHero extends React.Component<{}, HomeHeroState> {
-  constructor(props: {}) {
+class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
+  constructor(props: HomeHeroProps) {
     super(props);
     this.state = { showModal: false };
     this.handleModal = this.handleModal.bind(this);
+    this.handleLend = this.handleLend.bind(this);
   }
 
   handleModal() {
@@ -64,6 +74,11 @@ class HomeHero extends React.Component<{}, HomeHeroState> {
       },
       () => ShowModal(<ModalListContributor />)
     );
+  }
+
+  handleLend() {
+    const { history } = this.props;
+    history.push(AppPath.loanOfferStepOne);
   }
 
   render() {
@@ -142,19 +157,16 @@ class HomeHero extends React.Component<{}, HomeHeroState> {
                   <Margin top={16} bottom={24}>
                     <MobileTextCenter>
                       <small>
-                        <a onClick={this.handleModal}>
+                        <HeroLink onClick={this.handleModal}>
                           Powered by 39 contributors
-                        </a>
+                        </HeroLink>
                       </small>
                     </MobileTextCenter>
                   </Margin>
                   <Row align="center">
                     <Col lg={6} md={12} sm="hidden">
                       <Margin top={16}>
-                        <Button
-                          color="purple"
-                          onClick={() => console.log("click")}
-                        >
+                        <Button color="purple" onClick={this.handleLend}>
                           Start lend now
                         </Button>
                       </Margin>
@@ -162,13 +174,13 @@ class HomeHero extends React.Component<{}, HomeHeroState> {
                     <Col lg={4} md={12} sm={12}>
                       <MobileTextCenter>
                         <Margin top={16}>
-                          <a href="/">See the video</a>
+                          <HeroLink>See the video</HeroLink>
                         </Margin>
                       </MobileTextCenter>
                     </Col>
                   </Row>
                   <HeroButtonLendMobile>
-                    <Button color="purple" onClick={() => console.log("click")}>
+                    <Button color="purple" onClick={this.handleLend}>
                       Start lend now
                     </Button>
                   </HeroButtonLendMobile>
@@ -182,4 +194,4 @@ class HomeHero extends React.Component<{}, HomeHeroState> {
   }
 }
 
-export default HomeHero;
+export default withRouter<HomeHeroProps>(HomeHero);

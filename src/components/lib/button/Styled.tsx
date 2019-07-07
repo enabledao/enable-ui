@@ -25,6 +25,9 @@ const ButtonWrapper = styled.div<ButtonProps>`
   ${props =>
     props.color === "purple" &&
     css`
+      a {
+        color: white;
+      }
       background-color: #9544ed;
       border: 1px solid #6713c4;
       box-shadow: 0 2px 0 #6713c4, 1px 3px 6px #6713c4;
