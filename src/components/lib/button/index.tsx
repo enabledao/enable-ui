@@ -1,6 +1,6 @@
 // Lib button component
 import React from "react";
-import { ButtonWrapper } from "./Styled";
+import { ButtonWrapper } from "./styled";
 import { ButtonProps } from "./interface";
 
 const Button: React.FC<ButtonProps> = ({ onClick, color, children }) => (

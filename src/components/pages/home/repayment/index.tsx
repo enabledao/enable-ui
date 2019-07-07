@@ -10,7 +10,7 @@ import {
   RepaymentTitleWrapper,
   RepaymentTitle,
   RepaymentTitleMobile
-} from "./Styled";
+} from "./styled";
 
 const listRepayment = [
   { date: "1 Aug 2019", due: 300, principal: 0, interest: 300 },

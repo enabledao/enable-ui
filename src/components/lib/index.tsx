@@ -3,6 +3,7 @@ import Badge from "./badge";
 import Button from "./button";
 import TextField from "./textfield";
 import Progress from "./progress";
+import ShowModal from "./modal";
 import { Row, Col } from "./grid";
 
-export { Avatar, Badge, Progress, Row, Col, Button, TextField };
+export { Avatar, Badge, Progress, Row, Col, Button, TextField, ShowModal };

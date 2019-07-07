@@ -1,6 +1,6 @@
 // Lib badge component
 import React from "react";
-import BadgeWrapper from "./Styled";
+import BadgeWrapper from "./styled";
 
 const Badge: React.FC = ({ children }) => (
   <BadgeWrapper>{children}</BadgeWrapper>

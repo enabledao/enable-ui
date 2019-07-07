@@ -3,7 +3,7 @@ import { Container } from "../../../../styles/bases";
 import { Margin } from "../../../../styles/utils";
 import { Row, Col } from "../../../lib";
 import SocialIllustration from "../../../../images/illustration/social-review.svg";
-import { SocialCreaditsWrapper, SocialCreaditsContent } from "./Styled";
+import { SocialCreaditsWrapper, SocialCreaditsContent } from "./styled";
 import TestimonialLinkedin from "./testimonialLinkedin";
 
 const SocialCredits: React.FC = () => (

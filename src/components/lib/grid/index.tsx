@@ -1,7 +1,7 @@
 // Lib grid component
 import React from "react";
 import { RowProps, ColProps } from "./interface";
-import { GridWrapper, ColWrapper } from "./Styled";
+import { GridWrapper, ColWrapper } from "./styled";
 
 const Row: React.FC<RowProps> = ({ justify, align, text, children }) => {
   return (

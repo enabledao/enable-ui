@@ -2,7 +2,7 @@
 import React from "react";
 import { TextField, Row, Col } from "../../../lib";
 import { Margin } from "../../../../styles/utils";
-import { RadioButton, SimulateWrapper } from "./Styled";
+import { RadioButton, SimulateWrapper } from "./styled";
 import { Container } from "../../../../styles/bases";
 
 export interface SimuLationReturnState {

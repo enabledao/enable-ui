@@ -5,10 +5,11 @@ import avatarAverie from "../../../../images/avatar/averie.jpg";
 import avatarBrooke from "../../../../images/avatar/brooke.jpg";
 import avatarIvana from "../../../../images/avatar/ivana.jpg";
 import avatarShamanta from "../../../../images/avatar/shamanta.jpg";
+import avatarInes from "../../../../images/avatar/ines.jpeg";
 import { Container } from "../../../../styles/bases";
-import { Margin, MobileTextCenter } from "../../../../styles/utils";
+import { Margin, MobileTextCenter, Padding } from "../../../../styles/utils";
 import { Row, Col, Progress, Button, Avatar } from "../../../lib";
-import { HeroWrapper, HeroCell, HeroButtonLendMobile } from "./Styled";
+import { HeroWrapper, HeroCell, HeroButtonLendMobile } from "./styled";
 
 const HomeHero: React.FC = () => (
   <HeroWrapper>
@@ -25,13 +26,23 @@ const HomeHero: React.FC = () => (
           <Col lg={7} md={8} sm={12}>
             <h1>Enabling Opportunity</h1>
             <p>Extend a 60,000 Dai education loan to: </p>
-            <Margin top={48}>
-              <h5>Widya Imanesti</h5>
-              <p>Jakarta - Indonesia</p>
-              <p>
-                Ines is raising a 60,000 Dai loan to attend Cornell University
-                for a Masters in HR
-              </p>
+            <Margin top={16}>
+              <Avatar
+                size="sm"
+                circle={true}
+                tooltip="Alex"
+                style={{ position: "absolute" }}
+              >
+                <img src={avatarInes} alt="Avatar - Ines" />
+              </Avatar>
+              <Padding left={56}>
+                <h5>Widya Imanesti</h5>
+                <p>Jakarta - Indonesia</p>
+                <p>
+                  Ines is raising a 60,000 Dai loan to attend Cornell University
+                  for a Masters in HR
+                </p>
+              </Padding>
               <Margin top={24}>
                 <Row>
                   <Col lg={3} md={6}>

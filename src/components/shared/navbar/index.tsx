@@ -8,7 +8,7 @@ import {
   NavbarBrand,
   NavbarMenu,
   NavbarItems
-} from "./Styled";
+} from "./styled";
 
 const NavbarItemActive: any = {
   fontWeight: 700,

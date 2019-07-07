@@ -1,5 +1,5 @@
 import React from "react";
-import { TestimonialAvatar } from "./Styled";
+import { TestimonialAvatar } from "./styled";
 import DefaultAvatar from "../../../../../images/avatar/default.png";
 import { Margin } from "../../../../../styles/utils";
 
