@@ -29,7 +29,7 @@ const RepaymentCard = styled.div`
     background-color: #f6f7fb;
   }
   &:last-child {
-    background-color: #6713c4;
+    background-color: #76bbe3;
     color: white;
   }
 `;
