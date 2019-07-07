@@ -1,7 +1,8 @@
 // Pages social credit component
 import React from "react";
+import calculatorIcon from "../../../../images/icons/calculator.svg";
 import { TextField, Row, Col } from "../../../lib";
-import { Margin } from "../../../../styles/utils";
+import { Margin, Padding } from "../../../../styles/utils";
 import { RadioButton, SimulateWrapper } from "./styled";
 import { Container } from "../../../../styles/bases";
 
@@ -23,7 +24,15 @@ class SimuLationReturn extends React.Component<{}, SimuLationReturnState> {
         <SimulateWrapper>
           <Row justify="center">
             <Col lg={10} md={12}>
-              <h1>Simulated Returns</h1>
+              <img
+                src={calculatorIcon}
+                alt="Icon - Calculator"
+                width={34}
+                style={{ position: "absolute" }}
+              />
+              <Padding left={48}>
+                <h2>Simulated Returns</h2>
+              </Padding>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
               <Margin top={24}>
                 <h6>If you lend:</h6>

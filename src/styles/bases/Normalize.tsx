@@ -158,6 +158,7 @@ const resetStyle = css`
   }
   h6 {
     font-size: 1.6rem;
+    line-height: 1.8;
   }
   p {
     line-height: 2.2;

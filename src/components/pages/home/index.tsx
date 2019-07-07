@@ -6,6 +6,7 @@ import LoanDetail from "./profile";
 import SocialCredits from "./socialCredits";
 import SimuLationReturn from "./simulation";
 import Repayment from "./repayment";
+import WhyUs from "./whyUs";
 
 const Home: React.FC = () => (
   <React.Fragment>
@@ -13,6 +14,7 @@ const Home: React.FC = () => (
     <LoanDetail />
     <SocialCredits />
     <SimuLationReturn />
+    <WhyUs />
     <Repayment />
   </React.Fragment>
 );

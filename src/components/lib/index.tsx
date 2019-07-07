@@ -1,3 +1,4 @@
+import Accordion from "./accordion";
 import Avatar from "./avatar";
 import Badge from "./badge";
 import Button from "./button";
@@ -6,4 +7,14 @@ import Progress from "./progress";
 import ShowModal from "./modal";
 import { Row, Col } from "./grid";
 
-export { Avatar, Badge, Progress, Row, Col, Button, TextField, ShowModal };
+export {
+  Accordion,
+  Avatar,
+  Badge,
+  Progress,
+  Row,
+  Col,
+  Button,
+  TextField,
+  ShowModal
+};

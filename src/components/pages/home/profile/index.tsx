@@ -4,9 +4,10 @@ import Linkedin from "../../../../images/socialMedia/linkedin.svg";
 import Instagram from "../../../../images/socialMedia/instagram.svg";
 import Twitter from "../../../../images/socialMedia/twitter.svg";
 import Facebook from "../../../../images/socialMedia/facebook.svg";
-import FullStory from "./fullStory";
+import ModalFullStory from "./modalFullStory";
+import announcementIcon from "../../../../images/icons/announcement.svg";
 import { Container } from "../../../../styles/bases";
-import { Margin, MobileTextCenter } from "../../../../styles/utils";
+import { Margin, MobileTextCenter, Padding } from "../../../../styles/utils";
 import { Row, Col, Button, ShowModal } from "../../../lib";
 import { ProfileWrapper, ProfileSocialLink } from "./styled";
 
@@ -27,7 +28,7 @@ class LoanDetail extends React.Component<{}, LoanDetailState> {
       {
         showModal: !showModal
       },
-      () => ShowModal(<FullStory />)
+      () => ShowModal(<ModalFullStory />)
     );
   }
 
@@ -38,7 +39,15 @@ class LoanDetail extends React.Component<{}, LoanDetailState> {
           <Container>
             <Row>
               <Col lg={6} md={8} sm={12}>
-                <h2>Story of Borrower</h2>
+                <img
+                  src={announcementIcon}
+                  alt="Icon - Announcement"
+                  width={34}
+                  style={{ position: "absolute" }}
+                />
+                <Padding left={48}>
+                  <h2>Story of Borrower</h2>
+                </Padding>
                 <Margin top={16}>
                   <p>
                     My name is Ines (Widya) Imanesti. I got into Cornell
@@ -102,7 +111,7 @@ class LoanDetail extends React.Component<{}, LoanDetailState> {
                 <img
                   src={ProfileIllustration}
                   alt="HomeHero - Illustraion"
-                  width={300}
+                  width={380}
                 />
               </Col>
             </Row>

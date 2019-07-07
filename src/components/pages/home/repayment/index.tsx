@@ -1,8 +1,8 @@
 import React from "react";
+import billIcon from "../../../../images/icons/bill.svg";
 import { Container } from "../../../../styles/bases";
-import { Margin } from "../../../../styles/utils";
+import { Margin, Padding } from "../../../../styles/utils";
 import { Row, Col } from "../../../lib";
-import RepaymentIllustration from "../../../../images/illustration/repayment.svg";
 import {
   RepaymentWrapper,
   RepaymentCard,
@@ -31,16 +31,17 @@ const listRepayment = [
 const Repayment: React.FC = () => (
   <RepaymentWrapper>
     <Container>
-      <Row>
-        <Col lg={5} md={4} sm="hidden" text="center">
+      <Row justify="center">
+        <Col lg={10} md={12}>
           <img
-            src={RepaymentIllustration}
-            alt="Repayment - Illustraion"
-            width={300}
+            src={billIcon}
+            alt="Icon - Bill"
+            width={34}
+            style={{ position: "absolute" }}
           />
-        </Col>
-        <Col lg={7} md={10} sm={12}>
-          <h1>Repayment Schedule</h1>
+          <Padding left={48}>
+            <h2>Repayment Schedule</h2>
+          </Padding>
           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
           <Margin top={48}>
             <RepaymentTitleWrapper>

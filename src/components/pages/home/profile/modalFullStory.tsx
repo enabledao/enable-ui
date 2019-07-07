@@ -1,9 +1,18 @@
 import React from "react";
-import { Margin } from "../../../../styles/utils";
+import { Margin, Padding } from "../../../../styles/utils";
+import userCardIcon from "../../../../images/icons/user-card.svg";
 
-const FullStory: React.FC = () => (
+const ModalFullStory: React.FC = () => (
   <React.Fragment>
-    <h4>More about Ines</h4>
+    <img
+      src={userCardIcon}
+      alt="Icon - List"
+      width={34}
+      style={{ position: "absolute" }}
+    />
+    <Padding left={48}>
+      <h4>More about Ines</h4>
+    </Padding>
     <Margin top={24}>
       <p>
         I studied Industrial Engineering at Institut Teknologi Bandung, ranked
@@ -44,4 +53,4 @@ const FullStory: React.FC = () => (
   </React.Fragment>
 );
 
-export default FullStory;
+export default ModalFullStory;
