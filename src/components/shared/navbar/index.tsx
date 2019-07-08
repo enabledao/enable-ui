@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
       <Container>
         <NavbarBox>
           <NavbarBrand>
-            <NavLink to={AppPath.home}>Enable</NavLink>
+            <NavLink to={AppPath.home}>Inesfund</NavLink>
           </NavbarBrand>
           <NavbarMenu>
             <NavbarItems>

@@ -8,6 +8,7 @@ const SimulateWrapper = styled.div`
   ${MaxWidth.md`
     padding: 80px 0;
   `}
+
   ${MaxWidth.sm`
     padding: 60px 0;
   `}

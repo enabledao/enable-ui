@@ -13,14 +13,14 @@ import {
 } from "../../../lib";
 import { StepLoanOfferWrapper } from "../styled";
 
-interface LoanOfferStepOneProps extends RouteComponentProps<any> {}
+interface PersonalInfoProps extends RouteComponentProps<any> {}
 
 const bredcrumbData = [
   { title: " Personal Information", active: true },
   { title: "Detail Amount", active: false }
 ];
 
-const LoanOfferStepOne: React.FC<LoanOfferStepOneProps> = ({ history }) => (
+const PersonalInfo: React.FC<PersonalInfoProps> = ({ history }) => (
   <StepLoanOfferWrapper>
     <Container>
       <h4>Ready to help Ines !</h4>
@@ -30,11 +30,11 @@ const LoanOfferStepOne: React.FC<LoanOfferStepOneProps> = ({ history }) => (
         assumenda vitae corporis qui porro esse. At itaque dignissimos dolor
         laboriosam hic.
       </p>
-      <Margin vertical={48}>
-        <Breadcrumb data={bredcrumbData} />
-      </Margin>
       <Row>
         <Col lg={6} md={12}>
+          <Margin top={24} bottom={48}>
+            <Breadcrumb data={bredcrumbData} />
+          </Margin>
           <Margin bottom={32}>
             <TextField label="Name" placeholder="Enter Your name" />
             <Margin top={16}>
@@ -69,7 +69,7 @@ const LoanOfferStepOne: React.FC<LoanOfferStepOneProps> = ({ history }) => (
               <Margin top={8}>
                 <Button
                   color="purple"
-                  onClick={() => history.push(AppPath.loanOfferStepTwo)}
+                  onClick={() => history.push(AppPath.LoanOfferAmount)}
                 >
                   Continue
                 </Button>
@@ -82,4 +82,4 @@ const LoanOfferStepOne: React.FC<LoanOfferStepOneProps> = ({ history }) => (
   </StepLoanOfferWrapper>
 );
 
-export default withRouter<LoanOfferStepOneProps>(LoanOfferStepOne);
+export default withRouter<PersonalInfoProps>(PersonalInfo);

@@ -42,7 +42,7 @@ const Repayment: React.FC = () => (
           <Padding left={48}>
             <h2>Repayment Schedule</h2>
           </Padding>
-          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+          <p>Estimation of the monthly loan repayment.</p>
           <Margin top={48}>
             <RepaymentTitleWrapper>
               <RepaymentTitle>

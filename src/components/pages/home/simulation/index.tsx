@@ -33,7 +33,7 @@ class SimuLationReturn extends React.Component<{}, SimuLationReturnState> {
               <Padding left={48}>
                 <h2>Simulated Returns</h2>
               </Padding>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+              <p>Use this feature to measure the amount of your return.</p>
               <Margin top={24}>
                 <h6>If you lend:</h6>
               </Margin>
@@ -110,9 +110,6 @@ class SimuLationReturn extends React.Component<{}, SimuLationReturnState> {
               </Margin>
               <Margin top={24}>
                 <h3>0.42 Dai</h3>
-              </Margin>
-              <Margin vertical={16}>
-                <a href="/">More info ...</a>
               </Margin>
               <p>
                 By using this service, you are agreeing to the disclaimer for

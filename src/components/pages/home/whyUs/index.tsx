@@ -11,7 +11,7 @@ const dataAccordion = [
     title:
       "I intend to secure a full time role in the USA, immediately after graduation",
     content:
-      "As mentioned earlier, 98% of MILR graduate went into employment, at a mean starting salary of $86,320. That makes the debt burden ratio is less than 15% of my income alone.\n I am confident to get a job in those targeted countries, especially in the US. Moreover, we have extensive experience in our fields. I am guaranteed 18 months of OPT, that is a sufficient period to get a permanent job in the US after finishing the MILR program. As a fallback, I will also be applying to Canada, New Zealand and Australia."
+      "As mentioned earlier, 98% of MILR graduate went into employment, at a mean starting salary of $86,320. That makes the debt burden ratio is less than 15% of my income alone.\n I am confident to get a job in those targeted countries, especially in the US. Moreover, I have extensive experience in this field. I am guaranteed 18 months of OPT, that is a sufficient period to get a permanent job in the US after finishing the MILR program. As a fallback, I will also be applying to Canada, New Zealand and Australia."
   },
   {
     title: "I will have full support from my husband’s (Doctorate) salary.",

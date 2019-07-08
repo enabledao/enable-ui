@@ -4,8 +4,9 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { NormalizeStyle } from "./styles/bases";
 import Home from "./components/pages/home";
 import {
-  LoanOfferStepOne,
-  LoanOfferStepTwo
+  PersonalInfo,
+  LoanAmount,
+  LoanOfferThankYou
 } from "./components/pages/loanOffer";
 import { AppPath } from "./constant/appPath";
 
@@ -17,13 +18,18 @@ const App: React.FC = () => {
         <Route exact={true} path={AppPath.home} component={Home} />
         <Route
           exact={true}
-          path={AppPath.loanOfferStepOne}
-          component={LoanOfferStepOne}
+          path={AppPath.LoanPersonalInfo}
+          component={PersonalInfo}
         />
         <Route
           exact={true}
-          path={AppPath.loanOfferStepTwo}
-          component={LoanOfferStepTwo}
+          path={AppPath.LoanOfferAmount}
+          component={LoanAmount}
+        />
+        <Route
+          exact={true}
+          path={AppPath.LoanOfferThankYou}
+          component={LoanOfferThankYou}
         />
       </Router>
     </React.Fragment>

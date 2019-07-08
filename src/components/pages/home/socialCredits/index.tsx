@@ -29,7 +29,15 @@ const SocialCredits: React.FC = () => (
             <Padding left={48}>
               <h2>Things People Say</h2>
             </Padding>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+            <p>
+              See what Ines' colleagues say about working with her in{" "}
+              <a
+                href="https://www.linkedin.com/in/widya-imanesti/"
+                target="blank"
+              >
+                Linkedin
+              </a>
+            </p>
             <Margin vertical={32}>
               <TestimonialLinkedin />
             </Margin>

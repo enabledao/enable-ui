@@ -1,4 +1,5 @@
-import LoanOfferStepOne from "./stepOne";
-import LoanOfferStepTwo from "./stepTwo";
+import PersonalInfo from "./personalInfo";
+import LoanAmount from "./loanAmount";
+import LoanOfferThankYou from "./thankYou";
 
-export { LoanOfferStepOne, LoanOfferStepTwo };
+export { PersonalInfo, LoanAmount, LoanOfferThankYou };

@@ -15,7 +15,7 @@ class Cta extends React.Component<CtaProps, {}> {
 
   handleLend() {
     const { history } = this.props;
-    history.push(AppPath.loanOfferStepOne);
+    history.push(AppPath.LoanPersonalInfo);
   }
 
   render() {
@@ -37,7 +37,7 @@ class Cta extends React.Component<CtaProps, {}> {
                   </Col>
                   <Col lg={4} md={12}>
                     <Button color="purple" onClick={this.handleLend}>
-                      Start lend now
+                      Start lending now
                     </Button>
                   </Col>
                 </Row>

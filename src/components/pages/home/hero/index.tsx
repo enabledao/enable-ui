@@ -78,7 +78,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
 
   handleLend() {
     const { history } = this.props;
-    history.push(AppPath.loanOfferStepOne);
+    history.push(AppPath.LoanPersonalInfo);
   }
 
   render() {
@@ -110,7 +110,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <p>Jakarta - Indonesia</p>
                     <p>
                       Ines is raising a 60,000 Dai loan to attend Cornell
-                      University for a Masters in HR
+                      University for a master's degree in HR
                     </p>
                   </Padding>
                   <Margin top={24}>
@@ -167,21 +167,21 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={6} md={12} sm="hidden">
                       <Margin top={16}>
                         <Button color="purple" onClick={this.handleLend}>
-                          Start lend now
+                          Start lending now
                         </Button>
                       </Margin>
                     </Col>
                     <Col lg={4} md={12} sm={12}>
                       <MobileTextCenter>
                         <Margin top={16}>
-                          <HeroLink>See the video</HeroLink>
+                          <HeroLink>Watch a video</HeroLink>
                         </Margin>
                       </MobileTextCenter>
                     </Col>
                   </Row>
                   <HeroButtonLendMobile>
                     <Button color="purple" onClick={this.handleLend}>
-                      Start lend now
+                      Start lending now
                     </Button>
                   </HeroButtonLendMobile>
                 </Margin>

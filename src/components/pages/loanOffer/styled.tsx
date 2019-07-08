@@ -9,9 +9,22 @@ const StepLoanOfferWrapper = styled.div`
   ${MaxWidth.md`
     padding: 80px 0;
   `}
+
   ${MaxWidth.sm`
     padding: 60px 0;
   `}
 `;
 
-export { StepLoanOfferWrapper };
+const LoanAmountSimulation = styled.div`
+  margin: 48px;
+  ${MaxWidth.md`
+    margin: 48px 0;
+  `}
+
+  ${MaxWidth.sm`
+    margin-top: 0;
+    margin-bottom: 48px;
+  `}
+`;
+
+export { StepLoanOfferWrapper, LoanAmountSimulation };

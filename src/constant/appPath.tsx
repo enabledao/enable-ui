@@ -2,8 +2,9 @@ const AppPath = {
   home: "/",
   about: "/about",
   myLoan: "/loan",
-  loanOfferStepOne: "/loan-offer/personal",
-  loanOfferStepTwo: "/loan-offer/amount"
+  LoanPersonalInfo: "/loan-offer/personal",
+  LoanOfferAmount: "/loan-offer/amount",
+  LoanOfferThankYou: "/loan-offer/thank-you"
 };
 
 export { AppPath };
