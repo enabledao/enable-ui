@@ -8,17 +8,27 @@ import SimuLationReturn from "./simulation";
 import Repayment from "./repayment";
 import Cta from "./cta";
 import WhyUs from "./whyUs";
+import ModalWip from "./modalWip";
+import { ShowModal } from "../../lib";
 
-const Home: React.FC = () => (
-  <React.Fragment>
-    <HomeHero />
-    <LoanDetail />
-    <WhyUs />
-    <SimuLationReturn />
-    <SocialCredits />
-    <Repayment />
-    <Cta />
-  </React.Fragment>
-);
+class Home extends React.Component<{}, {}> {
+  componentDidMount() {
+    ShowModal(<ModalWip />);
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <HomeHero />
+        <LoanDetail />
+        <WhyUs />
+        <SimuLationReturn />
+        <SocialCredits />
+        <Repayment />
+        <Cta />
+      </React.Fragment>
+    );
+  }
+}
 
 export default withNavbarAndFooter(Home);
