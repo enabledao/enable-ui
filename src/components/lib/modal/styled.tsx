@@ -40,8 +40,8 @@ const ModalBody = styled.div`
 
 const ModalClose = styled.div`
   position: absolute;
-  top: -12px;
-  right: -12px;
+  top: -16px;
+  right: -16px;
   color: #b72814;
   cursor: pointer;
   z-index: 10;
