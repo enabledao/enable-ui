@@ -16,27 +16,26 @@ import { StepLoanOfferWrapper } from "../styled";
 interface PersonalInfoProps extends RouteComponentProps<any> {}
 
 const bredcrumbData = [
-  { title: " Personal Information", active: true },
-  { title: "Detail Amount", active: false }
+  { title: " Personal information", active: true },
+  { title: "Detail amount", active: false }
 ];
 
 const PersonalInfo: React.FC<PersonalInfoProps> = ({ history }) => (
   <StepLoanOfferWrapper>
     <Container>
-      <h4>Ready to help Ines !</h4>
-      <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore
-        molestiae in deserunt laborum libero quidem fuga ipsa perferendis,
-        assumenda vitae corporis qui porro esse. At itaque dignissimos dolor
-        laboriosam hic.
-      </p>
+      <h4>One step closer to helping Ines!</h4>
+      <p>For starters, please let us know your name and email address.</p>
       <Row>
         <Col lg={6} md={12}>
           <Margin top={24} bottom={48}>
             <Breadcrumb data={bredcrumbData} />
           </Margin>
           <Margin bottom={32}>
-            <TextField label="Name" placeholder="Enter Your name" />
+            <TextField
+              label="Name"
+              placeholder="Enter your name"
+              autoFocus={true}
+            />
             <Margin top={16}>
               <Checkbox
                 id="anonymous"
@@ -49,14 +48,14 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ history }) => (
             <TextField
               type="email"
               label="Email"
-              placeholder="Enter Your email"
+              placeholder="Enter your email"
             />
           </Margin>
           <Margin vertical={32}>
             <Checkbox
               id="videoInterview"
               name="videoInterview"
-              label="Do you want to have a video interview with the borrower?"
+              label="I would like to have a video interview with the borrower"
             />
           </Margin>
           <Row>

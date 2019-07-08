@@ -3,4 +3,5 @@ export interface TextFieldProps {
   placeholder?: string;
   type?: string;
   label?: string;
+  autoFocus?: boolean;
 }

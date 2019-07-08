@@ -16,20 +16,15 @@ import { StepLoanOfferWrapper, LoanAmountSimulation } from "../styled";
 interface LoanAmountProps extends RouteComponentProps<any> {}
 
 const bredcrumbData = [
-  { title: " Personal Information", active: true },
-  { title: "Detail Amount", active: true }
+  { title: " Personal information", active: true },
+  { title: "Detail amount", active: true }
 ];
 
 const LoanAmount: React.FC<LoanAmountProps> = ({ history }) => (
   <StepLoanOfferWrapper>
     <Container>
-      <h4>You're almost done !</h4>
-      <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore
-        molestiae in deserunt laborum libero quidem fuga ipsa perferendis,
-        assumenda vitae corporis qui porro esse. At itaque dignissimos dolor
-        laboriosam hic.
-      </p>
+      <h4>You're almost done!</h4>
+      <p>Lastly, please input the amount you're willing to lend</p>
       <Row>
         <Col lg={6} md={12}>
           <Margin vertical={48}>
@@ -39,15 +34,16 @@ const LoanAmount: React.FC<LoanAmountProps> = ({ history }) => (
             <TextField
               label="Loan Amount"
               type="number"
-              placeholder="Enter Your loan amount"
+              placeholder="Enter your loan amount"
+              autoFocus={true}
             />
           </Margin>
           <Margin top={48} bottom={24}>
             <h5>Confirm Loan</h5>
-            <p>Total Loan Amount:</p>
+            <p>Total loan amount:</p>
             <Margin top={16}>
               <h3>7 Dai</h3>
-              <p>excludes transaction fees and gas</p>
+              <p>Excludes transaction fees and gas</p>
             </Margin>
             <Margin top={24}>
               <b>
@@ -58,14 +54,14 @@ const LoanAmount: React.FC<LoanAmountProps> = ({ history }) => (
               <Checkbox
                 id="tac"
                 name="tac"
-                label="You have read the Terms and Conditions of this loan"
+                label="I have read the Terms and Conditions of this loan"
               />
             </Margin>
             <Margin vertical={16}>
               <Checkbox
                 id="risk"
                 name="risk"
-                label="You acknowledge the risks of this experiment"
+                label="I acknowledge the risks of this experiment"
               />
             </Margin>
             <Margin vertical={16}>
