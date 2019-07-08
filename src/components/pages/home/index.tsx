@@ -13,9 +13,9 @@ const Home: React.FC = () => (
   <React.Fragment>
     <HomeHero />
     <LoanDetail />
-    <SocialCredits />
-    <SimuLationReturn />
     <WhyUs />
+    <SimuLationReturn />
+    <SocialCredits />
     <Repayment />
     <Cta />
   </React.Fragment>

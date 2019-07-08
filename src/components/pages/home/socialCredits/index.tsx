@@ -5,7 +5,7 @@ import { Row, Col } from "../../../lib";
 import SocialIllustration from "../../../../images/illustration/social-review.svg";
 import commentIcon from "../../../../images/icons/comment.svg";
 import { SocialCreaditsWrapper, SocialCreaditsContent } from "./styled";
-import TestimonialLinkedin from "./testimonialLinkedin";
+import TestimonialLinkedin from "./testimonial";
 
 const SocialCredits: React.FC = () => (
   <SocialCreaditsWrapper>
