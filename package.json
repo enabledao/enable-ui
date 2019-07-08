@@ -9,6 +9,8 @@
     "@types/react-dom": "16.8.4",
     "@types/react-router-dom": "^4.3.4",
     "@types/styled-components": "^4.1.16",
+    "final-form": "^4.16.1",
+    "final-form-focus": "^1.1.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-final-form": "^6.3.0",

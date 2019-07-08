@@ -7,14 +7,19 @@ const TextField: React.FC<TextFieldProps> = ({
   placeholder,
   type,
   label,
-  autoFocus
+  autoFocus,
+  id,
+  ...props
 }) => (
   <React.Fragment>
     {label && <InputLabel>{label}</InputLabel>}
     <InputWrapper
+      id={id}
       type={type ? type : "text"}
       placeholder={placeholder}
       autoFocus={autoFocus}
+      name={props.name}
+      {...props}
     />
   </React.Fragment>
 );

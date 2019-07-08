@@ -8,6 +8,7 @@ import TextField from "./textfield";
 import Progress from "./progress";
 import ShowModal from "./modal";
 import { Row, Col } from "./grid";
+import FieldError from "./feedback/fieldError";
 
 export {
   Accordion,
@@ -20,5 +21,6 @@ export {
   Button,
   TextField,
   ShowModal,
-  Breadcrumb
+  Breadcrumb,
+  FieldError
 };

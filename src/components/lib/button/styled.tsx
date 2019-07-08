@@ -2,7 +2,7 @@
 import styled, { css } from "styled-components";
 import { ButtonProps } from "./interface";
 
-const ButtonWrapper = styled.div<ButtonProps>`
+const ButtonWrapper = styled.button<ButtonProps>`
   display: inline-block;
   padding: 8px 16px;
   min-width: 100px;
