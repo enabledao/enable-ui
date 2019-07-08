@@ -14,7 +14,7 @@ class ModalWip extends React.Component<{}, {}> {
           style={{ position: "absolute", marginTop: -4 }}
         />
         <Padding left={48}>
-          <h4>Announcement</h4>
+          <h4>Attention</h4>
         </Padding>
         <Margin top={24}>
           <ModalWipWrapper>

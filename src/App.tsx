@@ -3,6 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { NormalizeStyle } from "./styles/bases";
 import Home from "./components/pages/home";
+import ErrorNotFound from "./components/pages/error";
 import {
   PersonalInfo,
   LoanAmount,
@@ -31,6 +32,7 @@ const App: React.FC = () => {
           path={AppPath.LoanOfferThankYou}
           component={LoanOfferThankYou}
         />
+        <Route component={ErrorNotFound} />
       </Router>
     </React.Fragment>
   );
