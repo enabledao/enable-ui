@@ -16,6 +16,7 @@ import {
 import { StepLoanOfferWrapper } from "../styled";
 import { required } from "../../../../constant/validation";
 import createDecorator from "final-form-focus";
+import FormIllustration from "../../../../images/illustration/form.svg";
 
 interface PersonalInfoProps extends RouteComponentProps<any> {}
 
@@ -42,15 +43,17 @@ class PersonalInfo extends React.Component<PersonalInfoProps, {}> {
     return (
       <StepLoanOfferWrapper>
         <Container>
-          <h4>One step closer to helping Ines!</h4>
-          <p>For starters, please let us know your name and email address.</p>
-          <Form
-            onSubmit={this.onSubmit}
-            decorators={[focusOnErrors]}
-            render={({ handleSubmit }) => (
-              <form onSubmit={handleSubmit}>
-                <Row>
-                  <Col lg={6} md={12}>
+          <Row>
+            <Col lg={6} md={12}>
+              <h4>One step closer to helping Ines!</h4>
+              <p>
+                For starters, please let us know your name and email address.
+              </p>
+              <Form
+                onSubmit={this.onSubmit}
+                decorators={[focusOnErrors]}
+                render={({ handleSubmit }) => (
+                  <form onSubmit={handleSubmit}>
                     <Margin top={24} bottom={48}>
                       <Breadcrumb data={bredcrumbData} />
                     </Margin>
@@ -124,11 +127,18 @@ class PersonalInfo extends React.Component<PersonalInfoProps, {}> {
                         </Margin>
                       </Col>
                     </Row>
-                  </Col>
-                </Row>
-              </form>
-            )}
-          />
+                  </form>
+                )}
+              />
+            </Col>
+            <Col lg={6} md="hidden" text="center">
+              <img
+                src={FormIllustration}
+                alt="Form - Illustraion"
+                width={340}
+              />
+            </Col>
+          </Row>
         </Container>
       </StepLoanOfferWrapper>
     );
