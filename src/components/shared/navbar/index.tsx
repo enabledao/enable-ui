@@ -8,11 +8,12 @@ import {
   NavbarBrand,
   NavbarMenu,
   NavbarItems
-} from "./Styled";
+} from "./styled";
+import { AppPath } from "../../../constant/appPath";
 
 const NavbarItemActive: any = {
   fontWeight: 700,
-  color: "white"
+  color: "#6713c4"
 };
 
 const Navbar: React.FC = () => {
@@ -21,16 +22,35 @@ const Navbar: React.FC = () => {
       <Container>
         <NavbarBox>
           <NavbarBrand>
-            <NavLink to="/">Enable</NavLink>
+            <NavLink exact={true} to={AppPath.home}>
+              Inesfund
+            </NavLink>
           </NavbarBrand>
           <NavbarMenu>
             <NavbarItems>
-              <NavLink to="/" activeStyle={NavbarItemActive}>
+              <NavLink
+                exact={true}
+                to={AppPath.home}
+                activeStyle={NavbarItemActive}
+              >
+                Home
+              </NavLink>
+            </NavbarItems>
+            <NavbarItems>
+              <NavLink
+                exact={true}
+                to={AppPath.about}
+                activeStyle={NavbarItemActive}
+              >
                 About
               </NavLink>
             </NavbarItems>
             <NavbarItems>
-              <NavLink to="/" activeStyle={NavbarItemActive}>
+              <NavLink
+                exact={true}
+                to={AppPath.myLoan}
+                activeStyle={NavbarItemActive}
+              >
                 My Loan
               </NavLink>
             </NavbarItems>
