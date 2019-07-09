@@ -97,94 +97,92 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
               <Col lg={7} md={8} sm={12}>
                 <h1>Enabling Opportunity</h1>
                 <p>Extend a 60,000 Dai education loan to: </p>
-                <Margin top={16}>
-                  <Avatar
-                    size="sm"
-                    circle={true}
-                    style={{ position: "absolute" }}
-                  >
-                    <img src={avatarInes} alt="Avatar - Ines" />
-                  </Avatar>
-                  <Padding left={56}>
-                    <h5>Widya Imanesti</h5>
-                    <p>Jakarta - Indonesia</p>
-                    <p>
-                      Ines is raising a 60,000 Dai loan to attend Cornell
-                      University for a master's degree in HR
-                    </p>
-                  </Padding>
-                  <Margin top={24}>
-                    <Row>
-                      <Col lg={3} md={6}>
-                        <h4>2,900</h4>
-                        <small>Raised 0f 60,000 goal</small>
-                      </Col>
-                      <Col lg={3} md={6}>
-                        <h4>6%</h4>
-                        <small>Interest per annum</small>
-                      </Col>
-                      <Col lg={3} md={6}>
-                        <h4>12</h4>
-                        <small>Month of loan period</small>
-                      </Col>
-                      <Col lg={3} md={6}>
-                        <h4>29</h4>
-                        <small>Days left</small>
-                      </Col>
-                    </Row>
-                  </Margin>
+                <Avatar
+                  size="sm"
+                  circle={true}
+                  style={{ position: "absolute" }}
+                >
+                  <img src={avatarInes} alt="Avatar - Ines" />
+                </Avatar>
+                <Padding left={60}>
+                  <h5>Widya Imanesti</h5>
+                  <p>Jakarta - Indonesia</p>
+                  <p>
+                    Ines is raising a 60,000 Dai loan to attend Cornell
+                    University for a master's degree in HR
+                  </p>
+                </Padding>
+                <Margin top={24}>
                   <Row>
-                    <Col lg={10} md={12}>
-                      <Margin top={24}>
-                        <Progress current={20} />
-                      </Margin>
+                    <Col lg={3} md={6}>
+                      <h4>2,900</h4>
+                      <small>Raised 0f 60,000 goal</small>
+                    </Col>
+                    <Col lg={3} md={6}>
+                      <h4>6%</h4>
+                      <small>Interest per annum</small>
+                    </Col>
+                    <Col lg={3} md={6}>
+                      <h4>12</h4>
+                      <small>Month of loan period</small>
+                    </Col>
+                    <Col lg={3} md={6}>
+                      <h4>29</h4>
+                      <small>Days left</small>
                     </Col>
                   </Row>
-                  <Margin top={20}>
-                    <MobileTextCenter>
-                      {listContributor.map(res => (
-                        <Avatar
-                          key={res.name}
-                          size="sm"
-                          circle={true}
-                          tooltip={res.name}
-                        >
-                          <img src={res.image} alt="Avatar - User" />
-                        </Avatar>
-                      ))}
-                    </MobileTextCenter>
-                  </Margin>
-                  <Margin top={16} bottom={24}>
-                    <MobileTextCenter>
-                      <small>
-                        <HeroLink onClick={this.handleModal}>
-                          Powered by 39 contributors
-                        </HeroLink>
-                      </small>
-                    </MobileTextCenter>
-                  </Margin>
-                  <Row align="center">
-                    <Col lg={6} md={12} sm="hidden">
-                      <Margin top={16}>
-                        <Button color="purple" onClick={this.handleLend}>
-                          Start lending now
-                        </Button>
-                      </Margin>
-                    </Col>
-                    <Col lg={4} md={12} sm={12}>
-                      <MobileTextCenter>
-                        <Margin top={16}>
-                          <HeroLink>Watch a video</HeroLink>
-                        </Margin>
-                      </MobileTextCenter>
-                    </Col>
-                  </Row>
-                  <HeroButtonLendMobile>
-                    <Button color="purple" onClick={this.handleLend}>
-                      Start lending now
-                    </Button>
-                  </HeroButtonLendMobile>
                 </Margin>
+                <Row>
+                  <Col lg={10} md={12}>
+                    <Margin top={16}>
+                      <Progress current={20} />
+                    </Margin>
+                  </Col>
+                </Row>
+                <Margin top={20}>
+                  <MobileTextCenter>
+                    {listContributor.map(res => (
+                      <Avatar
+                        key={res.name}
+                        size="sm"
+                        circle={true}
+                        tooltip={res.name}
+                      >
+                        <img src={res.image} alt="Avatar - User" />
+                      </Avatar>
+                    ))}
+                  </MobileTextCenter>
+                </Margin>
+                <Margin top={16}>
+                  <MobileTextCenter>
+                    <small>
+                      <HeroLink onClick={this.handleModal}>
+                        Powered by 39 contributors
+                      </HeroLink>
+                    </small>
+                  </MobileTextCenter>
+                </Margin>
+                <Row align="center">
+                  <Col lg={6} md={12} sm="hidden">
+                    <Margin top={16}>
+                      <Button color="purple" onClick={this.handleLend}>
+                        Start lending now
+                      </Button>
+                    </Margin>
+                  </Col>
+                  <Col lg={4} md={12} sm={12}>
+                    <MobileTextCenter>
+                      <Margin top={16}>
+                        <HeroLink>Watch a video</HeroLink>
+                      </Margin>
+                    </MobileTextCenter>
+                  </Col>
+                </Row>
+                <HeroButtonLendMobile>
+                  <Button color="purple" onClick={this.handleLend}>
+                    Start lending now
+                  </Button>
+                </HeroButtonLendMobile>
               </Col>
             </Row>
           </Container>
