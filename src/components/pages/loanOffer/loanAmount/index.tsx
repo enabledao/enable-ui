@@ -15,7 +15,7 @@ import {
 } from "../../../lib";
 import { StepLoanOfferWrapper, LoanAmountSimulation } from "../styled";
 import {
-  required,
+  requiredField,
   mustBeNumber,
   composeValidators
 } from "../../../../constant/validation";
@@ -60,9 +60,12 @@ class LoanAmount extends React.Component<LoanAmountProps, {}> {
                     </Margin>
                     <Margin bottom={32}>
                       <Field
-                        name="email"
+                        name="loanAmount"
                         type="number"
-                        validate={composeValidators(required, mustBeNumber)}
+                        validate={composeValidators(
+                          requiredField,
+                          mustBeNumber
+                        )}
                         render={({ input, meta }) => (
                           <React.Fragment>
                             <TextField
@@ -96,7 +99,10 @@ class LoanAmount extends React.Component<LoanAmountProps, {}> {
                         <Field
                           name="tac"
                           type="checkbox"
-                          validate={composeValidators(required, mustBeNumber)}
+                          validate={composeValidators(
+                            requiredField,
+                            mustBeNumber
+                          )}
                           render={({ input, meta }) => (
                             <React.Fragment>
                               <Checkbox
@@ -118,7 +124,10 @@ class LoanAmount extends React.Component<LoanAmountProps, {}> {
                         <Field
                           name="risk"
                           type="checkbox"
-                          validate={composeValidators(required, mustBeNumber)}
+                          validate={composeValidators(
+                            requiredField,
+                            mustBeNumber
+                          )}
                           render={({ input, meta }) => (
                             <React.Fragment>
                               <Checkbox
@@ -141,7 +150,10 @@ class LoanAmount extends React.Component<LoanAmountProps, {}> {
                         <Field
                           name="ableToContact"
                           type="checkbox"
-                          validate={composeValidators(required, mustBeNumber)}
+                          validate={composeValidators(
+                            requiredField,
+                            mustBeNumber
+                          )}
                           render={({ input, meta }) => (
                             <React.Fragment>
                               <Checkbox

@@ -14,7 +14,11 @@ import {
   FieldError
 } from "../../../lib";
 import { StepLoanOfferWrapper } from "../styled";
-import { required } from "../../../../constant/validation";
+import {
+  requiredField,
+  emailFormat,
+  composeValidators
+} from "../../../../constant/validation";
 import createDecorator from "final-form-focus";
 import FormIllustration from "../../../../images/illustration/form.svg";
 
@@ -60,7 +64,7 @@ class PersonalInfo extends React.Component<PersonalInfoProps, {}> {
                     <Margin bottom={32}>
                       <Field
                         name="name"
-                        validate={required}
+                        validate={requiredField}
                         render={({ input, meta }) => (
                           <React.Fragment>
                             <TextField
@@ -87,7 +91,7 @@ class PersonalInfo extends React.Component<PersonalInfoProps, {}> {
                     <Margin bottom={32}>
                       <Field
                         name="email"
-                        validate={required}
+                        validate={composeValidators(requiredField, emailFormat)}
                         render={({ input, meta }) => (
                           <React.Fragment>
                             <TextField
