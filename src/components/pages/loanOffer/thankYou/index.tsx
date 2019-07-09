@@ -35,9 +35,9 @@ const LoanOfferThankYou: React.FC<LoanOfferThankYouProps> = ({ history }) => (
               <Margin top={32}>
                 <Button
                   color="purple"
-                  onClick={() => history.push(AppPath.home)}
+                  onClick={() => history.push(AppPath.myLoan)}
                 >
-                  Back to Home
+                  Go to your loan page
                 </Button>
               </Margin>
             </Col>

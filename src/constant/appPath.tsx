@@ -1,7 +1,7 @@
 const AppPath = {
   home: "/",
   about: "/about",
-  myLoan: "/loan",
+  myLoan: "/my-loan",
   LoanPersonalInfo: "/loan-offer/personal",
   LoanOfferAmount: "/loan-offer/amount",
   LoanOfferThankYou: "/loan-offer/thank-you"

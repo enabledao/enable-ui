@@ -22,21 +22,35 @@ const Navbar: React.FC = () => {
       <Container>
         <NavbarBox>
           <NavbarBrand>
-            <NavLink to={AppPath.home}>Inesfund</NavLink>
+            <NavLink exact={true} to={AppPath.home}>
+              Inesfund
+            </NavLink>
           </NavbarBrand>
           <NavbarMenu>
             <NavbarItems>
-              <NavLink to={AppPath.home} activeStyle={NavbarItemActive}>
+              <NavLink
+                exact={true}
+                to={AppPath.home}
+                activeStyle={NavbarItemActive}
+              >
                 Home
               </NavLink>
             </NavbarItems>
             <NavbarItems>
-              <NavLink to={AppPath.about} activeStyle={NavbarItemActive}>
+              <NavLink
+                exact={true}
+                to={AppPath.about}
+                activeStyle={NavbarItemActive}
+              >
                 About
               </NavLink>
             </NavbarItems>
             <NavbarItems>
-              <NavLink to={AppPath.myLoan} activeStyle={NavbarItemActive}>
+              <NavLink
+                exact={true}
+                to={AppPath.myLoan}
+                activeStyle={NavbarItemActive}
+              >
                 My Loan
               </NavLink>
             </NavbarItems>

@@ -1,6 +1,6 @@
 // Component app
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { NormalizeStyle } from "./styles/bases";
 import Home from "./components/pages/home";
 import ErrorNotFound from "./components/pages/error";
@@ -9,6 +9,7 @@ import {
   LoanAmount,
   LoanOfferThankYou
 } from "./components/pages/loanOffer";
+import MyLoan from "./components/pages/myLoan";
 import { AppPath } from "./constant/appPath";
 
 const App: React.FC = () => {
@@ -16,23 +17,26 @@ const App: React.FC = () => {
     <React.Fragment>
       <NormalizeStyle />
       <Router>
-        <Route exact={true} path={AppPath.home} component={Home} />
-        <Route
-          exact={true}
-          path={AppPath.LoanPersonalInfo}
-          component={PersonalInfo}
-        />
-        <Route
-          exact={true}
-          path={AppPath.LoanOfferAmount}
-          component={LoanAmount}
-        />
-        <Route
-          exact={true}
-          path={AppPath.LoanOfferThankYou}
-          component={LoanOfferThankYou}
-        />
-        <Route component={ErrorNotFound} />
+        <Switch>
+          <Route exact={true} path={AppPath.home} component={Home} />
+          <Route
+            exact={true}
+            path={AppPath.LoanPersonalInfo}
+            component={PersonalInfo}
+          />
+          <Route
+            exact={true}
+            path={AppPath.LoanOfferAmount}
+            component={LoanAmount}
+          />
+          <Route
+            exact={true}
+            path={AppPath.LoanOfferThankYou}
+            component={LoanOfferThankYou}
+          />
+          <Route exact={true} path={AppPath.myLoan} component={MyLoan} />
+          <Route component={ErrorNotFound} />
+        </Switch>
       </Router>
     </React.Fragment>
   );
