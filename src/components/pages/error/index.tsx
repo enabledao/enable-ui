@@ -22,14 +22,9 @@ const ErrorNotFound: React.FC<ErrorNotFoundProps> = ({ history }) => (
             />
           </Margin>
           <Margin bottom={16}>
-            <h4>Don't make Ines sad!</h4>
+            <h4>Sorry, Ines is not here!</h4>
           </Margin>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore
-            molestiae in deserunt laborum libero quidem fuga ipsa perferendis,
-            assumenda vitae corporis qui porro esse. At itaque dignissimos
-            dolor.
-          </p>
+          <p>Go back to helping Ines get her master’s degree.</p>
           <Row justify="center">
             <Col lg={6} md={12}>
               <Margin top={32}>
