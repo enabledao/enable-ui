@@ -28,6 +28,11 @@ class Modal extends React.Component<ModalProps, {}> {
       document.body.style.cursor = "pointer";
     }
     document.addEventListener("mousedown", this.handleClickOutside);
+    document.addEventListener("keydown", e => {
+      if (e.keyCode === 27) {
+        return this.handleClick();
+      }
+    });
   }
 
   handleClick() {
