@@ -164,7 +164,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 </Margin>
                 <Row align="center">
                   <Col lg={6} md={12} sm="hidden">
-                    <Margin top={16}>
+                    <Margin top={24}>
                       <Button color="purple" onClick={this.handleLend}>
                         Start lending now
                       </Button>
