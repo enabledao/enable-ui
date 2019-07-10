@@ -1,16 +1,7 @@
 import styled from "styled-components";
 import { MaxWidth } from "../../../../styles/utils";
 
-const RepaymentWrapper = styled.div`
-  padding: 100px 0;
-  background-image: linear-gradient(to bottom, #ffffff, #f6f7fb);
-  ${MaxWidth.md`
-    padding: 80px 0;
-  `}
-  ${MaxWidth.sm`
-    padding: 60px 0;
-  `}
-`;
+const RepaymentWrapper = styled.div``;
 
 const RepaymentCard = styled.div`
   background-color: white;
@@ -31,11 +22,14 @@ const RepaymentCard = styled.div`
   &:last-child {
     background-color: #76bbe3;
     color: white;
+    small {
+      display: none;
+    }
   }
 `;
 
 const RepaymentInline = styled.div`
-  width: calc(100% / 4);
+  width: calc(100% / 3);
   display: inline-block;
   p {
     margin-bottom: 0;
@@ -51,7 +45,7 @@ const RepaymentTitleWrapper = styled.div`
 `;
 
 const RepaymentTitle = styled.div`
-  width: calc(100% / 4);
+  width: calc(100% / 3);
   display: inline-block;
   ${MaxWidth.sm`
     display: none;
