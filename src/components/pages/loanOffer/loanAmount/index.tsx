@@ -17,7 +17,8 @@ import { StepLoanOfferWrapper, LoanAmountSimulation } from "../styled";
 import {
   requiredField,
   mustBeNumber,
-  composeValidators
+  composeValidators,
+  requiredChecked
 } from "../../../../constant/validation";
 import createDecorator from "final-form-focus";
 
@@ -99,7 +100,7 @@ class LoanAmount extends React.Component<LoanAmountProps, {}> {
                         <Field
                           name="tac"
                           type="checkbox"
-                          validate={composeValidators(requiredField)}
+                          validate={requiredChecked}
                           render={({ input, meta }) => (
                             <React.Fragment>
                               <Checkbox
@@ -121,7 +122,7 @@ class LoanAmount extends React.Component<LoanAmountProps, {}> {
                         <Field
                           name="risk"
                           type="checkbox"
-                          validate={composeValidators(requiredField)}
+                          validate={requiredChecked}
                           render={({ input, meta }) => (
                             <React.Fragment>
                               <Checkbox
@@ -144,7 +145,7 @@ class LoanAmount extends React.Component<LoanAmountProps, {}> {
                         <Field
                           name="ableToContact"
                           type="checkbox"
-                          validate={composeValidators(requiredField)}
+                          validate={requiredChecked}
                           render={({ input, meta }) => (
                             <React.Fragment>
                               <Checkbox

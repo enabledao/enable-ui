@@ -39,15 +39,6 @@ const Navbar: React.FC = () => {
             <NavbarItems>
               <NavLink
                 exact={true}
-                to={AppPath.about}
-                activeStyle={NavbarItemActive}
-              >
-                About
-              </NavLink>
-            </NavbarItems>
-            <NavbarItems>
-              <NavLink
-                exact={true}
                 to={AppPath.myLoan}
                 activeStyle={NavbarItemActive}
               >

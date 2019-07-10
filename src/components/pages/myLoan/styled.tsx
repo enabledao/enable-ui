@@ -3,7 +3,7 @@ import { MaxWidth } from "../../../styles/utils";
 
 const MyLoanWrapper = styled.div`
   padding: 100px 0;
-  min-height: calc(100vh - (70px + 60px));
+  background-image: linear-gradient(to bottom, #ffffff, #f6f7fb);
   ${MaxWidth.md`
     padding: 80px 0;
   `}
