@@ -50,6 +50,8 @@ const ModalClose = styled.div`
   display: flex;
   border-radius: 100px;
   border: 2px solid white;
+  width: 32px;
+  height: 32px;
 `;
 
 export { ModalWrapper, ModalBody, ModalClose };
