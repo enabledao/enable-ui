@@ -76,6 +76,9 @@ class LoanDetail extends React.Component<{}, LoanDetailState> {
                 </Row>
                 <Margin top={48}>
                   <MobileTextCenter>
+                    <Margin bottom={24}>
+                      <h6>You can know more about me on my social media</h6>
+                    </Margin>
                     <ProfileSocialLink
                       href="https://id.linkedin.com/in/widya-imanesti"
                       target="_blank"
@@ -91,7 +94,7 @@ class LoanDetail extends React.Component<{}, LoanDetailState> {
                       <img src={Instagram} alt="Socila - Media" width={24} />
                     </ProfileSocialLink>
                     <ProfileSocialLink
-                      href="https://www.instagram.com/wimanesti/?hl=en"
+                      href="https://twitter.com/itsenamiw"
                       target="_blank"
                       rel="noopener noreferrer"
                     >

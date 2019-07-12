@@ -17,7 +17,7 @@ const NavbarWrapper = styled.div`
 
 const NavbarBox = styled.div`
   width: 100%;
-  height: 60px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,8 +27,17 @@ const NavbarBrand = styled.div`
   font-size: 20px;
   font-weight: 600;
   a {
+    position: relative;
     color: black;
   }
+`;
+
+const NavbarBrandSmall = styled.div`
+  font-size: 12px;
+  position: absolute;
+  right: 0;
+  bottom: -14px;
+  font-weight: 400;
 `;
 
 const NavbarMenu = styled.ul`
@@ -47,4 +56,11 @@ const NavbarItems = styled.li`
   }
 `;
 
-export { NavbarWrapper, NavbarBox, NavbarBrand, NavbarMenu, NavbarItems };
+export {
+  NavbarWrapper,
+  NavbarBox,
+  NavbarBrand,
+  NavbarMenu,
+  NavbarItems,
+  NavbarBrandSmall
+};
