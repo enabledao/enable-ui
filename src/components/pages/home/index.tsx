@@ -22,8 +22,8 @@ class Home extends React.Component<{}, {}> {
         <HomeHero />
         <LoanDetail />
         <WhyUs />
-        <SimuLationReturn />
         <SocialCredits />
+        <SimuLationReturn />
         <Repayment />
         <Cta />
       </React.Fragment>

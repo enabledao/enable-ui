@@ -52,7 +52,7 @@ const HeroLink = styled.div`
   cursor: pointer;
 `;
 
-const HeroGoal = styled.div`
+const HeroStats = styled.div`
   h4 {
     small {
       font-size: 12px;
@@ -60,4 +60,4 @@ const HeroGoal = styled.div`
   }
 `;
 
-export { HeroWrapper, HeroCell, HeroButtonLendMobile, HeroLink, HeroGoal };
+export { HeroWrapper, HeroCell, HeroButtonLendMobile, HeroLink, HeroStats };

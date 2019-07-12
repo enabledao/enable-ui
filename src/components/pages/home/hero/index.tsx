@@ -17,7 +17,7 @@ import {
   HeroCell,
   HeroButtonLendMobile,
   HeroLink,
-  HeroGoal
+  HeroStats
 } from "./styled";
 
 interface HomeHeroProps extends RouteComponentProps<any> {}
@@ -116,24 +116,36 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 <Margin top={24}>
                   <Row>
                     <Col lg={3} md={6}>
-                      <HeroGoal>
+                      <HeroStats>
                         <h4>
                           2,900 <small>Dai</small>
                         </h4>
-                        <small>Raised 0f 60,000 goal</small>
-                      </HeroGoal>
+                        <small>Raised of 60,000 goal</small>
+                      </HeroStats>
                     </Col>
                     <Col lg={3} md={6}>
-                      <h4>29</h4>
-                      <small>days left loan expires</small>
+                      <HeroStats>
+                        <h4>
+                          29 <small>Days left</small>
+                        </h4>
+                        <small>Loan expires</small>
+                      </HeroStats>
                     </Col>
                     <Col lg={3} md={6}>
-                      <h4>6%</h4>
-                      <small>Interest per annum</small>
+                      <HeroStats>
+                        <h4>
+                          6% <small>Interest</small>
+                        </h4>
+                        <small>Per annum</small>
+                      </HeroStats>
                     </Col>
                     <Col lg={3} md={6}>
-                      <h4>12</h4>
-                      <small>Month of loan period</small>
+                      <HeroStats>
+                        <h4>
+                          12 <small>Month</small>
+                        </h4>
+                        <small>Loan period</small>
+                      </HeroStats>
                     </Col>
                   </Row>
                 </Margin>

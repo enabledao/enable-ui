@@ -155,6 +155,7 @@ const resetStyle = css`
   }
   h5 {
     font-size: 2rem;
+    line-height: 1.8;
   }
   h6 {
     font-size: 1.6rem;
