@@ -141,29 +141,9 @@ class LoanAmount extends React.Component<LoanAmountProps, {}> {
                           )}
                         />
                       </Margin>
-                      <Margin vertical={16}>
-                        <Field
-                          name="ableToContact"
-                          type="checkbox"
-                          validate={requiredChecked}
-                          render={({ input, meta }) => (
-                            <React.Fragment>
-                              <Checkbox
-                                id="ableToContact"
-                                name="ableToContact"
-                                label="I am willing to be contacted through email"
-                                {...input}
-                                {...meta}
-                              />
-                              {meta.touched && meta.error && (
-                                <Padding left={24}>
-                                  <FieldError>{meta.error}</FieldError>
-                                </Padding>
-                              )}
-                            </React.Fragment>
-                          )}
-                        />
-                      </Margin>
+                      <b>
+                        <p>After submit you'll contacted through email</p>
+                      </b>
                     </Margin>
                   </Col>
                   <Col lg={6} md={12}>
