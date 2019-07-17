@@ -143,6 +143,7 @@ const resetStyle = css`
   }
   h1 {
     font-size: 3.6rem;
+    line-height: 1.4;
   }
   h2 {
     font-size: 3.2rem;
@@ -155,14 +156,12 @@ const resetStyle = css`
   }
   h5 {
     font-size: 2rem;
-    line-height: 1.8;
   }
   h6 {
     font-size: 1.6rem;
-    line-height: 1.8;
   }
   p {
-    line-height: 2.2;
+    line-height: 2;
     margin-bottom: 4px;
   }
   a {

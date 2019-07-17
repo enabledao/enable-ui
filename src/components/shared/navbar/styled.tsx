@@ -17,7 +17,7 @@ const NavbarWrapper = styled.div`
 
 const NavbarBox = styled.div`
   width: 100%;
-  height: 80px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -34,9 +34,8 @@ const NavbarBrand = styled.div`
 
 const NavbarBrandSmall = styled.div`
   font-size: 12px;
-  position: absolute;
-  right: 0;
-  bottom: -14px;
+  display: inline-block;
+  margin-left: 4px;
   font-weight: 400;
 `;
 

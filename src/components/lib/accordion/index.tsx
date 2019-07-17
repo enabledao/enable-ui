@@ -11,6 +11,7 @@ import {
 export interface AccordionProps {
   data: any[];
   allowMultipleExpanded?: boolean;
+  defaultExpandedAll?: boolean;
 }
 
 export interface AccordionState {
@@ -33,7 +34,7 @@ class Accordion extends React.Component<AccordionProps, AccordionState> {
   };
 
   render() {
-    const { data, allowMultipleExpanded } = this.props;
+    const { data, allowMultipleExpanded, defaultExpandedAll } = this.props;
     const { expanded } = this.state;
     return (
       <React.Fragment>
@@ -41,7 +42,11 @@ class Accordion extends React.Component<AccordionProps, AccordionState> {
           <React.Fragment>
             {data.map((item, index) => (
               <React.Fragment key={index}>
-                <AccordionList {...item} index={index} />
+                <AccordionList
+                  {...item}
+                  index={index}
+                  defaultExpandedAll={defaultExpandedAll}
+                />
               </React.Fragment>
             ))}
           </React.Fragment>
@@ -78,6 +83,7 @@ export interface AccordionListProps {
   title: string;
   content: string;
   allowMultipleExpanded?: boolean;
+  defaultExpandedAll?: boolean;
 }
 
 export interface AccordionListState {
@@ -92,7 +98,7 @@ class AccordionList extends React.Component<
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false
+      expanded: props.defaultExpandedAll ? props.defaultExpandedAll : false
     };
   }
 

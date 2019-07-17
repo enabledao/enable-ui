@@ -24,23 +24,19 @@ class Cta extends React.Component<CtaProps, {}> {
         <Container>
           <CtaContent>
             <Row justify="center" align="center">
-              <Col lg={10}>
-                <Row justify="center" align="center">
-                  <Col lg={8} md={12}>
-                    <h1>Ready to help Ines?</h1>
-                    <p>
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                      Optio veniam soluta modi? Dolores praesentium voluptas,
-                      iusto, officiis odit adipisci error harum pariatur
-                      incidunt quo molestias fuga a excepturi dolore quidem.
-                    </p>
-                  </Col>
-                  <Col lg={4} md={12}>
-                    <Button color="purple" onClick={this.handleLend}>
-                      Start lending now
-                    </Button>
-                  </Col>
-                </Row>
+              <Col lg={9} md={12}>
+                <h1>Ready to help Ines?</h1>
+                <p>
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                  Optio veniam soluta modi? Dolores praesentium voluptas, iusto,
+                  officiis odit adipisci error harum pariatur incidunt quo
+                  molestias fuga a excepturi dolore quidem.
+                </p>
+              </Col>
+              <Col lg={3} md={12}>
+                <Button color="purple" onClick={this.handleLend}>
+                  Start lending now
+                </Button>
               </Col>
             </Row>
           </CtaContent>
