@@ -59,9 +59,9 @@ const FaqTab: React.FC = () => {
         style={{ position: "absolute" }}
       />
       <Padding left={48}>
-        <h2>FAQ</h2>
+        <h5>FAQ</h5>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
       </Padding>
-      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
       <Margin top={32}>
         <Row>
           <Col lg={6} sm={12}>

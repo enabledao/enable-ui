@@ -39,7 +39,7 @@ const TabMenuOnlyShowMobile = styled.li<{ activePage: boolean }>`
   display: none;
   padding: 24px 0;
   cursor: pointer;
-  ${MaxWidth.sm`
+  ${MaxWidth.md`
     display: inline-block;
   `}
   ${props =>

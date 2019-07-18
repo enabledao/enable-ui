@@ -1,7 +1,8 @@
 import React from "react";
 import FaqTab from "./faq";
-import WhyUs from "./whyUs";
 import SocialCredits from "./socialCredits";
+import Profile from "./profile";
+import SimuLationReturn from "../simulation";
 import { Container } from "../../../../styles/bases";
 import {
   TabWrapper,
@@ -30,106 +31,17 @@ class TabHome extends React.Component<{}, TabHomeState> {
       case 0:
         return (
           <p>
-            0 Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Exercitationem aspernatur ratione eum reprehenderit! Debitis dolores
-            optio odio quo culpa enim laboriosam eos incidunt? Corrupti
-            provident vitae cumque iste totam harum!
+            <SimuLationReturn />
           </p>
         );
       case 1:
-        return (
-          <p>
-            1 Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Exercitationem aspernatur ratione eum reprehenderit! Debitis dolores
-            optio odio quo culpa enim laboriosam eos incidunt? Corrupti
-            provident vitae cumque iste totam harum! 1 Lorem ipsum dolor sit
-            amet consectetur adipisicing elit. Exercitationem aspernatur ratione
-            eum reprehenderit! Debitis dolores optio odio quo culpa enim
-            laboriosam eos incidunt? Corrupti provident vitae cumque iste totam
-            harum! 1 Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Exercitationem aspernatur ratione eum reprehenderit! Debitis dolores
-            optio odio quo culpa enim laboriosam eos incidunt? Corrupti
-            provident vitae cumque iste totam harum! 1 Lorem ipsum dolor sit
-            amet consectetur adipisicing elit. Exercitationem aspernatur ratione
-            eum reprehenderit! Debitis dolores optio odio quo culpa enim
-            laboriosam eos incidunt? Corrupti provident vitae cumque iste totam
-            harum! 1 Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Exercitationem aspernatur ratione eum reprehenderit! Debitis dolores
-            optio odio quo culpa enim laboriosam eos incidunt? Corrupti
-            provident vitae cumque iste totam harum! 1 Lorem ipsum dolor sit
-            amet consectetur adipisicing elit. Exercitationem aspernatur ratione
-            eum reprehenderit! Debitis dolores optio odio quo culpa enim
-            laboriosam eos incidunt? Corrupti provident vitae cumque iste totam
-            harum! 1 Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Exercitationem aspernatur ratione eum reprehenderit! Debitis dolores
-            optio odio quo culpa enim laboriosam eos incidunt? Corrupti
-            provident vitae cumque iste totam harum! 1 Lorem ipsum dolor sit
-            amet consectetur adipisicing elit. Exercitationem aspernatur ratione
-            eum reprehenderit! Debitis dolores optio odio quo culpa enim
-            laboriosam eos incidunt? Corrupti provident vitae cumque iste totam
-            harum! 1 Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Exercitationem aspernatur ratione eum reprehenderit! Debitis dolores
-            optio odio quo culpa enim laboriosam eos incidunt? Corrupti
-            provident vitae cumque iste totam harum! harum! 1 Lorem ipsum dolor
-            sit amet consectetur adipisicing elit. Exercitationem aspernatur
-            ratione eum reprehenderit! Debitis dolores optio odio quo culpa enim
-            laboriosam eos incidunt? Corrupti provident vitae cumque iste totam
-            harum! harum! 1 Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Exercitationem aspernatur ratione eum reprehenderit! Debitis
-            dolores optio odio quo culpa enim laboriosam eos incidunt? Corrupti
-            provident vitae cumque iste totam harum! harum! 1 Lorem ipsum dolor
-            sit amet consectetur adipisicing elit. Exercitationem aspernatur
-            ratione eum reprehenderit! Debitis dolores optio odio quo culpa enim
-            laboriosam eos incidunt? Corrupti provident vitae cumque iste totam
-            harum! harum! 1 Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Exercitationem aspernatur ratione eum reprehenderit! Debitis
-            dolores optio odio quo culpa enim laboriosam eos incidunt? Corrupti
-            provident vitae cumque iste totam harum! harum! 1 Lorem ipsum dolor
-            sit amet consectetur adipisicing elit. Exercitationem aspernatur
-            ratione eum reprehenderit! Debitis dolores optio odio quo culpa enim
-            laboriosam eos incidunt? Corrupti provident vitae cumque iste totam
-            harum! harum! 1 Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Exercitationem aspernatur ratione eum reprehenderit! Debitis
-            dolores optio odio quo culpa enim laboriosam eos incidunt? Corrupti
-            provident vitae cumque iste totam harum! harum! 1 Lorem ipsum dolor
-            sit amet consectetur adipisicing elit. Exercitationem aspernatur
-            ratione eum reprehenderit! Debitis dolores optio odio quo culpa enim
-            laboriosam eos incidunt? Corrupti provident vitae cumque iste totam
-            harum! harum! 1 Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Exercitationem aspernatur ratione eum reprehenderit! Debitis
-            dolores optio odio quo culpa enim laboriosam eos incidunt? Corrupti
-            provident vitae cumque iste totam harum! harum! 1 Lorem ipsum dolor
-            sit amet consectetur adipisicing elit. Exercitationem aspernatur
-            ratione eum reprehenderit! Debitis dolores optio odio quo culpa enim
-            laboriosam eos incidunt? Corrupti provident vitae cumque iste totam
-            harum! harum! 1 Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Exercitationem aspernatur ratione eum reprehenderit! Debitis
-            dolores optio odio quo culpa enim laboriosam eos incidunt? Corrupti
-            provident vitae cumque iste totam harum! harum! 1 Lorem ipsum dolor
-            sit amet consectetur adipisicing elit. Exercitationem aspernatur
-            ratione eum reprehenderit! Debitis dolores optio odio quo culpa enim
-            laboriosam eos incidunt? Corrupti provident vitae cumque iste totam
-            harum! harum! 1 Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Exercitationem aspernatur ratione eum reprehenderit! Debitis
-            dolores optio odio quo culpa enim laboriosam eos incidunt? Corrupti
-            provident vitae cumque iste totam harum!
-          </p>
-        );
+        return <Profile />;
       case 2:
         return <FaqTab />;
       case 3:
-        return <WhyUs />;
-      case 4:
         return <SocialCredits />;
       default:
-        return (
-          <p>
-            1 Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Exercitationem aspernatur ratione eum reprehenderit! Debitis dolores
-            optio odio quo culpa enim laboriosam eos incidunt? Corrupti
-            provident vitae cumque iste totam harum!
-          </p>
-        );
+        return <SimuLationReturn />;
     }
   }
 
@@ -161,12 +73,6 @@ class TabHome extends React.Component<{}, TabHomeState> {
               <TabMenuList
                 onClick={() => this.setState({ page: 3 })}
                 activePage={page === 3}
-              >
-                <span>Payback plan</span>
-              </TabMenuList>
-              <TabMenuList
-                onClick={() => this.setState({ page: 4 })}
-                activePage={page === 4}
               >
                 <span>What people say</span>
               </TabMenuList>

@@ -1,42 +1,51 @@
-// Style of simulation credit
 import styled from "styled-components";
 import { MaxWidth } from "../../../../styles/utils";
 
-const SimulateWrapper = styled.div`
-  padding: 100px 0;
-  border-bottom: 1px solid #e7ebf2;
-  ${MaxWidth.md`
-    padding: 80px 0;
-  `}
+const SliderInput = styled.input`
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  background: #f6f7fb;
+  outline: none;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  border-radius: 100px;
+  border: 1px solid #e7ebf2;
 
-  ${MaxWidth.sm`
-    padding: 60px 0;
-  `}
-`;
+  ::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: #36b37e;
+    cursor: pointer;
+    border-radius: 100px;
+  }
 
-const RadioButton = styled.div`
-  display: inline-flex;
-  margin: 8px 8px 0 0;
-  input {
-    visibility: hidden;
-    position: absolute;
-    width: 0;
-    height: 0;
-    + label {
-      background-color: white;
-      cursor: pointer;
-      padding: 8px 16px;
-      border: 1px solid #e7ebf2;
-      border-radius: 4px;
-    }
-
-    &:checked {
-      + label {
-        background-color: #6713c4;
-        color: white;
-      }
-    }
+  ::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    background: #36b37e;
+    cursor: pointer;
   }
 `;
 
-export { RadioButton, SimulateWrapper };
+const OtherMenu = styled.a`
+  display: inline-block;
+  cursor: pointer;
+  margin-top: 16px;
+`;
+
+const SliderMinMax = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+`;
+
+const ButtonLendSimulation = styled.div`
+  ${MaxWidth.sm`
+    display: none;
+  `}
+`;
+
+export { SliderInput, OtherMenu, SliderMinMax, ButtonLendSimulation };

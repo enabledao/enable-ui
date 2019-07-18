@@ -8,4 +8,6 @@ export interface TextFieldProps {
   autoFocus?: boolean;
   error?: string;
   touched?: boolean;
+  value?: string | number;
+  onChange?: any;
 }

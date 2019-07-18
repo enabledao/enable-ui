@@ -13,13 +13,28 @@ const ModalVideo: React.FC = () => (
     <Padding left={48}>
       <h4>Short video about Ines</h4>
     </Padding>
-    <Margin top={24}>
-      <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Veniam
-        provident laudantium ratione atque! Impedit autem velit illum dolore ad
-        unde, porro a nostrum dolorem modi laboriosam suscipit consequatur
-        temporibus iure.
-      </p>
+    <Margin top={48}>
+      <div
+        style={{
+          position: "relative",
+          paddingBottom: "56.25%" /* 16:9 */,
+          paddingTop: 25,
+          height: 0
+        }}
+      >
+        <iframe
+          title="Ines - Short video"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%"
+          }}
+          src={`https://www.youtube.com/embed/_b_YVrex0yI?autoplay=1`}
+          frameBorder="0"
+        />
+      </div>
     </Margin>
   </React.Fragment>
 );

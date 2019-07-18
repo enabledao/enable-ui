@@ -1,14 +1,13 @@
 import React from "react";
-import { Container } from "../../../../../styles/bases";
-import { Margin, Padding } from "../../../../../styles/utils";
-import { Accordion, Row, Col } from "../../../../lib";
-import WhyUsIllustration from "../../../../../images/illustration/why-us.svg";
-import TickPaperIcon from "../../../../../images/icons/tick-paper.svg";
+import { Margin, Padding } from "../../../../../../styles/utils";
+import { Accordion, Row, Col } from "../../../../../lib";
+import WhyMeIllustration from "../../../../../../images/illustration/why-us.svg";
+import TickPaperIcon from "../../../../../../images/icons/tick-paper.svg";
 import {
-  WhyUsListWrapper,
-  WhyUsCardWrapper,
-  WhyUsCardAccordion,
-  WhyUsCard
+  WhyMeListWrapper,
+  WhyMeCardWrapper,
+  WhyMeCardAccordion,
+  WhyMeCard
 } from "./styled";
 
 const dataAccordion = [
@@ -31,11 +30,11 @@ const dataAccordion = [
   }
 ];
 
-const WhyUs: React.FC = () => (
-  <Container>
+const WhyMe: React.FC = () => (
+  <React.Fragment>
     <Row>
       <Col lg={5} md={4} sm="hidden" text="center">
-        <img src={WhyUsIllustration} alt="HomeHero - Illustraion" width={340} />
+        <img src={WhyMeIllustration} alt="HomeHero - Illustraion" width={340} />
       </Col>
       <Col lg={7} md={8} sm={12}>
         <img
@@ -44,8 +43,8 @@ const WhyUs: React.FC = () => (
           width={34}
           style={{ position: "absolute" }}
         />
-        <Padding left={48}>
-          <h2>Why Me & Payback Plan</h2>
+        <Padding left={48} top={8}>
+          <h5>Why Me & Payback Plan</h5>
         </Padding>
         <p>
           The estimated cost for the two-year program based on the&nbsp;
@@ -53,7 +52,7 @@ const WhyUs: React.FC = () => (
           <b>$128,000.</b>&nbsp;The estimated annual expense breakdown is as
           follows:
         </p>
-        <WhyUsListWrapper>
+        <WhyMeListWrapper>
           <li>
             <p>
               Tuition: <b>$37,022</b> per academic year
@@ -79,7 +78,7 @@ const WhyUs: React.FC = () => (
               Books & supply: <b>$1,330</b>
             </p>
           </li>
-        </WhyUsListWrapper>
+        </WhyMeListWrapper>
       </Col>
     </Row>
     <Row text="center">
@@ -90,25 +89,25 @@ const WhyUs: React.FC = () => (
           </h5>
         </Margin>
       </Col>
-      <WhyUsCardWrapper>
+      <WhyMeCardWrapper>
         <Row text="left">
           {dataAccordion.map((res, index) => (
-            <Col key={index} lg={4}>
-              <WhyUsCard>
+            <Col key={index} lg={12}>
+              <WhyMeCard>
                 <h6>{res.title}</h6>
                 <p>{res.content}</p>
-              </WhyUsCard>
+              </WhyMeCard>
             </Col>
           ))}
         </Row>
-      </WhyUsCardWrapper>
-      <WhyUsCardAccordion>
+      </WhyMeCardWrapper>
+      <WhyMeCardAccordion>
         <Col lg={12} text="left">
           <Accordion data={dataAccordion} allowMultipleExpanded={true} />
         </Col>
-      </WhyUsCardAccordion>
+      </WhyMeCardAccordion>
     </Row>
-  </Container>
+  </React.Fragment>
 );
 
-export default WhyUs;
+export default WhyMe;

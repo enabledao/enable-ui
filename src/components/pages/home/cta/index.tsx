@@ -27,10 +27,8 @@ class Cta extends React.Component<CtaProps, {}> {
               <Col lg={9} md={12}>
                 <h1>Ready to help Ines?</h1>
                 <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Optio veniam soluta modi? Dolores praesentium voluptas, iusto,
-                  officiis odit adipisci error harum pariatur incidunt quo
-                  molestias fuga a excepturi dolore quidem.
+                  Getting Master’s of Industrial and Labor Relations at Cornell
+                  University
                 </p>
               </Col>
               <Col lg={3} md={12}>

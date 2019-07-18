@@ -1,17 +1,17 @@
 import styled from "styled-components";
-import { MaxWidth } from "../../../../../styles/utils";
+import { MaxWidth } from "../../../../../../styles/utils";
 
-const WhyUsListWrapper = styled.ul`
+const WhyMeListWrapper = styled.ul`
   padding: 8px 24px;
 `;
 
-const WhyUsCardWrapper = styled.div`
+const WhyMeCardWrapper = styled.div`
   ${MaxWidth.md`
     display: none;
   `}
 `;
 
-const WhyUsCard = styled.div`
+const WhyMeCard = styled.div`
   background-color: white;
   border: 1px solid #e7ebf2;
   padding: 24px;
@@ -28,11 +28,11 @@ const WhyUsCard = styled.div`
   }
 `;
 
-const WhyUsCardAccordion = styled.div`
+const WhyMeCardAccordion = styled.div`
   display: none;
   ${MaxWidth.md`
     display: block;
   `}
 `;
 
-export { WhyUsListWrapper, WhyUsCardWrapper, WhyUsCardAccordion, WhyUsCard };
+export { WhyMeListWrapper, WhyMeCardWrapper, WhyMeCardAccordion, WhyMeCard };
