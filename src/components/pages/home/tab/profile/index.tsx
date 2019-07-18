@@ -155,7 +155,7 @@ class Profile extends React.Component<{}, {}> {
           </Col>
           <Col lg={4} md="hidden">
             <SimuLationReturn />
-            <Margin top={24}>
+            <Margin top={48}>
               <SocialShare />
             </Margin>
           </Col>

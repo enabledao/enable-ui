@@ -24,26 +24,40 @@ import createDecorator from "final-form-focus";
 
 interface LoanAmountProps extends RouteComponentProps<any> {}
 
+interface LoanAmountState {
+  loanAmoutnValue: number;
+}
+
 const focusOnErrors = createDecorator();
 const bredcrumbData = [
   { title: " Personal information", active: true },
   { title: "Detail amount", active: true }
 ];
 
-class LoanAmount extends React.Component<LoanAmountProps, {}> {
+class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
   constructor(props: LoanAmountProps) {
     super(props);
+    this.state = {
+      loanAmoutnValue: 0
+    };
     this.onSubmit = this.onSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   onSubmit = (data: any) => {
     const { history } = this.props;
-    console.log(data);
     history.push(AppPath.LoanOfferThankYou);
   };
 
+  handleChange(e: { target: { value: any } }) {
+    this.setState({
+      loanAmoutnValue: Number(e.target.value)
+    });
+  }
+
   render() {
     const { history } = this.props;
+    const { loanAmoutnValue } = this.state;
     return (
       <StepLoanOfferWrapper>
         <Container>
@@ -56,39 +70,50 @@ class LoanAmount extends React.Component<LoanAmountProps, {}> {
               <form onSubmit={handleSubmit}>
                 <Row>
                   <Col lg={6} md={12}>
-                    <Margin vertical={48}>
+                    <Margin top={48} bottom={24}>
                       <Breadcrumb data={bredcrumbData} />
                     </Margin>
-                    <Margin bottom={32}>
-                      <Field
-                        name="loanAmount"
-                        type="number"
-                        validate={composeValidators(
-                          requiredField,
-                          mustBeNumber
-                        )}
-                        render={({ input, meta }) => (
-                          <React.Fragment>
-                            <TextField
-                              label="Loan Amount"
-                              type="number"
-                              placeholder="Enter your loan amount"
-                              autoFocus={true}
-                              {...input}
-                              {...meta}
-                            />
-                            {meta.touched && meta.error && (
-                              <FieldError>{meta.error}</FieldError>
+                    <Margin bottom={16}>
+                      <Row>
+                        <Col lg={6} md={12}>
+                          <Field
+                            name="loanAmount"
+                            type="number"
+                            validate={composeValidators(
+                              requiredField,
+                              mustBeNumber
                             )}
-                          </React.Fragment>
-                        )}
-                      />
+                            render={({ input, meta }) => (
+                              <React.Fragment>
+                                <TextField
+                                  label="Loan Amount"
+                                  type="number"
+                                  placeholder="Enter your loan amount"
+                                  autoFocus={true}
+                                  value={
+                                    loanAmoutnValue === 0 ? "" : loanAmoutnValue
+                                  }
+                                  onChangeCustom={this.handleChange}
+                                  {...input}
+                                  {...meta}
+                                />
+                                {meta.touched && meta.error && (
+                                  <FieldError>{meta.error}</FieldError>
+                                )}
+                              </React.Fragment>
+                            )}
+                          />
+                        </Col>
+                      </Row>
                     </Margin>
-                    <Margin top={48} bottom={24}>
+                    <Margin vertical={24}>
                       <h5>Confirm Loan</h5>
                       <p>Total loan amount:</p>
                       <Margin top={16}>
-                        <h3>7 Dai</h3>
+                        <h3>
+                          {loanAmoutnValue}
+                          &nbsp;<small>Dai</small>
+                        </h3>
                         <p>Excludes transaction fees and gas</p>
                       </Margin>
                       <Margin top={24}>
@@ -151,7 +176,10 @@ class LoanAmount extends React.Component<LoanAmountProps, {}> {
                       <h5>Simulated Returns</h5>
                       <p>You can expect to earn a total interest of:</p>
                       <Margin vertical={24}>
-                        <h3>0.42 Dai</h3>
+                        <h4>
+                          {((loanAmoutnValue * 0.5) / 100) * 12}
+                          &nbsp;<small>Dai</small>
+                        </h4>
                       </Margin>
                       <p>
                         By using this service, you are agreeing to the

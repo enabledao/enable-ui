@@ -9,4 +9,5 @@ export interface TextFieldProps {
   touched?: boolean;
   value?: string | number;
   onChange?: any;
+  onChangeCustom?: any;
 }

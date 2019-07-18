@@ -38,7 +38,6 @@ class PersonalInfo extends React.Component<PersonalInfoProps, {}> {
 
   onSubmit = (data: any) => {
     const { history } = this.props;
-    console.log(data);
     history.push(AppPath.LoanOfferAmount);
   };
 
