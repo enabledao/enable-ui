@@ -1,4 +1,3 @@
-// Style utils of margin
 import styled, { css } from "styled-components";
 import { SizeProps } from "./interface";
 

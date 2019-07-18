@@ -1,4 +1,3 @@
-// Shared navbar component
 import React from "react";
 import { Container } from "../../../styles/bases";
 import { NavLink } from "react-router-dom";

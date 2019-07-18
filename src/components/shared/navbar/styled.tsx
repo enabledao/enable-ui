@@ -1,4 +1,3 @@
-// Style of navbar component
 import styled from "styled-components";
 
 const NavbarWrapper = styled.div`

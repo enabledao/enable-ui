@@ -1,4 +1,3 @@
-// interface of breadcrumb lib
 export interface BreadcrumbProps {
   step?: number;
   data: any[];

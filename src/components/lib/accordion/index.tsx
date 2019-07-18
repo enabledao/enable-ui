@@ -1,4 +1,3 @@
-// Lib accordion component
 import React from "react";
 import chevron from "../../../images/icons/chevron-bottom.svg";
 import {

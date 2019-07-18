@@ -1,5 +1,3 @@
-// HOC with Navbar and Footer
-
 import React from "react";
 import Navbar from "../shared/navbar";
 import Footer from "../shared/footer";

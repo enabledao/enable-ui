@@ -1,4 +1,3 @@
-// Lib textfield component
 import React from "react";
 import { TextFieldProps } from "./interface";
 import { InputWrapper, InputLabel } from "./styled";

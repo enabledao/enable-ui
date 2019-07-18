@@ -1,4 +1,3 @@
-// Style of textfield
 import styled, { css } from "styled-components";
 import { TextFieldProps } from "./interface";
 
