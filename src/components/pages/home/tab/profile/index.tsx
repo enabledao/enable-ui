@@ -13,6 +13,8 @@ import { ProfileSocialLink } from "./styled";
 import WhyMe from "./whyMe";
 import Repayment from "./repayment";
 import SimuLationReturn from "../../simulation";
+import SocialShare from "../../socialShare";
+
 class Profile extends React.Component<{}, {}> {
   render() {
     return (
@@ -153,6 +155,9 @@ class Profile extends React.Component<{}, {}> {
           </Col>
           <Col lg={4} md="hidden">
             <SimuLationReturn />
+            <Margin top={24}>
+              <SocialShare />
+            </Margin>
           </Col>
         </Row>
       </React.Fragment>
