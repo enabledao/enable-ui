@@ -1,4 +1,3 @@
-// Style of footer component
 import styled from "styled-components";
 import { MaxWidth } from "../../../styles/utils";
 

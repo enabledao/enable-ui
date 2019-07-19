@@ -1,4 +1,3 @@
-// Shared footer component
 import React from "react";
 import { Container } from "../../../styles/bases";
 import FooterWrapper from "./styled";

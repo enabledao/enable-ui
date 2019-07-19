@@ -1,5 +1,3 @@
-// HOC with Navbar only
-
 import React from "react";
 import Navbar from "../shared/navbar";
 

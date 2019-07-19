@@ -1,14 +1,12 @@
 import styled from "styled-components";
-import { MaxWidth, MinWidth } from "../../../../styles/utils";
+import { MaxWidth } from "../../../../styles/utils";
 
 const HeroWrapper = styled.div`
-  padding: 100px 0;
+  padding: 80px 0;
   position: relative;
   display: table;
   width: 100%;
-  ${MinWidth.lg`
-    min-height: 100vh;
-  `}
+  min-height: calc(100vh - (60px + 75px));
   ${MaxWidth.md`
     padding: 80px 0;
   `}
@@ -52,4 +50,24 @@ const HeroLink = styled.div`
   cursor: pointer;
 `;
 
-export { HeroWrapper, HeroCell, HeroButtonLendMobile, HeroLink };
+const HeroStats = styled.div`
+  h4 {
+    margin-bottom: 4px;
+    small {
+      font-size: 12px;
+    }
+  }
+`;
+
+const HeroImage = styled.div`
+  position: relative;
+`;
+
+export {
+  HeroWrapper,
+  HeroCell,
+  HeroButtonLendMobile,
+  HeroLink,
+  HeroStats,
+  HeroImage
+};
