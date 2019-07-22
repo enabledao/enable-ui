@@ -28,9 +28,9 @@ class SimuLationReturn extends React.Component<
     super(props);
     this.state = {
       textfieldShow: false,
-      sliderValue: 5000 / 2,
-      sliderMin: 100,
-      sliderMax: 5000
+      sliderValue: 30000 / 2,
+      sliderMin: 50,
+      sliderMax: 30000
     };
     this.handleLend = this.handleLend.bind(this);
     this.handleChangeSlider = this.handleChangeSlider.bind(this);
