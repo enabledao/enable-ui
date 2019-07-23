@@ -25,6 +25,12 @@ class TabHome extends React.Component<{}, TabHomeState> {
     this.renderTabContent = this.renderTabContent.bind(this);
   }
 
+  scrollToElement(scroll: number) {
+    if (scroll > 300) {
+      window.scrollBy(0, scroll);
+    }
+  }
+
   renderTabContent() {
     const { page } = this.state;
     switch (page) {
@@ -53,25 +59,45 @@ class TabHome extends React.Component<{}, TabHomeState> {
           <Container>
             <TabMenu>
               <TabMenuOnlyShowMobile
-                onClick={() => this.setState({ page: 0 })}
+                onClick={e => {
+                  this.scrollToElement(
+                    e.currentTarget.getBoundingClientRect().top
+                  );
+                  this.setState({ page: 0 });
+                }}
                 activePage={page === 0}
               >
                 <span>Simulate Return</span>
               </TabMenuOnlyShowMobile>
               <TabMenuList
-                onClick={() => this.setState({ page: 1 })}
+                onClick={e => {
+                  this.scrollToElement(
+                    e.currentTarget.getBoundingClientRect().top
+                  );
+                  this.setState({ page: 1 });
+                }}
                 activePage={page === 1}
               >
                 <span>Campaign</span>
               </TabMenuList>
               <TabMenuList
-                onClick={() => this.setState({ page: 2 })}
+                onClick={e => {
+                  this.scrollToElement(
+                    e.currentTarget.getBoundingClientRect().top
+                  );
+                  this.setState({ page: 2 });
+                }}
                 activePage={page === 2}
               >
                 <span>FAQ</span>
               </TabMenuList>
               <TabMenuList
-                onClick={() => this.setState({ page: 3 })}
+                onClick={e => {
+                  this.scrollToElement(
+                    e.currentTarget.getBoundingClientRect().top
+                  );
+                  this.setState({ page: 3 });
+                }}
                 activePage={page === 3}
               >
                 <span>What people say</span>
