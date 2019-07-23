@@ -101,7 +101,7 @@ class Profile extends React.Component<{}, {}> {
               <p>
                 I shared my take on professional life after graduation and
                 industrial revolution 4.0 preparation with college graduates. I
-                coach interns to apply for jobs; from resume writing, self
+                coach interns to apply for jobs from resume writing, self
                 branding to interview practice. I also help and mentor young
                 women in casual setting regularly. I am persistent and do not
                 intend to stop doing this, regardless of whether I can afford

@@ -80,15 +80,17 @@ const WhyMe: React.FC = () => (
           </li>
         </WhyMeListWrapper>
       </Col>
-      <Margin top={16}>
-        <p>
-          I am only raising $60,000 out of $128,000 because I will be covering
-          the remainder with my existing savings and partial scholarship. I am
-          also planning to get a part-time job on campus and research
-          assistantships, as well as apply for paid internships during summer
-          and winter breaks.
-        </p>
-      </Margin>
+      <Col lg={12}>
+        <Margin top={16}>
+          <p>
+            I am only raising $60,000 out of $128,000 because I will be covering
+            the remainder with my existing savings and partial scholarship. I am
+            also planning to get a part-time job on campus and research
+            assistantships, as well as apply for paid internships during summer
+            and winter breaks.
+          </p>
+        </Margin>
+      </Col>
     </Row>
     <Row text="center">
       <Col lg={12}>

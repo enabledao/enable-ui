@@ -7,10 +7,10 @@ const TabWrapper = styled.div`
   top: 0;
   overflow: scroll;
   background-color: #fff;
-  z-index: 2;
+  z-index: 10;
 `;
 
-const TabContentWrapper = styled.div`
+const TabContentWrapper = styled.div<{ ref: any }>`
   padding: 60px 0 80px 0;
 `;
 
@@ -50,10 +50,31 @@ const TabMenuOnlyShowMobile = styled.li<{ activePage: boolean }>`
     `}
 `;
 
+const StaticLinkWrapper = styled.div`
+  position: relative;
+  border: 1px solid #e7ebf2;
+  border-radius: 4px;
+  > div {
+    display: inline-block;
+    vertical-align: top;
+    width: calc(100% / 2);
+    padding: 20px;
+    color: #6713c4;
+    cursor: pointer;
+    &:first-child {
+      border-right: 1px solid #e7ebf2;
+    }
+    &:last-child {
+      border-left: 1px solid #e7ebf2;
+    }
+  }
+`;
+
 export {
   TabWrapper,
   TabContentWrapper,
   TabMenu,
   TabMenuList,
-  TabMenuOnlyShowMobile
+  TabMenuOnlyShowMobile,
+  StaticLinkWrapper
 };
