@@ -5,6 +5,9 @@ import AvatarAria from "../../../../../../images/avatar/aria.jpg";
 import AvatarPutri from "../../../../../../images/avatar/putri.jpg";
 import AvatarElvina from "../../../../../../images/avatar/elvina.jpg";
 import AvatarBrahma from "../../../../../../images/avatar/brahma.jpg";
+import AvatarGaurav from "../../../../../../images/avatar/gaurav.jpg";
+import AvatarChristopher from "../../../../../../images/avatar/christopher.jpg";
+import AvatarAndi from "../../../../../../images/avatar/andi.jpg";
 import { TestimonialAvatar, TestimonialContent } from "./styled";
 
 export interface TestimonialLinkedinState {
@@ -47,6 +50,28 @@ const listTestimonial = [
     image: AvatarBrahma,
     desc:
       "Widya has a good attitude, can motivate the team and has lot of creative ideas to make work atmosphere become fun and fresh. She also has excellent knowledge in Labor Laws which I believe can accelerate her career development."
+  },
+  {
+    name: "Gaurav Bhasin",
+    position: "CEO Mudah.my",
+    image: AvatarGaurav,
+    desc:
+      "I have had the pleasure to know Widya since 2014. She worked with me as Human Capital Development Manager at 701Search (Berniaga.com) in Jakarta, Indonesia, where i was Chief Operating Officer in South East Asia region. My first encounter with Widya was when i initially interviewed her for Human Capital Development Manager role. One of the task that was assigned to her was building a company culture. She had a big responsibility and impac to the company. Throughout her time in this position, Widya consistenly showed great performance. I would like to highlight a major event Widya had to handle. During the company's acquisition in 2015, we had to lay off most of the employeee were successdul in the management of their company. She exercised every measure to ensure the employees were successful in the management of their career transition and satiesfied with the result and reward the company gave to staff. She kept two-way communication during the process and listened to what employess got to say about the acquisition. She even ent through the employee database to gain more information about their status, family background and circumstances to mitigate the negative impact of teh acquisition on  their life. She immediately informed the management if incident might come up ot there was a risk arose during the process. She was the bridge between employees and uper management. She took every factor that might affect our personnel into consideration and went extra miles to make sure the whole acquisition process goes smoothly. In my observation as her direct superior, the most engaging character of Widya is her remarkable interpersonal skill. As a Human Capital Development Manager, she was required to communicate and build good relationship with all staff. Widya was the first person who held the role sice the company was established back in 2009. While Widya was relatively a new member of our close, tight-knitted organization, she quickly established herself as a go-to person whenever our staff find any difficulities or issues at work, whether it's with their superior or their personal life and she immediatelly resolved the problem. The combination of her technical skill and interpersonal skill make her a well-rounded HR person. She was always able to create a collaborative work atmosphere where employess were able to achieve high perfermance."
+  },
+  {
+    name: "Christopher Deane",
+    position:
+      "Corporate Director Global Technology at Freudenberg Household Products",
+    image: AvatarChristopher,
+    desc:
+      "I first worked with Widya in 2011, when Freudenberg Household Product (German Privately held 9B USD company) acquired the company (TIA) that Widya was working for. She was head of HR for Indonesia and I worked closely with her in the transition phase of the project where i was the General Manager of Asia, responsible for operations and acquisition proces. Many changes were required for the management team and hourly workforce as they transitioned from a small enterpreneur company to the working culture of a global large company. I found Widya flexible, inquisitive and willing to do what it took to make changes successful. She was such a strong asset that we promoted her to SE Asia Regional HR Manager - giving her direct HR responsibility for the Malaysia operations as well, She is a well aware of cultural differences that can occur between countries and did a ery good job of making senior management aware of differences and coming up with solutions to insure success."
+  },
+  {
+    name: "Andi Taufan Garuda Putra",
+    position: "CEO Amartha",
+    image: AvatarAndi,
+    desc:
+      "i first worked with Widya in 2016 at Amartha Mikro Fintek (a P2P lending pioneer for unbanked society) in Jakarta, Indonesia. She was Head of People Management and one of the founding members. I worked closely with her during transition phase from microlending to P2P lending business model wheere I was the Chief Executive Officer, her immediate supervisor and direct report. As one of the founding members in management team, she lead the HR team to support our business expansion throughout indonesia as well as establish internal system and procedure within the company. She not onlu had to make sure that the HR team were able to catch up with out company's growth but also initiate the organizational structure and culture with very limited resource in her team and minuimum supervision. I was impressed by her ability to manage the whole process from her end. Within the first 3 months into her roles, she was able to grow our team and fulfill the aggresive projected headcount. She immediately revised the salary structure in accordance to labot law, set up HRIS and database, created Standard Operating Procedure and was willing to do everything within her expertise to enable the company to scale up: from an early-staged startup to a well-known fintect company in Indonesia. Her distinctive approacheble personality and appreciable prople skill were such significant quality that make her an outstanding HR. Combined with her strategic planning skill, those were the characteristics that convinced me to hire her away from her previous employer in the first place. She brought to all of her activities energy, enthusiasm and comitment. These qualities are expected in any successful HR leader of an entrepreneurial organization, and in this regard, Widya fits in well. Widya was an indispensable asset to Amartha that it was such big regret when she had to move overseas."
   }
 ];
 

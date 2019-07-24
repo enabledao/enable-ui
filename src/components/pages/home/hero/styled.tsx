@@ -41,7 +41,7 @@ const HeroButtonLendMobile = styled.div`
     border-top: 1px solid #e7ebf2;
     width: 100%;
     left: 0;
-    z-index: 4;
+    z-index: 10;
   `}
 `;
 

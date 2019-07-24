@@ -7,7 +7,7 @@ const TabWrapper = styled.div`
   top: 0;
   overflow: scroll;
   background-color: #fff;
-  z-index: 10;
+  z-index: 4;
 `;
 
 const TabContentWrapper = styled.div<{ ref: any }>`
