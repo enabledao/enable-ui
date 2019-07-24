@@ -1,7 +1,7 @@
 import React from "react";
 import { Margin, Padding } from "../../../../../../styles/utils";
 import { Accordion, Row, Col } from "../../../../../lib";
-import WhyMeIllustration from "../../../../../../images/illustration/why-us.svg";
+import WhyMeIllustration from "../../../../../../images/illustration/why-me.svg";
 import TickPaperIcon from "../../../../../../images/icons/tick-paper.svg";
 import {
   WhyMeListWrapper,
@@ -33,8 +33,8 @@ const dataAccordion = [
 const WhyMe: React.FC = () => (
   <React.Fragment>
     <Row>
-      <Col lg={5} md={4} sm="hidden" text="center">
-        <img src={WhyMeIllustration} alt="HomeHero - Illustraion" width={340} />
+      <Col lg={5} md={4} sm="hidden">
+        <img src={WhyMeIllustration} alt="WhyMe - Illustraion" width={340} />
       </Col>
       <Col lg={7} md={8} sm={12}>
         <img
@@ -79,6 +79,17 @@ const WhyMe: React.FC = () => (
             </p>
           </li>
         </WhyMeListWrapper>
+      </Col>
+      <Col lg={12}>
+        <Margin top={16}>
+          <p>
+            I am only raising $60,000 out of $128,000 because I will be covering
+            the remainder with my existing savings and partial scholarship. I am
+            also planning to get a part-time job on campus and research
+            assistantships, as well as apply for paid internships during summer
+            and winter breaks.
+          </p>
+        </Margin>
       </Col>
     </Row>
     <Row text="center">
