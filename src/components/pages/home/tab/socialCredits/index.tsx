@@ -7,10 +7,7 @@ import TestimonialLinkedin from "./testimonial";
 
 const SocialCredits: React.FC = () => (
   <Row>
-    <Col lg={5} md={4} sm="hidden" text="center">
-      <img src={SocialIllustration} alt="HomeHero - Illustraion" width={340} />
-    </Col>
-    <Col lg={7} md={8} sm={12}>
+    <Col lg={8} md={8} sm={12}>
       <img
         src={CommentIcon}
         alt="Icon - Comment"
@@ -28,6 +25,15 @@ const SocialCredits: React.FC = () => (
       </Padding>
       <Margin vertical={32}>
         <TestimonialLinkedin />
+      </Margin>
+    </Col>
+    <Col lg={4} md={4} sm="hidden" text="center">
+      <Margin top={48}>
+        <img
+          src={SocialIllustration}
+          alt="HomeHero - Illustraion"
+          width={340}
+        />
       </Margin>
     </Col>
   </Row>

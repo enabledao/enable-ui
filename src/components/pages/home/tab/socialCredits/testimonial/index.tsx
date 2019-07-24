@@ -1,11 +1,11 @@
 import React from "react";
-import { TestimonialAvatar } from "./styled";
-import { Margin } from "../../../../../../styles/utils";
+import { Margin, Padding } from "../../../../../../styles/utils";
 import AvatarFadilla from "../../../../../../images/avatar/fadilla.jpg";
 import AvatarAria from "../../../../../../images/avatar/aria.jpg";
 import AvatarPutri from "../../../../../../images/avatar/putri.jpg";
 import AvatarElvina from "../../../../../../images/avatar/elvina.jpg";
 import AvatarBrahma from "../../../../../../images/avatar/brahma.jpg";
+import { TestimonialAvatar, TestimonialContent } from "./styled";
 
 export interface TestimonialLinkedinState {
   expanded: number;
@@ -57,41 +57,29 @@ class TestimonialLinkedin extends React.Component<
   constructor(props: {}) {
     super(props);
     this.state = { expanded: 0 };
-    this.handleExpand = this.handleExpand.bind(this);
-  }
-
-  handleExpand(index: number) {
-    const { expanded } = this.state;
-    const current = expanded === index ? expanded : index;
-    this.setState(() => ({ expanded: current }));
   }
 
   render() {
-    const { expanded } = this.state;
     return (
       <React.Fragment>
         {listTestimonial.map((list, index) => (
-          <TestimonialAvatar
-            key={index}
-            onClick={() => this.handleExpand(index)}
-            activeStyle={expanded === index}
-          >
-            <img src={list.image} alt="Avatar - User" />
-          </TestimonialAvatar>
-        ))}
-        {listTestimonial.map((list, index) => (
           <Margin key={index} top={24}>
-            {expanded === index && (
-              <React.Fragment>
-                <h6>{list.name}</h6>
-                <small>
-                  <i>{list.position}</i>
-                </small>
-                <Margin top={16}>
-                  <p>{list.desc}</p>
-                </Margin>
-              </React.Fragment>
-            )}
+            <React.Fragment>
+              <TestimonialContent>
+                <TestimonialAvatar>
+                  <img src={list.image} alt="Avatar - User" />
+                </TestimonialAvatar>
+                <Padding left={56}>
+                  <h6>{list.name}</h6>
+                  <small>
+                    <i>{list.position}</i>
+                  </small>
+                  <Margin top={16}>
+                    <p>{list.desc}</p>
+                  </Margin>
+                </Padding>
+              </TestimonialContent>
+            </React.Fragment>
           </Margin>
         ))}
       </React.Fragment>

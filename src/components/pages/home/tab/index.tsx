@@ -160,7 +160,7 @@ class TabHome extends React.Component<{}, TabHomeState> {
           <Fragment>
             <SocialCredits />
             <Row>
-              <Col lg={12}>
+              <Col lg={8} sm={12}>
                 <Margin top={24}>
                   <StaticLinkWrapper>
                     <div
