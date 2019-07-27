@@ -13,7 +13,8 @@ import { Row, Col, Progress, Button, Avatar, ShowModal } from "../../../lib";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppPath } from "../../../../constant/appPath";
 import getWeb3, {getGanacheWeb3} from '../../../../utils/getWeb3';
-import TermsContract from '@enabledao/enable-contracts/build/contracts/TermsContractLib.json';
+import TermsContract from '@enabledao/enable-contracts/build/contracts/TermsContract.json';
+import RepaymentManager from '@enabledao/enable-contracts/build/contracts/RepaymentManager.json';
 
 import {
   HeroWrapper,
@@ -32,6 +33,9 @@ export interface HomeHeroState {
   loanPeriod: string;
   interestRate: string;
   loanEndTimestamp: string;
+  totalShares: string;
+  principal: string;
+  payees: string;
 }
 
 export const listContributor = [
@@ -70,7 +74,7 @@ export const listContributor = [
 class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   constructor(props: HomeHeroProps) {
     super(props);
-    this.state = { showModal: false, showModalVideo: false, loanPeriod: null, interestRate: null, loanEndTimestamp: null };
+    this.state = { showModal: false, showModalVideo: false, loanPeriod: null, interestRate: null, loanEndTimestamp: null, totalShares: null, principal: null, payees: null};
     this.handleModal = this.handleModal.bind(this);
     this.handleModalVideo = this.handleModalVideo.bind(this);
     this.handleLend = this.handleLend.bind(this);
@@ -88,15 +92,27 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
 
   async componentDidMount() {
     const web3 = await getWeb3();
-    const termsContractInstance = new web3.eth.Contract(TermsContract.abi, "0xa393c04f47d1c33974d43FbdE3E3202110293BaE");
+    const termsContractInstance = new web3.eth.Contract(TermsContract.abi, "0x7e664541678C4997aD9dBDb9978C6E2B5A9445bE");
+    const repaymentManagerInstance = new web3.eth.Contract(RepaymentManager.abi, "0xC10Bab0f0B1db1f18ddc82a0204F79B7176dD66c");
 
     try {
-      const loanParams  = await termsContractInstance.methods.getLoanParams().call();
-      const loanEndTimestamp = await termsContractInstance.methods.getLoanEndTimestamp().call();
+      const loanParams = await termsContractInstance.methods.getLoanParams().call();
+      const principal = await termsContractInstance.methods.getPrincipal().call();
+      const totaShares = await repaymentManagerInstance.methods.totalShares().call();
+      // const payees = await repaymentManagerInstance.methods._payees();
+
+      let loanEndTimestamp;
+
+      if (loanParams.loanStartTimestamp !== "0") {
+        loanEndTimestamp = await termsContractInstance.methods.getLoanEndTimestamp().call();
+      }
+
       this.setState({
-        loanPeriod: loanParams.loanPeriod,
-        interestRate: loanParams.interestRate,
-        loanEndTimestamp
+        loanPeriod: loanParams.loanPeriod === "0" ? "N/A" : loanParams.loanPeriod,
+        interestRate: loanParams.interestRate === "0" ? "N/A" : loanParams.interestRate,
+        loanEndTimestamp: !loanEndTimestamp ? "N/A" : loanEndTimestamp,
+        totalShares: totaShares === "0" ? "N/A" : totaShares,
+        principal: principal === "0" ? "N/A" : principal
       });
     } catch (err) {
       console.log(err)
@@ -157,9 +173,9 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          2,900 <small>Dai</small>
+                          {this.state.totalShares} <small>Dai</small>
                         </h4>
-                        <small>Raised of 60,000 goal</small>
+                        <small>Raised of {this.state.principal} goal</small>
                       </HeroStats>
                     </Col>
                     <Col lg={3} md={6}>
@@ -191,7 +207,13 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 <Row>
                   <Col lg={10} md={12}>
                     <Margin top={16}>
-                      <Progress current={20} />
+                      {
+                        (this.state.totalShares === "N/A" || this.state.principal === "N/A") ? (
+                          <Progress current={0} />
+                        ) : (
+                          <Progress current={+this.state.principal / +this.state.totalShares} />
+                        )
+                      }
                     </Margin>
                   </Col>
                 </Row>
