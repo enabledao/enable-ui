@@ -12,6 +12,9 @@ import { Margin, MobileTextCenter } from "../../../../styles/utils";
 import { Row, Col, Progress, Button, Avatar, ShowModal } from "../../../lib";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppPath } from "../../../../constant/appPath";
+import getWeb3, {getGanacheWeb3} from '../../../../utils/getWeb3';
+import TermsContract from '@enabledao/enable-contracts/build/contracts/TermsContractLib.json';
+
 import {
   HeroWrapper,
   HeroCell,
@@ -26,6 +29,9 @@ interface HomeHeroProps extends RouteComponentProps<any> {}
 export interface HomeHeroState {
   showModal: boolean;
   showModalVideo: boolean;
+  loanPeriod: string;
+  interestRate: string;
+  loanEndTimestamp: string;
 }
 
 export const listContributor = [
@@ -64,10 +70,37 @@ export const listContributor = [
 class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   constructor(props: HomeHeroProps) {
     super(props);
-    this.state = { showModal: false, showModalVideo: false };
+    this.state = { showModal: false, showModalVideo: false, loanPeriod: null, interestRate: null, loanEndTimestamp: null };
     this.handleModal = this.handleModal.bind(this);
     this.handleModalVideo = this.handleModalVideo.bind(this);
     this.handleLend = this.handleLend.bind(this);
+  }
+
+  // getGanacheAddresses = async () => {
+  //   if (!this.ganacheProvider) {
+  //     this.ganacheProvider = getGanacheWeb3();
+  //   }
+  //   if (this.ganacheProvider) {
+  //     return await this.ganacheProvider.eth.getAccounts();
+  //   }
+  //   return [];
+  // };
+
+  async componentDidMount() {
+    const web3 = await getWeb3();
+    const termsContractInstance = new web3.eth.Contract(TermsContract.abi, "0xa393c04f47d1c33974d43FbdE3E3202110293BaE");
+
+    try {
+      const loanParams  = await termsContractInstance.methods.getLoanParams().call();
+      const loanEndTimestamp = await termsContractInstance.methods.getLoanEndTimestamp().call();
+      this.setState({
+        loanPeriod: loanParams.loanPeriod,
+        interestRate: loanParams.interestRate,
+        loanEndTimestamp
+      });
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   handleModal() {
@@ -132,7 +165,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          29 <small>Days left</small>
+                          {this.state.loanEndTimestamp} <small>Days left</small>
                         </h4>
                         <small>Loan expires</small>
                       </HeroStats>
@@ -140,7 +173,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          6% <small>Interest</small>
+                          {this.state.interestRate}% <small>Interest</small>
                         </h4>
                         <small>Per annum</small>
                       </HeroStats>
@@ -148,7 +181,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          12 <small>Month</small>
+                          {this.state.loanPeriod} <small>Month</small>
                         </h4>
                         <small>Loan period</small>
                       </HeroStats>
