@@ -31,7 +31,7 @@ const ModalVideo: React.FC = () => (
             width: "100%",
             height: "100%"
           }}
-          src={`https://www.youtube.com/embed/_b_YVrex0yI?autoplay=1`}
+          src={`https://www.youtube.com/embed/s7oGAs4AkJg?autoplay=1`}
           frameBorder="0"
         />
       </div>
