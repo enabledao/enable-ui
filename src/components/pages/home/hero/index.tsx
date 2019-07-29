@@ -99,7 +99,8 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       const loanParams = await termsContractInstance.methods.getLoanParams().call();
       const principal = await termsContractInstance.methods.getPrincipal().call();
       const totaShares = await repaymentManagerInstance.methods.totalShares().call();
-      // const payees = await repaymentManagerInstance.methods._payees();
+      // const payees = await repaymentManagerInstance.methods;
+      // console.log(payees);
 
       let loanEndTimestamp;
 
@@ -173,15 +174,15 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          {this.state.totalShares} <small>Dai</small>
+                          {!this.state.totalShares ? "N/A" : this.state.totalShares} <small>Dai</small>
                         </h4>
-                        <small>Raised of {this.state.principal} goal</small>
+                        <small>Raised of {!this.state.principal ? "N/A" : this.state.principal} goal</small>
                       </HeroStats>
                     </Col>
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          {this.state.loanEndTimestamp} <small>Days left</small>
+                          {!this.state.loanEndTimestamp ? "N/A" : this.state.loanEndTimestamp} <small>Days left</small>
                         </h4>
                         <small>Loan expires</small>
                       </HeroStats>
@@ -189,7 +190,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          {this.state.interestRate}% <small>Interest</small>
+                          {!this.state.interestRate ? "N/A" : this.state.interestRate}% <small>Interest</small>
                         </h4>
                         <small>Per annum</small>
                       </HeroStats>
@@ -197,7 +198,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          {this.state.loanPeriod} <small>Month</small>
+                          {!this.state.loanPeriod ? "N/A" : this.state.loanPeriod } <small>Month</small>
                         </h4>
                         <small>Loan period</small>
                       </HeroStats>
