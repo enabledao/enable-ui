@@ -1,4 +1,3 @@
-// Lib button component
 import React from "react";
 import { ButtonWrapper } from "./styled";
 import { ButtonProps } from "./interface";

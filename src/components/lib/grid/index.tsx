@@ -1,4 +1,3 @@
-// Lib grid component
 import React from "react";
 import { RowProps, ColProps } from "./interface";
 import { GridWrapper, ColWrapper } from "./styled";

@@ -1,4 +1,3 @@
-// interface of checkbox lib
 export interface CheckboxProps {
   id?: string;
   name?: string;

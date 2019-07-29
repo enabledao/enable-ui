@@ -1,4 +1,3 @@
-// Style of progress
 import styled from "styled-components";
 
 const ProgressWrapper = styled.div<{ current: number }>`

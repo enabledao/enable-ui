@@ -1,4 +1,3 @@
-// Shared navbar component
 import React from "react";
 import { Container } from "../../../styles/bases";
 import { NavLink } from "react-router-dom";
@@ -7,7 +6,8 @@ import {
   NavbarBox,
   NavbarBrand,
   NavbarMenu,
-  NavbarItems
+  NavbarItems,
+  NavbarBrandSmall
 } from "./styled";
 import { AppPath } from "../../../constant/appPath";
 
@@ -24,6 +24,7 @@ const Navbar: React.FC = () => {
           <NavbarBrand>
             <NavLink exact={true} to={AppPath.home}>
               Inesfund
+              <NavbarBrandSmall>By Enable</NavbarBrandSmall>
             </NavLink>
           </NavbarBrand>
           <NavbarMenu>

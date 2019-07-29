@@ -1,4 +1,3 @@
-// interface of texfield component
 export interface TextFieldProps {
   placeholder?: string;
   type?: string;
@@ -8,4 +7,7 @@ export interface TextFieldProps {
   autoFocus?: boolean;
   error?: string;
   touched?: boolean;
+  value?: string | number;
+  onChange?: any;
+  onChangeCustom?: any;
 }

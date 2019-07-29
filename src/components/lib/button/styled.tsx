@@ -1,4 +1,3 @@
-// Style of button
 import styled, { css } from "styled-components";
 import { ButtonProps } from "./interface";
 

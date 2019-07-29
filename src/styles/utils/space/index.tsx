@@ -1,4 +1,3 @@
-// Margin utils
 import React from "react";
 import { SizeProps } from "./interface";
 import { MarginWrapper, PaddingWrapper } from "./styled";

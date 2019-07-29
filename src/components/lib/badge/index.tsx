@@ -1,4 +1,3 @@
-// Lib badge component
 import React from "react";
 import BadgeWrapper from "./styled";
 

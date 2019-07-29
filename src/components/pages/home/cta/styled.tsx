@@ -9,7 +9,7 @@ const CtaWrapper = styled.div`
 `;
 
 const CtaContent = styled.div`
-  padding: 100px 0;
+  padding: 40px 0;
   border-top: 1px solid #e7ebf2;
   ${MaxWidth.md`
     padding: 80px 0;
