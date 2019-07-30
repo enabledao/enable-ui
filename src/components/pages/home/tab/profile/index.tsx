@@ -14,8 +14,36 @@ import WhyMe from "./whyMe";
 import Repayment from "./repayment";
 import SimuLationReturn from "../../simulation";
 import SocialShare from "../../socialShare";
+import getWeb3, {getGanacheWeb3} from '../../../../../utils/getWeb3';
+import TermsContract from '@enabledao/enable-contracts/build/contracts/TermsContract.json';
 
-class Profile extends React.Component<{}, {}> {
+class Profile extends React.Component<{}> {
+  state = {
+    repayments: []
+  }
+
+  componentDidMount = async () => {
+    const web3 = await getWeb3();
+    const termsContractInstance = new web3.eth.Contract(TermsContract.abi, "0x5CB1848a868b67C6E8D2719647Ffe6c092a64ebd");
+
+    try {
+      const loanParams = await termsContractInstance.methods.getLoanParams().call();
+      const numScheduledPayments = parseInt(loanParams.loanPeriod);
+
+      const repayments = await Promise.all(
+        Array(numScheduledPayments)
+        .fill({})
+        .map(async (element, index) => {
+          const {due, interest, principal, total} = await termsContractInstance.methods.getScheduledPayment(index + 1).call();
+          return {due, interest, principal, total};
+        })
+      );
+    this.setState({repayments});
+    } catch (err) {
+      console.log(err)
+    }
+
+  }
   render() {
     return (
       <React.Fragment>
@@ -150,7 +178,7 @@ class Profile extends React.Component<{}, {}> {
               <WhyMe />
             </Margin>
             <Margin top={60}>
-              <Repayment />
+              <Repayment repayments={this.state.repayments} />
             </Margin>
           </Col>
           <Col lg={4} md="hidden">
