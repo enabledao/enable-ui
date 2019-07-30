@@ -34,7 +34,7 @@ export interface HomeHeroState {
   interestRate: string;
   loanEndTimestamp: string;
   totalShares: string;
-  principal: string;
+  principalRequested: string;
   payees: string;
 }
 
@@ -74,7 +74,7 @@ export const listContributor = [
 class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   constructor(props: HomeHeroProps) {
     super(props);
-    this.state = { showModal: false, showModalVideo: false, loanPeriod: null, interestRate: null, loanEndTimestamp: null, totalShares: null, principal: null, payees: null};
+    this.state = { showModal: false, showModalVideo: false, loanPeriod: null, interestRate: null, loanEndTimestamp: null, totalShares: null, principalRequested: null, payees: null};
     this.handleModal = this.handleModal.bind(this);
     this.handleModalVideo = this.handleModalVideo.bind(this);
     this.handleLend = this.handleLend.bind(this);
@@ -90,17 +90,17 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   //   return [];
   // };
 
-  async componentDidMount() {
+  componentDidMount = async () => {
     const web3 = await getWeb3();
     const termsContractInstance = new web3.eth.Contract(TermsContract.abi, "0x7e664541678C4997aD9dBDb9978C6E2B5A9445bE");
     const repaymentManagerInstance = new web3.eth.Contract(RepaymentManager.abi, "0xC10Bab0f0B1db1f18ddc82a0204F79B7176dD66c");
 
     try {
       const loanParams = await termsContractInstance.methods.getLoanParams().call();
-      const principal = await termsContractInstance.methods.getPrincipal().call();
+      const principalRequested = await termsContractInstance.methods.getPrincipalRequested().call();
       const totaShares = await repaymentManagerInstance.methods.totalShares().call();
-      // const payees = await repaymentManagerInstance.methods;
-      // console.log(payees);
+      // To Do
+      // Get # of payees
 
       let loanEndTimestamp;
 
@@ -113,7 +113,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
         interestRate: loanParams.interestRate === "0" ? "N/A" : loanParams.interestRate,
         loanEndTimestamp: !loanEndTimestamp ? "N/A" : loanEndTimestamp,
         totalShares: totaShares === "0" ? "N/A" : totaShares,
-        principal: principal === "0" ? "N/A" : principal
+        principalRequested: principalRequested === "0" ? "N/A" : principalRequested
       });
     } catch (err) {
       console.log(err)
@@ -176,7 +176,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                         <h4>
                           {!this.state.totalShares ? "N/A" : this.state.totalShares} <small>Dai</small>
                         </h4>
-                        <small>Raised of {!this.state.principal ? "N/A" : this.state.principal} goal</small>
+                        <small>Raised of {!this.state.principalRequested ? "N/A" : this.state.principalRequested} goal</small>
                       </HeroStats>
                     </Col>
                     <Col lg={3} md={6}>
@@ -209,10 +209,10 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                   <Col lg={10} md={12}>
                     <Margin top={16}>
                       {
-                        (this.state.totalShares === "N/A" || this.state.principal === "N/A") ? (
+                        (this.state.totalShares === "N/A" || this.state.principalRequested === "N/A") ? (
                           <Progress current={0} />
                         ) : (
-                          <Progress current={+this.state.principal / +this.state.totalShares} />
+                          <Progress current={+this.state.principalRequested / +this.state.totalShares} />
                         )
                       }
                     </Margin>
