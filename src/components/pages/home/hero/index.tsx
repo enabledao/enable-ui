@@ -128,10 +128,6 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     console.log(termsContractInstance.methods);
     console.log(repaymentManagerInstance.methods);
 
-    const loanParams = await termsContractInstance.methods.borrower().call();
-
-    console.log(loanParams);
-
     try {
       const loanParams = await termsContractInstance.methods
         .getLoanParams()
