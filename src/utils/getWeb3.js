@@ -2,8 +2,11 @@ import Web3 from "web3";
 
 const FALLBACK_WEB3_PROVIDER = 'http://localhost:8545';
 
+let web3;
+
 const getWeb3 = () =>
   new Promise((resolve, reject) => {
+    console.log('getting')
     // Wait for loading completion to avoid race conditions with web3 injection timing.
     window.addEventListener("load", async () => {
       // Modern dapp browsers...
@@ -49,5 +52,11 @@ const getGanacheWeb3 = () => {
   return web3;
 }
 
-export default getWeb3;
+export default async () => {
+  if (!web3) {
+    web3 = await getWeb3();
+  }
+  return web3;
+};
+// export default getWeb3;
 export { getGanacheWeb3 };
