@@ -1,6 +1,6 @@
 import Web3 from "web3";
 
-const FALLBACK_WEB3_PROVIDER = 'http://localhost:8545';
+const FALLBACK_WEB3_PROVIDER = "http://localhost:8545";
 
 const getWeb3 = () =>
   new Promise((resolve, reject) => {
@@ -38,16 +38,14 @@ const getWeb3 = () =>
   });
 
 const getGanacheWeb3 = () => {
-  const isProd = process.env.NODE_ENV === 'production';
+  const isProd = process.env.NODE_ENV === "production";
   if (isProd) {
     return null;
   }
-  const provider = new Web3.providers.HttpProvider(
-    'http://localhost:8545'
-  );
+  const provider = new Web3.providers.HttpProvider("http://localhost:8545");
   const web3 = new Web3(provider);
   return web3;
-}
+};
 
 export default getWeb3;
 export { getGanacheWeb3 };

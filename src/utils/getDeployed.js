@@ -54,18 +54,19 @@ const resolveNetworkFilename = networkId => {
 /*
  *  Get zos config info for specified networkId.
  */
-function getZosNetworkConfig(networkId) {
+function getOZNetworkConfig(networkId) {
   const networkName = resolveNetworkFilename(networkId);
-  const zosNetworkFile = fs.readFileSync(`./node_modules/@enabledao/enable-contracts/zos.${networkName}.json`);
+  const zosNetworkFile = fs.readFileSync(
+    `./node_modules/@enabledao/enable-contracts/.openzeppelin/${networkName}.json`
+  );
 
   if (zosNetworkFile) {
-
   } else {
-      throw new (`No network file found for specified networkId, looking for zos.${networkName}.json at `)
+    throw new `No network file found for specified networkId, looking for ${networkName}.json at `();
   }
 
   return JSON.parse(zosNetworkFile);
 }
 
 export default getDeployed;
-export { getZosNetworkConfig, getContractAt };
+export { getOZNetworkConfig, getContractAt };

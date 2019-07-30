@@ -107,14 +107,12 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     const web3 = await getWeb3();
     const networkId = await web3.eth.net.getId();
 
-    console.log(networkId);
+    console.log("networkId", networkId);
+    console.log("accounts", await web3.eth.getAccounts());
 
-    console.log(TermsContract.abi);
-    console.log(RepaymentManager.abi);
-
-    const termsContractAddress = "0x7e664541678C4997aD9dBDb9978C6E2B5A9445bE";
+    const termsContractAddress = "0x76c113112b34e3d34131c6754e4670805e3b2963";
     const repaymentManagerAddress =
-      "0xC10Bab0f0B1db1f18ddc82a0204F79B7176dD66c";
+      "0xeff9ca7907aaace6c3408208e2ee6f5b07b03b19";
 
     // Get the contract instances for Ines (We'll just bake these in for now).
     const termsContractInstance = await new web3.eth.Contract(
@@ -130,9 +128,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     console.log(termsContractInstance.methods);
     console.log(repaymentManagerInstance.methods);
 
-    const loanParams = await termsContractInstance.methods
-      .getLoanParams()
-      .call();
+    const loanParams = await termsContractInstance.methods.borrower().call();
 
     console.log(loanParams);
 
