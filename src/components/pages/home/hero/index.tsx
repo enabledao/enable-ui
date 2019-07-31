@@ -12,9 +12,8 @@ import { Margin, MobileTextCenter } from "../../../../styles/utils";
 import { Row, Col, Progress, Button, Avatar, ShowModal } from "../../../lib";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppPath } from "../../../../constant/appPath";
-import getWeb3, {getGanacheWeb3} from '../../../../utils/getWeb3';
-import TermsContract from '@enabledao/enable-contracts/build/contracts/TermsContract.json';
-import RepaymentManager from '@enabledao/enable-contracts/build/contracts/RepaymentManager.json';
+// import getWeb3, {getGanacheWeb3} from '../../../../utils/getWeb3';
+import { RepaymentManager, TermsContract, instantiateContract, getCrowdloanFactory } from '../../../../utils/contracts';
 
 import {
   HeroWrapper,
@@ -91,9 +90,13 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   // };
 
   componentDidMount = async () => {
-    const web3 = await getWeb3();
-    const termsContractInstance = new web3.eth.Contract(TermsContract.abi, "0x7e664541678C4997aD9dBDb9978C6E2B5A9445bE");
-    const repaymentManagerInstance = new web3.eth.Contract(RepaymentManager.abi, "0xC10Bab0f0B1db1f18ddc82a0204F79B7176dD66c");
+    console.log('did mount')
+    const termsContractInstance = await instantiateContract(TermsContract.abi, "0x7e664541678C4997aD9dBDb9978C6E2B5A9445bE");
+    const repaymentManagerInstance = await instantiateContract(RepaymentManager.abi, "0xC10Bab0f0B1db1f18ddc82a0204F79B7176dD66c");
+
+    console.log(termsContractInstance, repaymentManagerInstance)
+
+    console.log( await getCrowdloanFactory() )
 
     try {
       const loanParams = await termsContractInstance.methods.getLoanParams().call();

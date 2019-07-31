@@ -58,5 +58,4 @@ export default async () => {
   }
   return web3;
 };
-// export default getWeb3;
 export { getGanacheWeb3 };
