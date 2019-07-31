@@ -110,9 +110,15 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     console.log("networkId", networkId);
     console.log("accounts", await web3.eth.getAccounts());
 
-    const termsContractAddress = "0x76c113112b34e3d34131c6754e4670805e3b2963";
+    //Dev
+    const termsContractAddress = "0x97c849E6B83d6F9A0D4F10E439053C7Ff6302e36";
     const repaymentManagerAddress =
-      "0xeff9ca7907aaace6c3408208e2ee6f5b07b03b19";
+      "0x94b50A95A6Ef3d1fD6dfcA2a0868687f470b22dF";
+
+    //Kovan
+    // const termsContractAddress = "0x76c113112b34e3d34131c6754e4670805e3b2963";
+    // const repaymentManagerAddress =
+    //   "0xeff9ca7907aaace6c3408208e2ee6f5b07b03b19";
 
     // Get the contract instances for Ines (We'll just bake these in for now).
     const termsContractInstance = await new web3.eth.Contract(
@@ -132,12 +138,11 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       const loanParams = await termsContractInstance.methods
         .getLoanParams()
         .call();
-      const principal = await termsContractInstance.methods
-        .getPrincipal()
-        .call();
       const totaShares = await repaymentManagerInstance.methods
         .totalShares()
         .call();
+
+      const principal = loanParams.principalRequested;
       // const payees = await repaymentManagerInstance.methods._payees();
 
       let loanEndTimestamp;
