@@ -1,6 +1,6 @@
 import Web3 from "web3";
 
-const FALLBACK_WEB3_PROVIDER = 'http://localhost:8545';
+const FALLBACK_WEB3_PROVIDER = "http://localhost:8545";
 
 let web3;
 
@@ -41,21 +41,21 @@ const getWeb3 = () =>
   });
 
 const getGanacheWeb3 = () => {
-  const isProd = process.env.NODE_ENV === 'production';
+  const isProd = process.env.NODE_ENV === "production";
   if (isProd) {
     return null;
   }
-  const provider = new Web3.providers.HttpProvider(
-    'http://localhost:8545'
-  );
+  const provider = new Web3.providers.HttpProvider("http://localhost:8545");
   const web3 = new Web3(provider);
   return web3;
-}
+};
 
 export default async () => {
   if (!web3) {
     web3 = await getWeb3();
   }
+  console.log("networkId", networkId);
+  console.log("accounts", await web3.eth.getAccounts());
   return web3;
 };
 export { getGanacheWeb3 };
