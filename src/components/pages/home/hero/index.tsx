@@ -13,9 +13,11 @@ import { Row, Col, Progress, Button, Avatar, ShowModal } from "../../../lib";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppPath } from "../../../../constant/appPath";
 // import getWeb3, {getGanacheWeb3} from '../../../../utils/getWeb3';
-import { ContractNames } from "../../../../utils/contractData";
-import getDeployed, { getContractAt } from "../../../../utils/getDeployed";
-import { RepaymentManager, TermsContract, instantiateContract, getCrowdloanFactory } from '../../../../utils/contracts';
+import { RepaymentManager, TermsContract } from '../../../../utils/contractData';
+import { getContractInstance  } from "../../../../utils/getDeployed";
+import { getNetworkId } from '../../../../utils/web3Utils';
+
+import contractAddresses from '../../../../config/ines.fund';
 
 import {
   HeroWrapper,
@@ -82,7 +84,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       interestRate: null,
       loanEndTimestamp: null,
       totalShares: null,
-      principal: null,
+      principalRequested: null,
       payees: null
     };
     this.handleModal = this.handleModal.bind(this);
@@ -101,31 +103,19 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   // };
 
   componentDidMount = async () => {
-    console.log('did mount')
-    const termsContractInstance = await instantiateContract(TermsContract.abi, "0x7e664541678C4997aD9dBDb9978C6E2B5A9445bE");
-    const repaymentManagerInstance = await instantiateContract(RepaymentManager.abi, "0xC10Bab0f0B1db1f18ddc82a0204F79B7176dD66c");
 
-    console.log(termsContractInstance, repaymentManagerInstance)
+    const networkId = await getNetworkId();
+    const termsContractAddress = contractAddresses[networkId]['TermsContract'];
+    const repaymentManagerAddress = contractAddresses[networkId]['RepaymentManager'];
 
-    console.log( await getCrowdloanFactory() )
-
-    //Dev
-    const termsContractAddress = "0x97c849E6B83d6F9A0D4F10E439053C7Ff6302e36";
-    const repaymentManagerAddress =
-      "0x94b50A95A6Ef3d1fD6dfcA2a0868687f470b22dF";
-
-    //Kovan
-    // const termsContractAddress = "0x76c113112b34e3d34131c6754e4670805e3b2963";
-    // const repaymentManagerAddress =
-    //   "0xeff9ca7907aaace6c3408208e2ee6f5b07b03b19";
 
     // Get the contract instances for Ines (We'll just bake these in for now).
-    const termsContractInstance = await new web3.eth.Contract(
+    const termsContractInstance = await getContractInstance(
       TermsContract.abi,
       termsContractAddress
     );
 
-    const repaymentManagerInstance = new web3.eth.Contract(
+    const repaymentManagerInstance = await getContractInstance(
       RepaymentManager.abi,
       repaymentManagerAddress
     );
@@ -141,7 +131,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
         .totalShares()
         .call();
 
-      const principal = loanParams.principalRequested;
+      const principalRequested = loanParams.principalRequested;
       // const payees = await repaymentManagerInstance.methods._payees();
 
       let loanEndTimestamp;
@@ -255,12 +245,12 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                   <Col lg={10} md={12}>
                     <Margin top={16}>
                       {this.state.totalShares === "N/A" ||
-                      this.state.principal === "N/A" ? (
+                      this.state.principalRequested === "N/A" ? (
                         <Progress current={0} />
                       ) : (
                         <Progress
                           current={
-                            +this.state.principal / +this.state.totalShares
+                            +this.state.principalRequested / +this.state.totalShares
                           }
                         />
                       )}
