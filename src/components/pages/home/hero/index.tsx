@@ -12,10 +12,9 @@ import { Margin, MobileTextCenter } from "../../../../styles/utils";
 import { Row, Col, Progress, Button, Avatar, ShowModal } from "../../../lib";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppPath } from "../../../../constant/appPath";
-// import getWeb3, {getGanacheWeb3} from '../../../../utils/getWeb3';
 import { RepaymentManager, TermsContract } from '../../../../utils/contractData';
 import { getContractInstance  } from "../../../../utils/getDeployed";
-import { getNetworkId } from '../../../../utils/web3Utils';
+import { contractMethodCall, getNetworkId } from '../../../../utils/web3Utils';
 
 import contractAddresses from '../../../../config/ines.fund';
 
@@ -108,7 +107,6 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     const termsContractAddress = contractAddresses[networkId]['TermsContract'];
     const repaymentManagerAddress = contractAddresses[networkId]['RepaymentManager'];
 
-
     // Get the contract instances for Ines (We'll just bake these in for now).
     const termsContractInstance = await getContractInstance(
       TermsContract.abi,
@@ -124,12 +122,9 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     console.log(repaymentManagerInstance.methods);
 
     try {
-      const loanParams = await termsContractInstance.methods
-        .getLoanParams()
-        .call();
-      const totaShares = await repaymentManagerInstance.methods
-        .totalShares()
-        .call();
+      const loanParams = await contractMethodCall(termsContractInstance, 'getLoanParams');
+
+      const totaShares = await contractMethodCall(repaymentManagerInstance, 'totalShares');
 
       const principalRequested = loanParams.principalRequested;
       // const payees = await repaymentManagerInstance.methods._payees();
@@ -137,9 +132,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       let loanEndTimestamp;
 
       if (loanParams.loanStartTimestamp !== "0") {
-        loanEndTimestamp = await termsContractInstance.methods
-          .getLoanEndTimestamp()
-          .call();
+        loanEndTimestamp = await contractMethodCall(termsContractInstance, 'getLoanEndTimestamp');
       }
 
       this.setState({
