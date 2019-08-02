@@ -12,9 +12,11 @@ import { Margin, MobileTextCenter } from "../../../../styles/utils";
 import { Row, Col, Progress, Button, Avatar, ShowModal } from "../../../lib";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppPath } from "../../../../constant/appPath";
-import getWeb3, {getGanacheWeb3} from '../../../../utils/getWeb3';
-import TermsContract from '@enabledao/enable-contracts/build/contracts/TermsContract.json';
-import RepaymentManager from '@enabledao/enable-contracts/build/contracts/RepaymentManager.json';
+import { RepaymentManager, TermsContract } from '../../../../utils/contractData';
+import { getContractInstance } from "../../../../utils/getDeployed";
+import { contractMethodCall, getNetworkId } from '../../../../utils/web3Utils';
+
+import contractAddresses from '../../../../config/ines.fund';
 
 import {
   HeroWrapper,
@@ -74,7 +76,16 @@ export const listContributor = [
 class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   constructor(props: HomeHeroProps) {
     super(props);
-    this.state = { showModal: false, showModalVideo: false, loanPeriod: null, interestRate: null, loanEndTimestamp: null, totalShares: null, principalRequested: null, payees: null};
+    this.state = {
+      showModal: false,
+      showModalVideo: false,
+      loanPeriod: null,
+      interestRate: null,
+      loanEndTimestamp: null,
+      totalShares: null,
+      principalRequested: null,
+      payees: null
+    };
     this.handleModal = this.handleModal.bind(this);
     this.handleModalVideo = this.handleModalVideo.bind(this);
     this.handleLend = this.handleLend.bind(this);
@@ -91,32 +102,50 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   // };
 
   componentDidMount = async () => {
-    const web3 = await getWeb3();
-    const termsContractInstance = new web3.eth.Contract(TermsContract.abi, "0x7e664541678C4997aD9dBDb9978C6E2B5A9445bE");
-    const repaymentManagerInstance = new web3.eth.Contract(RepaymentManager.abi, "0xC10Bab0f0B1db1f18ddc82a0204F79B7176dD66c");
+
+    const networkId = await getNetworkId();
+    const termsContractAddress = contractAddresses[networkId]['TermsContract'];
+    const repaymentManagerAddress = contractAddresses[networkId]['RepaymentManager'];
+
+    // Get the contract instances for Ines (We'll just bake these in for now).
+    const termsContractInstance = await getContractInstance(
+      TermsContract.abi,
+      termsContractAddress
+    );
+
+    const repaymentManagerInstance = await getContractInstance(
+      RepaymentManager.abi,
+      repaymentManagerAddress
+    );
+
+    console.log(termsContractInstance.methods);
+    console.log(repaymentManagerInstance.methods);
 
     try {
-      const loanParams = await termsContractInstance.methods.getLoanParams().call();
-      const principalRequested = await termsContractInstance.methods.getPrincipalRequested().call();
-      const totaShares = await repaymentManagerInstance.methods.totalShares().call();
-      // To Do
-      // Get # of payees
+      const loanParams = await contractMethodCall(termsContractInstance, 'getLoanParams');
+
+      const totaShares = await contractMethodCall(repaymentManagerInstance, 'totalShares');
+
+      const principalRequested = loanParams.principalRequested;
+      // const payees = await repaymentManagerInstance.methods._payees();
 
       let loanEndTimestamp;
 
       if (loanParams.loanStartTimestamp !== "0") {
-        loanEndTimestamp = await termsContractInstance.methods.getLoanEndTimestamp().call();
+        loanEndTimestamp = await contractMethodCall(termsContractInstance, 'getLoanEndTimestamp');
       }
 
       this.setState({
-        loanPeriod: loanParams.loanPeriod === "0" ? "N/A" : loanParams.loanPeriod,
-        interestRate: loanParams.interestRate === "0" ? "N/A" : loanParams.interestRate,
+        loanPeriod:
+          loanParams.loanPeriod === "0" ? "N/A" : loanParams.loanPeriod,
+        interestRate:
+          loanParams.interestRate === "0" ? "N/A" : loanParams.interestRate,
         loanEndTimestamp: !loanEndTimestamp ? "N/A" : loanEndTimestamp,
         totalShares: totaShares === "0" ? "N/A" : totaShares,
         principalRequested: principalRequested === "0" ? "N/A" : principalRequested
       });
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
 
@@ -208,13 +237,16 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 <Row>
                   <Col lg={10} md={12}>
                     <Margin top={16}>
-                      {
-                        (this.state.totalShares === "N/A" || this.state.principalRequested === "N/A") ? (
-                          <Progress current={0} />
-                        ) : (
-                          <Progress current={+this.state.principalRequested / +this.state.totalShares} />
-                        )
-                      }
+                      {this.state.totalShares === "N/A" ||
+                      this.state.principalRequested === "N/A" ? (
+                        <Progress current={0} />
+                      ) : (
+                        <Progress
+                          current={
+                            +this.state.principalRequested / +this.state.totalShares
+                          }
+                        />
+                      )}
                     </Margin>
                   </Col>
                 </Row>

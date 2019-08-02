@@ -14,8 +14,12 @@ import WhyMe from "./whyMe";
 import Repayment from "./repayment";
 import SimuLationReturn from "../../simulation";
 import SocialShare from "../../socialShare";
-import getWeb3, {getGanacheWeb3} from '../../../../../utils/getWeb3';
-import TermsContract from '@enabledao/enable-contracts/build/contracts/TermsContract.json';
+import { contractMethodCall, getNetworkId } from '../../../../../utils/web3Utils';
+import { TermsContract } from '../../../../../utils/contractData';
+import { getContractInstance  } from "../../../../../utils/getDeployed";
+
+import contractAddresses from '../../../../../config/ines.fund';
+
 
 class Profile extends React.Component<{}> {
   state = {
@@ -23,11 +27,14 @@ class Profile extends React.Component<{}> {
   }
 
   componentDidMount = async () => {
-    const web3 = await getWeb3();
-    const termsContractInstance = new web3.eth.Contract(TermsContract.abi, "0x5CB1848a868b67C6E8D2719647Ffe6c092a64ebd");
-
+    const networkId = await getNetworkId();
+    const termsContractAddress = contractAddresses[networkId]['TermsContract'];
+    const termsContractInstance = await getContractInstance(
+      TermsContract.abi,
+      termsContractAddress
+    );
     try {
-      const loanParams = await termsContractInstance.methods.getLoanParams().call();
+      const loanParams = await contractMethodCall(termsContractInstance, 'getLoanParams');
       const numScheduledPayments = parseInt(loanParams.loanPeriod);
 
       const repayments = await Promise.all(
