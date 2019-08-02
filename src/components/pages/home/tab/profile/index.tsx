@@ -14,8 +14,43 @@ import WhyMe from "./whyMe";
 import Repayment from "./repayment";
 import SimuLationReturn from "../../simulation";
 import SocialShare from "../../socialShare";
+import { contractMethodCall, getNetworkId } from '../../../../../utils/web3Utils';
+import { TermsContract } from '../../../../../utils/contractData';
+import { getContractInstance  } from "../../../../../utils/getDeployed";
 
-class Profile extends React.Component<{}, {}> {
+import contractAddresses from '../../../../../config/ines.fund';
+
+
+class Profile extends React.Component<{}> {
+  state = {
+    repayments: []
+  }
+
+  componentDidMount = async () => {
+    const networkId = await getNetworkId();
+    const termsContractAddress = contractAddresses[networkId]['TermsContract'];
+    const termsContractInstance = await getContractInstance(
+      TermsContract.abi,
+      termsContractAddress
+    );
+    try {
+      const loanParams = await contractMethodCall(termsContractInstance, 'getLoanParams');
+      const numScheduledPayments = parseInt(loanParams.loanPeriod);
+
+      const repayments = await Promise.all(
+        Array(numScheduledPayments)
+        .fill({})
+        .map(async (element, index) => {
+          const {due, interest, principal, total} = await termsContractInstance.methods.getScheduledPayment(index + 1).call();
+          return {due, interest, principal, total};
+        })
+      );
+    this.setState({repayments});
+    } catch (err) {
+      console.log(err)
+    }
+
+  }
   render() {
     return (
       <React.Fragment>
@@ -150,7 +185,7 @@ class Profile extends React.Component<{}, {}> {
               <WhyMe />
             </Margin>
             <Margin top={60}>
-              <Repayment />
+              <Repayment repayments={this.state.repayments} />
             </Margin>
           </Col>
           <Col lg={4} md="hidden">
