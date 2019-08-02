@@ -13,7 +13,7 @@ import { Row, Col, Progress, Button, Avatar, ShowModal } from "../../../lib";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppPath } from "../../../../constant/appPath";
 import { RepaymentManager, TermsContract } from '../../../../utils/contractData';
-import { getContractInstance  } from "../../../../utils/getDeployed";
+import { getContractInstance } from "../../../../utils/getDeployed";
 import { contractMethodCall, getNetworkId } from '../../../../utils/web3Utils';
 
 import contractAddresses from '../../../../config/ines.fund';

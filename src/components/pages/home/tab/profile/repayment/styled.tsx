@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { MaxWidth } from "../../../../../../styles/utils";
 
 const RepaymentCard = styled.div`
+  key: ${props => props.key}
   background-color: white;
   border: 1px solid #e7ebf2;
   margin-top: 8px;

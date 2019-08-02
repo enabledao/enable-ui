@@ -67,8 +67,8 @@ const Repayment: any = ({repayments} : RepaymentProps) => (
           </RepaymentTitle>
         </RepaymentTitleWrapper>
       </Margin>
-      {repayments.map(res => (
-        <RepaymentCard key={res.due}>
+      {repayments.map((res, indx) => (
+        <RepaymentCard key={indx}>
           <RepaymentInline>
             <RepaymentTitleMobile>Date</RepaymentTitleMobile>
             <p>{res.due}</p>

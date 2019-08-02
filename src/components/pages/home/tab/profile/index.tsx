@@ -14,8 +14,7 @@ import WhyMe from "./whyMe";
 import Repayment from "./repayment";
 import SimuLationReturn from "../../simulation";
 import SocialShare from "../../socialShare";
-import getWeb3, {getGanacheWeb3} from '../../../../../utils/getWeb3';
-import { getNetworkId } from '../../../../../utils/web3Utils';
+import { contractMethodCall, getNetworkId } from '../../../../../utils/web3Utils';
 import { TermsContract } from '../../../../../utils/contractData';
 import { getContractInstance  } from "../../../../../utils/getDeployed";
 
@@ -35,7 +34,7 @@ class Profile extends React.Component<{}> {
       termsContractAddress
     );
     try {
-      const loanParams = await termsContractInstance.methods.getLoanParams().call();
+      const loanParams = await contractMethodCall(termsContractInstance, 'getLoanParams');
       const numScheduledPayments = parseInt(loanParams.loanPeriod);
 
       const repayments = await Promise.all(
