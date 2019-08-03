@@ -21,11 +21,17 @@ import {
   requiredChecked
 } from "../../../../constant/validation";
 import createDecorator from "final-form-focus";
+import {Crowdloan, TermsContract} from '../../../../utils/contractData';
+import contractAddresses from "../../../../config/ines.fund";
+import { getContractInstance } from '../../../../utils/getDeployed';
+import { contractMethodCall, getNetworkId } from '../../../../utils/web3Utils';
 
 interface LoanAmountProps extends RouteComponentProps<any> {}
 
 interface LoanAmountState {
   loanAmoutnValue: number;
+  crowdLoanInstance: object;
+  termsContractInstance: object;
 }
 
 const focusOnErrors = createDecorator();
@@ -38,15 +44,40 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
   constructor(props: LoanAmountProps) {
     super(props);
     this.state = {
-      loanAmoutnValue: 0
+      loanAmoutnValue: 0,
+      crowdLoanInstance: null,
+      termsContractInstance: null
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
-  onSubmit = (data: any) => {
+  componentDidMount = async () => {
+    const networkId = await getNetworkId();
+    const crowdLoanAddress = contractAddresses[networkId]['Crowdloan'];
+    const termsContractAddress = contractAddresses[networkId]['TermsContract'];
+
+    // Get the contract instances for Ines (We'll just bake these in for now).
+    const crowdLoanInstance = await getContractInstance(
+      Crowdloan.abi,
+      crowdLoanAddress
+    );
+    const termsContractInstance = await getContractInstance(
+      TermsContract.abi,
+      termsContractAddress
+    );
+
+    this.setState({
+      crowdLoanInstance,
+      termsContractInstance
+    });
+  }
+
+  onSubmit = async (data: any) => {
     const { history } = this.props;
     history.push(AppPath.LoanOfferThankYou);
+    // const result = await contractMethodCall(crowdLoanInstance, 'getCrowdfundParams');
+    // const loanStatus = await contractMethodCall(termsContractInstance, 'getLoanStatus');
   };
 
   handleChange(e: { target: { value: any } }) {
