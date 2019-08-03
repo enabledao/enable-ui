@@ -75,9 +75,18 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
 
   onSubmit = async (data: any) => {
     const { history } = this.props;
-    history.push(AppPath.LoanOfferThankYou);
-    // const result = await contractMethodCall(crowdLoanInstance, 'getCrowdfundParams');
-    // const loanStatus = await contractMethodCall(termsContractInstance, 'getLoanStatus');
+    const { termsContractInstance, crowdLoanInstance, loanAmoutnValue } = this.state;
+
+    // Note: Assuming lender can only made a loan when the loan is started
+    const isLoanStarted = (await contractMethodCall(termsContractInstance, 'getLoanStatus')) === '1';
+
+    if (isLoanStarted) {
+      const valueInERC20 = loanAmoutnValue * 1e18;
+      await contractMethodCall(crowdLoanInstance, 'fund', valueInERC20);
+      history.push(AppPath.LoanOfferThankYou);
+      return;
+    }
+    // TO DO (Dennis): Display an error message or redirect to the home page if the loan is not yet started, failed, or completed.
   };
 
   handleChange(e: { target: { value: any } }) {
