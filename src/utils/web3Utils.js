@@ -1,6 +1,11 @@
 import Web3 from 'web3';
 import getWeb3 from './getWeb3';
 
+const getAccounts = async (web3) => {
+    web3 = web3 || await getWeb3();
+    return await web3.eth.getAccounts();
+}
+
 const getNetworkId = async (web3) => {
     web3 = web3 || await getWeb3();
     return await web3.eth.net.getId();
@@ -30,6 +35,7 @@ const prepNumber = (number, decimals, inbound) => {//Allows Decimals
 
 export {
     contractMethodCall,
+    getAccounts,
     getNetworkId,
     prepBigNumber,
     prepNumber

@@ -1,4 +1,4 @@
-import { contractMethodCall, prepNumber } from './web3Utils';
+import { contractMethodCall } from './web3Utils';
 
 const getLoanParams = instance => contractMethodCall(instance, 'getLoanParams');
 const getLoanEndTimestamp = instance =>  contractMethodCall(instance, 'getLoanEndTimestamp');

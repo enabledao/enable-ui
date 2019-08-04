@@ -14,6 +14,7 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppPath } from "../../../../constant/appPath";
 import { getDeployedFromConfig } from "../../../../utils/getDeployed";
 import { prepBigNumber, prepNumber } from '../../../../utils/web3Utils';
+import { getTokenDetailsFromAddress } from '../../../../utils/paymentToken';
 import { getLoanEndTimestamp, getLoanParams } from '../../../../utils/termsContract';
 import { totalShares } from '../../../../utils/repaymentManager';
 
@@ -39,6 +40,7 @@ export interface HomeHeroState {
   totalShares: string;
   principalRequested: string;
   payees: string;
+  paymentToken: any;
 }
 
 export const listContributor = [
@@ -74,8 +76,7 @@ export const listContributor = [
   }
 ];
 
-const DECIMALS = 3;//TEMP paymentToken decimal holder
-const ONETHOUSAND = 1000;//Denominator for interestRate in contracts
+const DECIMALS = 2;//Denominator for interestRate in contracts
 class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   constructor(props: HomeHeroProps) {
     super(props);
@@ -87,7 +88,8 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       loanEndTimestamp: null,
       totalShares: null,
       principalRequested: null,
-      payees: null
+      payees: null,
+      paymentToken: {}
     };
     this.handleModal = this.handleModal.bind(this);
     this.handleModalVideo = this.handleModalVideo.bind(this);
@@ -113,6 +115,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     try {
       const loanParams = await getLoanParams(termsContractInstance);
       const totaShares = await totalShares(repaymentManagerInstance);
+      const paymentToken = await getTokenDetailsFromAddress(loanParams.principalToken);
 
       const principalRequested = loanParams.principalRequested;
       // const payees = await repaymentManagerInstance.methods._payees();
@@ -130,10 +133,11 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
           loanParams.interestRate === "0" ? "N/A" : loanParams.interestRate,
         loanEndTimestamp: !loanEndTimestamp ? "N/A" : loanEndTimestamp,
         totalShares: totaShares === "0" ? "N/A" : totaShares,
-        principalRequested: principalRequested === "0" ? "N/A" : principalRequested
+        principalRequested: principalRequested === "0" ? "N/A" : principalRequested,
+        paymentToken
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -193,7 +197,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                         <h4>
                           {!this.state.totalShares ? "N/A" : this.state.totalShares} <small>Dai</small>
                         </h4>
-                        <small>Raised of {!this.state.principalRequested ? "N/A" : prepBigNumber(this.state.principalRequested, DECIMALS, true)} goal</small>
+                        <small>Raised of {!this.state.principalRequested ? "N/A" : prepBigNumber(this.state.principalRequested, this.state.paymentToken.decimals, true)} goal</small>
                       </HeroStats>
                     </Col>
                     <Col lg={3} md={6}>
@@ -207,7 +211,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          {!this.state.interestRate ? "N/A" : prepNumber(this.state.interestRate, ONETHOUSAND, true)}% <small>Interest</small>
+                          {!this.state.interestRate ? "N/A" : prepNumber(this.state.interestRate, DECIMALS, true)}% <small>Interest</small>
                         </h4>
                         <small>Per annum</small>
                       </HeroStats>
