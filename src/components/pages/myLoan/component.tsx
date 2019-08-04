@@ -10,7 +10,7 @@ import RepaymentStatus from "./repaymentStatus";
 import {RepaymentManager, TermsContract} from "../../../utils/contractData";
 import contractAddresses from "../../../config/ines.fund.js";
 import {getContractInstance} from "../../../utils/getDeployed";
-import {contractMethodCall, getNetworkId} from "../../../utils/web3Utils";
+import {contractMethodCall, getInjectedAccountAddress, getNetworkId} from "../../../utils/web3Utils";
 import getWeb3 from "../../../utils/getWeb3";
 
 interface MyLoanState {
@@ -27,35 +27,48 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     };
 
     componentDidMount = async () => {
-      const networkId = await getNetworkId();
-      const repaymentManagerAddress = contractAddresses[networkId]['RepaymentManager'];
-      const termsContractAddress = contractAddresses[networkId]['TermsContract'];
+      try {
+        const networkId = await getNetworkId();
+        const repaymentManagerAddress = contractAddresses[networkId]['RepaymentManager'];
+        const termsContractAddress = contractAddresses[networkId]['TermsContract'];
 
-      const repaymentManagerInstance = await getContractInstance(
-        RepaymentManager.abi,
-        repaymentManagerAddress
-      );
+        const repaymentManagerInstance = await getContractInstance(
+          RepaymentManager.abi,
+          repaymentManagerAddress
+        );
 
-      const termsContractInstance = await getContractInstance(
-        TermsContract.abi,
-        termsContractAddress
-      );
+        const termsContractInstance = await getContractInstance(
+          TermsContract.abi,
+          termsContractAddress
+        );
 
-      // Note: principal disbursed and total paid will return zero when the loan is not started
-      const principalDisbursed = await contractMethodCall(termsContractInstance, 'getPrincipalDisbursed');
-      const totalPaid = await contractMethodCall(repaymentManagerInstance, 'totalPaid');
+        // Note: principal disbursed and total paid will return zero when the loan is not started
+        const principalDisbursed = await contractMethodCall(termsContractInstance, 'getPrincipalDisbursed');
+        const totalPaid = await contractMethodCall(repaymentManagerInstance, 'totalPaid');
 
-      // const releaseAllowance = await contractMethodCall(repaymentManagerInstance, 'releaseAllowance');
+        const injectedAccountAddress = await getInjectedAccountAddress();
+        const injectedAccountShares = await contractMethodCall(repaymentManagerInstance, 'shares', injectedAccountAddress);
+        const injectedAccountReleased = await contractMethodCall(repaymentManagerInstance, 'released', injectedAccountAddress);
 
-      this.setState({
-        principalDisbursed,
-        totalPaid,
-        // releaseAllowance
-      });
+        let releaseAllowance;
+        if (+injectedAccountShares > 0 && +injectedAccountReleased > 0) {
+          releaseAllowance = await contractMethodCall(repaymentManagerInstance, 'releaseAllowance', injectedAccountAddress);
+        } else {
+          releaseAllowance = "0";
+        }
+
+        this.setState({
+          principalDisbursed,
+          totalPaid,
+          releaseAllowance
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
 
     render() {
-      const {principalDisbursed, totalPaid } = this.state;
+      const {principalDisbursed, totalPaid, releaseAllowance} = this.state;
         return (
             <React.Fragment>
                 <MyLoanWrapper>
@@ -83,7 +96,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                             <p>Repaid</p>
                                         </Col>
                                         <Col lg={4} md={4} sm={4} xs={4}>
-                                            <h4>0 Dai</h4>
+                                            <h4>{releaseAllowance} Dai</h4>
                                             <p>Account Balance</p>
                                         </Col>
                                     </Row>
