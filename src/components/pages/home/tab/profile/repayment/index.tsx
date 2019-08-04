@@ -32,6 +32,7 @@ const listRepayment = [
 interface Repayment {
   due: string;
   interest: string;
+  payment: string;
   principal: string;
   total: string;
 }
@@ -65,6 +66,9 @@ const Repayment: any = ({repayments} : RepaymentProps) => (
           <RepaymentTitle>
             <p>Interest</p>
           </RepaymentTitle>
+          <RepaymentTitle>
+            <p>Cumulative Payment</p>
+          </RepaymentTitle>
         </RepaymentTitleWrapper>
       </Margin>
       {repayments.map((res, indx) => (
@@ -84,6 +88,10 @@ const Repayment: any = ({repayments} : RepaymentProps) => (
           <RepaymentInline>
             <RepaymentTitleMobile>Interest</RepaymentTitleMobile>
             <p>{res.interest} Dai</p>
+          </RepaymentInline>
+          <RepaymentInline>
+            <RepaymentTitleMobile>Cumulative Payment</RepaymentTitleMobile>
+            <p>{res.payment} Dai</p>
           </RepaymentInline>
         </RepaymentCard>
       ))}

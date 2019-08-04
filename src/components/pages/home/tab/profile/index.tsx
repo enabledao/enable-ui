@@ -22,6 +22,14 @@ import contractAddresses from '../../../../../config/ines.fund';
 
 const ONETHOUSAND = 1000;
 
+const calcCummulativePayments = (repayment) => {
+  return repayment.map( (payment, index) =>
+    Object.assign({}, payment, {
+      payment: repayment.slice(0, index+1).reduce((a,b) => a+Number(b.total), 0) 
+    })
+  )
+}
+
 class Profile extends React.Component<{}> {
   state = {
     repayments: []
@@ -55,6 +63,8 @@ class Profile extends React.Component<{}> {
           };
         })
       );
+      repayments = calcCummulativePayments(repayments);
+
     this.setState({repayments});
     } catch (err) {
       console.log(err)
