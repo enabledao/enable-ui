@@ -11,12 +11,51 @@ import {RepaymentManager, TermsContract} from "../../../utils/contractData";
 import contractAddresses from "../../../config/ines.fund.js";
 import {getContractInstance} from "../../../utils/getDeployed";
 import {contractMethodCall, getNetworkId} from "../../../utils/web3Utils";
+import getWeb3 from "../../../utils/getWeb3";
 
-interface MyLoanState {}
+interface MyLoanState {
+  principalDisbursed: string;
+  totalPaid: string;
+  releaseAllowance: string;
+}
 interface MyLoanProps extends RouteComponentProps<any> {}
 class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
-    state = {};
+    state = {
+      principalDisbursed: '',
+      totalPaid: '',
+      releaseAllowance: ''
+    };
+
+    componentDidMount = async () => {
+      const networkId = await getNetworkId();
+      const repaymentManagerAddress = contractAddresses[networkId]['RepaymentManager'];
+      const termsContractAddress = contractAddresses[networkId]['TermsContract'];
+
+      const repaymentManagerInstance = await getContractInstance(
+        RepaymentManager.abi,
+        repaymentManagerAddress
+      );
+
+      const termsContractInstance = await getContractInstance(
+        TermsContract.abi,
+        termsContractAddress
+      );
+
+      // Note: principal disbursed and total paid will return zero when the loan is not started
+      const principalDisbursed = await contractMethodCall(termsContractInstance, 'getPrincipalDisbursed');
+      const totalPaid = await contractMethodCall(repaymentManagerInstance, 'totalPaid');
+
+      // const releaseAllowance = await contractMethodCall(repaymentManagerInstance, 'releaseAllowance');
+
+      this.setState({
+        principalDisbursed,
+        totalPaid,
+        // releaseAllowance
+      });
+    }
+
     render() {
+      const {principalDisbursed, totalPaid } = this.state;
         return (
             <React.Fragment>
                 <MyLoanWrapper>
@@ -36,11 +75,11 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                 <Margin vertical={48}>
                                     <Row text='center'>
                                         <Col lg={4} md={4} sm={4} xs={4}>
-                                            <h4>7 Dai</h4>
+                                            <h4>{principalDisbursed} Dai</h4>
                                             <p>Loaned Amount</p>
                                         </Col>
                                         <Col lg={4} md={4} sm={4} xs={4}>
-                                            <h4>0 Dai</h4>
+                                            <h4>{totalPaid} Dai</h4>
                                             <p>Repaid</p>
                                         </Col>
                                         <Col lg={4} md={4} sm={4} xs={4}>
