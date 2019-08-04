@@ -17,14 +17,20 @@ const contractMethodCall = async (contract, method, ...args) => {
     }
 }
 
-const prepNumber = (number, decimals, inbound) => {
+const prepBigNumber = (number, decimals, inbound) => {//No Decimals in BigNumbers
     const bnNumber = Web3.utils.toBN(number);
     const bnDecimals = Web3.utils.toBN(10).pow(Web3.utils.toBN(decimals || 0));
     return (inbound ? bnNumber.div(bnDecimals) : bnNumber.mul(bnDecimals)).toString();
 }
 
+const prepNumber = (number, decimals, inbound) => {//Allows Decimals
+    decimals = Math.pow(10, Number(decimals || 0));
+    return (inbound ? Number(number)/ (decimals) : number * decimals).toString();
+}
+
 export {
     contractMethodCall,
     getNetworkId,
+    prepBigNumber,
     prepNumber
 }

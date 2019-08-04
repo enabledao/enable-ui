@@ -14,9 +14,9 @@ import WhyMe from "./whyMe";
 import Repayment from "./repayment";
 import SimuLationReturn from "../../simulation";
 import SocialShare from "../../socialShare";
-import { contractMethodCall, getNetworkId, prepNumber } from '../../../../../utils/web3Utils';
-import { TermsContract } from '../../../../../utils/contractData';
-import { getContractInstance  } from "../../../../../utils/getDeployed";
+import { getDeployedFromConfig  } from "../../../../../utils/getDeployed";
+import { prepBigNumber } from '../../../../../utils/web3Utils';
+import { getLoanParams, getRequestedScheduledPayment, getScheduledPayment } from '../../../../../utils/termsContract';
 
 import contractAddresses from '../../../../../config/ines.fund';
 
@@ -37,14 +37,11 @@ class Profile extends React.Component<{}> {
 
   componentDidMount = async () => {
     const DECIMALS = 3;//should be updated on new contract
-    const networkId = await getNetworkId();
-    const termsContractAddress = contractAddresses[networkId]['TermsContract'];
-    const termsContractInstance = await getContractInstance(
-      TermsContract.abi,
-      termsContractAddress
-    );
+
+    const termsContractInstance = await getDeployedFromConfig('TermsContract', contractAddresses);
+
     try {
-      const loanParams = await contractMethodCall(termsContractInstance, 'getLoanParams');
+      const loanParams = await getLoanParams(termsContractInstance);
       const numScheduledPayments = parseInt(loanParams.loanPeriod);
       const prepDueTimestamp = (dueTimestamp, startTimestamp) => (dueTimestamp * ONETHOUSAND) + (startTimestamp == 0 ? new Date().getTime() : 0);
 
@@ -52,14 +49,14 @@ class Profile extends React.Component<{}> {
         Array(numScheduledPayments)
         .fill({})
         .map(async (element, index) => {
-          const requestedScheduledPayment = await contractMethodCall(termsContractInstance, 'getRequestedScheduledPayment',index + 1);
-          const scheduledPayment = await contractMethodCall(termsContractInstance, 'getScheduledPayment',index + 1);
+          const requestedScheduledPayment = await getRequestedScheduledPayment(termsContractInstance, index + 1);
+          const scheduledPayment = await getScheduledPayment(termsContractInstance, index + 1);
           const combined = Object.assign({}, scheduledPayment, requestedScheduledPayment );
           return {
             due: prepDueTimestamp(combined.dueTimestamp, loanParams.loanStartTimestamp),
-            interest: prepNumber(combined.interestPayment,DECIMALS,true),
-            principal: prepNumber(combined.principalPayment,DECIMALS,true),
-            total: prepNumber(combined.totalPayment,DECIMALS,true)
+            interest: prepBigNumber(combined.interestPayment,DECIMALS,true),
+            principal: prepBigNumber(combined.principalPayment,DECIMALS,true),
+            total: prepBigNumber(combined.totalPayment,DECIMALS,true)
           };
         })
       );

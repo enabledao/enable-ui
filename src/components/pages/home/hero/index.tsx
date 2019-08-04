@@ -12,9 +12,10 @@ import { Margin, MobileTextCenter } from "../../../../styles/utils";
 import { Row, Col, Progress, Button, Avatar, ShowModal } from "../../../lib";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppPath } from "../../../../constant/appPath";
-import { RepaymentManager, TermsContract } from '../../../../utils/contractData';
-import { getContractInstance } from "../../../../utils/getDeployed";
-import { contractMethodCall, getNetworkId } from '../../../../utils/web3Utils';
+import { getDeployedFromConfig } from "../../../../utils/getDeployed";
+import { prepBigNumber, prepNumber } from '../../../../utils/web3Utils';
+import { getLoanEndTimestamp, getLoanParams } from '../../../../utils/termsContract';
+import { totalShares } from '../../../../utils/repaymentManager';
 
 import contractAddresses from '../../../../config/ines.fund';
 
@@ -73,6 +74,8 @@ export const listContributor = [
   }
 ];
 
+const DECIMALS = 3;//TEMP paymentToken decimal holder
+const ONETHOUSAND = 1000;//Denominator for interestRate in contracts
 class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   constructor(props: HomeHeroProps) {
     super(props);
@@ -103,28 +106,13 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
 
   componentDidMount = async () => {
 
-    const networkId = await getNetworkId();
-    const termsContractAddress = contractAddresses[networkId]['TermsContract'];
-    const repaymentManagerAddress = contractAddresses[networkId]['RepaymentManager'];
-
     // Get the contract instances for Ines (We'll just bake these in for now).
-    const termsContractInstance = await getContractInstance(
-      TermsContract.abi,
-      termsContractAddress
-    );
-
-    const repaymentManagerInstance = await getContractInstance(
-      RepaymentManager.abi,
-      repaymentManagerAddress
-    );
-
-    console.log(termsContractInstance.methods);
-    console.log(repaymentManagerInstance.methods);
+    const termsContractInstance = await getDeployedFromConfig('TermsContract', contractAddresses);
+    const repaymentManagerInstance = await getDeployedFromConfig('RepaymentManager', contractAddresses);
 
     try {
-      const loanParams = await contractMethodCall(termsContractInstance, 'getLoanParams');
-
-      const totaShares = await contractMethodCall(repaymentManagerInstance, 'totalShares');
+      const loanParams = await getLoanParams(termsContractInstance);
+      const totaShares = await totalShares(repaymentManagerInstance);
 
       const principalRequested = loanParams.principalRequested;
       // const payees = await repaymentManagerInstance.methods._payees();
@@ -132,7 +120,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       let loanEndTimestamp;
 
       if (loanParams.loanStartTimestamp !== "0") {
-        loanEndTimestamp = await contractMethodCall(termsContractInstance, 'getLoanEndTimestamp');
+        loanEndTimestamp = await getLoanEndTimestamp(termsContractInstance);
       }
 
       this.setState({
@@ -205,7 +193,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                         <h4>
                           {!this.state.totalShares ? "N/A" : this.state.totalShares} <small>Dai</small>
                         </h4>
-                        <small>Raised of {!this.state.principalRequested ? "N/A" : this.state.principalRequested} goal</small>
+                        <small>Raised of {!this.state.principalRequested ? "N/A" : prepBigNumber(this.state.principalRequested, DECIMALS, true)} goal</small>
                       </HeroStats>
                     </Col>
                     <Col lg={3} md={6}>
@@ -219,7 +207,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          {!this.state.interestRate ? "N/A" : this.state.interestRate}% <small>Interest</small>
+                          {!this.state.interestRate ? "N/A" : prepNumber(this.state.interestRate, ONETHOUSAND, true)}% <small>Interest</small>
                         </h4>
                         <small>Per annum</small>
                       </HeroStats>
