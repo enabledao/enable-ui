@@ -77,7 +77,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
     const { history } = this.props;
     const { termsContractInstance, crowdLoanInstance, loanAmoutnValue } = this.state;
 
-    // Note: Assuming lender can only made a loan when the loan is started
+    // Note: Assuming lender can only fund a loan when the loan is started
     const isLoanStarted = (await contractMethodCall(termsContractInstance, 'getLoanStatus')) === '1';
 
     if (isLoanStarted) {
