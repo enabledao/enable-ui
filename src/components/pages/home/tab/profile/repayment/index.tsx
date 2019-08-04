@@ -71,7 +71,7 @@ const Repayment: any = ({repayments} : RepaymentProps) => (
         <RepaymentCard key={indx}>
           <RepaymentInline>
             <RepaymentTitleMobile>Date</RepaymentTitleMobile>
-            <p>{res.due}</p>
+            <p>{new Date(res.due).toLocaleDateString()}</p>
           </RepaymentInline>
           <RepaymentInline>
             <RepaymentTitleMobile>Repayment Due</RepaymentTitleMobile>

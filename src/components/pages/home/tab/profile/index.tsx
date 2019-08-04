@@ -14,12 +14,13 @@ import WhyMe from "./whyMe";
 import Repayment from "./repayment";
 import SimuLationReturn from "../../simulation";
 import SocialShare from "../../socialShare";
-import { contractMethodCall, getNetworkId } from '../../../../../utils/web3Utils';
+import { contractMethodCall, getNetworkId, prepNumber } from '../../../../../utils/web3Utils';
 import { TermsContract } from '../../../../../utils/contractData';
 import { getContractInstance  } from "../../../../../utils/getDeployed";
 
 import contractAddresses from '../../../../../config/ines.fund';
 
+const ONETHOUSAND = 1000;
 
 class Profile extends React.Component<{}> {
   state = {
@@ -27,6 +28,7 @@ class Profile extends React.Component<{}> {
   }
 
   componentDidMount = async () => {
+    const DECIMALS = 3;//should be updated on new contract
     const networkId = await getNetworkId();
     const termsContractAddress = contractAddresses[networkId]['TermsContract'];
     const termsContractInstance = await getContractInstance(
@@ -36,13 +38,21 @@ class Profile extends React.Component<{}> {
     try {
       const loanParams = await contractMethodCall(termsContractInstance, 'getLoanParams');
       const numScheduledPayments = parseInt(loanParams.loanPeriod);
+      const prepDueTimestamp = (dueTimestamp, startTimestamp) => (dueTimestamp * ONETHOUSAND) + (startTimestamp == 0 ? new Date().getTime() : 0);
 
-      const repayments = await Promise.all(
+      let repayments = await Promise.all(
         Array(numScheduledPayments)
         .fill({})
         .map(async (element, index) => {
-          const {due, interest, principal, total} = await termsContractInstance.methods.getScheduledPayment(index + 1).call();
-          return {due, interest, principal, total};
+          const requestedScheduledPayment = await contractMethodCall(termsContractInstance, 'getRequestedScheduledPayment',index + 1);
+          const scheduledPayment = await contractMethodCall(termsContractInstance, 'getScheduledPayment',index + 1);
+          const combined = Object.assign({}, scheduledPayment, requestedScheduledPayment );
+          return {
+            due: prepDueTimestamp(combined.dueTimestamp, loanParams.loanStartTimestamp),
+            interest: prepNumber(combined.interestPayment,DECIMALS,true),
+            principal: prepNumber(combined.principalPayment,DECIMALS,true),
+            total: prepNumber(combined.totalPayment,DECIMALS,true)
+          };
         })
       );
     this.setState({repayments});

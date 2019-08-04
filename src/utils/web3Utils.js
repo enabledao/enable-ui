@@ -1,3 +1,4 @@
+import Web3 from 'web3';
 import getWeb3 from './getWeb3';
 
 const getNetworkId = async (web3) => {
@@ -16,7 +17,14 @@ const contractMethodCall = async (contract, method, ...args) => {
     }
 }
 
+const prepNumber = (number, decimals, inbound) => {
+    const bnNumber = Web3.utils.toBN(number);
+    const bnDecimals = Web3.utils.toBN(10).pow(Web3.utils.toBN(decimals || 0));
+    return (inbound ? bnNumber.div(bnDecimals) : bnNumber.mul(bnDecimals)).toString();
+}
+
 export {
     contractMethodCall,
-    getNetworkId
+    getNetworkId,
+    prepNumber
 }
