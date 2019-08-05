@@ -10,20 +10,27 @@ import RepaymentStatus from "./repaymentStatus";
 import {RepaymentManager, TermsContract} from "../../../utils/contractData";
 import contractAddresses from "../../../config/ines.fund.js";
 import {getContractInstance} from "../../../utils/getDeployed";
-import {contractMethodCall, getInjectedAccountAddress, getNetworkId} from "../../../utils/web3Utils";
+import {
+    contractGetPastEvents,
+    contractMethodCall,
+    getInjectedAccountAddress,
+    getNetworkId
+} from "../../../utils/web3Utils";
 import getWeb3 from "../../../utils/getWeb3";
 
 interface MyLoanState {
     principalDisbursed: string;
     totalPaid: string;
     releaseAllowance: string;
+    withdrawals: object;
 }
 interface MyLoanProps extends RouteComponentProps<any> {}
 class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     state = {
         principalDisbursed: "",
         totalPaid: "",
-        releaseAllowance: ""
+        releaseAllowance: "",
+        withdrawals: null
     };
 
     componentDidMount = async () => {
@@ -72,10 +79,23 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 releaseAllowance = "0";
             }
 
+            // To do (Dennis): Filter by the injected account directly from this method
+            const paymentReleasedEvents = await contractGetPastEvents(
+                repaymentManagerInstance,
+                "PaymentReleased",
+                {fromBlock: 0, toBlock: "latest"}
+            );
+
+            // To do (Dennis): Need to investigate the return value
+            const withdrawals = paymentReleasedEvents
+                .map(event => event.returnValue)
+                .filter(event => event.to === injectedAccountAddress);
+
             this.setState({
                 principalDisbursed,
                 totalPaid,
-                releaseAllowance
+                releaseAllowance,
+                withdrawals
             });
         } catch (err) {
             console.log(err);
@@ -83,7 +103,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     };
 
     render() {
-        const {principalDisbursed, totalPaid, releaseAllowance} = this.state;
+        const {principalDisbursed, totalPaid, releaseAllowance, withdrawals} = this.state;
         return (
             <React.Fragment>
                 <MyLoanWrapper>
@@ -120,7 +140,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         </Row>
                     </Container>
                     <Margin bottom={48}>
-                        <Withdrawal />
+                        <Withdrawal withdrawals={withdrawals} />
                     </Margin>
                     <RepaymentStatus />
                 </MyLoanWrapper>
