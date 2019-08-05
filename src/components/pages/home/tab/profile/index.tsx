@@ -36,7 +36,8 @@ class Profile extends React.Component<{}> {
     repayments: []
   }
 
-  componentDidMount =  async() => {
+  componentDidMount =  () => {
+    setTimeout( async() => {
       const termsContractInstance = await getDeployedFromConfig('TermsContract', contractAddresses);
 
       try {
@@ -62,10 +63,11 @@ class Profile extends React.Component<{}> {
         );
         repayments = calcCummulativePayments(repayments);
 
-    this.setState({repayments});
-    } catch (err) {
-      console.log(err)
-    }
+      this.setState({repayments});
+      } catch (err) {
+        console.log(err)
+      }
+    }, 3000);
 
   }
   render() {
