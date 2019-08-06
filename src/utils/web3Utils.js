@@ -16,7 +16,18 @@ const contractMethodCall = async (contract, method, ...args) => {
     }
 }
 
+const contractGetPastEvents = async (contract, eventString, eventOptions) => {
+    return contract.getPastEvents(eventString, eventOptions, function(error, events){ console.log(events);});
+}
+
+const getInjectedAccountAddress = async (web3, accountNumber) => {
+    web3 = web3 || await getWeb3();
+    return  accountNumber ? ((await web3.eth.getAccounts())[accountNumber]) : ((await web3.eth.getAccounts())[0]);
+}
+
 export {
+    contractGetPastEvents,
     contractMethodCall,
+    getInjectedAccountAddress,
     getNetworkId
 }
