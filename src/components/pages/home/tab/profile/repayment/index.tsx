@@ -32,6 +32,7 @@ const listRepayment = [
 interface Repayment {
   due: string;
   interest: string;
+  payment: string;
   principal: string;
   total: string;
 }
@@ -65,13 +66,16 @@ const Repayment: any = ({repayments} : RepaymentProps) => (
           <RepaymentTitle>
             <p>Interest</p>
           </RepaymentTitle>
+          <RepaymentTitle>
+            <p>Cumulative Payment</p>
+          </RepaymentTitle>
         </RepaymentTitleWrapper>
       </Margin>
       {repayments.map((res, indx) => (
         <RepaymentCard key={indx}>
           <RepaymentInline>
             <RepaymentTitleMobile>Date</RepaymentTitleMobile>
-            <p>{res.due}</p>
+            <p>{new Date(res.due).toLocaleDateString()}</p>
           </RepaymentInline>
           <RepaymentInline>
             <RepaymentTitleMobile>Repayment Due</RepaymentTitleMobile>
@@ -84,6 +88,10 @@ const Repayment: any = ({repayments} : RepaymentProps) => (
           <RepaymentInline>
             <RepaymentTitleMobile>Interest</RepaymentTitleMobile>
             <p>{res.interest} Dai</p>
+          </RepaymentInline>
+          <RepaymentInline>
+            <RepaymentTitleMobile>Cumulative Payment</RepaymentTitleMobile>
+            <p>{res.payment} Dai</p>
           </RepaymentInline>
         </RepaymentCard>
       ))}

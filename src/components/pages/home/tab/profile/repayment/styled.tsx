@@ -25,7 +25,7 @@ const RepaymentCard = styled.div`
 `;
 
 const RepaymentInline = styled.div`
-  width: calc(100% / 4);
+  width: calc(100% / 5);
   display: inline-block;
   p {
     margin-bottom: 0;
@@ -41,7 +41,7 @@ const RepaymentTitleWrapper = styled.div`
 `;
 
 const RepaymentTitle = styled.div`
-  width: calc(100% / 4);
+  width: calc(100% / 5);
   display: inline-block;
   ${MaxWidth.sm`
     display: none;

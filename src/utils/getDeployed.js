@@ -1,4 +1,5 @@
 import getWeb3 from './getWeb3';
+import { getNetworkId } from './web3Utils';
 import * as Contracts from "./contractData";
 import { ContractNames, ContractAbis } from "./contractData";
 
@@ -46,6 +47,12 @@ const getDeployed = async (web3, contractName) => {
   return getContractTypeAt(contractName, address, web3);
 };
 
+const getDeployedFromConfig = async (contractType, config) => {
+  const networkId = await getNetworkId();
+  const contractAddress = config[networkId][contractType];
+  return getContractInstance(ContractAbis[contractType], contractAddress);
+}
+
 async function getCrowdloanFactory (address, web3) {
   const name = 'CrowdloanFactory';
   try {
@@ -90,4 +97,4 @@ function getOZNetworkConfig(networkId) {
 }
 
 export default getDeployed;
-export { getOZNetworkConfig, getContractInstance, getContractTypeAt, getCrowdloanFactory };
+export { getOZNetworkConfig, getContractInstance, getContractTypeAt, getDeployedFromConfig, getCrowdloanFactory };
