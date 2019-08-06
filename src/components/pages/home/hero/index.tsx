@@ -128,13 +128,12 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
 
       this.setState({
         loanPeriod:
-          loanParams.loanPeriod === "0" ? "N/A" : loanParams.loanPeriod,
+          loanParams.loanPeriod === "0" ? "0" : loanParams.loanPeriod,
         interestRate:
-          loanParams.interestRate === "0" ? "N/A" : loanParams.interestRate,
-        loanEndTimestamp: !loanEndTimestamp ? "N/A" : loanEndTimestamp,
-        totalShares: totaShares === "0" ? "N/A" : totaShares,
-        principalRequested: principalRequested === "0" ? "N/A" : principalRequested,
-        paymentToken
+          loanParams.interestRate === "0" ? "0" : loanParams.interestRate,
+        loanEndTimestamp: !loanEndTimestamp ? "0" : loanEndTimestamp,
+        totalShares: totaShares === "0" ? "0" : totaShares,
+        principalRequested: principalRequested === "0" ? "0" : principalRequested
       });
     } catch (err) {
       console.error(err);
@@ -195,15 +194,15 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          {!this.state.totalShares ? "N/A" : this.state.totalShares} <small>Dai</small>
+                          {!this.state.totalShares ? "0" : this.state.totalShares} <small>Dai</small>
                         </h4>
-                        <small>Raised of {!this.state.principalRequested ? "N/A" : prepBigNumber(this.state.principalRequested, this.state.paymentToken.decimals, true)} goal</small>
+                        <small>Raised of {!this.state.principalRequested ? "0" : prepBigNumber(this.state.principalRequested, this.state.paymentToken.decimals, true)} goal</small>
                       </HeroStats>
                     </Col>
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          {!this.state.loanEndTimestamp ? "N/A" : this.state.loanEndTimestamp} <small>Days left</small>
+                          {!this.state.loanEndTimestamp ? "0" : this.state.loanEndTimestamp} <small>Days left</small>
                         </h4>
                         <small>Loan expires</small>
                       </HeroStats>
@@ -211,7 +210,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          {!this.state.interestRate ? "N/A" : prepNumber(this.state.interestRate, DECIMALS, true)}% <small>Interest</small>
+                          {!this.state.interestRate ? "0" : prepNumber(this.state.interestRate, DECIMALS, true)}% <small>Interest</small>
                         </h4>
                         <small>Per annum</small>
                       </HeroStats>
@@ -219,7 +218,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          {!this.state.loanPeriod ? "N/A" : this.state.loanPeriod } <small>Month</small>
+                          {!this.state.loanPeriod ? "0" : this.state.loanPeriod } <small>Month</small>
                         </h4>
                         <small>Loan period</small>
                       </HeroStats>
@@ -229,8 +228,8 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 <Row>
                   <Col lg={10} md={12}>
                     <Margin top={16}>
-                      {this.state.totalShares === "N/A" ||
-                      this.state.principalRequested === "N/A" ? (
+                      {this.state.totalShares === "0" ||
+                      this.state.principalRequested === "0" ? (
                         <Progress current={0} />
                       ) : (
                         <Progress

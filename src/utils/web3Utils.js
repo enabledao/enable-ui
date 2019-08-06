@@ -5,6 +5,10 @@ const getAccounts = async (web3) => {
     web3 = web3 || await getWeb3();
     return await web3.eth.getAccounts();
 }
+const getInjectedAccountAddress = async (web3, accountNumber) => {
+    web3 = web3 || await getWeb3();
+    return  accountNumber ? ((await getAccounts)[accountNumber]) : ((await getAccounts)[0]);
+}
 
 const getNetworkId = async (web3) => {
     web3 = web3 || await getWeb3();
@@ -22,6 +26,10 @@ const contractMethodCall = async (contract, method, ...args) => {
     }
 }
 
+const contractGetPastEvents = async (contract, eventString, eventOptions) => {
+    return contract.getPastEvents(eventString, eventOptions, function(error, events){ console.log(events);});
+}
+
 const prepBigNumber = (number, decimals, inbound) => {//No Decimals in BigNumbers
     const bnNumber = Web3.utils.toBN(number);
     const bnDecimals = Web3.utils.toBN(10).pow(Web3.utils.toBN(decimals || 0));
@@ -33,9 +41,12 @@ const prepNumber = (number, decimals, inbound) => {//Allows Decimals
     return (inbound ? Number(number)/ (decimals) : number * decimals).toString();
 }
 
+
 export {
+    contractGetPastEvents,
     contractMethodCall,
     getAccounts,
+    getInjectedAccountAddress,
     getNetworkId,
     prepBigNumber,
     prepNumber
