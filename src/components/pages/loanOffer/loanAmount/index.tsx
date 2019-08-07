@@ -16,6 +16,7 @@ import createDecorator from "final-form-focus";
 import contractAddresses from "../../../../config/ines.fund";
 import { LoanStatuses, INTEREST_DECIMALS } from "../../../../config/constants";
 import {simulateTotalInterest} from "../../../../utils/jsCalculator";
+import { fund  } from "../../../../utils/crowdloan";
 import { prepBigNumber } from '../../../../utils/web3Utils';
 import { getDeployedFromConfig  } from "../../../../utils/getDeployed";
 import { getTokenDetailsFromAddress } from '../../../../utils/paymentToken';
@@ -92,11 +93,12 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
         const {termsContractInstance, crowdLoanInstance, loanAmoutnValue} = this.state;
 
         // Note: Assuming lender can only fund a loan when the loan is started
-        const isLoanStarted = (await contractMethodCall(termsContractInstance, "getLoanStatus")) === "1";
+        const isLoanStarted = Number(await getLoanStatus(termsContractInstance)) === LoanStatuses.FUNDING_STARTED;
 
         if (isLoanStarted) {
-            const valueInERC20 = loanAmoutnValue * 1e18;
-            await contractMethodCall(crowdLoanInstance, "fund", valueInERC20);
+            const valueInERC20 = prepBigNumber(loanAmoutnValue, this.state.paymentToken.decimals);
+            const tx = await fund(crowdLoanInstance, valueInERC20);
+            console.log(tx);
             history.push(AppPath.LoanOfferThankYou);
             return;
         }

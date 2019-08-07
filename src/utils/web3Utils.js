@@ -26,6 +26,17 @@ const contractMethodCall = async (contract, method, ...args) => {
     }
 }
 
+const contractMethodTransaction = async (contract, method, ...args) => {
+    await getWeb3();//Ensure Web3 is fully loaded
+    try{
+        return await contract.methods[method](...args).send();
+    } catch (e) {
+        console.error(method, ...args);
+        console.error(e);
+        throw(e)
+    }
+}
+
 const contractGetPastEvents = async (contract, eventString, eventOptions) => {
     return contract.getPastEvents(eventString, eventOptions, function(error, events){ console.log(events);});
 }
@@ -45,6 +56,7 @@ const prepNumber = (number, decimals, inbound) => {//Allows Decimals
 export {
     contractGetPastEvents,
     contractMethodCall,
+    contractMethodTransaction,
     getAccounts,
     getInjectedAccountAddress,
     getNetworkId,
