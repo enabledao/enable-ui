@@ -15,8 +15,8 @@ import { AppPath } from "../../../../constant/appPath";
 import { getDeployedFromConfig } from "../../../../utils/getDeployed";
 import { prepBigNumber, prepNumber } from '../../../../utils/web3Utils';
 import { getTokenDetailsFromAddress } from '../../../../utils/paymentToken';
-import { getLoanEndTimestamp, getLoanParams } from '../../../../utils/termsContract';
 import { totalShares } from '../../../../utils/repaymentManager';
+import { getInterestRate, getLoanEndTimestamp, getLoanStartTimestamp, getNumScheduledPayments,getPrincipalRequested, getPrincipalToken } from '../../../../utils/termsContract';
 
 import contractAddresses from '../../../../config/ines.fund';
 
@@ -96,16 +96,6 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     this.handleLend = this.handleLend.bind(this);
   }
 
-  // getGanacheAddresses = async () => {
-  //   if (!this.ganacheProvider) {
-  //     this.ganacheProvider = getGanacheWeb3();
-  //   }
-  //   if (this.ganacheProvider) {
-  //     return await this.ganacheProvider.eth.getAccounts();
-  //   }
-  //   return [];
-  // };
-
   componentDidMount = async () => {
 
     // Get the contract instances for Ines (We'll just bake these in for now).
@@ -113,27 +103,26 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     const repaymentManagerInstance = await getDeployedFromConfig('RepaymentManager', contractAddresses);
 
     try {
-      const loanParams = await getLoanParams(termsContractInstance);
+      const loanPeriod = await getNumScheduledPayments(termsContractInstance);
+      const principalRequested = await getPrincipalRequested(termsContractInstance);
+      const interestRate = await getInterestRate(termsContractInstance);
+      const loanStartTimestamp = await getLoanStartTimestamp(termsContractInstance);
       const totaShares = await totalShares(repaymentManagerInstance);
-      const paymentToken = await getTokenDetailsFromAddress(loanParams.principalToken);
-
-      const principalRequested = loanParams.principalRequested;
-      // const payees = await repaymentManagerInstance.methods._payees();
-
+      const paymentToken = await getTokenDetailsFromAddress(await getPrincipalToken(termsContractInstance));
+      
       let loanEndTimestamp;
 
-      if (loanParams.loanStartTimestamp !== "0") {
+      if (loanStartTimestamp !== "0") {
         loanEndTimestamp = await getLoanEndTimestamp(termsContractInstance);
       }
 
       this.setState({
-        loanPeriod:
-          loanParams.loanPeriod === "0" ? "0" : loanParams.loanPeriod,
-        interestRate:
-          loanParams.interestRate === "0" ? "0" : loanParams.interestRate,
-        loanEndTimestamp: !loanEndTimestamp ? "0" : loanEndTimestamp,
-        totalShares: totaShares === "0" ? "0" : totaShares,
-        principalRequested: principalRequested === "0" ? "0" : principalRequested
+        loanPeriod: loanPeriod || "0",
+        interestRate: interestRate || "0",
+        loanEndTimestamp: loanEndTimestamp || 0,
+        totalShares: totaShares || 0,
+        principalRequested: principalRequested || 0,
+        paymentToken
       });
     } catch (err) {
       console.error(err);

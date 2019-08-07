@@ -17,7 +17,7 @@ import SocialShare from "../../socialShare";
 import { prepBigNumber } from '../../../../../utils/web3Utils';
 import { getDeployedFromConfig  } from "../../../../../utils/getDeployed";
 import { getTokenDetailsFromAddress } from '../../../../../utils/paymentToken';
-import { getLoanParams, getRequestedScheduledPayment, getScheduledPayment } from '../../../../../utils/termsContract';
+import { getInterestRate, getLoanStartTimestamp, getNumScheduledPayments, getPrincipalToken, getRequestedScheduledPayment, getScheduledPayment, } from '../../../../../utils/termsContract';
 
 import contractAddresses from '../../../../../config/ines.fund';
 
@@ -33,42 +33,56 @@ const calcCummulativePayments = (repayment) => {
 
 class Profile extends React.Component<{}> {
   state = {
-    repayments: []
+    repayments: [],
+    loanParams: {
+      interestRate: 0,
+      numScheduledPayments: 0
+    }
   }
 
-  componentDidMount =  () => {
-    setTimeout( async() => {
-      const termsContractInstance = await getDeployedFromConfig('TermsContract', contractAddresses);
+  componentDidMount = async () => {
+    const termsContractInstance = await getDeployedFromConfig('TermsContract', contractAddresses);
 
-      try {
-        const loanParams = await getLoanParams(termsContractInstance);
-        const paymentToken = await getTokenDetailsFromAddress(loanParams.principalToken);
-        const numScheduledPayments = parseInt(loanParams.loanPeriod);
-        const prepDueTimestamp = (dueTimestamp, startTimestamp) => (dueTimestamp * ONETHOUSAND) + (startTimestamp == 0 ? new Date().getTime() : 0);
+    try {
+      const numScheduledPayments = parseInt(await getNumScheduledPayments(termsContractInstance));
+      const loanStartTimestamp = await getLoanStartTimestamp(termsContractInstance);
+      const paymentToken = await getTokenDetailsFromAddress(await getPrincipalToken(termsContractInstance));
+      const interestRate = await getInterestRate(termsContractInstance);
+      const prepDueTimestamp = (dueTimestamp, startTimestamp) => (dueTimestamp * ONETHOUSAND) + (startTimestamp == 0 ? new Date().getTime() : 0);
 
-        let repayments = await Promise.all(
-          Array(numScheduledPayments)
-          .fill({})
-          .map(async (element, index) => {
-            const requestedScheduledPayment = await getRequestedScheduledPayment(termsContractInstance, index + 1);
-            const scheduledPayment = await getScheduledPayment(termsContractInstance, index + 1);
-            const combined = Object.assign({}, scheduledPayment, requestedScheduledPayment );
-            return {
-              due: prepDueTimestamp(combined.dueTimestamp, loanParams.loanStartTimestamp),
-              interest: prepBigNumber(combined.interestPayment,paymentToken.decimals,true),
-              principal: prepBigNumber(combined.principalPayment,paymentToken.decimals,true),
-              total: prepBigNumber(combined.totalPayment,paymentToken.decimals,true)
-            };
-          })
-        );
-        repayments = calcCummulativePayments(repayments);
+      let repayments = await Promise.all(
+        Array(numScheduledPayments)
+        .fill({})
+        .map(async (element, index) => {
+          const requestedScheduledPayment = await getRequestedScheduledPayment(termsContractInstance, index + 1);
+          const scheduledPayment = await getScheduledPayment(termsContractInstance, index + 1);
+          const combined = {
+            dueTimestamp: requestedScheduledPayment.dueTimestamp,
+            interestPayment: requestedScheduledPayment.interestPayment|| scheduledPayment.interestPayment,
+            principalPayment: requestedScheduledPayment.principalPayment|| scheduledPayment.principalPayment,
+            totalPayment: requestedScheduledPayment.totalPayment|| scheduledPayment.totalPayment,
+          };
 
-      this.setState({repayments});
-      } catch (err) {
-        console.log(err)
+          return {
+            due: prepDueTimestamp(combined.dueTimestamp, loanStartTimestamp),
+            interest: prepBigNumber(combined.interestPayment,paymentToken.decimals,true),
+            principal: prepBigNumber(combined.principalPayment,paymentToken.decimals,true),
+            total: prepBigNumber(combined.totalPayment,paymentToken.decimals,true)
+          };
+        })
+      );
+      repayments = calcCummulativePayments(repayments);
+
+    this.setState({
+      repayments,
+      loanParams: {
+        interestRate: prepBigNumber(interestRate,2,true),//'2' is the decimal places according to the contrats
+        numScheduledPayments
       }
-    }, 3000);
-
+    });
+    } catch (err) {
+      console.log(err)
+    }
   }
   render() {
     return (
