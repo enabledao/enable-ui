@@ -19,6 +19,7 @@ import { totalShares } from '../../../../utils/repaymentManager';
 import { getInterestRate, getLoanEndTimestamp, getLoanStartTimestamp, getNumScheduledPayments,getPrincipalRequested, getPrincipalToken } from '../../../../utils/termsContract';
 
 import contractAddresses from '../../../../config/ines.fund';
+import { INTEREST_DECIMALS } from "../../../../config/constants";
 
 import {
   HeroWrapper,
@@ -76,7 +77,6 @@ export const listContributor = [
   }
 ];
 
-const DECIMALS = 2;//Denominator for interestRate in contracts
 class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   constructor(props: HomeHeroProps) {
     super(props);
@@ -199,7 +199,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          {!this.state.interestRate ? "0" : prepNumber(this.state.interestRate, DECIMALS, true)}% <small>Interest</small>
+                          {!this.state.interestRate ? "0" : prepNumber(this.state.interestRate, INTEREST_DECIMALS, true)}% <small>Interest</small>
                         </h4>
                         <small>Per annum</small>
                       </HeroStats>

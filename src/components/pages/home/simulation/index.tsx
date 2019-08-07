@@ -11,7 +11,9 @@ import {
   ButtonLendSimulation
 } from "./styled";
 
-interface SimuLationReturnProps extends RouteComponentProps<any> {}
+interface SimuLationReturnProps extends RouteComponentProps<any> {
+  simulateInterest?: (contribution: string|number)=> number;
+}
 
 export interface SimuLationReturnState {
   textfieldShow: boolean;
@@ -116,7 +118,7 @@ class SimuLationReturn extends React.Component<
           </Margin>
           <Margin vertical={24}>
             <h4>
-              {((sliderValue * 0.5) / 100) * 12}
+              {this.props.simulateInterest(sliderValue)}
               &nbsp;<small>Dai</small>
             </h4>
           </Margin>

@@ -13,10 +13,13 @@ import {
     requiredChecked
 } from "../../../../constant/validation";
 import createDecorator from "final-form-focus";
-import {Crowdloan, TermsContract} from "../../../../utils/contractData";
 import contractAddresses from "../../../../config/ines.fund";
-import {getContractInstance} from "../../../../utils/getDeployed";
-import {contractMethodCall, getNetworkId} from "../../../../utils/web3Utils";
+import { LoanStatuses, INTEREST_DECIMALS } from "../../../../config/constants";
+import {simulateTotalInterest} from "../../../../utils/jsCalculator";
+import { prepBigNumber } from '../../../../utils/web3Utils';
+import { getDeployedFromConfig  } from "../../../../utils/getDeployed";
+import { getTokenDetailsFromAddress } from '../../../../utils/paymentToken';
+import { getInterestRate, getLoanStatus, getNumScheduledPayments, getPrincipalToken } from '../../../../utils/termsContract';
 
 interface LoanAmountProps extends RouteComponentProps<any> {}
 
@@ -24,6 +27,8 @@ interface LoanAmountState {
     loanAmoutnValue: number;
     crowdLoanInstance: object;
     termsContractInstance: object;
+    loanParams: object,
+    paymentToken: object
 }
 
 const focusOnErrors = createDecorator();
@@ -38,25 +43,48 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
         this.state = {
             loanAmoutnValue: 0,
             crowdLoanInstance: null,
-            termsContractInstance: null
+            termsContractInstance: null,
+            loanParams: {
+                interestRate: 0,
+                numScheduledPayments: 0
+            },
+            paymentToken: {}
         };
         this.onSubmit = this.onSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
+    simulateInterest = (contribution) => {
+        const { interestRate, numScheduledPayments } = this.state.loanParams;
+        return simulateTotalInterest(contribution, interestRate, numScheduledPayments);
+    }
+
     componentDidMount = async () => {
-        const networkId = await getNetworkId();
-        const crowdLoanAddress = contractAddresses[networkId]["Crowdloan"];
-        const termsContractAddress = contractAddresses[networkId]["TermsContract"];
 
         // Get the contract instances for Ines (We'll just bake these in for now).
-        const crowdLoanInstance = await getContractInstance(Crowdloan.abi, crowdLoanAddress);
-        const termsContractInstance = await getContractInstance(TermsContract.abi, termsContractAddress);
 
-        this.setState({
-            crowdLoanInstance,
-            termsContractInstance
-        });
+        const termsContractInstance = await getDeployedFromConfig('TermsContract', contractAddresses);
+        const crowdLoanInstance = await getDeployedFromConfig('Crowdloan', contractAddresses);
+
+        try {
+            const paymentToken = await getTokenDetailsFromAddress(await getPrincipalToken(termsContractInstance));
+            const interestRate = await getInterestRate(termsContractInstance);
+            const numScheduledPayments = parseInt(await getNumScheduledPayments(termsContractInstance));
+
+
+            this.setState({
+                crowdLoanInstance,
+                termsContractInstance,
+                loanParams: {
+                    interestRate: prepBigNumber(interestRate,INTEREST_DECIMALS,true),
+                    numScheduledPayments
+                },
+                paymentToken
+            });
+
+        } catch (err) {
+            console.log(err)
+        }
     };
 
     onSubmit = async (data: any) => {

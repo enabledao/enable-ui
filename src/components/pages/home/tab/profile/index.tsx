@@ -14,12 +14,14 @@ import WhyMe from "./whyMe";
 import Repayment from "./repayment";
 import SimuLationReturn from "../../simulation";
 import SocialShare from "../../socialShare";
+import { simulateTotalInterest } from '../../../../../utils/jsCalculator';
 import { prepBigNumber } from '../../../../../utils/web3Utils';
 import { getDeployedFromConfig  } from "../../../../../utils/getDeployed";
 import { getTokenDetailsFromAddress } from '../../../../../utils/paymentToken';
 import { getInterestRate, getLoanStartTimestamp, getNumScheduledPayments, getPrincipalToken, getRequestedScheduledPayment, getScheduledPayment, } from '../../../../../utils/termsContract';
 
 import contractAddresses from '../../../../../config/ines.fund';
+import { INTEREST_DECIMALS } from "../../../../../config/constants";
 
 const ONETHOUSAND = 1000;
 
@@ -38,6 +40,11 @@ class Profile extends React.Component<{}> {
       interestRate: 0,
       numScheduledPayments: 0
     }
+  }
+
+  simulateInterest = (contribution) => {
+    const { interestRate, numScheduledPayments } = this.state.loanParams;
+    return simulateTotalInterest(contribution, interestRate, numScheduledPayments);
   }
 
   componentDidMount = async () => {
@@ -76,7 +83,7 @@ class Profile extends React.Component<{}> {
     this.setState({
       repayments,
       loanParams: {
-        interestRate: prepBigNumber(interestRate,2,true),//'2' is the decimal places according to the contrats
+        interestRate: prepBigNumber(interestRate,INTEREST_DECIMALS,true),
         numScheduledPayments
       }
     });
@@ -222,7 +229,7 @@ class Profile extends React.Component<{}> {
             </Margin>
           </Col>
           <Col lg={4} md="hidden">
-            <SimuLationReturn />
+            <SimuLationReturn simulateInterest={this.simulateInterest.bind(this)} />
             <Margin top={48}>
               <SocialShare />
             </Margin>
