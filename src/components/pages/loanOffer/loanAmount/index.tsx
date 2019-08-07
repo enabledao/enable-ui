@@ -27,8 +27,8 @@ interface LoanAmountState {
     loanAmoutnValue: number;
     crowdLoanInstance: object;
     termsContractInstance: object;
-    loanParams: object,
-    paymentToken: object
+    loanParams: any,
+    paymentToken: any
 }
 
 const focusOnErrors = createDecorator();
@@ -233,7 +233,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                                             <p>You can expect to earn a total interest of:</p>
                                             <Margin vertical={24}>
                                                 <h4>
-                                                    {((loanAmoutnValue * 0.5) / 100) * 12}
+                                                    {this.simulateInterest(loanAmoutnValue)}
                                                     &nbsp;<small>Dai</small>
                                                 </h4>
                                             </Margin>
