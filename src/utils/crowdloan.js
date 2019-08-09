@@ -5,10 +5,10 @@ const getCrowdfundParams = instance =>  contractMethodCall(instance, 'getCrowdfu
 const getCrowdfundEnd = instance =>  contractMethodCall(instance, 'getCrowdfundEnd');
 const getTotalCrowdfunded = instance =>  contractMethodCall(instance, 'getTotalCrowdfunded');
 const startCrowdfund = instance =>  contractMethodTransaction(instance, 'startCrowdfund');
-const fund = (instance, amount) =>  contractMethodTransaction(instance, 'fund', amount);
-const refund = (instance, amount) =>  contractMethodTransaction(instance, 'refund', amount);
-const withdraw = instance =>  contractMethodTransaction(instance, 'withdraw()');
-const withdrawAmount = (instance, amount) =>  contractMethodTransaction(instance, 'withdraw(uint256)', amount);
+const fund = (instance, amount, txOptions) => contractMethodTransaction(instance, 'fund', amount, txOptions);
+const refund = (instance, amount, txOptions) =>  contractMethodTransaction(instance, 'refund', amount, txOptions);
+const withdraw = (instance, txOptions) =>  contractMethodTransaction(instance, 'withdraw()', txOptions);
+const withdrawAmount = (instance, amount, txOptions) =>  contractMethodTransaction(instance, 'withdraw(uint256)', amount, txOptions);
 
 export {
     //Contract Calls
