@@ -16,11 +16,12 @@ import createDecorator from "final-form-focus";
 import contractAddresses from "../../../../config/ines.fund";
 import { LoanStatuses, INTEREST_DECIMALS } from "../../../../config/constants";
 import {simulateTotalInterest} from "../../../../utils/jsCalculator";
-import { fund  } from "../../../../utils/crowdloan";
-import { prepBigNumber } from '../../../../utils/web3Utils';
+import { approveAndFund, fund  } from "../../../../utils/crowdloan";
+import { BN, getInjectedAccountAddress, prepBigNumber } from '../../../../utils/web3Utils';
 import { getDeployedFromConfig  } from "../../../../utils/getDeployed";
-import { getTokenDetailsFromAddress } from '../../../../utils/paymentToken';
+import { allowance, getInstance, getTokenDetailsFromAddress } from '../../../../utils/paymentToken';
 import { getInterestRate, getLoanStatus, getNumScheduledPayments, getPrincipalToken } from '../../../../utils/termsContract';
+
 
 interface LoanAmountProps extends RouteComponentProps<any> {}
 
@@ -68,10 +69,12 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
         const crowdLoanInstance = await getDeployedFromConfig('Crowdloan', contractAddresses);
 
         try {
-            const paymentToken = await getTokenDetailsFromAddress(await getPrincipalToken(termsContractInstance));
+            const principalToken = await getPrincipalToken(termsContractInstance);
+            const paymentToken = await getTokenDetailsFromAddress(principalToken);
             const interestRate = await getInterestRate(termsContractInstance);
             const numScheduledPayments = parseInt(await getNumScheduledPayments(termsContractInstance));
 
+            paymentToken.address = principalToken;
 
             this.setState({
                 crowdLoanInstance,
@@ -94,11 +97,22 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
 
         // Note: Assuming lender can only fund a loan when the loan is started
         const isLoanStarted = Number(await getLoanStatus(termsContractInstance)) === LoanStatuses.FUNDING_STARTED;
+        const paymentTokenInstance = await getInstance(this.state.paymentToken.address);
 
         if (isLoanStarted) {
             const valueInERC20 = prepBigNumber(loanAmoutnValue, this.state.paymentToken.decimals);
-            const tx = await fund(crowdLoanInstance, valueInERC20);
+            const approvedBalance = await allowance(paymentTokenInstance, await getInjectedAccountAddress(), this.state.paymentToken.address);
+
+            console.log(valueInERC20, approvedBalance)
+
+            let tx;
+            if (BN(approvedBalance).lt(BN(valueInERC20))) {
+                tx = await approveAndFund(paymentTokenInstance, crowdLoanInstance, valueInERC20)
+            } else {
+                tx = await fund(crowdLoanInstance, valueInERC20);
+            }
             console.log(tx);
+
             history.push(AppPath.LoanOfferThankYou);
             return;
         }

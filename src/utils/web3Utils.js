@@ -1,6 +1,13 @@
 import Web3 from 'web3';
 import getWeb3 from './getWeb3';
 
+const BN = number => Web3.utils.toBN(number);
+
+const getNetworkId = async (web3) => {
+    web3 = web3 || await getWeb3();
+    return await web3.eth.net.getId();
+}
+
 const getAccounts = async (web3) => {
     web3 = web3 || await getWeb3();
     return await web3.eth.getAccounts();
@@ -8,11 +15,6 @@ const getAccounts = async (web3) => {
 const getInjectedAccountAddress = async (web3, accountNumber) => {
     accountNumber = accountNumber || 0;
     return  (await getAccounts())[accountNumber];
-}
-
-const getNetworkId = async (web3) => {
-    web3 = web3 || await getWeb3();
-    return await web3.eth.net.getId();
 }
 
 const contractMethodCall = async (contract, method, ...args) => {
@@ -80,6 +82,7 @@ const prepNumber = (number, decimals, inbound) => {//Allows Decimals
 
 
 export {
+    BN,
     contractGetPastEvents,
     contractMethodCall,
     contractMethodTransaction,

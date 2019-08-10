@@ -183,7 +183,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          {!this.state.totalShares ? "0" : this.state.totalShares} <small>Dai</small>
+                          {!this.state.totalShares ? "0" : prepBigNumber(this.state.totalShares, this.state.paymentToken.decimals, true)} <small>Dai</small>
                         </h4>
                         <small>Raised of {!this.state.principalRequested ? "0" : prepBigNumber(this.state.principalRequested, this.state.paymentToken.decimals, true)} goal</small>
                       </HeroStats>
@@ -217,13 +217,12 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 <Row>
                   <Col lg={10} md={12}>
                     <Margin top={16}>
-                      {this.state.totalShares === "0" ||
-                      this.state.principalRequested === "0" ? (
+                      {!this.state.totalShares || !this.state.principalRequested ? (
                         <Progress current={0} />
                       ) : (
                         <Progress
                           current={
-                            +this.state.principalRequested / +this.state.totalShares
+                            +prepBigNumber(this.state.totalShares, this.state.paymentToken.decimals, true) * 100 / +prepBigNumber(this.state.principalRequested, this.state.paymentToken.decimals, true)
                           }
                         />
                       )}
