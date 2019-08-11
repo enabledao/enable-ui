@@ -15,10 +15,11 @@ import { AppPath } from "../../../../constant/appPath";
 import { getDeployedFromConfig } from "../../../../utils/getDeployed";
 import { prepBigNumber, prepNumber } from '../../../../utils/web3Utils';
 import { getTokenDetailsFromAddress } from '../../../../utils/paymentToken';
-import { getLoanEndTimestamp, getLoanParams } from '../../../../utils/termsContract';
 import { totalShares } from '../../../../utils/repaymentManager';
+import { getInterestRate, getLoanEndTimestamp, getLoanStartTimestamp, getNumScheduledPayments,getPrincipalRequested, getPrincipalToken } from '../../../../utils/termsContract';
 
 import contractAddresses from '../../../../config/ines.fund';
+import { INTEREST_DECIMALS } from "../../../../config/constants";
 
 import {
   HeroWrapper,
@@ -76,7 +77,6 @@ export const listContributor = [
   }
 ];
 
-const DECIMALS = 2;//Denominator for interestRate in contracts
 class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   constructor(props: HomeHeroProps) {
     super(props);
@@ -96,16 +96,6 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     this.handleLend = this.handleLend.bind(this);
   }
 
-  // getGanacheAddresses = async () => {
-  //   if (!this.ganacheProvider) {
-  //     this.ganacheProvider = getGanacheWeb3();
-  //   }
-  //   if (this.ganacheProvider) {
-  //     return await this.ganacheProvider.eth.getAccounts();
-  //   }
-  //   return [];
-  // };
-
   componentDidMount = async () => {
 
     // Get the contract instances for Ines (We'll just bake these in for now).
@@ -113,27 +103,26 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     const repaymentManagerInstance = await getDeployedFromConfig('RepaymentManager', contractAddresses);
 
     try {
-      const loanParams = await getLoanParams(termsContractInstance);
+      const loanPeriod = await getNumScheduledPayments(termsContractInstance);
+      const principalRequested = await getPrincipalRequested(termsContractInstance);
+      const interestRate = await getInterestRate(termsContractInstance);
+      const loanStartTimestamp = await getLoanStartTimestamp(termsContractInstance);
       const totaShares = await totalShares(repaymentManagerInstance);
-      const paymentToken = await getTokenDetailsFromAddress(loanParams.principalToken);
-
-      const principalRequested = loanParams.principalRequested;
-      // const payees = await repaymentManagerInstance.methods._payees();
-
+      const paymentToken = await getTokenDetailsFromAddress(await getPrincipalToken(termsContractInstance));
+      
       let loanEndTimestamp;
 
-      if (loanParams.loanStartTimestamp !== "0") {
+      if (loanStartTimestamp !== "0") {
         loanEndTimestamp = await getLoanEndTimestamp(termsContractInstance);
       }
 
       this.setState({
-        loanPeriod:
-          loanParams.loanPeriod === "0" ? "0" : loanParams.loanPeriod,
-        interestRate:
-          loanParams.interestRate === "0" ? "0" : loanParams.interestRate,
-        loanEndTimestamp: !loanEndTimestamp ? "0" : loanEndTimestamp,
-        totalShares: totaShares === "0" ? "0" : totaShares,
-        principalRequested: principalRequested === "0" ? "0" : principalRequested
+        loanPeriod: loanPeriod || "0",
+        interestRate: interestRate || "0",
+        loanEndTimestamp: loanEndTimestamp || 0,
+        totalShares: totaShares || 0,
+        principalRequested: principalRequested || 0,
+        paymentToken
       });
     } catch (err) {
       console.error(err);
@@ -194,7 +183,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          {!this.state.totalShares ? "0" : this.state.totalShares} <small>Dai</small>
+                          {!this.state.totalShares ? "0" : prepBigNumber(this.state.totalShares, this.state.paymentToken.decimals, true)} <small>Dai</small>
                         </h4>
                         <small>Raised of {!this.state.principalRequested ? "0" : prepBigNumber(this.state.principalRequested, this.state.paymentToken.decimals, true)} goal</small>
                       </HeroStats>
@@ -210,7 +199,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3} md={6}>
                       <HeroStats>
                         <h4>
-                          {!this.state.interestRate ? "0" : prepNumber(this.state.interestRate, DECIMALS, true)}% <small>Interest</small>
+                          {!this.state.interestRate ? "0" : prepNumber(this.state.interestRate, INTEREST_DECIMALS, true)}% <small>Interest</small>
                         </h4>
                         <small>Per annum</small>
                       </HeroStats>
@@ -228,13 +217,12 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 <Row>
                   <Col lg={10} md={12}>
                     <Margin top={16}>
-                      {this.state.totalShares === "0" ||
-                      this.state.principalRequested === "0" ? (
+                      {!this.state.totalShares || !this.state.principalRequested ? (
                         <Progress current={0} />
                       ) : (
                         <Progress
                           current={
-                            +this.state.principalRequested / +this.state.totalShares
+                            +prepBigNumber(this.state.totalShares, this.state.paymentToken.decimals, true) * 100 / +prepBigNumber(this.state.principalRequested, this.state.paymentToken.decimals, true)
                           }
                         />
                       )}

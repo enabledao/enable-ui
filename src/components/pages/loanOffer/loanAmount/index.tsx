@@ -13,10 +13,15 @@ import {
     requiredChecked
 } from "../../../../constant/validation";
 import createDecorator from "final-form-focus";
-import {Crowdloan, TermsContract} from "../../../../utils/contractData";
 import contractAddresses from "../../../../config/ines.fund";
-import {getContractInstance} from "../../../../utils/getDeployed";
-import {contractMethodCall, getNetworkId} from "../../../../utils/web3Utils";
+import { LoanStatuses, INTEREST_DECIMALS } from "../../../../config/constants";
+import {simulateTotalInterest} from "../../../../utils/jsCalculator";
+import { approveAndFund, fund  } from "../../../../utils/crowdloan";
+import { BN, getInjectedAccountAddress, prepBigNumber } from '../../../../utils/web3Utils';
+import { getDeployedFromConfig  } from "../../../../utils/getDeployed";
+import { allowance, getInstance, getTokenDetailsFromAddress } from '../../../../utils/paymentToken';
+import { getInterestRate, getLoanStatus, getNumScheduledPayments, getPrincipalToken } from '../../../../utils/termsContract';
+
 
 interface LoanAmountProps extends RouteComponentProps<any> {}
 
@@ -24,6 +29,8 @@ interface LoanAmountState {
     loanAmoutnValue: number;
     crowdLoanInstance: object;
     termsContractInstance: object;
+    loanParams: any,
+    paymentToken: any
 }
 
 const focusOnErrors = createDecorator();
@@ -38,25 +45,50 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
         this.state = {
             loanAmoutnValue: 0,
             crowdLoanInstance: null,
-            termsContractInstance: null
+            termsContractInstance: null,
+            loanParams: {
+                interestRate: 0,
+                numScheduledPayments: 0
+            },
+            paymentToken: {}
         };
         this.onSubmit = this.onSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
+    simulateInterest = (contribution) => {
+        const { interestRate, numScheduledPayments } = this.state.loanParams;
+        return simulateTotalInterest(contribution, interestRate, numScheduledPayments);
+    }
+
     componentDidMount = async () => {
-        const networkId = await getNetworkId();
-        const crowdLoanAddress = contractAddresses[networkId]["Crowdloan"];
-        const termsContractAddress = contractAddresses[networkId]["TermsContract"];
 
         // Get the contract instances for Ines (We'll just bake these in for now).
-        const crowdLoanInstance = await getContractInstance(Crowdloan.abi, crowdLoanAddress);
-        const termsContractInstance = await getContractInstance(TermsContract.abi, termsContractAddress);
 
-        this.setState({
-            crowdLoanInstance,
-            termsContractInstance
-        });
+        const termsContractInstance = await getDeployedFromConfig('TermsContract', contractAddresses);
+        const crowdLoanInstance = await getDeployedFromConfig('Crowdloan', contractAddresses);
+
+        try {
+            const principalToken = await getPrincipalToken(termsContractInstance);
+            const paymentToken = await getTokenDetailsFromAddress(principalToken);
+            const interestRate = await getInterestRate(termsContractInstance);
+            const numScheduledPayments = parseInt(await getNumScheduledPayments(termsContractInstance));
+
+            paymentToken.address = principalToken;
+
+            this.setState({
+                crowdLoanInstance,
+                termsContractInstance,
+                loanParams: {
+                    interestRate: prepBigNumber(interestRate,INTEREST_DECIMALS,true),
+                    numScheduledPayments
+                },
+                paymentToken
+            });
+
+        } catch (err) {
+            console.log(err)
+        }
     };
 
     onSubmit = async (data: any) => {
@@ -64,11 +96,23 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
         const {termsContractInstance, crowdLoanInstance, loanAmoutnValue} = this.state;
 
         // Note: Assuming lender can only fund a loan when the loan is started
-        const isLoanStarted = (await contractMethodCall(termsContractInstance, "getLoanStatus")) === "1";
+        const isLoanStarted = Number(await getLoanStatus(termsContractInstance)) === LoanStatuses.FUNDING_STARTED;
+        const paymentTokenInstance = await getInstance(this.state.paymentToken.address);
 
         if (isLoanStarted) {
-            const valueInERC20 = loanAmoutnValue * 1e18;
-            await contractMethodCall(crowdLoanInstance, "fund", valueInERC20);
+            const valueInERC20 = prepBigNumber(loanAmoutnValue, this.state.paymentToken.decimals);
+            const approvedBalance = await allowance(paymentTokenInstance, await getInjectedAccountAddress(), this.state.paymentToken.address);
+
+            console.log(valueInERC20, approvedBalance)
+
+            let tx;
+            if (BN(approvedBalance).lt(BN(valueInERC20))) {
+                tx = await approveAndFund(paymentTokenInstance, crowdLoanInstance, valueInERC20)
+            } else {
+                tx = await fund(crowdLoanInstance, valueInERC20);
+            }
+            console.log(tx);
+
             history.push(AppPath.LoanOfferThankYou);
             return;
         }
@@ -205,7 +249,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                                             <p>You can expect to earn a total interest of:</p>
                                             <Margin vertical={24}>
                                                 <h4>
-                                                    {((loanAmoutnValue * 0.5) / 100) * 12}
+                                                    {this.simulateInterest(loanAmoutnValue)}
                                                     &nbsp;<small>Dai</small>
                                                 </h4>
                                             </Margin>

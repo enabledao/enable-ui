@@ -14,12 +14,14 @@ import WhyMe from "./whyMe";
 import Repayment from "./repayment";
 import SimuLationReturn from "../../simulation";
 import SocialShare from "../../socialShare";
+import { simulateTotalInterest } from '../../../../../utils/jsCalculator';
 import { prepBigNumber } from '../../../../../utils/web3Utils';
 import { getDeployedFromConfig  } from "../../../../../utils/getDeployed";
 import { getTokenDetailsFromAddress } from '../../../../../utils/paymentToken';
-import { getLoanParams, getRequestedScheduledPayment, getScheduledPayment } from '../../../../../utils/termsContract';
+import { getInterestRate, getLoanStartTimestamp, getNumScheduledPayments, getPrincipalToken, getRequestedScheduledPayment, getScheduledPayment, } from '../../../../../utils/termsContract';
 
 import contractAddresses from '../../../../../config/ines.fund';
+import { INTEREST_DECIMALS } from "../../../../../config/constants";
 
 const ONETHOUSAND = 1000;
 
@@ -33,42 +35,61 @@ const calcCummulativePayments = (repayment) => {
 
 class Profile extends React.Component<{}> {
   state = {
-    repayments: []
+    repayments: [],
+    loanParams: {
+      interestRate: 0,
+      numScheduledPayments: 0
+    }
   }
 
-  componentDidMount =  () => {
-    setTimeout( async() => {
-      const termsContractInstance = await getDeployedFromConfig('TermsContract', contractAddresses);
+  simulateInterest = (contribution) => {
+    const { interestRate, numScheduledPayments } = this.state.loanParams;
+    return simulateTotalInterest(contribution, interestRate, numScheduledPayments);
+  }
 
-      try {
-        const loanParams = await getLoanParams(termsContractInstance);
-        const paymentToken = await getTokenDetailsFromAddress(loanParams.principalToken);
-        const numScheduledPayments = parseInt(loanParams.loanPeriod);
-        const prepDueTimestamp = (dueTimestamp, startTimestamp) => (dueTimestamp * ONETHOUSAND) + (startTimestamp == 0 ? new Date().getTime() : 0);
+  componentDidMount = async () => {
+    const termsContractInstance = await getDeployedFromConfig('TermsContract', contractAddresses);
 
-        let repayments = await Promise.all(
-          Array(numScheduledPayments)
-          .fill({})
-          .map(async (element, index) => {
-            const requestedScheduledPayment = await getRequestedScheduledPayment(termsContractInstance, index + 1);
-            const scheduledPayment = await getScheduledPayment(termsContractInstance, index + 1);
-            const combined = Object.assign({}, scheduledPayment, requestedScheduledPayment );
-            return {
-              due: prepDueTimestamp(combined.dueTimestamp, loanParams.loanStartTimestamp),
-              interest: prepBigNumber(combined.interestPayment,paymentToken.decimals,true),
-              principal: prepBigNumber(combined.principalPayment,paymentToken.decimals,true),
-              total: prepBigNumber(combined.totalPayment,paymentToken.decimals,true)
-            };
-          })
-        );
-        repayments = calcCummulativePayments(repayments);
+    try {
+      const numScheduledPayments = parseInt(await getNumScheduledPayments(termsContractInstance));
+      const loanStartTimestamp = await getLoanStartTimestamp(termsContractInstance);
+      const paymentToken = await getTokenDetailsFromAddress(await getPrincipalToken(termsContractInstance));
+      const interestRate = await getInterestRate(termsContractInstance);
+      const prepDueTimestamp = (dueTimestamp, startTimestamp) => (dueTimestamp * ONETHOUSAND) + (startTimestamp == 0 ? new Date().getTime() : 0);
 
-      this.setState({repayments});
-      } catch (err) {
-        console.log(err)
+      let repayments = await Promise.all(
+        Array(numScheduledPayments)
+        .fill({})
+        .map(async (element, index) => {
+          const requestedScheduledPayment = await getRequestedScheduledPayment(termsContractInstance, index + 1);
+          const scheduledPayment = await getScheduledPayment(termsContractInstance, index + 1);
+          const combined = {
+            dueTimestamp: requestedScheduledPayment.dueTimestamp,
+            interestPayment: requestedScheduledPayment.interestPayment|| scheduledPayment.interestPayment,
+            principalPayment: requestedScheduledPayment.principalPayment|| scheduledPayment.principalPayment,
+            totalPayment: requestedScheduledPayment.totalPayment|| scheduledPayment.totalPayment,
+          };
+
+          return {
+            due: prepDueTimestamp(combined.dueTimestamp, loanStartTimestamp),
+            interest: prepBigNumber(combined.interestPayment,paymentToken.decimals,true),
+            principal: prepBigNumber(combined.principalPayment,paymentToken.decimals,true),
+            total: prepBigNumber(combined.totalPayment,paymentToken.decimals,true)
+          };
+        })
+      );
+      repayments = calcCummulativePayments(repayments);
+
+    this.setState({
+      repayments,
+      loanParams: {
+        interestRate: prepBigNumber(interestRate,INTEREST_DECIMALS,true),
+        numScheduledPayments
       }
-    }, 3000);
-
+    });
+    } catch (err) {
+      console.log(err)
+    }
   }
   render() {
     return (
@@ -208,7 +229,7 @@ class Profile extends React.Component<{}> {
             </Margin>
           </Col>
           <Col lg={4} md="hidden">
-            <SimuLationReturn />
+            <SimuLationReturn simulateInterest={this.simulateInterest.bind(this)} />
             <Margin top={48}>
               <SocialShare />
             </Margin>
