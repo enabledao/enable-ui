@@ -19,7 +19,7 @@ import { totalShares } from '../../../../utils/repaymentManager';
 import { getInterestRate, getLoanEndTimestamp, getLoanStartTimestamp, getNumScheduledPayments,getPrincipalRequested, getPrincipalToken } from '../../../../utils/termsContract';
 
 import contractAddresses from '../../../../config/ines.fund';
-import { INTEREST_DECIMALS } from "../../../../config/constants";
+import { INTEREST_DECIMALS, LoanStatuses } from "../../../../config/constants";
 
 import {
   HeroWrapper,
@@ -112,7 +112,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       
       let loanEndTimestamp;
 
-      if (loanStartTimestamp !== "0") {
+      if (Number(loanStartTimestamp) !== LoanStatuses.NOT_STARTED) {
         loanEndTimestamp = await getLoanEndTimestamp(termsContractInstance);
       }
 
