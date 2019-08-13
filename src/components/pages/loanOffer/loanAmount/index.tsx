@@ -103,8 +103,6 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
             const valueInERC20 = prepBigNumber(loanAmoutnValue, this.state.paymentToken.decimals);
             const approvedBalance = await allowance(paymentTokenInstance, await getInjectedAccountAddress(), this.state.paymentToken.address);
 
-            console.log(valueInERC20, approvedBalance)
-
             let tx;
             if (BN(approvedBalance).lt(BN(valueInERC20))) {
                 tx = await approveAndFund(paymentTokenInstance, crowdLoanInstance, valueInERC20)

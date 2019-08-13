@@ -50,8 +50,14 @@ const contractMethodTransaction = async (contract, method, ...args) => {
     }
 }
 
+const contractGetEvents = async (contract, eventString="allEvents", eventOptions) => {
+    eventOptions = prepEventOptions(eventOptions);
+    return contract.events[eventString](eventOptions);
+}
+
 const contractGetPastEvents = async (contract, eventString, eventOptions) => {
-    return contract.getPastEvents(eventString, eventOptions, function(error, events){ console.log(events);});
+    eventOptions = prepEventOptions(eventOptions);
+    return contract.getPastEvents(eventString, eventOptions);
 }
 
 const prepTransactionOptions = async (txOptions={}) => {
@@ -69,6 +75,16 @@ const prepTransactionOptions = async (txOptions={}) => {
     return cleanedOptions;
 }
 
+const prepEventOptions = ({filter, topics, fromBlock, toBlock}) => {
+    const eventOptions = {};
+    if (filter && Object.keys(filter).length > 0) eventOptions.filter = filter;
+    if (topics && topics.length > 0) eventOptions.topics = topics;
+    if (fromBlock) eventOptions.fromBlock = fromBlock;
+    if (toBlock) eventOptions.toBlock = toBlock;
+
+    return eventOptions;
+}
+
 const prepBigNumber = (number, decimals, inbound) => {//No Decimals in BigNumbers
     const bnNumber = Web3.utils.toBN(number);
     const bnDecimals = Web3.utils.toBN(10).pow(Web3.utils.toBN(decimals || 0));
@@ -83,6 +99,7 @@ const prepNumber = (number, decimals, inbound) => {//Allows Decimals
 
 export {
     BN,
+    contractGetEvents,
     contractGetPastEvents,
     contractMethodCall,
     contractMethodTransaction,

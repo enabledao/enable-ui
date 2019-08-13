@@ -7,18 +7,18 @@ import {Row, Col} from "../../lib";
 import {MyLoanWrapper} from "./styled";
 import Withdrawal from "./withdrawals";
 import RepaymentStatus from "./repaymentStatus";
-import {RepaymentManager, TermsContract} from "../../../utils/contractData";
 import contractAddresses from "../../../config/ines.fund.js";
-import {getContractInstance} from "../../../utils/getDeployed";
 import {
-    contractGetPastEvents,
-    contractMethodCall,
     getInjectedAccountAddress,
-    getNetworkId
+    prepBigNumber
 } from "../../../utils/web3Utils";
-import getWeb3 from "../../../utils/getWeb3";
+import { getDeployedFromConfig } from "../../../utils/getDeployed";
+import { getTokenDetailsFromAddress } from '../../../utils/paymentToken';
+import { shares, released, releaseAllowance, totalPaid, PaymentReleasedEvent } from '../../../utils/repaymentManager';
+import { getPrincipalDisbursed, getPrincipalToken } from '../../../utils/termsContract';
 
 interface MyLoanState {
+    paymentToken: object,
     principalDisbursed: string;
     totalPaid: string;
     releaseAllowance: string;
@@ -27,6 +27,7 @@ interface MyLoanState {
 interface MyLoanProps extends RouteComponentProps<any> {}
 class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     state = {
+        paymentToken: null,
         principalDisbursed: "",
         totalPaid: "",
         releaseAllowance: "",
@@ -35,55 +36,39 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
     componentDidMount = async () => {
         try {
-            const networkId = await getNetworkId();
-            const repaymentManagerAddress = contractAddresses[networkId]["RepaymentManager"];
-            const termsContractAddress = contractAddresses[networkId]["TermsContract"];
-
-            const repaymentManagerInstance = await getContractInstance(
-                RepaymentManager.abi,
-                repaymentManagerAddress
-            );
-
-            const termsContractInstance = await getContractInstance(
-                TermsContract.abi,
-                termsContractAddress
-            );
+            
+            const termsContractInstance = await getDeployedFromConfig('TermsContract', contractAddresses);
+            const repaymentManagerInstance = await getDeployedFromConfig('RepaymentManager', contractAddresses);
+            const paymentToken = await getTokenDetailsFromAddress(await getPrincipalToken(termsContractInstance));
 
             // Note: principal disbursed and total paid will return zero when the loan is not started
-            const principalDisbursed = await contractMethodCall(
-                termsContractInstance,
-                "getPrincipalDisbursed"
-            );
-            const totalPaid = await contractMethodCall(repaymentManagerInstance, "totalPaid");
+            const principalDisbursed = await getPrincipalDisbursed(termsContractInstance);
+            const _totalPaid = await totalPaid(repaymentManagerInstance);
 
             const injectedAccountAddress = await getInjectedAccountAddress();
-            const injectedAccountShares = await contractMethodCall(
+            const injectedAccountShares = await shares(
                 repaymentManagerInstance,
-                "shares",
                 injectedAccountAddress
             );
-            const injectedAccountReleased = await contractMethodCall(
+            const injectedAccountReleased = await released(
                 repaymentManagerInstance,
-                "released",
                 injectedAccountAddress
             );
 
-            let releaseAllowance;
+            let _releaseAllowance;
             if (+injectedAccountShares > 0 && +injectedAccountReleased > 0) {
-                releaseAllowance = await contractMethodCall(
+                _releaseAllowance = await releaseAllowance(
                     repaymentManagerInstance,
-                    "releaseAllowance",
                     injectedAccountAddress
                 );
             } else {
-                releaseAllowance = "0";
+                _releaseAllowance = "0";
             }
 
             // To do (Dennis): Filter by the injected account directly from this method
-            const paymentReleasedEvents = await contractGetPastEvents(
+            const paymentReleasedEvents = await PaymentReleasedEvent(
                 repaymentManagerInstance,
-                "PaymentReleased",
-                {fromBlock: 0, toBlock: "latest"}
+                {fromBlock: 0, toBlock: "latest", filter: { to: injectedAccountAddress }}
             );
 
             // To do (Dennis): Need to investigate the return value
@@ -92,9 +77,10 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 .filter(event => event.to === injectedAccountAddress);
 
             this.setState({
+                paymentToken,
                 principalDisbursed,
-                totalPaid,
-                releaseAllowance,
+                totalPaid: _totalPaid,
+                releaseAllowance: _releaseAllowance,
                 withdrawals
             });
         } catch (err) {
@@ -103,7 +89,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     };
 
     render() {
-        const {principalDisbursed, totalPaid, releaseAllowance, withdrawals} = this.state;
+        const {paymentToken, principalDisbursed, totalPaid, releaseAllowance, withdrawals} = this.state;
         return (
             <React.Fragment>
                 <MyLoanWrapper>
@@ -123,15 +109,15 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                 <Margin vertical={48}>
                                     <Row text='center'>
                                         <Col lg={4} md={4} sm={4} xs={4}>
-                                            <h4>{principalDisbursed} Dai</h4>
+                                            <h4>{!principalDisbursed ? "0" : prepBigNumber(principalDisbursed, paymentToken.decimals, true)} Dai</h4>
                                             <p>Loaned Amount</p>
                                         </Col>
                                         <Col lg={4} md={4} sm={4} xs={4}>
-                                            <h4>{totalPaid} Dai</h4>
+                                            <h4>{!totalPaid ? "0" : prepBigNumber(totalPaid, paymentToken.decimals, true)} Dai</h4>
                                             <p>Repaid</p>
                                         </Col>
                                         <Col lg={4} md={4} sm={4} xs={4}>
-                                            <h4>{releaseAllowance} Dai</h4>
+                                            <h4>{!releaseAllowance ? "0" : prepBigNumber(releaseAllowance, paymentToken.decimals, true)} Dai</h4>
                                             <p>Account Balance</p>
                                         </Col>
                                     </Row>
