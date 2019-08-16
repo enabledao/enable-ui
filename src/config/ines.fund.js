@@ -22,9 +22,9 @@ export default {
         RepaymentManager: "",
     },
     42: {
-        Crowdloan: "0x68b18cD7e46bb6Ceb7cef4d85096395E43bcb318",
-        TermsContract: "0x9e7080D7C710859573B3AbBe7995263018F93b88",
-        RepaymentManager: "0x07fC9Db8749189521BA682D06dcdFF07F5128016",
+        Crowdloan: "0x363439304c328a24fc0aC24d1c9Aaf08e074c8Cf",
+        TermsContract: "0x88a91A84091399f0C07116FCfff536FB5aAb7Ce9",
+        RepaymentManager: "0xFE19c50b5436B848406A877947d81AF7Af5e28Fa",
     },
     1002: {
         Crowdloan: "",

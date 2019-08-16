@@ -92,8 +92,8 @@ const prepBigNumber = (number, decimals, inbound) => {//No Decimals in BigNumber
 }
 
 const prepNumber = (number, decimals, inbound) => {//Allows Decimals
-    decimals = Math.pow(10, Number(decimals || 0));
-    return (inbound ? Number(number)/ (decimals) : number * decimals).toString();
+    decimals = Math.pow(10, +decimals || 0);
+    return (inbound ? +number/ (decimals) : number * decimals).toString();
 }
 
 
