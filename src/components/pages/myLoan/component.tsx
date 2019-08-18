@@ -14,24 +14,28 @@ import {
 } from "../../../utils/web3Utils";
 import { getDeployedFromConfig } from "../../../utils/getDeployed";
 import { getTokenDetailsFromAddress } from '../../../utils/paymentToken';
-import { shares, released, releaseAllowance, totalPaid, PaymentReleasedEvent } from '../../../utils/repaymentManager';
+import { shares, released, releaseAllowance, totalPaid, PaymentReceivedEvent, PaymentReleasedEvent } from '../../../utils/repaymentManager';
 import { getPrincipalDisbursed, getPrincipalToken } from '../../../utils/termsContract';
 
 interface MyLoanState {
     paymentToken: object,
     principalDisbursed: string;
+    shares: string;
     totalPaid: string;
     releaseAllowance: string;
     withdrawals: object;
+    repayments: object;
 }
 interface MyLoanProps extends RouteComponentProps<any> {}
 class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     state = {
         paymentToken: null,
         principalDisbursed: "",
+        shares: "",
         totalPaid: "",
         releaseAllowance: "",
-        withdrawals: null
+        withdrawals: null,
+        repayments: null
     };
 
     componentDidMount = async () => {
@@ -71,6 +75,15 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 {fromBlock: 0, toBlock: "latest", filter: { to: injectedAccountAddress }}
             );
 
+            const paymentReceivedEvent = await PaymentReceivedEvent(
+                repaymentManagerInstance,
+                {fromBlock: 0, toBlock: "latest"}
+            );
+
+            const repayments = paymentReceivedEvent
+                .map(event => event.returnValue)
+                .filter(event => event.to === injectedAccountAddress);
+
             // To do (Dennis): Need to investigate the return value
             const withdrawals = paymentReleasedEvents
                 .map(event => event.returnValue)
@@ -78,10 +91,12 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
             this.setState({
                 paymentToken,
+                shares: injectedAccountShares,
                 principalDisbursed,
                 totalPaid: _totalPaid,
                 releaseAllowance: _releaseAllowance,
-                withdrawals
+                withdrawals,
+                repayments
             });
         } catch (err) {
             console.log(err);
@@ -89,7 +104,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     };
 
     render() {
-        const {paymentToken, principalDisbursed, totalPaid, releaseAllowance, withdrawals} = this.state;
+        const {paymentToken, principalDisbursed, shares, totalPaid, releaseAllowance, withdrawals} = this.state;
         return (
             <React.Fragment>
                 <MyLoanWrapper>
@@ -108,15 +123,19 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
                                 <Margin vertical={48}>
                                     <Row text='center'>
-                                        <Col lg={4} md={4} sm={4} xs={4}>
-                                            <h4>{!principalDisbursed ? "0" : prepBigNumber(principalDisbursed, paymentToken.decimals, true)} Dai</h4>
-                                            <p>Loaned Amount</p>
+                                        <Col lg={3} md={3} sm={3} xs={3}>
+                                            <h4>{!shares ? "0" : prepBigNumber(shares, paymentToken.decimals, true)} Dai</h4>
+                                            <p>Invested Amount</p>
                                         </Col>
-                                        <Col lg={4} md={4} sm={4} xs={4}>
+                                        <Col lg={3} md={3} sm={3} xs={3}>
+                                            <h4>{!principalDisbursed ? "0" : prepBigNumber(principalDisbursed, paymentToken.decimals, true)} Dai</h4>
+                                            <p>Loan Disbursed</p>
+                                        </Col>
+                                        <Col lg={3} md={3} sm={3} xs={3}>
                                             <h4>{!totalPaid ? "0" : prepBigNumber(totalPaid, paymentToken.decimals, true)} Dai</h4>
                                             <p>Repaid</p>
                                         </Col>
-                                        <Col lg={4} md={4} sm={4} xs={4}>
+                                        <Col lg={3} md={3} sm={3} xs={3}>
                                             <h4>{!releaseAllowance ? "0" : prepBigNumber(releaseAllowance, paymentToken.decimals, true)} Dai</h4>
                                             <p>Account Balance</p>
                                         </Col>

@@ -26,9 +26,10 @@ import { getInterestRate, getLoanStatus, getNumScheduledPayments, getPrincipalTo
 interface LoanAmountProps extends RouteComponentProps<any> {}
 
 interface LoanAmountState {
+    transacting: boolean;
     loanAmoutnValue: number;
-    crowdLoanInstance: object;
     termsContractInstance: object;
+    crowdLoanInstance: any;
     loanParams: any,
     paymentToken: any
 }
@@ -43,6 +44,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
     constructor(props: LoanAmountProps) {
         super(props);
         this.state = {
+            transacting: false,
             loanAmoutnValue: 0,
             crowdLoanInstance: null,
             termsContractInstance: null,
@@ -94,14 +96,21 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
     onSubmit = async (data: any) => {
         const {history} = this.props;
         const {termsContractInstance, crowdLoanInstance, loanAmoutnValue} = this.state;
+        if (!(+loanAmoutnValue)) {
+            return console.error('Can not contribute Zero(0)');
+        }
 
         // Note: Assuming lender can only fund a loan when the loan is started
         const isLoanStarted = Number(await getLoanStatus(termsContractInstance)) === LoanStatuses.FUNDING_STARTED;
         const paymentTokenInstance = await getInstance(this.state.paymentToken.address);
 
-        if (isLoanStarted) {
+        if (!isLoanStarted) {
+            return console.error('Crowdloan not yet started'); 
+        }
+        try {
+            this.setState({ transacting: true });
             const valueInERC20 = prepBigNumber(loanAmoutnValue, this.state.paymentToken.decimals);
-            const approvedBalance = await allowance(paymentTokenInstance, await getInjectedAccountAddress(), this.state.paymentToken.address);
+            const approvedBalance = await allowance(paymentTokenInstance, await getInjectedAccountAddress(), crowdLoanInstance.options.address);
 
             let tx;
             if (BN(approvedBalance).lt(BN(valueInERC20))) {
@@ -110,22 +119,26 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                 tx = await fund(crowdLoanInstance, valueInERC20);
             }
             console.log(tx);
+            this.setState({ transacting: false });
 
             history.push(AppPath.LoanOfferThankYou);
             return;
-        }
+        } catch (e) {
+            this.setState({ transacting: false });
+            return console.error(e);
+        } 
         // TO DO (Dennis): Display an error message or redirect to the home page if the loan is not yet started, failed, or completed.
     };
 
     handleChange(e: {target: {value: any}}) {
         this.setState({
-            loanAmoutnValue: Number(e.target.value)
+            loanAmoutnValue: +e.target.value
         });
     }
 
     render() {
         const {history} = this.props;
-        const {loanAmoutnValue} = this.state;
+        const {loanAmoutnValue, transacting} = this.state;
         return (
             <StepLoanOfferWrapper>
                 <Container>
@@ -275,7 +288,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                                             </Col>
                                             <Col lg={6} md={12}>
                                                 <Margin top={8}>
-                                                    <Button color='purple' type='submit'>
+                                                    <Button color='purple' type='submit' disabled={transacting}>
                                                         Submit
                                                     </Button>
                                                 </Margin>
