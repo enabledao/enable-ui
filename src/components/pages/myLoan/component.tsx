@@ -16,21 +16,28 @@ import {
     getInjectedAccountAddress,
     getNetworkId
 } from "../../../utils/web3Utils";
+import {getLoanParams} from '../../../utils/termsContract';
 import getWeb3 from "../../../utils/getWeb3";
 
 interface MyLoanState {
+    injectedAccountAddress: string;
     principalDisbursed: string;
     totalPaid: string;
     releaseAllowance: string;
     withdrawals: object;
+    loanParams: object;
 }
 interface MyLoanProps extends RouteComponentProps<any> {}
 class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     state = {
+        injectedAccountAddress: "",
         principalDisbursed: "",
         totalPaid: "",
         releaseAllowance: "",
-        withdrawals: null
+        withdrawals: null,
+        loanParams: {
+            borrower: ""
+        }
     };
 
     componentDidMount = async () => {
@@ -48,6 +55,8 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 TermsContract.abi,
                 termsContractAddress
             );
+
+            const { borrower } = await getLoanParams(termsContractInstance);
 
             // Note: principal disbursed and total paid will return zero when the loan is not started
             const principalDisbursed = await contractMethodCall(
@@ -92,6 +101,10 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 .filter(event => event.to === injectedAccountAddress);
 
             this.setState({
+                injectedAccountAddress,
+                loanParams: {
+                    borrower
+                },
                 principalDisbursed,
                 totalPaid,
                 releaseAllowance,
@@ -103,7 +116,10 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     };
 
     render() {
-        const {principalDisbursed, totalPaid, releaseAllowance, withdrawals} = this.state;
+        const {injectedAccountAddress, principalDisbursed, totalPaid, releaseAllowance, withdrawals, loanParams} = this.state;
+
+        const isBorrower = injectedAccountAddress === loanParams.borrower;
+
         return (
             <React.Fragment>
                 <MyLoanWrapper>
