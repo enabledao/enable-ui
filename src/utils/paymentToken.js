@@ -7,6 +7,7 @@ const getTokenDetailsFromAddress = async (address, web3) => {
     web3 = web3 || await getWeb3();
     const contract = await getContractInstance(ERC20Detailed.abi, address, web3);
     return {
+        address,
         balanceOf: await balanceOf(contract, await getInjectedAccountAddress()),
         decimals: await decimals(contract),
     };
