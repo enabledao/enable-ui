@@ -15,25 +15,29 @@ export default {
         Crowdloan: "",
         CrowdloanFactory: "",
         TermsContract: "",
+        TokenFaucet: "",
         RepaymentManager: "",
     },
     3: {
         Crowdloan: "",
         CrowdloanFactory: "",
         TermsContract: "",
+        TokenFaucet: "",
         RepaymentManager: "",
     },
     42:{
         Crowdloan: "0x363439304c328a24fc0aC24d1c9Aaf08e074c8Cf",
         CrowdloanFactory: "0x754F2d9bE9446a121e49dc615Cd65804f4D14419",
         TermsContract: "0x88a91A84091399f0C07116FCfff536FB5aAb7Ce9",
+        TokenFaucet: "0x54A983EE975627D2b3c0fB1862f8D1160665637c",
         RepaymentManager: "0xFE19c50b5436B848406A877947d81AF7Af5e28Fa"
     },
     1002: {
-        Crowdloan: "0x1930468168967Df8077da0928C32Db2845066563",
-        CrowdloanFactory: "0x7b2b1999315A178392412e7F9F0106d1d2Da5b58",
-        TermsContract: "0xeb595123c7048Db1f5D69738c96a9B5578c5a209",
-        RepaymentManager: "0x3fE7cc8957A5c6e1E2DAfBC3e9Ca75c0a1a1704e",
+        Crowdloan: "",
+        CrowdloanFactory: "",
+        TermsContract: "",
+        TokenFaucet: "",
+        RepaymentManager: ""
     }
     
 }
