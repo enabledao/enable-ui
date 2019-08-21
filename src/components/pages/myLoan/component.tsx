@@ -8,7 +8,9 @@ import {MyLoanWrapper} from "./styled";
 import Withdrawal from "./withdrawals";
 import RepaymentStatus from "./repaymentStatus";
 import contractAddresses from "../../../config/ines.fund.js";
+import { MILLISECONDS } from "../../../config/constants";
 import {
+    getBlock,
     getInjectedAccountAddress,
     prepBigNumber
 } from "../../../utils/web3Utils";
@@ -80,18 +82,19 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 .map(event => event.returnValues)
                 .filter(event => event.to === injectedAccountAddress);
 
-            const paymentReceivedEvent = await PaymentReceivedEvent(
+            let paymentReceivedEvent = await PaymentReceivedEvent(
                 repaymentManagerInstance,
-                {fromBlock: 0, toBlock: "latest"}
+                {fromBlock: 0,  toBlock: "latest"}
             );
 
-            const repayments = paymentReceivedEvent
-                .map(event => ({
+            const repayments = await Promise.all(paymentReceivedEvent
+                .map(async event => ({
+                    date: event.timestamp || (await getBlock(event.blockNumber || event.blockHash)).timestamp * MILLISECONDS,
                     from: event.returnValues.from,
                     amount: prepBigNumber(event.returnValues.amount|| 0, paymentToken.decimals, true),
                     paid: true
 
-                }));
+                })));
 
             this.setState({
                 paymentToken,
