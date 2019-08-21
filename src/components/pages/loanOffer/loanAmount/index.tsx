@@ -105,7 +105,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
         const paymentTokenInstance = await getInstance(this.state.paymentToken.address);
 
         if (!isLoanStarted) {
-            return console.error('Crowdloan not yet started'); 
+            return console.error('Crowdloan not yet started or already completed'); 
         }
         try {
             this.setState({ transacting: true });

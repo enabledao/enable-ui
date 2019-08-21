@@ -104,7 +104,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     };
 
     render() {
-        const {paymentToken, principalDisbursed, shares, totalPaid, releaseAllowance, withdrawals} = this.state;
+        const {paymentToken, principalDisbursed, shares, totalPaid, releaseAllowance, repayments, withdrawals} = this.state;
         return (
             <React.Fragment>
                 <MyLoanWrapper>
@@ -147,7 +147,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                     <Margin bottom={48}>
                         <Withdrawal withdrawals={withdrawals} />
                     </Margin>
-                    <RepaymentStatus />
+                    <RepaymentStatus repayments={repayments}/>
                 </MyLoanWrapper>
             </React.Fragment>
         );

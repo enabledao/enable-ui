@@ -27,7 +27,16 @@ const listRepayment = [
   { date: "Total", due: 7.42 }
 ];
 
-const RepaymentStatus: React.FC = () => (
+interface Repayment {
+  date: string;
+  due: string;
+  status: string;
+}
+interface RepaymentProps {
+  repayments: Repayment[];
+}
+
+const RepaymentStatus: any = ({ repayments }: RepaymentProps) => (
   <RepaymentWrapper>
     <Container>
       <Row justify="center">
@@ -47,7 +56,7 @@ const RepaymentStatus: React.FC = () => (
               </RepaymentTitle>
             </RepaymentTitleWrapper>
           </Margin>
-          {listRepayment.map(res => (
+          {repayments && repayments.map(res => (
             <RepaymentCard key={res.date}>
               <RepaymentInline>
                 <RepaymentTitleMobile>Date</RepaymentTitleMobile>
