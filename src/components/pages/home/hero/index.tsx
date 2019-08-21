@@ -113,7 +113,11 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       let loanEndTimestamp;
 
       if (+loanStartTimestamp !== LoanStatuses.NOT_STARTED) {
-        loanEndTimestamp = await getLoanEndTimestamp(termsContractInstance);
+        const DAYINMILLISECONDS = 86400 * 1000;
+        let endTimestamp = await getLoanEndTimestamp(termsContractInstance);
+        endTimestamp = new Date(+endTimestamp*1000);
+        const now:any = new Date();
+        loanEndTimestamp = Math.ceil( (endTimestamp - now) / DAYINMILLISECONDS );
       }
 
       this.setState({

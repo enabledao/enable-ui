@@ -75,19 +75,23 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 {fromBlock: 0, toBlock: "latest", filter: { to: injectedAccountAddress }}
             );
 
+            // To do (Dennis): Need to investigate the return value
+            const withdrawals = paymentReleasedEvents
+                .map(event => event.returnValues)
+                .filter(event => event.to === injectedAccountAddress);
+
             const paymentReceivedEvent = await PaymentReceivedEvent(
                 repaymentManagerInstance,
                 {fromBlock: 0, toBlock: "latest"}
             );
 
             const repayments = paymentReceivedEvent
-                .map(event => event.returnValue)
-                .filter(event => event.to === injectedAccountAddress);
+                .map(event => ({
+                    from: event.returnValues.from,
+                    amount: prepBigNumber(event.returnValues.amount|| 0, paymentToken.decimals, true),
+                    paid: true
 
-            // To do (Dennis): Need to investigate the return value
-            const withdrawals = paymentReleasedEvents
-                .map(event => event.returnValue)
-                .filter(event => event.to === injectedAccountAddress);
+                }));
 
             this.setState({
                 paymentToken,
