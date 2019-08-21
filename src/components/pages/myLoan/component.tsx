@@ -10,11 +10,13 @@ import RepaymentStatus from "./repaymentStatus";
 import {RepaymentManager, TermsContract} from "../../../utils/contractData";
 import contractAddresses from "../../../config/ines.fund.js";
 import {getContractInstance} from "../../../utils/getDeployed";
+import {INTEREST_DECIMALS} from '../../../config/constants.js'
 import {
     contractGetPastEvents,
     contractMethodCall,
     getInjectedAccountAddress,
-    getNetworkId
+    getNetworkId,
+    prepBigNumber
 } from "../../../utils/web3Utils";
 import {getLoanParams, getPrincipalRequested} from "../../../utils/termsContract";
 import getWeb3 from "../../../utils/getWeb3";
@@ -39,7 +41,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         withdrawals: null,
         loanParams: {
             borrower: "",
-            interestRate: "",
+            interestRate: 0,
             loanPeriod: ""
         }
     };
@@ -114,7 +116,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 injectedAccountAddress,
                 loanParams: {
                     borrower,
-                    interestRate,
+                    interestRate: prepBigNumber(interestRate,INTEREST_DECIMALS, true),
                     loanPeriod
                 },
                 principalDisbursed,
