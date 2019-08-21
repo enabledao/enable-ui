@@ -50,9 +50,9 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         // const {history} = this.props;
         const { releaseAllowance, repaymentManagerInstance } = this.state;
 
-        // if (!+releaseAllowance) {
-        //     return console.error('No balance Available for Withdrawal'); 
-        // }
+        if (!+releaseAllowance) {
+            return console.error('No balance Available for Withdrawal'); 
+        }
         try {
             this.setState({ transacting: true });
 
