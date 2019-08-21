@@ -64,7 +64,7 @@ class Profile extends React.Component<{}> {
           const requestedScheduledPayment = await getRequestedScheduledPayment(termsContractInstance, index + 1);
           const scheduledPayment = await getScheduledPayment(termsContractInstance, index + 1);
           const combined = {
-            dueTimestamp: requestedScheduledPayment.dueTimestamp,
+            dueTimestamp: requestedScheduledPayment.dueTimestamp || scheduledPayment.dueTimestamp,
             interestPayment: requestedScheduledPayment.interestPayment|| scheduledPayment.interestPayment,
             principalPayment: requestedScheduledPayment.principalPayment|| scheduledPayment.principalPayment,
             totalPayment: requestedScheduledPayment.totalPayment|| scheduledPayment.totalPayment,
@@ -80,13 +80,13 @@ class Profile extends React.Component<{}> {
       );
       repayments = calcCummulativePayments(repayments);
 
-    this.setState({
-      repayments,
-      loanParams: {
-        interestRate: prepBigNumber(interestRate,INTEREST_DECIMALS,true),
-        numScheduledPayments
-      }
-    });
+      this.setState({
+        repayments,
+        loanParams: {
+          interestRate: prepBigNumber(interestRate,INTEREST_DECIMALS,true),
+          numScheduledPayments
+        }
+      });
     } catch (err) {
       console.log(err)
     }
@@ -229,7 +229,7 @@ class Profile extends React.Component<{}> {
             </Margin>
           </Col>
           <Col lg={4} md="hidden">
-            <SimuLationReturn simulateInterest={this.simulateInterest.bind(this)} />
+            <SimuLationReturn simulateInterest={this.simulateInterest} />
             <Margin top={48}>
               <SocialShare />
             </Margin>

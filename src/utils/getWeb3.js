@@ -8,12 +8,13 @@ let gettingWeb3;
 const getWeb3 = () =>
   new Promise((resolve, reject) => {
     gettingWeb3 = true;
+    let _web3;
     // Wait for loading completion to avoid race conditions with web3 injection timing.
     window.addEventListener("load", async () => {
       // Modern dapp browsers...
       if (window.ethereum) {
         console.log("Injected ethereum provider detected.");
-        web3 = new Web3(window.ethereum);
+        _web3 = new Web3(window.ethereum);
         try {
           // Request account access if needed
           await window.ethereum.enable();
@@ -26,15 +27,16 @@ const getWeb3 = () =>
       // Legacy dapp browsers...
       else if (window.web3) {
         // Use Mist/MetaMask's provider.
-        web3 = new Web3(window.web3.givenProvider || window.web3.currentProvider);
+        _web3 = new Web3(window.web3.givenProvider || window.web3.currentProvider);
         console.log("Injected web3 detected.");
       }
       // Fallback to localhost; use dev console port by default...
       else {
-        web3 = new Web3(FALLBACK_WEB3_PROVIDER);
+        _web3 = new Web3(FALLBACK_WEB3_PROVIDER);
         console.log("No web3 instance injected, using Infura/Local web3.");
       }
-      web3.eth.defaultAccount = (await web3.eth.getAccounts())[0]
+      _web3.eth.defaultAccount = (await _web3.eth.getAccounts())[0]
+      web3 = _web3;
       gettingWeb3 = false;
       resolve(web3);
     });
