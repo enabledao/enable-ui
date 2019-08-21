@@ -16,12 +16,13 @@ import {
     getInjectedAccountAddress,
     getNetworkId
 } from "../../../utils/web3Utils";
-import {getLoanParams} from '../../../utils/termsContract';
+import {getLoanParams, getPrincipalRequested} from "../../../utils/termsContract";
 import getWeb3 from "../../../utils/getWeb3";
 
 interface MyLoanState {
     injectedAccountAddress: string;
     principalDisbursed: string;
+    principalRequested: string;
     totalPaid: string;
     releaseAllowance: string;
     withdrawals: object;
@@ -32,11 +33,14 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     state = {
         injectedAccountAddress: "",
         principalDisbursed: "",
+        principalRequested: "",
         totalPaid: "",
         releaseAllowance: "",
         withdrawals: null,
         loanParams: {
-            borrower: ""
+            borrower: "",
+            interestRate: "",
+            loanPeriod: ""
         }
     };
 
@@ -56,16 +60,22 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 termsContractAddress
             );
 
-            const { borrower } = await getLoanParams(termsContractInstance);
+            const injectedAccountAddress = await getInjectedAccountAddress();
+
+            // Terms Contract Calls
+            const {borrower, interestRate, loanPeriod} = await getLoanParams(termsContractInstance);
 
             // Note: principal disbursed and total paid will return zero when the loan is not started
             const principalDisbursed = await contractMethodCall(
                 termsContractInstance,
                 "getPrincipalDisbursed"
             );
+
+            const principalRequested = await getPrincipalRequested(termsContractInstance);
+
+            // Repayment Manager calls
             const totalPaid = await contractMethodCall(repaymentManagerInstance, "totalPaid");
 
-            const injectedAccountAddress = await getInjectedAccountAddress();
             const injectedAccountShares = await contractMethodCall(
                 repaymentManagerInstance,
                 "shares",
@@ -103,9 +113,12 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             this.setState({
                 injectedAccountAddress,
                 loanParams: {
-                    borrower
+                    borrower,
+                    interestRate,
+                    loanPeriod
                 },
                 principalDisbursed,
+                principalRequested,
                 totalPaid,
                 releaseAllowance,
                 withdrawals
@@ -115,10 +128,56 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         }
     };
 
-    render() {
-        const {injectedAccountAddress, principalDisbursed, totalPaid, releaseAllowance, withdrawals, loanParams} = this.state;
+    renderBorrowerLoan = (principalRequested, interestRate, loanPeriod) => (
+        <Margin vertical={48}>
+            <Row text='center'>
+                <Col lg={4} md={4} sm={4} xs={4}>
+                    <h4>{principalRequested} Dai</h4>
+                    <p>Loaned Amount</p>
+                </Col>
+                <Col lg={4} md={4} sm={4} xs={4}>
+                    <h4>{interestRate} %</h4>
+                    <p>Interest Rate</p>
+                </Col>
+                <Col lg={4} md={4} sm={4} xs={4}>
+                    <h4>{loanPeriod} Months</h4>
+                    <p>Loan Period</p>
+                </Col>
+            </Row>
+        </Margin>
+    );
 
-        const isBorrower = injectedAccountAddress === loanParams.borrower;
+    renderLenderLoan = (principalDisbursed, totalPaid, releaseAllowance) => (
+        <Margin vertical={48}>
+            <Row text='center'>
+                <Col lg={4} md={4} sm={4} xs={4}>
+                    <h4>{principalDisbursed} Dai</h4>
+                    <p>Loaned Amount</p>
+                </Col>
+                <Col lg={4} md={4} sm={4} xs={4}>
+                    <h4>{totalPaid} Dai</h4>
+                    <p>Repaid</p>
+                </Col>
+                <Col lg={4} md={4} sm={4} xs={4}>
+                    <h4>{releaseAllowance} Dai</h4>
+                    <p>Account Balance</p>
+                </Col>
+            </Row>
+        </Margin>
+    );
+
+    render() {
+        const {
+            injectedAccountAddress,
+            principalDisbursed,
+            principalRequested,
+            totalPaid,
+            releaseAllowance,
+            withdrawals,
+            loanParams
+        } = this.state;
+        const {borrower, interestRate, loanPeriod} = loanParams;
+        const isBorrower = injectedAccountAddress === borrower;
 
         return (
             <React.Fragment>
@@ -136,22 +195,17 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                     <h2>My Loan</h2>
                                 </Padding>
                                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                <Margin vertical={48}>
-                                    <Row text='center'>
-                                        <Col lg={4} md={4} sm={4} xs={4}>
-                                            <h4>{principalDisbursed} Dai</h4>
-                                            <p>Loaned Amount</p>
-                                        </Col>
-                                        <Col lg={4} md={4} sm={4} xs={4}>
-                                            <h4>{totalPaid} Dai</h4>
-                                            <p>Repaid</p>
-                                        </Col>
-                                        <Col lg={4} md={4} sm={4} xs={4}>
-                                            <h4>{releaseAllowance} Dai</h4>
-                                            <p>Account Balance</p>
-                                        </Col>
-                                    </Row>
-                                </Margin>
+                                {!isBorrower
+                                    ? this.renderBorrowerLoan(
+                                          principalRequested,
+                                          interestRate,
+                                          loanPeriod
+                                      )
+                                    : this.renderLenderLoan(
+                                          principalDisbursed,
+                                          totalPaid,
+                                          releaseAllowance
+                                      )}
                             </Col>
                         </Row>
                     </Container>
