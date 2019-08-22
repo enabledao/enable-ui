@@ -9,9 +9,11 @@ interface Withdrawal {
 }
 interface WithdrawalProps {
     withdrawals: Withdrawal[];
+    transacting: boolean;
+    onWithdraw: ()=>{};
 }
 
-const Withdrawal: any = ({withdrawals}: WithdrawalProps) => (
+const Withdrawal: any = ({withdrawals, transacting, onWithdraw}: WithdrawalProps) => (
     <Container>
         <Row justify='center'>
             <Col lg={10} md={12}>
@@ -21,27 +23,34 @@ const Withdrawal: any = ({withdrawals}: WithdrawalProps) => (
                     <WithdrawalBox>
                         <Row justify='center' text='center'>
                             <Col lg={8} sm={12}>
-                                {withdrawals && withdrawals.length === 0 ? (
+                                {!withdrawals || withdrawals.length === 0 ? (
                                     <p>Ups, seems like you don't have withdrawal history</p>
                                 ) : (
-                                    ""
+                                    withdrawals.map( (withdrawal, indx) => 
+                                        <p key={indx}>{JSON.stringify(withdrawal)}</p>
+                                    )
+                                    // ""
                                 ) // To Do (Dennis): Displaying withdrawals
                                 }
                             </Col>
                         </Row>
                         <Row justify='center' text='center'>
                             <Col lg={4} md={6} sm='hidden'>
-                                <Button color='purple'>Withdraw</Button>
+                                <Button color='purple' onClick={onWithdraw} disabled={transacting}>Withdraw</Button>
                             </Col>
                         </Row>
                     </WithdrawalBox>
                     <WithdrawalActionMobile>
-                        <Button color='purple'>Withdraw</Button>
+                        <Button color='purple' disabled={transacting} onClick={onWithdraw}>Withdraw</Button>
                     </WithdrawalActionMobile>
                 </Margin>
             </Col>
         </Row>
     </Container>
 );
+
+Withdrawal.defaultProps = {
+    withdrawals: [],
+}
 
 export default Withdrawal;

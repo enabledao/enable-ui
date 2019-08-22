@@ -7,8 +7,10 @@ const LoanStatuses = {
     REPAYMENT_CYCLE: 4,
     REPAYMENT_COMPLETE: 5
 };
+const MILLISECONDS = 1000;
 
 export {
     INTEREST_DECIMALS,
-    LoanStatuses
+    LoanStatuses,
+    MILLISECONDS
 }
