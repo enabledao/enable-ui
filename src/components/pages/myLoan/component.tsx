@@ -186,35 +186,22 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         }
     };
 
-    renderBorrowerLoan = (paymentToken, principalRequested, interestRate, loanPeriod) => (
+    renderLenderLoan = (paymentToken, principalRequested, interestRate, loanPeriod, shares, released, releaseAllowance) => (
         <Margin vertical={48}>
             <Row text='center'>
                 <Col lg={4} md={4} sm={4} xs={4}>
+                    <h4>{loanPeriod} Months</h4>
+                    <p>Loan Period</p>
+                </Col>
+                <Col lg={4} md={4} sm={4} xs={4}>
                     <h4>{!principalRequested ? "0" : prepBigNumber(principalRequested, paymentToken.decimals, true)} Dai</h4>
-                    <p>Loaned Amount</p>
+                    <p>Loan Amount</p>
                 </Col>
                 <Col lg={4} md={4} sm={4} xs={4}>
                     <h4>{!interestRate ? "0" : prepNumber(interestRate, INTEREST_DECIMALS, true)} %</h4>
                     <p>Interest Rate</p>
                 </Col>
-                <Col lg={4} md={4} sm={4} xs={4}>
-                    <h4>{loanPeriod} Months</h4>
-                    <p>Loan Period</p>
-                </Col>
             </Row>
-        </Margin>
-    );
-
-    renderLenderLoan = (
-        paymentToken,
-        principalDisbursed,
-        shares,
-        released,
-        totalPaid,
-        releaseAllowance,
-        totalShares
-    ) => (
-        <Margin vertical={48}>
             <Row text='center'>
                 <Col lg={4} md={4} sm={4} xs={4}>
                     <h4>{!shares ? "0" : prepBigNumber(shares, paymentToken.decimals, true)} Dai</h4>
@@ -222,8 +209,36 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 </Col>
                 <Col lg={4} md={4} sm={4} xs={4}>
                     <h4>
-                        {!totalShares ? "0" : prepBigNumber(totalShares, paymentToken.decimals, true)}
-                        Dai
+                        {!released
+                            ? "0"
+                            : prepBigNumber(released, paymentToken.decimals, true)} Dai
+                    </h4>
+                    <p>Amount withdrawn</p>
+                </Col>
+                <Col lg={4} md={4} sm={4} xs={4}>
+                    <h4>
+                        {!releaseAllowance
+                            ? "0"
+                            : prepBigNumber(releaseAllowance, paymentToken.decimals, true)} Dai
+                    </h4>
+                    <p>Account Balance</p>
+                </Col>
+            </Row>
+        </Margin>
+    );
+
+    renderBorrowerLoan = (
+        paymentToken,
+        principalDisbursed,
+        totalPaid,
+        totalReleased,
+        totalShares
+    ) => (
+        <Margin vertical={48}>
+            <Row text='center'>
+                <Col lg={4} md={4} sm={4} xs={4}>
+                    <h4>
+                        {!totalShares ? "0" : prepBigNumber(totalShares, paymentToken.decimals, true)} Dai
                     </h4>
                     <p>Amount raised</p>
                 </Col>
@@ -231,8 +246,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                     <h4>
                         {!principalDisbursed
                             ? "0"
-                            : prepBigNumber(principalDisbursed, paymentToken.decimals, true)}
-                        Dai
+                            : prepBigNumber(principalDisbursed, paymentToken.decimals, true)} Dai
                     </h4>
                     <p>Loan Disbursed</p>
                 </Col>
@@ -246,21 +260,11 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 </Col>
                 <Col lg={4} md={4} sm={4} xs={4}>
                     <h4>
-                        {!released
+                        {!totalReleased
                             ? "0"
-                            : prepBigNumber(released, paymentToken.decimals, true)}
-                        Dai
+                            : prepBigNumber(totalReleased, paymentToken.decimals, true)} Dai
                     </h4>
                     <p>Amount withdrawn</p>
-                </Col>
-                <Col lg={4} md={4} sm={4} xs={4}>
-                    <h4>
-                        {!releaseAllowance
-                            ? "0"
-                            : prepBigNumber(releaseAllowance, paymentToken.decimals, true)}
-                        Dai
-                    </h4>
-                    <p>Account Balance</p>
                 </Col>
             </Row>
         </Margin>
@@ -276,6 +280,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             shares,
             released,
             totalPaid,
+            totalReleased,
             totalShares,
             withdrawals,
             repayments,
@@ -299,22 +304,24 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                     <h2>My Loan</h2>
                                 </Padding>
                                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                {isBorrower
-                                    ? this.renderBorrowerLoan(
-                                        paymentToken,
-                                        principalRequested,
-                                        interestRate,
-                                        loanPeriod
-                                      )
-                                    : this.renderLenderLoan(
-                                          paymentToken,
-                                          principalDisbursed,
-                                          shares,
-                                          released,
-                                          totalPaid,
-                                          releaseAllowance,
-                                          totalShares
-                                      )}
+                                {borrower && (
+                                    isBorrower
+                                        ? this.renderBorrowerLoan(
+                                            paymentToken,
+                                            principalDisbursed,
+                                            totalPaid,
+                                            totalReleased,
+                                            totalShares
+                                        )
+                                        : this.renderLenderLoan(
+                                            paymentToken,
+                                            principalRequested,
+                                            interestRate,
+                                            loanPeriod,
+                                            shares,
+                                            released,
+                                            releaseAllowance
+                                        ))}
                             </Col>
                         </Row>
                     </Container>
