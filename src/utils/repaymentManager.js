@@ -4,6 +4,7 @@ const released = (instance, account) =>  contractMethodCall(instance, 'released'
 const releaseAllowance = (instance, account) =>  contractMethodCall(instance, 'releaseAllowance', account);
 const shares = (instance, account) =>  contractMethodCall(instance, 'shares', account);
 const totalPaid = instance =>  contractMethodCall(instance, 'totalPaid');
+const totalReleased = instance =>  contractMethodCall(instance, 'totalReleased');
 const totalShares = instance =>  contractMethodCall(instance, 'totalShares');
 
 const PaymentReceivedEvent = (instance, eventOptions, watch) => {
@@ -40,6 +41,7 @@ export {
     releaseAllowance,
     shares,
     totalPaid,
+    totalReleased,
     totalShares,
 
     //Events
