@@ -19,7 +19,7 @@ import { totalShares } from '../../../../utils/repaymentManager';
 import { getInterestRate, getLoanEndTimestamp, getLoanStartTimestamp, getNumScheduledPayments,getPrincipalRequested, getPrincipalToken } from '../../../../utils/termsContract';
 
 import contractAddresses from '../../../../config/ines.fund';
-import { INTEREST_DECIMALS, LoanStatuses } from "../../../../config/constants";
+import { INTEREST_DECIMALS, LoanStatuses, MILLISECONDS } from "../../../../config/constants";
 
 import {
   HeroWrapper,
@@ -113,9 +113,9 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       let loanEndTimestamp;
 
       if (+loanStartTimestamp !== LoanStatuses.NOT_STARTED) {
-        const DAYINMILLISECONDS = 86400 * 1000;
+        const DAYINMILLISECONDS = 86400 * MILLISECONDS;
         let endTimestamp = await getLoanEndTimestamp(termsContractInstance);
-        endTimestamp = new Date(+endTimestamp*1000);
+        endTimestamp = new Date(+endTimestamp*MILLISECONDS);
         const now:any = new Date();
         loanEndTimestamp = Math.ceil( (endTimestamp - now) / DAYINMILLISECONDS );
       }

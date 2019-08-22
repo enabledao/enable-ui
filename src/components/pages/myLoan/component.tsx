@@ -8,14 +8,14 @@ import {MyLoanWrapper} from "./styled";
 import Withdrawal from "./withdrawals";
 import RepaymentStatus from "./repaymentStatus";
 import contractAddresses from "../../../config/ines.fund.js";
-import {getContractInstance} from "../../../utils/getDeployed";
-import {INTEREST_DECIMALS} from "../../../config/constants.js";
-import {getInjectedAccountAddress, getNetworkId, prepBigNumber} from "../../../utils/web3Utils";
+import {INTEREST_DECIMALS, MILLISECONDS} from "../../../config/constants.js";
+import {getBlock, getInjectedAccountAddress, prepBigNumber, prepNumber} from "../../../utils/web3Utils";
 import {getLoanParams, getPrincipalRequested} from "../../../utils/termsContract";
 import {getDeployedFromConfig} from "../../../utils/getDeployed";
 import {getTokenDetailsFromAddress} from "../../../utils/paymentToken";
 import {
     shares,
+    release,
     released,
     releaseAllowance,
     totalPaid,
@@ -33,8 +33,11 @@ interface MyLoanState {
     principalRequested: string;
     releaseAllowance: string;
     repayments: object;
+    repaymentManagerInstance: object;
+    transacting: boolean;
     loanParams: object;
     shares: string;
+    released: string;
     totalPaid: string;
     totalReleased: string;
     totalShares: string;
@@ -49,10 +52,13 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         principalDisbursed: "",
         principalRequested: "",
         shares: "",
+        released: "",
         totalPaid: "",
         totalReleased: "",
         totalShares: "",
         repayments: null,
+        repaymentManagerInstance: null,
+        transacting: false,
         releaseAllowance: "",
         withdrawals: null,
         loanParams: {
@@ -61,6 +67,28 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             loanPeriod: ""
         }
     };
+
+    onWithdraw = async () => {
+        // const {history} = this.props;
+        const { releaseAllowance, repaymentManagerInstance } = this.state;
+
+        if (!+releaseAllowance) {
+            return console.error('No balance Available for Withdrawal'); 
+        }
+        try {
+            this.setState({ transacting: true });
+
+            const injectedAccountAddress = await getInjectedAccountAddress();
+            const tx = await release(repaymentManagerInstance, injectedAccountAddress);
+            console.log(tx);
+
+            this.setState({ transacting: false });
+            return;
+        } catch (e) {
+            this.setState({ transacting: false });
+            return console.error(e);
+        } 
+    }
 
     componentDidMount = async () => {
         try {
@@ -80,11 +108,12 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             const injectedAccountAddress = await getInjectedAccountAddress();
 
             // Terms Contract Calls
-            const {borrower, interestRate, loanPeriod} = await getLoanParams(termsContractInstance);
+            const loanParams = await getLoanParams(termsContractInstance);
+            const borrower = loanParams[0];
+            const { interestRate, loanPeriod} = loanParams;
 
             // Note: principal disbursed and total paid will return zero when the loan is not started
             const principalDisbursed = await getPrincipalDisbursed(termsContractInstance);
-
             const principalRequested = await getPrincipalRequested(termsContractInstance);
 
             // Repayment Manager calls
@@ -99,7 +128,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             );
 
             let _releaseAllowance;
-            if (+injectedAccountShares > 0 && +injectedAccountReleased > 0) {
+            if (+injectedAccountShares > 0) {
                 _releaseAllowance = await releaseAllowance(
                     repaymentManagerInstance,
                     injectedAccountAddress
@@ -125,44 +154,47 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 toBlock: "latest"
             });
 
-            const repayments = paymentReceivedEvent.map(event => ({
+            const repayments = await Promise.all(paymentReceivedEvent.map(async event => ({
+                date: event.timestamp || (await getBlock(event.blockNumber || event.blockHash)).timestamp * MILLISECONDS,
                 from: event.returnValues.from,
-                amount: prepBigNumber(event.returnValues.amount || 0, paymentToken.decimals, true),
+                amount: prepBigNumber(event.returnValues.amount|| 0, paymentToken.decimals, true),
                 paid: true
-            }));
+            })));
 
             this.setState({
                 injectedAccountAddress,
                 loanParams: {
                     borrower,
-                    interestRate: prepBigNumber(interestRate, INTEREST_DECIMALS, true),
+                    interestRate,
                     loanPeriod
                 },
                 paymentToken,
                 principalDisbursed,
                 principalRequested,
                 shares: injectedAccountShares,
+                released: injectedAccountReleased,
                 totalPaid: _totalPaid,
                 totalReleased: _totalReleased,
                 totalShares: _totalShares,
                 releaseAllowance: _releaseAllowance,
+                withdrawals,
                 repayments,
-                withdrawals
+                repaymentManagerInstance
             });
         } catch (err) {
             console.log(err);
         }
     };
 
-    renderLenderLoan = (principalRequested, interestRate, loanPeriod) => (
+    renderBorrowerLoan = (paymentToken, principalRequested, interestRate, loanPeriod) => (
         <Margin vertical={48}>
             <Row text='center'>
                 <Col lg={4} md={4} sm={4} xs={4}>
-                    <h4>{principalRequested} Dai</h4>
+                    <h4>{!principalRequested ? "0" : prepBigNumber(principalRequested, paymentToken.decimals, true)} Dai</h4>
                     <p>Loaned Amount</p>
                 </Col>
                 <Col lg={4} md={4} sm={4} xs={4}>
-                    <h4>{interestRate} %</h4>
+                    <h4>{!interestRate ? "0" : prepNumber(interestRate, INTEREST_DECIMALS, true)} %</h4>
                     <p>Interest Rate</p>
                 </Col>
                 <Col lg={4} md={4} sm={4} xs={4}>
@@ -173,13 +205,13 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         </Margin>
     );
 
-    renderBorrowerLoan = (
+    renderLenderLoan = (
         paymentToken,
         principalDisbursed,
         shares,
+        released,
         totalPaid,
         releaseAllowance,
-        totalReleased,
         totalShares
     ) => (
         <Margin vertical={48}>
@@ -190,6 +222,13 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 </Col>
                 <Col lg={4} md={4} sm={4} xs={4}>
                     <h4>
+                        {!totalShares ? "0" : prepBigNumber(totalShares, paymentToken.decimals, true)}
+                        Dai
+                    </h4>
+                    <p>Amount raised</p>
+                </Col>
+                <Col lg={4} md={4} sm={4} xs={4}>
+                    <h4>
                         {!principalDisbursed
                             ? "0"
                             : prepBigNumber(principalDisbursed, paymentToken.decimals, true)}
@@ -197,14 +236,23 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                     </h4>
                     <p>Loan Disbursed</p>
                 </Col>
+            </Row>
+            <Row text='center'>
                 <Col lg={4} md={4} sm={4} xs={4}>
                     <h4>
                         {!totalPaid ? "0" : prepBigNumber(totalPaid, paymentToken.decimals, true)} Dai
                     </h4>
-                    <p>Repaid</p>
+                    <p>Amount Repaid</p>
                 </Col>
-            </Row>
-            <Row text='center'>
+                <Col lg={4} md={4} sm={4} xs={4}>
+                    <h4>
+                        {!released
+                            ? "0"
+                            : prepBigNumber(released, paymentToken.decimals, true)}
+                        Dai
+                    </h4>
+                    <p>Amount withdrawn</p>
+                </Col>
                 <Col lg={4} md={4} sm={4} xs={4}>
                     <h4>
                         {!releaseAllowance
@@ -213,22 +261,6 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         Dai
                     </h4>
                     <p>Account Balance</p>
-                </Col>
-                <Col lg={4} md={4} sm={4} xs={4}>
-                    <h4>
-                        {!totalShares ? "0" : prepBigNumber(totalShares, paymentToken.decimals, true)}
-                        Dai
-                    </h4>
-                    <p>Amount raised</p>
-                </Col>
-                <Col lg={4} md={4} sm={4} xs={4}>
-                    <h4>
-                        {!totalReleased
-                            ? "0"
-                            : prepBigNumber(totalReleased, paymentToken.decimals, true)}
-                        Dai
-                    </h4>
-                    <p>Amount withdraw</p>
                 </Col>
             </Row>
         </Margin>
@@ -240,13 +272,14 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             paymentToken,
             principalDisbursed,
             principalRequested,
-            repayments,
             releaseAllowance,
             shares,
+            released,
             totalPaid,
-            totalReleased,
             totalShares,
-            withdrawals
+            withdrawals,
+            repayments,
+            transacting
         } = this.state;
         const {borrower, interestRate, loanPeriod} = loanParams;
         const isBorrower = injectedAccountAddress === borrower;
@@ -268,24 +301,25 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
                                 {isBorrower
                                     ? this.renderBorrowerLoan(
+                                        paymentToken,
+                                        principalRequested,
+                                        interestRate,
+                                        loanPeriod
+                                      )
+                                    : this.renderLenderLoan(
                                           paymentToken,
                                           principalDisbursed,
                                           shares,
+                                          released,
                                           totalPaid,
                                           releaseAllowance,
-                                          totalReleased,
                                           totalShares
-                                      )
-                                    : this.renderLenderLoan(
-                                          principalRequested,
-                                          interestRate,
-                                          loanPeriod
                                       )}
                             </Col>
                         </Row>
                     </Container>
                     <Margin bottom={48}>
-                        <Withdrawal withdrawals={withdrawals} />
+                        <Withdrawal withdrawals={withdrawals} transacting={transacting} onWithdraw={this.onWithdraw}/>
                     </Margin>
                     <RepaymentStatus repayments={repayments} />
                 </MyLoanWrapper>

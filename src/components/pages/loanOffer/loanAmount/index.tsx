@@ -76,8 +76,6 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
             const interestRate = await getInterestRate(termsContractInstance);
             const numScheduledPayments = parseInt(await getNumScheduledPayments(termsContractInstance));
 
-            paymentToken.address = principalToken;
-
             this.setState({
                 crowdLoanInstance,
                 termsContractInstance,
