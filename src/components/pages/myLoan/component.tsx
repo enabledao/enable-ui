@@ -267,8 +267,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                 </Padding>
                                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
                                 {isBorrower
-                                    ? this.renderLenderLoan(principalRequested, interestRate, loanPeriod)
-                                    : this.renderBorrowerLoan(
+                                    ? this.renderBorrowerLoan(
                                           paymentToken,
                                           principalDisbursed,
                                           shares,
@@ -276,6 +275,11 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                           releaseAllowance,
                                           totalReleased,
                                           totalShares
+                                      )
+                                    : this.renderLenderLoan(
+                                          principalRequested,
+                                          interestRate,
+                                          loanPeriod
                                       )}
                             </Col>
                         </Row>
