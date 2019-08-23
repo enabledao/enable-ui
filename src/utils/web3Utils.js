@@ -12,9 +12,20 @@ const getAccounts = async (web3) => {
     web3 = web3 || await getWeb3();
     return await web3.eth.getAccounts();
 }
-const getInjectedAccountAddress = async (web3, accountNumber) => {
+
+const getInjectedAccountAddress = async (accountNumber) => {
     accountNumber = accountNumber || 0;
     return  (await getAccounts())[accountNumber];
+}
+
+const getBlock = async (block) => {
+    const web3 = await getWeb3();
+    return await web3.eth.getBlock(block);
+}
+
+const getTransaction = async (hash) => {
+    const web3 = await getWeb3();
+    return await web3.eth.getTransaction(hash);
 }
 
 const contractMethodCall = async (contract, method, ...args) => {
@@ -50,12 +61,12 @@ const contractMethodTransaction = async (contract, method, ...args) => {
     }
 }
 
-const contractGetEvents = async (contract, eventString="allEvents", eventOptions) => {
+const contractGetEvents = (contract, eventString="allEvents", eventOptions) => {
     eventOptions = prepEventOptions(eventOptions);
     return contract.events[eventString](eventOptions);
 }
 
-const contractGetPastEvents = async (contract, eventString, eventOptions) => {
+const contractGetPastEvents = (contract, eventString, eventOptions) => {
     eventOptions = prepEventOptions(eventOptions);
     return contract.getPastEvents(eventString, eventOptions);
 }
@@ -79,8 +90,8 @@ const prepEventOptions = ({filter, topics, fromBlock, toBlock}) => {
     const eventOptions = {};
     if (filter && Object.keys(filter).length > 0) eventOptions.filter = filter;
     if (topics && topics.length > 0) eventOptions.topics = topics;
-    if (fromBlock) eventOptions.fromBlock = fromBlock;
-    if (toBlock) eventOptions.toBlock = toBlock;
+    if (typeof fromBlock !== 'undefined') eventOptions.fromBlock = fromBlock;
+    if (typeof toBlock !== 'undefined') eventOptions.toBlock = toBlock;
 
     return eventOptions;
 }
@@ -104,8 +115,10 @@ export {
     contractMethodCall,
     contractMethodTransaction,
     getAccounts,
+    getBlock,
     getInjectedAccountAddress,
     getNetworkId,
+    getTransaction,
     prepBigNumber,
     prepNumber,
     prepTransactionOptions
