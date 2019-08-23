@@ -329,9 +329,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         totalPaid,
         totalReleased,
         totalShares,
-        transacting,
-        repayments,
-        withdrawals
+        repayments
     ) => (
         <MyLoanWrapper>
             <Container>
@@ -411,13 +409,6 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                     </Col>
                 </Row>
             </Container>
-            <Margin bottom={48}>
-                <Withdrawal
-                    withdrawals={withdrawals}
-                    transacting={transacting}
-                    onWithdraw={this.onWithdraw}
-                />
-            </Margin>
             <RepaymentStatus repayments={repayments} />
         </MyLoanWrapper>
     );
@@ -444,7 +435,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         return (
             <React.Fragment>
                 {borrower &&
-                    (isBorrower
+                    (!isBorrower
                         ? this.renderBorrowerLoan(
                               loanStatus,
                               paymentToken,
@@ -452,9 +443,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                               totalPaid,
                               totalReleased,
                               totalShares,
-                              transacting,
-                              repayments,
-                              withdrawals
+                              repayments
                           )
                         : this.renderLenderLoan(
                               paymentToken,
