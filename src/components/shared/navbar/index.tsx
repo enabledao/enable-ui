@@ -46,6 +46,15 @@ const Navbar: React.FC = () => {
                 My Loan
               </NavLink>
             </NavbarItems>
+            <NavbarItems>
+              <NavLink
+                exact={true}
+                to={AppPath.faucet}
+                activeStyle={NavbarItemActive}
+              >
+                Faucet
+              </NavLink>
+            </NavbarItems>
           </NavbarMenu>
         </NavbarBox>
       </Container>
