@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { MaxWidth } from "../../../../../../styles/utils";
 
 const RepaymentCard = styled.div`
+  key: ${props => props.key}
   background-color: white;
   border: 1px solid #e7ebf2;
   margin-top: 8px;
@@ -24,7 +25,7 @@ const RepaymentCard = styled.div`
 `;
 
 const RepaymentInline = styled.div`
-  width: calc(100% / 4);
+  width: calc(100% / 5);
   display: inline-block;
   p {
     margin-bottom: 0;
@@ -40,7 +41,7 @@ const RepaymentTitleWrapper = styled.div`
 `;
 
 const RepaymentTitle = styled.div`
-  width: calc(100% / 4);
+  width: calc(100% / 5);
   display: inline-block;
   ${MaxWidth.sm`
     display: none;

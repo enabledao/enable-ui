@@ -1,6 +1,7 @@
 import React from "react";
 import billIcon from "../../../../../../images/icons/bill.svg";
 import { Margin, Padding } from "../../../../../../styles/utils";
+import { RouteComponentProps } from "react-router-dom";
 import { Row, Col } from "../../../../../lib";
 import {
   RepaymentCard,
@@ -9,6 +10,8 @@ import {
   RepaymentTitle,
   RepaymentTitleMobile
 } from "./styled";
+
+interface RepaymentProps extends RouteComponentProps<any> {}
 
 const listRepayment = [
   { date: "1 Aug 2019", due: 300, principal: 0, interest: 300 },
@@ -26,7 +29,17 @@ const listRepayment = [
   { date: "Total", due: 300, principal: 60000, interest: 3600 }
 ];
 
-const Repayment: React.FC = () => (
+interface Repayment {
+  due: string;
+  interest: string;
+  payment: string;
+  principal: string;
+  total: string;
+}
+interface RepaymentProps {
+  repayments: Repayment[];
+}
+const Repayment: any = ({repayments} : RepaymentProps) => (
   <Row>
     <Col lg={12}>
       <img
@@ -53,17 +66,20 @@ const Repayment: React.FC = () => (
           <RepaymentTitle>
             <p>Interest</p>
           </RepaymentTitle>
+          <RepaymentTitle>
+            <p>Cumulative Payment</p>
+          </RepaymentTitle>
         </RepaymentTitleWrapper>
       </Margin>
-      {listRepayment.map(res => (
-        <RepaymentCard key={res.date}>
+      {repayments.map((res, indx) => (
+        <RepaymentCard key={indx}>
           <RepaymentInline>
             <RepaymentTitleMobile>Date</RepaymentTitleMobile>
-            <p>{res.date}</p>
+            <p>{new Date(res.due).toLocaleDateString()}</p>
           </RepaymentInline>
           <RepaymentInline>
             <RepaymentTitleMobile>Repayment Due</RepaymentTitleMobile>
-            <p>{res.due} Dai</p>
+            <p>{res.total} Dai</p>
           </RepaymentInline>
           <RepaymentInline>
             <RepaymentTitleMobile>Principal</RepaymentTitleMobile>
@@ -73,10 +89,17 @@ const Repayment: React.FC = () => (
             <RepaymentTitleMobile>Interest</RepaymentTitleMobile>
             <p>{res.interest} Dai</p>
           </RepaymentInline>
+          <RepaymentInline>
+            <RepaymentTitleMobile>Cumulative Payment</RepaymentTitleMobile>
+            <p>{res.payment} Dai</p>
+          </RepaymentInline>
         </RepaymentCard>
       ))}
     </Col>
   </Row>
 );
 
+Repayment.defaultProps = {
+  repayments: listRepayment,
+}
 export default Repayment;

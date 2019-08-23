@@ -4,6 +4,7 @@ import { MaxWidth } from "../../../../styles/utils";
 const RepaymentWrapper = styled.div``;
 
 const RepaymentCard = styled.div`
+  key: ${prop => prop.key}
   background-color: white;
   border: 1px solid #e7ebf2;
   margin-top: 8px;

@@ -14,8 +14,83 @@ import WhyMe from "./whyMe";
 import Repayment from "./repayment";
 import SimuLationReturn from "../../simulation";
 import SocialShare from "../../socialShare";
+import { simulateTotalInterest } from '../../../../../utils/jsCalculator';
+import { prepBigNumber } from '../../../../../utils/web3Utils';
+import { getDeployedFromConfig  } from "../../../../../utils/getDeployed";
+import { getTokenDetailsFromAddress } from '../../../../../utils/paymentToken';
+import { getInterestRate, getLoanStartTimestamp, getNumScheduledPayments, getPrincipalToken, getRequestedScheduledPayment, getScheduledPayment, } from '../../../../../utils/termsContract';
 
-class Profile extends React.Component<{}, {}> {
+import contractAddresses from '../../../../../config/ines.fund';
+import { INTEREST_DECIMALS } from "../../../../../config/constants";
+
+const ONETHOUSAND = 1000;
+
+const calcCummulativePayments = (repayment) => {
+  return repayment.map( (payment, index) =>
+    Object.assign({}, payment, {
+      payment: repayment.slice(0, index+1).reduce((a,b) => a+Number(b.total), 0) 
+    })
+  )
+}
+
+class Profile extends React.Component<{}> {
+  state = {
+    repayments: [],
+    loanParams: {
+      interestRate: 0,
+      numScheduledPayments: 0
+    }
+  }
+
+  simulateInterest = (contribution) => {
+    const { interestRate, numScheduledPayments } = this.state.loanParams;
+    return simulateTotalInterest(contribution, interestRate, numScheduledPayments);
+  }
+
+  componentDidMount = async () => {
+    const termsContractInstance = await getDeployedFromConfig('TermsContract', contractAddresses);
+
+    try {
+      const numScheduledPayments = parseInt(await getNumScheduledPayments(termsContractInstance));
+      const loanStartTimestamp = await getLoanStartTimestamp(termsContractInstance);
+      const paymentToken = await getTokenDetailsFromAddress(await getPrincipalToken(termsContractInstance));
+      const interestRate = await getInterestRate(termsContractInstance);
+      const prepDueTimestamp = (dueTimestamp, startTimestamp) => (dueTimestamp * ONETHOUSAND) + (startTimestamp == 0 ? new Date().getTime() : 0);
+
+      let repayments = await Promise.all(
+        Array(numScheduledPayments)
+        .fill({})
+        .map(async (element, index) => {
+          const requestedScheduledPayment = await getRequestedScheduledPayment(termsContractInstance, index + 1);
+          const scheduledPayment = await getScheduledPayment(termsContractInstance, index + 1);
+          const combined = {
+            dueTimestamp: requestedScheduledPayment.dueTimestamp || scheduledPayment.dueTimestamp,
+            interestPayment: requestedScheduledPayment.interestPayment|| scheduledPayment.interestPayment,
+            principalPayment: requestedScheduledPayment.principalPayment|| scheduledPayment.principalPayment,
+            totalPayment: requestedScheduledPayment.totalPayment|| scheduledPayment.totalPayment,
+          };
+
+          return {
+            due: prepDueTimestamp(combined.dueTimestamp, loanStartTimestamp),
+            interest: prepBigNumber(combined.interestPayment,paymentToken.decimals,true),
+            principal: prepBigNumber(combined.principalPayment,paymentToken.decimals,true),
+            total: prepBigNumber(combined.totalPayment,paymentToken.decimals,true)
+          };
+        })
+      );
+      repayments = calcCummulativePayments(repayments);
+
+      this.setState({
+        repayments,
+        loanParams: {
+          interestRate: prepBigNumber(interestRate,INTEREST_DECIMALS,true),
+          numScheduledPayments
+        }
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  }
   render() {
     return (
       <React.Fragment>
@@ -150,11 +225,11 @@ class Profile extends React.Component<{}, {}> {
               <WhyMe />
             </Margin>
             <Margin top={60}>
-              <Repayment />
+              <Repayment repayments={this.state.repayments} />
             </Margin>
           </Col>
           <Col lg={4} md="hidden">
-            <SimuLationReturn />
+            <SimuLationReturn simulateInterest={this.simulateInterest} />
             <Margin top={48}>
               <SocialShare />
             </Margin>
