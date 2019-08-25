@@ -55,7 +55,7 @@ class Profile extends React.Component<{}> {
       const loanStartTimestamp = await getLoanStartTimestamp(termsContractInstance);
       const paymentToken = await getTokenDetailsFromAddress(await getPrincipalToken(termsContractInstance));
       const interestRate = await getInterestRate(termsContractInstance);
-      const prepDueTimestamp = (dueTimestamp, startTimestamp) => (dueTimestamp * ONETHOUSAND) + (startTimestamp == 0 ? new Date().getTime() : 0);
+      const prepDueTimestamp = (dueTimestamp, startTimestamp) => (dueTimestamp * ONETHOUSAND) + (startTimestamp === 0 ? new Date().getTime() : 0);
 
       let repayments = await Promise.all(
         Array(numScheduledPayments)
