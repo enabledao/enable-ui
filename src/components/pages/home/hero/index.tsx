@@ -5,7 +5,7 @@ import AvatarBrooke from "../../../../images/avatar/brooke.jpg";
 import AvatarIvana from "../../../../images/avatar/ivana.jpg";
 import AvatarShamanta from "../../../../images/avatar/shamanta.jpg";
 import HeroInes from "../../../../images/hero/home.png";
-import ModalListContributor from "./modalListContributor";
+import ModalListContributor from "../modalListContributor";
 import ModalVideo from "./modalVideo";
 import { Container } from "../../../../styles/bases";
 import { Margin, MobileTextCenter } from "../../../../styles/utils";

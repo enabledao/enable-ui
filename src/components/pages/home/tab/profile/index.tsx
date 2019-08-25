@@ -1,12 +1,8 @@
 import React from "react";
-import Linkedin from "../../../../../images/socialMedia/linkedin.svg";
-import Instagram from "../../../../../images/socialMedia/instagram.svg";
-import Twitter from "../../../../../images/socialMedia/twitter.svg";
-import Facebook from "../../../../../images/socialMedia/facebook.svg";
 import InesForum1 from "../../../../../images/campaign/ines-forum-1.jpg";
 import InesForum2 from "../../../../../images/campaign/ines-forum-2.jpg";
 import InesForum3 from "../../../../../images/campaign/ines-forum-3.jpg";
-import { Margin, MobileTextCenter, Padding } from "../../../../../styles/utils";
+import { Margin, Padding } from "../../../../../styles/utils";
 import { Row, Col } from "../../../../lib";
 import TestimonialLinkedin from "./testimonial";
 import SimuLationReturn from "../../simulation";
@@ -26,7 +22,6 @@ import {
 import contractAddresses from "../../../../../config/ines.fund";
 import { INTEREST_DECIMALS } from "../../../../../config/constants";
 import {
-  ProfileSocialLink,
   TimelineWrapper,
   TimelineYear,
   TimelineBlack,
@@ -254,41 +249,6 @@ class Profile extends React.Component<{}> {
                     mentor, and opening doors for them on an international
                     stage.
                   </p>
-                  <Margin top={48}>
-                    <MobileTextCenter>
-                      <Margin bottom={24}>
-                        <h6>You can know more about me on my social media</h6>
-                      </Margin>
-                      <ProfileSocialLink
-                        href="https://id.linkedin.com/in/widya-imanesti"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img src={Linkedin} alt="Socila - Media" width={24} />
-                      </ProfileSocialLink>
-                      <ProfileSocialLink
-                        href="https://www.instagram.com/wimanesti/?hl=en"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img src={Instagram} alt="Socila - Media" width={24} />
-                      </ProfileSocialLink>
-                      <ProfileSocialLink
-                        href="https://twitter.com/itsenamiw"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img src={Twitter} alt="Socila - Media" width={24} />
-                      </ProfileSocialLink>
-                      <ProfileSocialLink
-                        href="https://www.facebook.com/widya.imanesti"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img src={Facebook} alt="Socila - Media" width={24} />
-                      </ProfileSocialLink>
-                    </MobileTextCenter>
-                  </Margin>
                   {/* <Margin top={60}>
                     <Repayment repayments={this.state.repayments} />
                   </Margin> */}
