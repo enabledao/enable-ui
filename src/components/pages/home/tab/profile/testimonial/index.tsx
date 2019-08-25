@@ -76,19 +76,19 @@ class TestimonialLinkedin extends React.Component<
                         centered -- definitely will be an asset to any company.
                       </span>
                     )}
-                    <Margin top={8}>
-                      <h6
-                        style={{ color: "#21b549", cursor: "pointer" }}
-                        onClick={() =>
-                          this.setState({
-                            one: !this.state.one
-                          })
-                        }
-                      >
-                        {!this.state.one ? "Read More" : "Read Less"}
-                      </h6>
-                    </Margin>
                   </p>
+                  <Margin top={8}>
+                    <span
+                      style={{ color: "#21b549", cursor: "pointer" }}
+                      onClick={() =>
+                        this.setState({
+                          one: !this.state.one
+                        })
+                      }
+                    >
+                      {!this.state.one ? "Read More" : "Read Less"}
+                    </span>
+                  </Margin>
                 </Margin>
               </Padding>
             </TestimonialContent>
@@ -126,19 +126,19 @@ class TestimonialLinkedin extends React.Component<
                         nation without poverty.
                       </span>
                     )}
-                    <Margin top={8}>
-                      <h6
-                        style={{ color: "#21b549", cursor: "pointer" }}
-                        onClick={() =>
-                          this.setState({
-                            two: !this.state.two
-                          })
-                        }
-                      >
-                        {!this.state.two ? "Read More" : "Read Less"}
-                      </h6>
-                    </Margin>
                   </p>
+                  <Margin top={8}>
+                    <span
+                      style={{ color: "#21b549", cursor: "pointer" }}
+                      onClick={() =>
+                        this.setState({
+                          two: !this.state.two
+                        })
+                      }
+                    >
+                      {!this.state.two ? "Read More" : "Read Less"}
+                    </span>
+                  </Margin>
                 </Margin>
               </Padding>
             </TestimonialContent>
@@ -170,19 +170,19 @@ class TestimonialLinkedin extends React.Component<
                         resources and would be an asset to any organization.
                       </span>
                     )}
-                    <Margin top={8}>
-                      <h6
-                        style={{ color: "#21b549", cursor: "pointer" }}
-                        onClick={() =>
-                          this.setState({
-                            three: !this.state.three
-                          })
-                        }
-                      >
-                        {!this.state.three ? "Read More" : "Read Less"}
-                      </h6>
-                    </Margin>
                   </p>
+                  <Margin top={8}>
+                    <span
+                      style={{ color: "#21b549", cursor: "pointer" }}
+                      onClick={() =>
+                        this.setState({
+                          three: !this.state.three
+                        })
+                      }
+                    >
+                      {!this.state.three ? "Read More" : "Read Less"}
+                    </span>
+                  </Margin>
                 </Margin>
               </Padding>
             </TestimonialContent>
@@ -299,19 +299,19 @@ class TestimonialLinkedin extends React.Component<
                         high perfermance.
                       </span>
                     )}
-                    <Margin top={8}>
-                      <h6
-                        style={{ color: "#21b549", cursor: "pointer" }}
-                        onClick={() =>
-                          this.setState({
-                            six: !this.state.six
-                          })
-                        }
-                      >
-                        {!this.state.six ? "Read More" : "Read Less"}
-                      </h6>
-                    </Margin>
                   </p>
+                  <Margin top={8}>
+                    <span
+                      style={{ color: "#21b549", cursor: "pointer" }}
+                      onClick={() =>
+                        this.setState({
+                          six: !this.state.six
+                        })
+                      }
+                    >
+                      {!this.state.six ? "Read More" : "Read Less"}
+                    </span>
+                  </Margin>
                 </Margin>
               </Padding>
             </TestimonialContent>
@@ -356,19 +356,19 @@ class TestimonialLinkedin extends React.Component<
                         with solutions to insure success.
                       </span>
                     )}
-                    <Margin top={8}>
-                      <h6
-                        style={{ color: "#21b549", cursor: "pointer" }}
-                        onClick={() =>
-                          this.setState({
-                            seven: !this.state.seven
-                          })
-                        }
-                      >
-                        {!this.state.seven ? "Read More" : "Read Less"}
-                      </h6>
-                    </Margin>
                   </p>
+                  <Margin top={8}>
+                    <span
+                      style={{ color: "#21b549", cursor: "pointer" }}
+                      onClick={() =>
+                        this.setState({
+                          seven: !this.state.seven
+                        })
+                      }
+                    >
+                      {!this.state.seven ? "Read More" : "Read Less"}
+                    </span>
+                  </Margin>
                 </Margin>
               </Padding>
             </TestimonialContent>
@@ -426,19 +426,19 @@ class TestimonialLinkedin extends React.Component<
                         such big regret when she had to move overseas.
                       </span>
                     )}
-                    <Margin top={8}>
-                      <h6
-                        style={{ color: "#21b549", cursor: "pointer" }}
-                        onClick={() =>
-                          this.setState({
-                            eight: !this.state.eight
-                          })
-                        }
-                      >
-                        {!this.state.eight ? "Read More" : "Read Less"}
-                      </h6>
-                    </Margin>
                   </p>
+                  <Margin top={8}>
+                    <span
+                      style={{ color: "#21b549", cursor: "pointer" }}
+                      onClick={() =>
+                        this.setState({
+                          eight: !this.state.eight
+                        })
+                      }
+                    >
+                      {!this.state.eight ? "Read More" : "Read Less"}
+                    </span>
+                  </Margin>
                 </Margin>
               </Padding>
             </TestimonialContent>

@@ -354,7 +354,7 @@ class SimuLationReturn extends React.Component<
         <Margin top={40} bottom={24}>
           <Row>
             {listContributor.map(res => (
-              <React.Fragment>
+              <React.Fragment key={res.name}>
                 <Col lg={6}>
                   <h6>{res.name}</h6>
                   <small>

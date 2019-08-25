@@ -252,13 +252,11 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 </Margin>
                 <Margin top={8}>
                   <HeroStats>
-                    <p>
-                      <HeroLink onClick={this.handleModal}>
-                        Powered by
-                        <b> 32 </b>
-                        contributors
-                      </HeroLink>
-                    </p>
+                    <HeroLink onClick={this.handleModal}>
+                      Powered by
+                      <b> 32 </b>
+                      contributors
+                    </HeroLink>
                   </HeroStats>
                   <HeroStatsRight>
                     <p style={{ color: "black" }}>
