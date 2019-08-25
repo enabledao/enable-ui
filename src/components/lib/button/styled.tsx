@@ -2,11 +2,9 @@ import styled, { css } from "styled-components";
 import { ButtonProps } from "./interface";
 
 const ButtonWrapper = styled.button<ButtonProps>`
-  disabled: ${props => props.disabled}
   display: inline-block;
   padding: 8px 16px;
   min-width: 100px;
-  border-radius: 4px;
   cursor: pointer;
   outline: none;
   text-decoration: none;
@@ -34,6 +32,34 @@ const ButtonWrapper = styled.button<ButtonProps>`
       color: white;
       &:hover {
         background-color: #6713c4;
+      }
+    `}
+  ${props =>
+    props.color === "green" &&
+    css`
+      a {
+        color: white;
+      }
+      background-color: #21b549;
+      border: 2px solid #21b549;
+      color: white;
+      &:hover {
+        background-color: #21b549;
+      }
+    `}
+
+  ${props =>
+    props.color === "green" &&
+    props.outline &&
+    css`
+      a {
+        color: white;
+      }
+      background-color: white;
+      border: 2px solid #21b549;
+      color: #21b549;
+      &:hover {
+        color: white;
       }
     `}
 `;
