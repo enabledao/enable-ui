@@ -2,20 +2,28 @@ import styled, { css } from "styled-components";
 import { MaxWidth } from "../../../../styles/utils";
 
 const TabWrapper = styled.div`
-  border: 1px solid #e7ebf2;
   position: sticky;
   top: 0;
   overflow: scroll;
-  background-color: #fff;
+  background-color: #f7f7f7;
   z-index: 4;
 `;
 
 const TabContentWrapper = styled.div<{ ref: any }>`
-  padding: 60px 0 80px 0;
+  padding: 0 0 80px 0;
+  background-color: #f7f7f7;
+`;
+
+const TabContent = styled.div`
+  padding: 20px 50px;
+  background-color: #fff;
 `;
 
 const TabMenu = styled.ul`
   white-space: nowrap;
+  background-color: #fff;
+  padding: 0 50px;
+  border-bottom: 1px solid #e7ebf2;
   li {
     margin-right: 32px;
     a {
@@ -76,5 +84,6 @@ export {
   TabMenu,
   TabMenuList,
   TabMenuOnlyShowMobile,
-  StaticLinkWrapper
+  StaticLinkWrapper,
+  TabContent
 };

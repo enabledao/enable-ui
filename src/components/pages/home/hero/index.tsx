@@ -187,14 +187,14 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
         <Container>
           <HeroCell>
             <Row>
-              <Col lg={7} md={8} sm="hidden" text="center">
+              <Col lg={7} md={12} sm={12} text="center">
                 <HeroImage>
                   <HeroLink onClick={this.handleModalVideo}>
                     <img src={HeroInes} alt="HomeHero - Illustraion" />
                   </HeroLink>
                 </HeroImage>
               </Col>
-              <Col lg={5} md={4} sm={12}>
+              <Col lg={5} md={12} sm={12}>
                 <b>
                   <p style={{ color: "#6c6d7a" }}>
                     INCOME SHARE AGREEMENT // EDUCATION
@@ -292,6 +292,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                       <HeroStats>
                         <h4>
                           {!this.state.loanPeriod ? "0" : this.state.loanPeriod}{" "}
+                          yr.
                         </h4>
                         <p>Duration</p>
                       </HeroStats>

@@ -1,20 +1,16 @@
 import React, { Fragment } from "react";
-import FaqTab from "./faq";
-import SocialCredits from "./socialCredits";
+import InvestmentBreakdown from "./investmentBreakdown";
 import Profile from "./profile";
 import SimuLationReturn from "../simulation";
 import { Container } from "../../../../styles/bases";
-import { Row, Col } from "../../../lib";
-import { Margin, Padding } from "../../../../styles/utils";
 import {
   TabWrapper,
   TabMenu,
   TabContentWrapper,
   TabMenuList,
   TabMenuOnlyShowMobile,
-  StaticLinkWrapper
+  TabContent
 } from "./styled";
-import chevron from "../../../../images/icons/chevron-bottom.svg";
 
 export interface TabHomeState {
   page: number;
@@ -51,162 +47,12 @@ class TabHome extends React.Component<{}, TabHomeState> {
         return (
           <Fragment>
             <Profile />
-            <Row>
-              <Col lg={8} md={12}>
-                <Margin top={24}>
-                  <StaticLinkWrapper>
-                    <div
-                      onClick={() => {
-                        this.scrollToElement();
-                        this.setState({ page: 3 });
-                      }}
-                    >
-                      <img
-                        src={chevron}
-                        alt="Icon - ArrowLeft"
-                        width={32}
-                        style={{
-                          position: "absolute",
-                          transform: "rotate(90deg)"
-                        }}
-                      />
-                      <Padding left={48}>
-                        <p>See more</p>
-                        <h5>What people say</h5>
-                      </Padding>
-                    </div>
-                    <div
-                      onClick={() => {
-                        this.scrollToElement();
-                        this.setState({ page: 2 });
-                      }}
-                    >
-                      <img
-                        src={chevron}
-                        alt="Icon - ArrowLeft"
-                        width={32}
-                        style={{
-                          position: "absolute",
-                          transform: "rotate(-90deg)"
-                        }}
-                      />
-                      <Padding left={48}>
-                        <p>See more</p>
-                        <h5>FAQ</h5>
-                      </Padding>
-                    </div>
-                  </StaticLinkWrapper>
-                </Margin>
-              </Col>
-            </Row>
           </Fragment>
         );
       case 2:
         return (
           <Fragment>
-            <FaqTab />
-            <Row>
-              <Col lg={8} sm={12}>
-                <Margin top={24}>
-                  <StaticLinkWrapper>
-                    <div
-                      onClick={() => {
-                        this.scrollToElement();
-                        this.setState({ page: 1 });
-                      }}
-                    >
-                      <img
-                        src={chevron}
-                        alt="Icon - ArrowLeft"
-                        width={32}
-                        style={{
-                          position: "absolute",
-                          transform: "rotate(90deg)"
-                        }}
-                      />
-                      <Padding left={48}>
-                        <p>See more</p>
-                        <h5>Campaign</h5>
-                      </Padding>
-                    </div>
-                    <div
-                      onClick={() => {
-                        this.scrollToElement();
-                        this.setState({ page: 3 });
-                      }}
-                    >
-                      <img
-                        src={chevron}
-                        alt="Icon - ArrowLeft"
-                        width={32}
-                        style={{
-                          position: "absolute",
-                          transform: "rotate(-90deg)"
-                        }}
-                      />
-                      <Padding left={48}>
-                        <p>See more</p>
-                        <h5>What people say</h5>
-                      </Padding>
-                    </div>
-                  </StaticLinkWrapper>
-                </Margin>
-              </Col>
-            </Row>
-          </Fragment>
-        );
-      case 3:
-        return (
-          <Fragment>
-            <SocialCredits />
-            <Row>
-              <Col lg={8} sm={12}>
-                <Margin top={24}>
-                  <StaticLinkWrapper>
-                    <div
-                      onClick={() => {
-                        this.scrollToElement();
-                        this.setState({ page: 2 });
-                      }}
-                    >
-                      <img
-                        src={chevron}
-                        alt="Icon - ArrowLeft"
-                        width={32}
-                        style={{
-                          position: "absolute",
-                          transform: "rotate(90deg)"
-                        }}
-                      />
-                      <Padding left={48}>
-                        <p>See more</p>
-                        <h5>FAQ</h5>
-                      </Padding>
-                    </div>
-                    <div
-                      onClick={() => {
-                        this.scrollToElement();
-                        this.setState({ page: 1 });
-                      }}
-                    >
-                      <img
-                        src={chevron}
-                        alt="Icon - ArrowLeft"
-                        width={32}
-                        style={{
-                          position: "absolute",
-                          transform: "rotate(-90deg)"
-                        }}
-                      />
-                      <Padding left={48}>
-                        <p>See more</p>
-                        <h5>Campaign</h5>
-                      </Padding>
-                    </div>
-                  </StaticLinkWrapper>
-                </Margin>
-              </Col>
-            </Row>
+            <InvestmentBreakdown />
           </Fragment>
         );
       default:
@@ -250,22 +96,15 @@ class TabHome extends React.Component<{}, TabHomeState> {
                 }}
                 activePage={page === 2}
               >
-                <span>FAQ</span>
-              </TabMenuList>
-              <TabMenuList
-                onClick={() => {
-                  this.scrollToElement();
-                  this.setState({ page: 3 });
-                }}
-                activePage={page === 3}
-              >
-                <span>What people say</span>
+                <span>Investment Breakdown</span>
               </TabMenuList>
             </TabMenu>
           </Container>
         </TabWrapper>
         <TabContentWrapper ref={this.tabContentNode}>
-          <Container>{this.renderTabContent()}</Container>
+          <Container>
+            <TabContent>{this.renderTabContent()}</TabContent>
+          </Container>
         </TabContentWrapper>
       </React.Fragment>
     );

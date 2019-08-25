@@ -2,19 +2,10 @@ import React from "react";
 import { listContributor } from "./";
 import { Margin, Padding } from "../../../../styles/utils";
 import { Avatar, Row, Col } from "../../../lib";
-import listIcon from "../../../../images/icons/list.svg";
 
 const ModalListContributor: React.FC = () => (
   <React.Fragment>
-    <img
-      src={listIcon}
-      alt="Icon - List"
-      width={34}
-      style={{ position: "absolute" }}
-    />
-    <Padding left={48}>
-      <h4>List of contributing lenders</h4>
-    </Padding>
+    <h4>List of contributing lenders</h4>
     <Margin top={24}>
       <p>
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Veniam
