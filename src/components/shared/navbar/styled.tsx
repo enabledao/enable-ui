@@ -38,7 +38,7 @@ const NavbarMenu = styled.ul`
 
 const NavbarItems = styled.li`
   padding: 0 12px;
-  font-weight: 600;
+  font-weight: 400;
   &:last-child {
     padding-right: 0;
   }
