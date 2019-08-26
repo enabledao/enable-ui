@@ -10,7 +10,7 @@ import RepaymentStatus from "./repaymentStatus";
 import contractAddresses from "../../../config/ines.fund.js";
 import {INTEREST_DECIMALS, MILLISECONDS} from "../../../config/constants.js";
 import {getBlock, getInjectedAccountAddress, prepBigNumber, prepNumber} from "../../../utils/web3Utils";
-import {getLoanParams, getLoanStatus, getPrincipalRequested} from "../../../utils/termsContract";
+import {getLoanParams, getPrincipalRequested} from "../../../utils/termsContract";
 import {getDeployedFromConfig} from "../../../utils/getDeployed";
 import {getTokenDetailsFromAddress} from "../../../utils/paymentToken";
 import {
@@ -112,8 +112,6 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             const loanParams = await getLoanParams(termsContractInstance);
             const {0: borrower} = loanParams;
             const {interestRate, loanPeriod, loanStatus: _loanStatus} = loanParams;
-
-            const stringLoanStatus = this.loanStatus(_loanStatus);
 
             // Note: principal disbursed and total paid will return zero when the loan is not started
             const principalDisbursed = await getPrincipalDisbursed(termsContractInstance);
@@ -435,7 +433,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         return (
             <React.Fragment>
                 {borrower &&
-                    (!isBorrower
+                    (isBorrower
                         ? this.renderBorrowerLoan(
                               loanStatus,
                               paymentToken,
