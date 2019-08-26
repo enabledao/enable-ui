@@ -4,16 +4,6 @@ const HeroWrapper = styled.div`
   background-color: #f7f7f7;
   position: relative;
   min-height: calc(100vh - (60px + 68px));
-  padding-top: 40px;
-  &::before {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: calc(100% - 60%);
-    bottom: 0;
-    background-color: #363bd3;
-    content: "";
-  }
 `;
 
 const HeroContent = styled.div`
@@ -24,4 +14,11 @@ const HeroContent = styled.div`
   display: block;
 `;
 
-export { HeroWrapper, HeroContent };
+const HeroTitle = styled.div`
+  background-color: #363bd3;
+  padding: 40px 0;
+  position: relative;
+  height: 300px;
+`;
+
+export { HeroWrapper, HeroContent, HeroTitle };

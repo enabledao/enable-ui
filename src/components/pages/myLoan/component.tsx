@@ -3,11 +3,12 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Container } from "../../../styles/bases";
 import { Margin } from "../../../styles/utils";
 import { Row, Col } from "../../lib";
-import { HeroWrapper, HeroContent, BoxStats } from "./styled";
+import { HeroWrapper, HeroContent, BoxStats, HeroTitle } from "./styled";
 import Withdrawal from "./withdrawals";
 import RepaymentStatus from "./repaymentStatus";
 import contractAddresses from "../../../config/ines.fund.js";
 import { MILLISECONDS } from "../../../config/constants.js";
+import PatternImage from "../../../images/pattern.png";
 import {
   getBlock,
   getInjectedAccountAddress,
@@ -360,44 +361,66 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     return (
       <React.Fragment>
         <HeroWrapper>
+          <HeroTitle>
+            <img
+              style={{
+                position: "absolute",
+                top: 0,
+                height: "100%",
+                left: 0,
+                transform: "scaleX(-1)"
+              }}
+              src={PatternImage}
+              alt="pattern"
+            />
+            <img
+              style={{ position: "absolute", top: 0, height: "100%", right: 0 }}
+              src={PatternImage}
+              alt="pattern"
+            />
+            <Container>
+              <Margin top={24}>
+                <h2 style={{ color: "white" }}>My Investment</h2>
+                {borrower &&
+                  (isBorrower
+                    ? this.renderBorrowerLoan(
+                        paymentToken,
+                        principalDisbursed,
+                        totalPaid,
+                        totalReleased,
+                        totalShares
+                      )
+                    : this.renderLenderLoan(
+                        paymentToken,
+                        principalRequested,
+                        interestRate,
+                        loanPeriod,
+                        shares,
+                        released,
+                        releaseAllowance
+                      ))}
+              </Margin>
+            </Container>
+          </HeroTitle>
           <Container>
-            <Margin top={24}>
-              <h2 style={{ color: "white" }}>My Investment</h2>
-              {borrower &&
-                (isBorrower
-                  ? this.renderBorrowerLoan(
-                      paymentToken,
-                      principalDisbursed,
-                      totalPaid,
-                      totalReleased,
-                      totalShares
-                    )
-                  : this.renderLenderLoan(
-                      paymentToken,
-                      principalRequested,
-                      interestRate,
-                      loanPeriod,
-                      shares,
-                      released,
-                      releaseAllowance
-                    ))}
-            </Margin>
-            <Row>
-              <Col lg={6} md={12}>
-                <HeroContent>
-                  <Withdrawal
-                    withdrawals={withdrawals}
-                    transacting={transacting}
-                    onWithdraw={this.onWithdraw}
-                  />
-                </HeroContent>
-              </Col>
-              <Col lg={6} md={12}>
-                <HeroContent>
-                  <RepaymentStatus repayments={repayments} />
-                </HeroContent>
-              </Col>
-            </Row>
+            <div style={{ position: "relative", top: -80 }}>
+              <Row>
+                <Col lg={6} md={12}>
+                  <HeroContent>
+                    <Withdrawal
+                      withdrawals={withdrawals}
+                      transacting={transacting}
+                      onWithdraw={this.onWithdraw}
+                    />
+                  </HeroContent>
+                </Col>
+                <Col lg={6} md={12}>
+                  <HeroContent>
+                    <RepaymentStatus repayments={repayments} />
+                  </HeroContent>
+                </Col>
+              </Row>
+            </div>
           </Container>
         </HeroWrapper>
       </React.Fragment>

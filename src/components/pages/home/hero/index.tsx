@@ -24,7 +24,7 @@ import {
   getPrincipalRequested,
   getPrincipalToken
 } from "../../../../utils/termsContract";
-
+import PatternImage from "../../../../images/pattern.png";
 import contractAddresses from "../../../../config/ines.fund";
 import {
   INTEREST_DECIMALS,
@@ -184,6 +184,22 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   render() {
     return (
       <HeroWrapper>
+        <img
+          style={{
+            position: "absolute",
+            top: 0,
+            height: "100%",
+            left: 0,
+            transform: "scaleX(-1)"
+          }}
+          src={PatternImage}
+          alt="pattern"
+        />
+        <img
+          style={{ position: "absolute", top: 0, height: "100%", right: 0 }}
+          src={PatternImage}
+          alt="pattern"
+        />
         <Container>
           <HeroCell>
             <Row>
