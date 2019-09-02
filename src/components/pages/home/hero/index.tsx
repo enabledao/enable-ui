@@ -5,21 +5,32 @@ import AvatarBrooke from "../../../../images/avatar/brooke.jpg";
 import AvatarIvana from "../../../../images/avatar/ivana.jpg";
 import AvatarShamanta from "../../../../images/avatar/shamanta.jpg";
 import HeroInes from "../../../../images/hero/home.png";
-import ModalListContributor from "./modalListContributor";
+import ModalListContributor from "../modalListContributor";
 import ModalVideo from "./modalVideo";
 import { Container } from "../../../../styles/bases";
 import { Margin, MobileTextCenter } from "../../../../styles/utils";
-import { Row, Col, Progress, Button, Avatar, ShowModal } from "../../../lib";
+import { Row, Col, Progress, Button, ShowModal } from "../../../lib";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppPath } from "../../../../constant/appPath";
 import { getDeployedFromConfig } from "../../../../utils/getDeployed";
-import { prepBigNumber, prepNumber } from '../../../../utils/web3Utils';
-import { getTokenDetailsFromAddress } from '../../../../utils/paymentToken';
-import { totalShares } from '../../../../utils/repaymentManager';
-import { getInterestRate, getLoanEndTimestamp, getLoanStartTimestamp, getNumScheduledPayments,getPrincipalRequested, getPrincipalToken } from '../../../../utils/termsContract';
-
-import contractAddresses from '../../../../config/ines.fund';
-import { INTEREST_DECIMALS, LoanStatuses, MILLISECONDS } from "../../../../config/constants";
+import { prepBigNumber, prepNumber } from "../../../../utils/web3Utils";
+import { getTokenDetailsFromAddress } from "../../../../utils/paymentToken";
+import { totalShares } from "../../../../utils/repaymentManager";
+import {
+  getInterestRate,
+  getLoanEndTimestamp,
+  getLoanStartTimestamp,
+  getNumScheduledPayments,
+  getPrincipalRequested,
+  getPrincipalToken
+} from "../../../../utils/termsContract";
+import PatternImage from "../../../../images/pattern.png";
+import contractAddresses from "../../../../config/ines.fund";
+import {
+  INTEREST_DECIMALS,
+  LoanStatuses,
+  MILLISECONDS
+} from "../../../../config/constants";
 
 import {
   HeroWrapper,
@@ -27,7 +38,8 @@ import {
   HeroButtonLendMobile,
   HeroLink,
   HeroStats,
-  HeroImage
+  HeroImage,
+  HeroStatsRight
 } from "./styled";
 
 interface HomeHeroProps extends RouteComponentProps<any> {}
@@ -97,27 +109,38 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   }
 
   componentDidMount = async () => {
-
     // Get the contract instances for Ines (We'll just bake these in for now).
-    const termsContractInstance = await getDeployedFromConfig('TermsContract', contractAddresses);
-    const repaymentManagerInstance = await getDeployedFromConfig('RepaymentManager', contractAddresses);
+    const termsContractInstance = await getDeployedFromConfig(
+      "TermsContract",
+      contractAddresses
+    );
+    const repaymentManagerInstance = await getDeployedFromConfig(
+      "RepaymentManager",
+      contractAddresses
+    );
 
     try {
       const loanPeriod = await getNumScheduledPayments(termsContractInstance);
-      const principalRequested = await getPrincipalRequested(termsContractInstance);
+      const principalRequested = await getPrincipalRequested(
+        termsContractInstance
+      );
       const interestRate = await getInterestRate(termsContractInstance);
-      const loanStartTimestamp = await getLoanStartTimestamp(termsContractInstance);
+      const loanStartTimestamp = await getLoanStartTimestamp(
+        termsContractInstance
+      );
       const totaShares = await totalShares(repaymentManagerInstance);
-      const paymentToken = await getTokenDetailsFromAddress(await getPrincipalToken(termsContractInstance));
-      
+      const paymentToken = await getTokenDetailsFromAddress(
+        await getPrincipalToken(termsContractInstance)
+      );
+
       let loanEndTimestamp;
 
       if (+loanStartTimestamp !== LoanStatuses.NOT_STARTED) {
         const DAYINMILLISECONDS = 86400 * MILLISECONDS;
         let endTimestamp = await getLoanEndTimestamp(termsContractInstance);
-        endTimestamp = new Date(+endTimestamp*MILLISECONDS);
-        const now:any = new Date();
-        loanEndTimestamp = Math.ceil( (endTimestamp - now) / DAYINMILLISECONDS );
+        endTimestamp = new Date(+endTimestamp * MILLISECONDS);
+        const now: any = new Date();
+        loanEndTimestamp = Math.ceil((endTimestamp - now) / DAYINMILLISECONDS);
       }
 
       this.setState({
@@ -131,7 +154,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   handleModal() {
     const { showModal } = this.state;
@@ -161,106 +184,159 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   render() {
     return (
       <HeroWrapper>
-        <HeroCell>
-          <Container>
+        <img
+          style={{
+            position: "absolute",
+            top: 0,
+            height: "100%",
+            left: 0,
+            transform: "scaleX(-1)"
+          }}
+          src={PatternImage}
+          alt="pattern"
+        />
+        <img
+          style={{ position: "absolute", top: 0, height: "100%", right: 0 }}
+          src={PatternImage}
+          alt="pattern"
+        />
+        <Container>
+          <HeroCell>
             <Row>
-              <Col lg={7} md={8} sm={12}>
-                <h1>Enabling opportunity with Enable</h1>
-                <p>
-                  Enable is an p2p stablecoin loan marketplace, we use the Dai
-                  stablecoin and smart contracts to expand opportunity to
-                  emerging market borrowers through borderless credit, Our first
-                  crowdfunded loan is Extend a 60,000 Dai education loan to:
-                </p>
-                <Margin top={16}>
-                  <h6>
-                    Widya Imanesti -&nbsp;
-                    <small>Jakarta, Indonesia</small>
-                  </h6>
-                  <p>
-                    Ines is raising a 60,000 Dai loan to attend Cornell
-                    University for a master's degree in HR
+              <Col lg={7} md={12} sm={12} text="center">
+                <HeroImage>
+                  <HeroLink onClick={this.handleModalVideo}>
+                    <img src={HeroInes} alt="HomeHero - Illustraion" />
+                  </HeroLink>
+                </HeroImage>
+              </Col>
+              <Col lg={5} md={12} sm={12}>
+                <b>
+                  <p style={{ color: "#6c6d7a" }}>
+                    INCOME SHARE AGREEMENT // EDUCATION
                   </p>
+                </b>
+                <h2>Help me raise 60,000 Dai to attend Cornell University</h2>
+                <Margin top={32}>
+                  <HeroStats>
+                    <h5>
+                      {!this.state.totalShares
+                        ? "0"
+                        : prepBigNumber(
+                            this.state.totalShares,
+                            this.state.paymentToken.decimals,
+                            true
+                          )}
+                      {" Dai "}
+                      <small>
+                        of&nbsp;
+                        {!this.state.principalRequested
+                          ? "0"
+                          : prepBigNumber(
+                              this.state.principalRequested,
+                              this.state.paymentToken.decimals,
+                              true
+                            )}{" "}
+                        goal
+                      </small>
+                    </h5>
+                  </HeroStats>
+                  <HeroStatsRight>
+                    <p>1 Dai = 1 USD</p>
+                  </HeroStatsRight>
                 </Margin>
-                <Margin top={16}>
+                <Margin vertical={8}>
+                  {!this.state.totalShares || !this.state.principalRequested ? (
+                    <Progress current={0} />
+                  ) : (
+                    <Progress
+                      current={
+                        (+prepBigNumber(
+                          this.state.totalShares,
+                          this.state.paymentToken.decimals,
+                          true
+                        ) *
+                          100) /
+                        +prepBigNumber(
+                          this.state.principalRequested,
+                          this.state.paymentToken.decimals,
+                          true
+                        )
+                      }
+                    />
+                  )}
+                </Margin>
+                <Margin top={8}>
+                  <HeroStats>
+                    <HeroLink onClick={this.handleModal}>
+                      Powered by
+                      <b> 32 </b>
+                      contributors
+                    </HeroLink>
+                  </HeroStats>
+                  <HeroStatsRight>
+                    <p style={{ color: "black" }}>
+                      <b>
+                        {!this.state.loanEndTimestamp
+                          ? "0"
+                          : this.state.loanEndTimestamp}{" "}
+                      </b>
+                      <small>Days left</small>
+                    </p>
+                  </HeroStatsRight>
+                </Margin>
+                <Margin top={24}>
                   <Row>
-                    <Col lg={3} md={6}>
+                    <Col lg={4}>
                       <HeroStats>
                         <h4>
-                          {!this.state.totalShares ? "0" : prepBigNumber(this.state.totalShares, this.state.paymentToken.decimals, true)} <small>Dai</small>
+                          {!this.state.interestRate
+                            ? "0"
+                            : prepNumber(
+                                this.state.interestRate,
+                                INTEREST_DECIMALS,
+                                true
+                              )}
+                          %
                         </h4>
-                        <small>Raised of {!this.state.principalRequested ? "0" : prepBigNumber(this.state.principalRequested, this.state.paymentToken.decimals, true)} goal</small>
+                        <p>ISA</p>
                       </HeroStats>
                     </Col>
-                    <Col lg={3} md={6}>
+                    <Col lg={4}>
                       <HeroStats>
                         <h4>
-                          {!this.state.loanEndTimestamp ? "0" : this.state.loanEndTimestamp} <small>Days left</small>
+                          {!this.state.loanPeriod ? "0" : this.state.loanPeriod}{" "}
+                          yr.
                         </h4>
-                        <small>Loan expires</small>
+                        <p>Duration</p>
                       </HeroStats>
                     </Col>
-                    <Col lg={3} md={6}>
+                    <Col lg={4}>
                       <HeroStats>
-                        <h4>
-                          {!this.state.interestRate ? "0" : prepNumber(this.state.interestRate, INTEREST_DECIMALS, true)}% <small>Interest</small>
-                        </h4>
-                        <small>Per annum</small>
-                      </HeroStats>
-                    </Col>
-                    <Col lg={3} md={6}>
-                      <HeroStats>
-                        <h4>
-                          {!this.state.loanPeriod ? "0" : this.state.loanPeriod } <small>Month</small>
-                        </h4>
-                        <small>Loan period</small>
+                        <h4>2021</h4>
+                        <p>Repayment Start</p>
                       </HeroStats>
                     </Col>
                   </Row>
+                  <p style={{ color: "#6c6d7a" }}>
+                    <small>
+                      Income Share Agreement (ISA) percentage will be divided
+                      proportionally by the amount of contribution
+                    </small>
+                  </p>
                 </Margin>
                 <Row>
-                  <Col lg={10} md={12}>
+                  <Col lg={8} md={12} sm={12}>
                     <Margin top={16}>
-                      {!this.state.totalShares || !this.state.principalRequested ? (
-                        <Progress current={0} />
-                      ) : (
-                        <Progress
-                          current={
-                            +prepBigNumber(this.state.totalShares, this.state.paymentToken.decimals, true) * 100 / +prepBigNumber(this.state.principalRequested, this.state.paymentToken.decimals, true)
-                          }
-                        />
-                      )}
+                      <Button color="green" onClick={this.handleLend}>
+                        Invest Now
+                      </Button>
                     </Margin>
                   </Col>
-                </Row>
-                <Margin top={24}>
-                  <MobileTextCenter>
-                    {listContributor.map(res => (
-                      <Avatar
-                        key={res.name}
-                        size="sm"
-                        circle={true}
-                        tooltip={res.name}
-                      >
-                        <img src={res.image} alt="Avatar - User" />
-                      </Avatar>
-                    ))}
-                  </MobileTextCenter>
-                </Margin>
-                <Margin top={16}>
-                  <MobileTextCenter>
-                    <small>
-                      <HeroLink onClick={this.handleModal}>
-                        Powered by 39 contributors
-                      </HeroLink>
-                    </small>
-                  </MobileTextCenter>
-                </Margin>
-                <Row>
-                  <Col lg={6} md={12} sm="hidden">
-                    <Margin top={24}>
-                      <Button color="purple" onClick={this.handleLend}>
-                        Start lending now
+                  <Col lg={4} md={12} sm={12}>
+                    <Margin top={16}>
+                      <Button color="green" outline>
+                        Share
                       </Button>
                     </Margin>
                   </Col>
@@ -275,21 +351,14 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                   </Col>
                 </Row>
                 <HeroButtonLendMobile>
-                  <Button color="purple" onClick={this.handleLend}>
-                    Start lending now
+                  <Button color="green" onClick={this.handleLend}>
+                    Invest Now
                   </Button>
                 </HeroButtonLendMobile>
               </Col>
-              <Col lg={5} md={4} sm="hidden" text="center">
-                <HeroImage>
-                  <HeroLink onClick={this.handleModalVideo}>
-                    <img src={HeroInes} alt="HomeHero - Illustraion" />
-                  </HeroLink>
-                </HeroImage>
-              </Col>
             </Row>
-          </Container>
-        </HeroCell>
+          </HeroCell>
+        </Container>
       </HeroWrapper>
     );
   }

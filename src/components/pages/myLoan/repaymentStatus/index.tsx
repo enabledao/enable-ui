@@ -1,15 +1,16 @@
 import React from "react";
-import { Container } from "../../../../styles/bases";
-import { Margin } from "../../../../styles/utils";
-import { Row, Col } from "../../../lib";
+import { Margin, Padding } from "../../../../styles/utils";
+import { Row, Col, Progress } from "../../../lib";
+import FileIcon from "../../../../images/fileIcon.png";
+import { RepaymentWrapper } from "./styled";
+
 import {
-  RepaymentWrapper,
-  RepaymentTitleWrapper,
-  RepaymentTitle,
-  RepaymentCard,
-  RepaymentInline,
-  RepaymentTitleMobile
-} from "./styled";
+  TableCard,
+  TableInline,
+  TableTitleWrapper,
+  TableTitle,
+  TableTitleMobile
+} from "../styled";
 
 const listRepayment = [
   { date: "1 Aug 2019", amount: 0.035, paid: true },
@@ -38,48 +39,69 @@ interface RepaymentProps {
 
 const RepaymentStatus: any = ({ repayments }: RepaymentProps) => (
   <RepaymentWrapper>
-    <Container>
-      <Row justify="center">
-        <Col lg={10} md={12}>
-          <h5>Repayment Status</h5>
-          <p>Your repayment Status will apear here</p>
-          <Margin top={24}>
-            <RepaymentTitleWrapper>
-              <RepaymentTitle>
-                <p>Date</p>
-              </RepaymentTitle>
-              <RepaymentTitle>
-                <p>Repayment Due</p>
-              </RepaymentTitle>
-              <RepaymentTitle>
-                <p>Status</p>
-              </RepaymentTitle>
-            </RepaymentTitleWrapper>
-          </Margin>
-          {repayments && repayments.map((res, indx) => (
-            <RepaymentCard key={indx}>
-              <RepaymentInline>
-                <RepaymentTitleMobile>Date</RepaymentTitleMobile>
-                <p>{new Date(res.date).toLocaleDateString()}</p>
-              </RepaymentInline>
-              <RepaymentInline>
-                <RepaymentTitleMobile>Repayment Due</RepaymentTitleMobile>
-                <p>{res.amount} Dai</p>
-              </RepaymentInline>
-              <RepaymentInline>
-                <RepaymentTitleMobile>Status</RepaymentTitleMobile>
-                <p>{res.paid ? 'Success' : 'Coming soon'}</p>
-              </RepaymentInline>
-            </RepaymentCard>
-          ))}
-        </Col>
-      </Row>
-    </Container>
+    <h5>Repayment</h5>
+    <Margin top={28}>
+      <h5>
+        12/72&nbsp;
+        <small style={{ color: "#464b61" }}>monthly repayments made</small>
+      </h5>
+      <Margin vertical={8}>
+        <Progress current={50} />
+      </Margin>
+      <p>
+        Next repayment&nbsp;
+        <b>22 August 2021</b>
+      </p>
+    </Margin>
+    <Margin top={24}>
+      <TableTitleWrapper>
+        <TableTitle>
+          <p>Date</p>
+        </TableTitle>
+        <TableTitle>
+          <p>Repayment Due</p>
+        </TableTitle>
+        <TableTitle>
+          <p>Status</p>
+        </TableTitle>
+      </TableTitleWrapper>
+      {repayments && repayments.length !== 0 ? (
+        repayments.map((res, indx) => (
+          <TableCard key={indx}>
+            <TableInline>
+              <TableTitleMobile>Date</TableTitleMobile>
+              <p>{new Date(res.date).toLocaleDateString()}</p>
+            </TableInline>
+            <TableInline>
+              <TableTitleMobile>Repayment Due</TableTitleMobile>
+              <p>{res.amount} Dai</p>
+            </TableInline>
+            <TableInline>
+              <TableTitleMobile>Status</TableTitleMobile>
+              <p>{res.paid ? "Success" : "Coming soon"}</p>
+            </TableInline>
+          </TableCard>
+        ))
+      ) : (
+        <React.Fragment>
+          <Row text="center">
+            <Col lg={12}>
+              <Padding vertical={40}>
+                <img src={FileIcon} alt="File - Icon" />
+                <Margin top={24}>
+                  <p>Your repayment with appear here</p>
+                </Margin>
+              </Padding>
+            </Col>
+          </Row>
+        </React.Fragment>
+      )}
+    </Margin>
   </RepaymentWrapper>
 );
 
 RepaymentStatus.defaultProps = {
-  repayments: listRepayment,
-}
+  repayments: listRepayment
+};
 
 export default RepaymentStatus;

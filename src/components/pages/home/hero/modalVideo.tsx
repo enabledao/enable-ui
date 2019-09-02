@@ -1,18 +1,9 @@
 import React from "react";
-import { Margin, Padding } from "../../../../styles/utils";
-import VideoIcon from "../../../../images/icons/video.svg";
+import { Margin } from "../../../../styles/utils";
 
 const ModalVideo: React.FC = () => (
   <React.Fragment>
-    <img
-      src={VideoIcon}
-      alt="Icon - List"
-      width={34}
-      style={{ position: "absolute" }}
-    />
-    <Padding left={48}>
-      <h4>Short video about Ines</h4>
-    </Padding>
+    <h4>Short video about Ines</h4>
     <Margin top={48}>
       <div
         style={{

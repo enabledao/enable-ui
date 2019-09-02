@@ -20,7 +20,6 @@ import {
   composeValidators
 } from "../../../../constant/validation";
 import createDecorator from "final-form-focus";
-import FormIllustration from "../../../../images/illustration/form.svg";
 
 interface PersonalInfoProps extends RouteComponentProps<any> {}
 
@@ -46,7 +45,7 @@ class PersonalInfo extends React.Component<PersonalInfoProps, {}> {
     return (
       <StepLoanOfferWrapper>
         <Container>
-          <Row>
+          <Row justify="center">
             <Col lg={6} md={12}>
               <h4>One step closer to helping Ines!</h4>
               <p>
@@ -124,7 +123,7 @@ class PersonalInfo extends React.Component<PersonalInfoProps, {}> {
                       </Col>
                       <Col lg={6} md={12}>
                         <Margin top={8}>
-                          <Button type="submit" color="purple">
+                          <Button type="submit" color="green">
                             Continue
                           </Button>
                         </Margin>
@@ -132,13 +131,6 @@ class PersonalInfo extends React.Component<PersonalInfoProps, {}> {
                     </Row>
                   </form>
                 )}
-              />
-            </Col>
-            <Col lg={6} md="hidden" text="center">
-              <img
-                src={FormIllustration}
-                alt="Form - Illustraion"
-                width={340}
               />
             </Col>
           </Row>

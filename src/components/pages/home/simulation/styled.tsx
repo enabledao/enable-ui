@@ -1,6 +1,30 @@
 import styled from "styled-components";
 import { MaxWidth } from "../../../../styles/utils";
 
+const SimulationWrapper = styled.div`
+  background-color: #f7f7f7;
+  padding: 24px 40px 0 40px;
+  padding-bottom: 20px;
+`;
+
+const SocialAvatar = styled.div`
+  border: 1px solid #e7ebf2;
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  border-radius: 100px;
+  position: absolute;
+  img {
+    border-radius: 100px;
+  }
+`;
+
+const SocialContent = styled.div`
+  padding: 24px 0 8px 0;
+  border-radius: 4px;
+`;
+
 const SliderInput = styled.input`
   -webkit-appearance: none;
   width: 100%;
@@ -46,4 +70,29 @@ const ButtonLendSimulation = styled.div`
   `}
 `;
 
-export { SliderInput, OtherMenu, SliderMinMax, ButtonLendSimulation };
+const IdentityBox = styled.div`
+  background-color: #fff;
+  padding: 24px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
+`;
+
+const ProfileSocialLink = styled.a`
+  + a {
+    padding-left: 24px;
+  }
+  img {
+    filter: grayscale();
+  }
+`;
+
+export {
+  ProfileSocialLink,
+  SliderInput,
+  OtherMenu,
+  SliderMinMax,
+  ButtonLendSimulation,
+  SimulationWrapper,
+  SocialAvatar,
+  SocialContent,
+  IdentityBox
+};

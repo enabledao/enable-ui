@@ -12,8 +12,7 @@ import {
 import { AppPath } from "../../../constant/appPath";
 
 const NavbarItemActive: any = {
-  fontWeight: 700,
-  color: "#6713c4"
+  fontWeight: 700
 };
 
 const Navbar: React.FC = () => {
@@ -43,7 +42,7 @@ const Navbar: React.FC = () => {
                 to={AppPath.myLoan}
                 activeStyle={NavbarItemActive}
               >
-                My Loan
+                My Investment
               </NavLink>
             </NavbarItems>
             <NavbarItems>
