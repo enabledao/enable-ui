@@ -1,6 +1,5 @@
 import React from "react";
-import billIcon from "../../../../../../images/icons/bill.svg";
-import { Margin, Padding } from "../../../../../../styles/utils";
+import { Margin } from "../../../../../../styles/utils";
 import { RouteComponentProps } from "react-router-dom";
 import { Row, Col } from "../../../../../lib";
 import {
@@ -39,19 +38,11 @@ interface Repayment {
 interface RepaymentProps {
   repayments: Repayment[];
 }
-const Repayment: any = ({repayments} : RepaymentProps) => (
+const Repayment: any = ({ repayments }: RepaymentProps) => (
   <Row>
     <Col lg={12}>
-      <img
-        src={billIcon}
-        alt="Icon - Bill"
-        width={34}
-        style={{ position: "absolute" }}
-      />
-      <Padding left={48}>
-        <h5>Repayment Schedule</h5>
-        <p>Estimation of the monthly loan repayment.</p>
-      </Padding>
+      <h5>Repayment Schedule</h5>
+      <p>Estimation of the monthly loan repayment.</p>
       <Margin top={48}>
         <RepaymentTitleWrapper>
           <RepaymentTitle>
@@ -100,6 +91,6 @@ const Repayment: any = ({repayments} : RepaymentProps) => (
 );
 
 Repayment.defaultProps = {
-  repayments: listRepayment,
-}
+  repayments: listRepayment
+};
 export default Repayment;
