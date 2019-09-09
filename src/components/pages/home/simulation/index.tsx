@@ -75,47 +75,41 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
             showModal: false,
             showModalGuarantor: false
         };
-        this.handleLend = this.handleLend.bind(this);
-        this.handleModal = this.handleModal.bind(this);
-        this.handleModalGuarantor = this.handleModalGuarantor.bind(this);
-        this.handleChangeSlider = this.handleChangeSlider.bind(this);
-        this.handleClickOther = this.handleClickOther.bind(this);
-        this.handleChangeTextfield = this.handleChangeTextfield.bind(this);
     }
 
-    handleLend() {
+    handleLend = () => {
         const {history} = this.props;
         history.push(AppPath.LoanPersonalInfo);
     }
 
-    handleChangeSlider(e) {
+    handleChangeSlider = (e) => {
         this.setState({
             sliderValue: Number(e.target.value)
         });
     }
 
-    handleClickOther() {
+    handleClickOther = () => {
         const {textfieldShow} = this.state;
         this.setState({textfieldShow: !textfieldShow});
     }
 
-    handleChangeTextfield(e) {
+    handleChangeTextfield = (e) => {
         this.setState({
             sliderValue: Number(e.target.value)
         });
     }
 
-    handleModal() {
+    handleModalContributor = () => {
         const {showModal} = this.state;
         this.setState(
             {
                 showModal: !showModal
             },
-            () => ShowModal(<ModalListContributor />)
+            () => ShowModal(<ModalListContributor contributors={this.props.contributors} />)
         );
     }
 
-    handleModalGuarantor() {
+    handleModalGuarantor = () => {
         const {showModalGuarantor} = this.state;
         this.setState(
             {
@@ -347,6 +341,9 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                 </Margin>
                 <Margin top={40} bottom={24}>
                     <Row>
+                    {
+                      // To Do (Dennis): Missing the name of the contributor and the date of contribution
+                    }
                     {this.props.contributors && this.props.contributors.map(contributor => (
                             <React.Fragment key={contributor.address}>
                                 <Col lg={6}>
@@ -376,7 +373,7 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                         ))}
                     </Row>
                     <Margin top={16}>
-                        <h6 style={{color: "#21b549", cursor: "pointer"}} onClick={this.handleModal}>
+                        <h6 style={{color: "#21b549", cursor: "pointer"}} onClick={this.handleModalContributor}>
                             See All
                         </h6>
                     </Margin>
@@ -387,30 +384,3 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
 }
 
 export default withRouter<SimuLationReturnProps>(SimuLationReturn);
-      /* {listContributor.map(res => (
-                            <React.Fragment key={res.name}>
-                                <Col lg={6}>
-                                    <h6>{res.name}</h6>
-                                    <small>
-                                        <p
-                                            style={{
-                                                backgroundColor: "#f7f7f7",
-                                                padding: 8,
-                                                display: "inline-block"
-                                            }}
-                                        >
-                                            {res.address}
-                                        </p>
-                                    </small>
-                                </Col>
-                                <Col lg={6} text='right'>
-                                    <h6>
-                                        <b>{res.lendNumber}</b> Dai
-                                    </h6>
-                                    <small>
-                                        <p>12 Days ago</p>
-                                    </small>
-                                </Col>
-                                <Margin vertical={50} />
-                            </React.Fragment>
-                        ))} */
