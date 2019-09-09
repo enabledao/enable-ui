@@ -22,16 +22,12 @@ import Linkedin from "../../../../images/socialMedia/linkedin.svg";
 import Instagram from "../../../../images/socialMedia/instagram.svg";
 import Twitter from "../../../../images/socialMedia/twitter.svg";
 import Facebook from "../../../../images/socialMedia/facebook.svg";
-import contractAddresses from "../../../../config/ines.fund";
-import {getDeployedFromConfig} from "../../../../utils/getDeployed";
-import {PayeeAddedEvent, shares} from "../../../../utils/repaymentManager";
-import { prepBigNumber } from "../../../../utils/web3Utils"
 interface SimuLationReturnProps extends RouteComponentProps<any> {
     simulateInterest?: (contribution: string | number) => number;
+    contributors?: any;
 }
 
 export interface SimuLationReturnState {
-    contributors: any;
     textfieldShow: boolean;
     sliderValue: number;
     sliderMin: number;
@@ -72,7 +68,6 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
     constructor(props: any) {
         super(props);
         this.state = {
-            contributors: [],
             textfieldShow: false,
             sliderValue: 30000 / 2,
             sliderMin: 50,
@@ -88,32 +83,6 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
         this.handleChangeTextfield = this.handleChangeTextfield.bind(this);
     }
 
-    componentDidMount = async () => {
-        const repaymentManagerInstance = await getDeployedFromConfig(
-            "RepaymentManager",
-            contractAddresses
-        );
-
-        const payeeAddedEvents = await PayeeAddedEvent(repaymentManagerInstance, {
-            fromBlock: 0,
-            toBlock: "latest"
-        });
-
-        const contributors = await Promise.all(
-            payeeAddedEvents.map(async event => {
-                const address = event.returnValues.account;
-                // To DO (Dennis) Need to calculate the big number using prepBigNumber function
-
-                const amount = await shares(repaymentManagerInstance, address);
-                return {address, amount};
-            })
-        );
-
-        this.setState({
-          contributors
-        });
-
-    };
     handleLend() {
         const {history} = this.props;
         history.push(AppPath.LoanPersonalInfo);
@@ -158,6 +127,7 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
 
     render() {
         const {sliderValue} = this.state;
+        console.log(this.props)
         return (
             <React.Fragment>
                 <Margin top={20} bottom={60}>
@@ -290,7 +260,7 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                             </Margin>
                             <Margin vertical={24}>
                                 <h4>
-                                    {this.props.simulateInterest(sliderValue)}
+                                    {this.props.simulateInterest && this.props.simulateInterest(sliderValue)}
                                     &nbsp;<small>Dai</small>
                                 </h4>
                                 <p>Expected Total Return</p>
@@ -377,7 +347,7 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                 </Margin>
                 <Margin top={40} bottom={24}>
                     <Row>
-                    {this.state.contributors.map(contributor => (
+                    {this.props.contributors && this.props.contributors.map(contributor => (
                             <React.Fragment key={contributor.address}>
                                 <Col lg={6}>
                                     <h6>Daniel</h6>
@@ -389,7 +359,7 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                                                 display: "inline-block"
                                             }}
                                         >
-                                            {contributor.address}
+                                            {contributor.address.replace(contributor.address.substring(10, 30), ".....")}
                                         </p>
                                     </small>
                                 </Col>

@@ -40,7 +40,16 @@ const calcCummulativePayments = repayment => {
   );
 };
 
-class Profile extends React.Component<{}> {
+interface TabProfileProps {
+  contributors?: any;
+}
+
+export interface ProfileState {
+  repayments: any,
+  loanParams: object;
+  showMoreProfile: boolean;
+}
+class Profile extends React.Component<TabProfileProps, ProfileState> {
   state = {
     repayments: [],
     loanParams: {
@@ -316,7 +325,7 @@ class Profile extends React.Component<{}> {
             <TestimonialLinkedin />
           </Col>
           <Col lg={5} md="hidden">
-            <SimuLationReturn simulateInterest={this.simulateInterest} />
+            <SimuLationReturn contributors={this.props.contributors} simulateInterest={this.simulateInterest} />
           </Col>
         </Row>
       </React.Fragment>
