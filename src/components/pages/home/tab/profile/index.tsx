@@ -42,6 +42,7 @@ const calcCummulativePayments = repayment => {
 
 interface TabProfileProps {
   contributors?: any;
+  paymentToken: object;
 }
 
 export interface ProfileState {
@@ -325,7 +326,7 @@ class Profile extends React.Component<TabProfileProps, ProfileState> {
             <TestimonialLinkedin />
           </Col>
           <Col lg={5} md="hidden">
-            <SimuLationReturn contributors={this.props.contributors} simulateInterest={this.simulateInterest} />
+            <SimuLationReturn contributors={this.props.contributors} paymentToken={this.props.paymentToken} simulateInterest={this.simulateInterest} />
           </Col>
         </Row>
       </React.Fragment>

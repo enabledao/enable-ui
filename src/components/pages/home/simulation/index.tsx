@@ -22,9 +22,11 @@ import Linkedin from "../../../../images/socialMedia/linkedin.svg";
 import Instagram from "../../../../images/socialMedia/instagram.svg";
 import Twitter from "../../../../images/socialMedia/twitter.svg";
 import Facebook from "../../../../images/socialMedia/facebook.svg";
+import { prepBigNumber } from "../../../../utils/web3Utils";
 interface SimuLationReturnProps extends RouteComponentProps<any> {
-    simulateInterest?: (contribution: string | number) => number;
     contributors?: any;
+    paymentToken: any;
+    simulateInterest?: (contribution: string | number) => number;
 }
 
 export interface SimuLationReturnState {
@@ -105,7 +107,7 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
             {
                 showModal: !showModal
             },
-            () => ShowModal(<ModalListContributor contributors={this.props.contributors} />)
+            () => ShowModal(<ModalListContributor contributors={this.props.contributors} paymentToken={this.props.paymentToken} />)
         );
     }
 
@@ -121,7 +123,6 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
 
     render() {
         const {sliderValue} = this.state;
-        console.log(this.props)
         return (
             <React.Fragment>
                 <Margin top={20} bottom={60}>
@@ -362,7 +363,11 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                                 </Col>
                                 <Col lg={6} text='right'>
                                     <h6>
-                                        <b>{contributor.amount}</b> Dai
+                                        <b>{prepBigNumber(
+                                            contributor.amount || 0,
+                                            this.props.paymentToken.decimals,
+                                            true
+                                        )}</b> Dai
                                     </h6>
                                     <small>
                                         <p>12 Days ago</p>
