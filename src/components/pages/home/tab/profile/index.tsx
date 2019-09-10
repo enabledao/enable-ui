@@ -8,18 +8,14 @@ import TestimonialLinkedin from "./testimonial";
 import SimuLationReturn from "../../simulation";
 import { simulateTotalInterest } from "../../../../../utils/jsCalculator";
 import { prepBigNumber } from "../../../../../utils/web3Utils";
-import { getDeployedFromConfig } from "../../../../../utils/getDeployed";
-import { getTokenDetailsFromAddress } from "../../../../../utils/paymentToken";
 import {
   getInterestRate,
   getLoanStartTimestamp,
   getNumScheduledPayments,
-  getPrincipalToken,
   getRequestedScheduledPayment,
   getScheduledPayment
 } from "../../../../../utils/termsContract";
 
-import contractAddresses from "../../../../../config/ines.fund";
 import { INTEREST_DECIMALS } from "../../../../../config/constants";
 import {
   TimelineWrapper,
