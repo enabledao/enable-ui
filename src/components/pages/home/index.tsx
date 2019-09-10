@@ -39,13 +39,13 @@ class Home extends React.Component<{}, HomeState> {
         });
 
         const contributors = await Promise.all(
-            payeeAddedEvents.map(async event => {
-                const address = event.returnValues.account;
-                // To DO (Dennis) Need to calculate the big number using prepBigNumber function
-
-                const amount = await shares(repaymentManagerInstance, address);
-                return {address, amount};
-            })
+            payeeAddedEvents
+                .map(async event => {
+                    const address = event.returnValues.account;
+                    const amount = await shares(repaymentManagerInstance, address);
+                    return {address, amount};
+                })
+                .sort((a, b) => (+a.amount > +b.amount ? 1 : -1)) // Sort contributors from the highest lending amount to the lending amount
         );
 
         this.setState({
