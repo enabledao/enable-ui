@@ -16,9 +16,15 @@ export interface TabHomeState {
   page: number;
 }
 
-class TabHome extends React.Component<{}, TabHomeState> {
+interface TabHomeProps {
+  contributors: any;
+  paymentToken?: any
+  termsContract?: any;
+}
+
+class TabHome extends React.Component<TabHomeProps, TabHomeState> {
   tabContentNode: React.RefObject<Element>;
-  constructor(props: {}) {
+  constructor(props: {contributors, paymentToken, termsContract}) {
     super(props);
     this.state = {
       page: 1
@@ -36,17 +42,18 @@ class TabHome extends React.Component<{}, TabHomeState> {
 
   renderTabContent() {
     const { page } = this.state;
+    const { contributors } = this.props;
     switch (page) {
       case 0:
         return (
           <Fragment>
-            <SimuLationReturn />
+            <SimuLationReturn contributors={contributors} paymentToken={this.props.paymentToken} />
           </Fragment>
         );
       case 1:
         return (
           <Fragment>
-            <Profile />
+            <Profile contributors={contributors} paymentToken={this.props.paymentToken} termsContract={this.props.termsContract} />
           </Fragment>
         );
       case 2:
@@ -58,7 +65,7 @@ class TabHome extends React.Component<{}, TabHomeState> {
       default:
         return (
           <Fragment>
-            <SimuLationReturn />
+            <SimuLationReturn contributors={contributors} paymentToken={this.props.paymentToken} />
           </Fragment>
         );
     }

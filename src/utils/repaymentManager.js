@@ -15,7 +15,20 @@ const approveAndPay = async (paymentTokenInstance, instance, amount, txOptions) 
     await approve(paymentTokenInstance, instance.options.address, amount, txOptions);
     return pay(instance, amount, txOptions);
 }
-
+const PayeeAddedEvent = (instance, eventOptions, watch) => {
+    if (watch) {
+        return contractGetEvents(instance, "PayeeAdded", eventOptions)
+    } else {
+        return contractGetPastEvents(instance, "PayeeAdded", eventOptions);
+    }
+}
+const PayeeRemovedEvent = (instance, eventOptions, watch) => {
+    if (watch) {
+        return contractGetEvents(instance, "PayeeRemoved", eventOptions)
+    } else {
+        return contractGetPastEvents(instance, "PayeeRemoved", eventOptions);
+    }
+}
 const PaymentReceivedEvent = (instance, eventOptions, watch) => {
     if (watch) {
         return contractGetEvents(instance, "PaymentReceived", eventOptions)
@@ -58,6 +71,8 @@ export {
     approveAndPay,
 
     //Events
+    PayeeAddedEvent,
+    PayeeRemovedEvent,
     PaymentReceivedEvent,
     PaymentReleasedEvent,
     ShareDecreasedEvent,

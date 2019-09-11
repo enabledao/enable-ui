@@ -8,18 +8,14 @@ import TestimonialLinkedin from "./testimonial";
 import SimuLationReturn from "../../simulation";
 import { simulateTotalInterest } from "../../../../../utils/jsCalculator";
 import { prepBigNumber } from "../../../../../utils/web3Utils";
-import { getDeployedFromConfig } from "../../../../../utils/getDeployed";
-import { getTokenDetailsFromAddress } from "../../../../../utils/paymentToken";
 import {
   getInterestRate,
   getLoanStartTimestamp,
   getNumScheduledPayments,
-  getPrincipalToken,
   getRequestedScheduledPayment,
   getScheduledPayment
 } from "../../../../../utils/termsContract";
 
-import contractAddresses from "../../../../../config/ines.fund";
 import { INTEREST_DECIMALS } from "../../../../../config/constants";
 import {
   TimelineWrapper,
@@ -40,7 +36,18 @@ const calcCummulativePayments = repayment => {
   );
 };
 
-class Profile extends React.Component<{}> {
+interface TabProfileProps {
+  contributors?: any;
+  paymentToken?: any;
+  termsContract?: any;
+}
+
+export interface ProfileState {
+  repayments: any,
+  loanParams: object;
+  showMoreProfile: boolean;
+}
+class Profile extends React.Component<TabProfileProps, ProfileState> {
   state = {
     repayments: [],
     loanParams: {
@@ -60,22 +67,15 @@ class Profile extends React.Component<{}> {
   };
 
   componentDidMount = async () => {
-    const termsContractInstance = await getDeployedFromConfig(
-      "TermsContract",
-      contractAddresses
-    );
-
+    let {paymentToken, termsContract} = this.props;
     try {
       const numScheduledPayments = parseInt(
-        await getNumScheduledPayments(termsContractInstance)
+        await getNumScheduledPayments(termsContract)
       );
       const loanStartTimestamp = await getLoanStartTimestamp(
-        termsContractInstance
+        termsContract
       );
-      const paymentToken = await getTokenDetailsFromAddress(
-        await getPrincipalToken(termsContractInstance)
-      );
-      const interestRate = await getInterestRate(termsContractInstance);
+      const interestRate = await getInterestRate(termsContract);
       const prepDueTimestamp = (dueTimestamp, startTimestamp) =>
         dueTimestamp * ONETHOUSAND +
         (startTimestamp === 0 ? new Date().getTime() : 0);
@@ -85,11 +85,11 @@ class Profile extends React.Component<{}> {
           .fill({})
           .map(async (element, index) => {
             const requestedScheduledPayment = await getRequestedScheduledPayment(
-              termsContractInstance,
+              termsContract,
               index + 1
             );
             const scheduledPayment = await getScheduledPayment(
-              termsContractInstance,
+              termsContract,
               index + 1
             );
             const combined = {
@@ -316,7 +316,7 @@ class Profile extends React.Component<{}> {
             <TestimonialLinkedin />
           </Col>
           <Col lg={5} md="hidden">
-            <SimuLationReturn simulateInterest={this.simulateInterest} />
+            <SimuLationReturn contributors={this.props.contributors} paymentToken={this.props.paymentToken} simulateInterest={this.simulateInterest} />
           </Col>
         </Row>
       </React.Fragment>
