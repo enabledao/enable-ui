@@ -305,7 +305,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={4}>
                       <HeroStats>
                         <h4>
-                          {!this.state.loanPeriod ? "0" : this.state.loanPeriod}{" "}
+                          {!this.state.loanPeriod ? "0" : Math.ceil((+this.state.loanPeriod)/12)}{" "}
                           yr.
                         </h4>
                         <p>Duration</p>
