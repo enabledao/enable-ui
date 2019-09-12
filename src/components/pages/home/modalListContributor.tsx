@@ -20,7 +20,7 @@ const ModalListContributor: any = ({contributors, paymentToken}: ModalListContri
             {contributors &&
                 contributors.map(contributor => (
                     <Col lg={4} md={6} sm={12} key={contributor.address}>
-                        <h6>Daniel</h6>
+                        <h6>Anonymous</h6>
                         <small>
                             <p>
                                 {contributor.address.replace(

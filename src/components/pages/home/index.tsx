@@ -60,7 +60,7 @@ class Home extends React.Component<{}, HomeState> {
     render() {
         return (
             <React.Fragment>
-                <HomeHero />
+                <HomeHero contributors={this.state.contributors} />
                 <TabHome contributors={this.state.contributors} paymentToken={this.state.paymentToken} termsContract={this.state.termsContract} />
             </React.Fragment>
         );

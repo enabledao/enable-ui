@@ -29,7 +29,8 @@ import contractAddresses from "../../../../config/ines.fund";
 import {
   INTEREST_DECIMALS,
   LoanStatuses,
-  MILLISECONDS
+  MILLISECONDS,
+  MONTHS_IN_YEAR
 } from "../../../../config/constants";
 
 import {
@@ -42,7 +43,9 @@ import {
   HeroStatsRight
 } from "./styled";
 
-interface HomeHeroProps extends RouteComponentProps<any> {}
+interface HomeHeroProps extends RouteComponentProps<any> {
+  contributors: object[];
+}
 
 export interface HomeHeroState {
   showModal: boolean;
@@ -158,11 +161,12 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
 
   handleModal() {
     const { showModal } = this.state;
+    const { contributors } = this.props;
     this.setState(
       {
         showModal: !showModal
       },
-      () => ShowModal(<ModalListContributor />)
+      () => ShowModal(<ModalListContributor contributors={contributors} />)
     );
   }
 
@@ -182,6 +186,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   }
 
   render() {
+    const { contributors } = this.props;
     return (
       <HeroWrapper>
         <img
@@ -270,7 +275,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                   <HeroStats>
                     <HeroLink onClick={this.handleModal}>
                       Powered by
-                      <b> 32 </b>
+                      <b> { !contributors ? "0" : contributors.length } </b>
                       contributors
                     </HeroLink>
                   </HeroStats>
@@ -305,7 +310,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={4}>
                       <HeroStats>
                         <h4>
-                          {!this.state.loanPeriod ? "0" : Math.ceil((+this.state.loanPeriod)/12)}{" "}
+                          {!this.state.loanPeriod ? "0" : Math.ceil((+this.state.loanPeriod)/MONTHS_IN_YEAR)}{" "}
                           yr.
                         </h4>
                         <p>Duration</p>
@@ -326,17 +331,17 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                   </p>
                 </Margin>
                 <Row>
-                  <Col lg={8} md={12} sm={12}>
+                  <Col lg={6} md={12} sm={12}>
                     <Margin top={16}>
                       <Button color="green" onClick={this.handleLend}>
                         Invest Now
                       </Button>
                     </Margin>
                   </Col>
-                  <Col lg={4} md={12} sm={12}>
+                  <Col lg={6} md={12} sm={12}>
                     <Margin top={16}>
-                      <Button color="green" outline>
-                        Share
+                      <Button color="green" outline onClick={() => window.open("#")}>
+                        Video Interview
                       </Button>
                     </Margin>
                   </Col>
