@@ -20,6 +20,7 @@ import {
   getInterestRate,
   getLoanEndTimestamp,
   getLoanStartTimestamp,
+  getMinimumRepayment,
   getNumScheduledPayments,
   getPrincipalRequested,
   getPrincipalToken
@@ -53,6 +54,7 @@ export interface HomeHeroState {
   loanPeriod: string;
   interestRate: string;
   loanEndTimestamp: string;
+  minRepayment: string;
   totalShares: string;
   principalRequested: string;
   payees: string;
@@ -101,6 +103,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       loanPeriod: null,
       interestRate: null,
       loanEndTimestamp: null,
+      minRepayment: null,
       totalShares: null,
       principalRequested: null,
       payees: null,
@@ -131,12 +134,14 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       const loanStartTimestamp = await getLoanStartTimestamp(
         termsContractInstance
       );
+      const minRepayment = await getMinimumRepayment(termsContractInstance);
       const totaShares = await totalShares(repaymentManagerInstance);
       const paymentToken = await getTokenDetailsFromAddress(
         await getPrincipalToken(termsContractInstance)
       );
 
       let loanEndTimestamp;
+      console.log(loanStartTimestamp)
 
       if (+loanStartTimestamp !== LoanStatuses.NOT_STARTED) {
         const DAYINMILLISECONDS = 86400 * MILLISECONDS;
@@ -150,6 +155,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
         loanPeriod: loanPeriod || "0",
         interestRate: interestRate || "0",
         loanEndTimestamp: loanEndTimestamp || 0,
+        minRepayment: minRepayment || 0,
         totalShares: totaShares || 0,
         principalRequested: principalRequested || 0,
         paymentToken
@@ -292,7 +298,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 </Margin>
                 <Margin top={24}>
                   <Row>
-                    <Col lg={4}>
+                    <Col lg={2}>
                       <HeroStats>
                         <h4>
                           {!this.state.interestRate
@@ -307,7 +313,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                         <p>ISA</p>
                       </HeroStats>
                     </Col>
-                    <Col lg={4}>
+                    <Col lg={3}>
                       <HeroStats>
                         <h4>
                           {!this.state.loanPeriod ? "0" : Math.ceil((+this.state.loanPeriod)/MONTHS_IN_YEAR)}{" "}
@@ -318,15 +324,30 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     </Col>
                     <Col lg={4}>
                       <HeroStats>
+                        <h4>
+                          {!this.state.minRepayment
+                            ? "0"
+                            : prepNumber(
+                                this.state.minRepayment,
+                                this.state.paymentToken.decimals,
+                                true
+                              )}
+                          Dai
+                        </h4>
+                        <p>Min Repayment</p>
+                      </HeroStats>
+                    </Col>
+                    <Col lg={3}>
+                      <HeroStats>
                         <h4>2021</h4>
-                        <p>Repayment Start</p>
+                        <p>ISA Start</p>
                       </HeroStats>
                     </Col>
                   </Row>
                   <p style={{ color: "#6c6d7a" }}>
                     <small>
-                      Income Share Agreement (ISA) percentage will be divided
-                      proportionally by the amount of contribution
+                      Income Share Agreement (ISA) is monthly percentage of post-graduation income that will be shared to
+                      investors proportionally by the amount of contribution within the duration or until cap is reached
                     </small>
                   </p>
                 </Margin>
