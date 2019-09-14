@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "private": true,
   "dependencies": {
-    "@enabledao/enable-contracts": "0.1.5-alpha.0",
+    "@enabledao/enable-contracts": "https://github.com/enabledao/enable-contracts.git#simplify!",
     "@types/jest": "24.0.14",
     "@types/node": "12.0.8",
     "@types/react": "16.8.20",
