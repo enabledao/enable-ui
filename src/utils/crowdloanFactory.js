@@ -1,14 +1,11 @@
-import { contractGetEvents, contractGetPastEvents } from './web3Utils';
+import { contractGetEvents, contractGetPastEvents } from "./web3Utils";
 
 const LoanCreatedEvent = (instance, eventOptions, watch) => {
-    if (watch) {
-        return contractGetEvents(instance, "LoanCreated", eventOptions)
-    } else {
-        return contractGetPastEvents(instance, "LoanCreated", eventOptions);
-    }
-}
+  if (watch) {
+    return contractGetEvents(instance, "LoanCreated", eventOptions);
+  } else {
+    return contractGetPastEvents(instance, "LoanCreated", eventOptions);
+  }
+};
 
-
-export {
-    LoanCreatedEvent
-}
+export { LoanCreatedEvent };
