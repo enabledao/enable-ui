@@ -39,7 +39,7 @@ const calcCummulativePayments = repayment => {
 interface TabProfileProps {
   contributors?: any;
   paymentToken?: any;
-  termsContract?: any;
+  crowdloan?: any;
 }
 
 export interface ProfileState {
@@ -67,15 +67,15 @@ class Profile extends React.Component<TabProfileProps, ProfileState> {
   };
 
   componentDidMount = async () => {
-    let {paymentToken, termsContract} = this.props;
+    let {paymentToken, crowdloan} = this.props;
     try {
       const numScheduledPayments = parseInt(
-        await getNumScheduledPayments(termsContract)
+        await getNumScheduledPayments(crowdloan)
       );
       const loanStartTimestamp = await getLoanStartTimestamp(
-        termsContract
+        crowdloan
       );
-      const interestRate = await getInterestRate(termsContract);
+      const interestRate = await getInterestRate(crowdloan);
       const prepDueTimestamp = (dueTimestamp, startTimestamp) =>
         dueTimestamp * ONETHOUSAND +
         (startTimestamp === 0 ? new Date().getTime() : 0);
@@ -85,11 +85,11 @@ class Profile extends React.Component<TabProfileProps, ProfileState> {
           .fill({})
           .map(async (element, index) => {
             const requestedScheduledPayment = await getRequestedScheduledPayment(
-              termsContract,
+              crowdloan,
               index + 1
             );
             const scheduledPayment = await getScheduledPayment(
-              termsContract,
+              crowdloan,
               index + 1
             );
             const combined = {

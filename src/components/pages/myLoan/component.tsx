@@ -16,7 +16,9 @@ import {
 } from "../../../utils/web3Utils";
 import {
   getLoanParams,
-  getPrincipalRequested
+  getPrincipalRequested,
+  getPrincipalDisbursed,
+  getPrincipalToken
 } from "../../../utils/termsContract";
 import { getDeployedFromConfig } from "../../../utils/getDeployed";
 import { getTokenDetailsFromAddress } from "../../../utils/paymentToken";
@@ -31,10 +33,6 @@ import {
   PaymentReceivedEvent,
   PaymentReleasedEvent
 } from "../../../utils/repaymentManager";
-import {
-  getPrincipalDisbursed,
-  getPrincipalToken
-} from "../../../utils/termsContract";
 
 interface MyLoanState {
   injectedAccountAddress: string;
@@ -43,7 +41,7 @@ interface MyLoanState {
   principalRequested: string;
   releaseAllowance: string;
   repayments: object;
-  repaymentManagerInstance: object;
+  crowdloanInstance: object;
   transacting: boolean;
   loanParams: object;
   shares: string;
@@ -67,7 +65,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         totalReleased: "",
         totalShares: "",
         repayments: null,
-        repaymentManagerInstance: null,
+        crowdloanInstance: null,
         transacting: false,
         releaseAllowance: "",
         withdrawals: null,
@@ -81,7 +79,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
     onWithdraw = async () => {
         // const {history} = this.props;
-        const { releaseAllowance, repaymentManagerInstance } = this.state;
+        const { releaseAllowance, crowdloanInstance } = this.state;
 
         if (!+releaseAllowance) {
             return console.error("No balance Available for Withdrawal");
@@ -91,7 +89,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
             const injectedAccountAddress = await getInjectedAccountAddress();
             const tx = await release(
-                repaymentManagerInstance,
+                crowdloanInstance,
                 injectedAccountAddress
             );
             console.log(tx);
@@ -106,53 +104,49 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
     componentDidMount = async () => {
         try {
-            const termsContractInstance = await getDeployedFromConfig(
-            "TermsContract",
-            contractAddresses
-            );
-            const repaymentManagerInstance = await getDeployedFromConfig(
-            "RepaymentManager",
+            const crowdloanInstance = await getDeployedFromConfig(
+            "Crowdloan",
             contractAddresses
             );
 
             const paymentToken = await getTokenDetailsFromAddress(
-                await getPrincipalToken(termsContractInstance)
+                await getPrincipalToken(crowdloanInstance)
             );
 
             const injectedAccountAddress = await getInjectedAccountAddress();
 
 
             // Terms Contract Calls
-            const loanParams = await getLoanParams(termsContractInstance);
+            const loanParams = await getLoanParams(crowdloanInstance);
             const {0: borrower} = loanParams;
             const {interestRate, loanPeriod, loanStatus: _loanStatus} = loanParams;
 
             // Note: principal disbursed and total paid will return zero when the loan is not started
             const principalDisbursed = await getPrincipalDisbursed(
-                termsContractInstance
+                crowdloanInstance
             );
             const principalRequested = await getPrincipalRequested(
-                termsContractInstance
+                crowdloanInstance
             );
 
             // Repayment Manager calls
-            const _totalPaid = await totalPaid(repaymentManagerInstance);
+            const _totalPaid = await totalPaid(crowdloanInstance);
 
-            const _totalShares = await totalShares(repaymentManagerInstance);
-            const _totalReleased = await totalReleased(repaymentManagerInstance);
+            const _totalShares = await totalShares(crowdloanInstance);
+            const _totalReleased = await totalReleased(crowdloanInstance);
             const injectedAccountShares = await shares(
-                repaymentManagerInstance,
+                crowdloanInstance,
                 injectedAccountAddress
             );
             const injectedAccountReleased = await released(
-                repaymentManagerInstance,
+                crowdloanInstance,
                 injectedAccountAddress
             );
 
             let _releaseAllowance;
             if (+injectedAccountShares > 0) {
                 _releaseAllowance = await releaseAllowance(
-                repaymentManagerInstance,
+                crowdloanInstance,
                 injectedAccountAddress
                 );
             } else {
@@ -161,7 +155,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
             // To do (Dennis): Filter by the injected account directly from this method
             const paymentReleasedEvents = await PaymentReleasedEvent(
-                repaymentManagerInstance,
+                crowdloanInstance,
                 {
                 fromBlock: 0,
                 toBlock: "latest",
@@ -175,7 +169,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             .filter(event => event.to === injectedAccountAddress);
 
             const paymentReceivedEvent = await PaymentReceivedEvent(
-            repaymentManagerInstance,
+            crowdloanInstance,
             {
                 fromBlock: 0,
                 toBlock: "latest"
@@ -216,7 +210,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 releaseAllowance: _releaseAllowance,
                 withdrawals,
                 repayments,
-                repaymentManagerInstance
+                crowdloanInstance
             });
         } catch (err) {
             console.log(err);

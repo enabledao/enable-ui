@@ -116,28 +116,24 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
 
   componentDidMount = async () => {
     // Get the contract instances for Ines (We'll just bake these in for now).
-    const termsContractInstance = await getDeployedFromConfig(
-      "TermsContract",
-      contractAddresses
-    );
-    const repaymentManagerInstance = await getDeployedFromConfig(
-      "RepaymentManager",
+    const crowdloanInstance = await getDeployedFromConfig(
+      "Crowdloan",
       contractAddresses
     );
 
     try {
-      const loanPeriod = await getNumScheduledPayments(termsContractInstance);
+      const loanPeriod = await getNumScheduledPayments(crowdloanInstance);
       const principalRequested = await getPrincipalRequested(
-        termsContractInstance
+        crowdloanInstance
       );
-      const interestRate = await getInterestRate(termsContractInstance);
+      const interestRate = await getInterestRate(crowdloanInstance);
       const loanStartTimestamp = await getLoanStartTimestamp(
-        termsContractInstance
+        crowdloanInstance
       );
-      const minRepayment = await getMinimumRepayment(termsContractInstance);
-      const totaShares = await totalShares(repaymentManagerInstance);
+      const minRepayment = await getMinimumRepayment(crowdloanInstance);
+      const totaShares = await totalShares(crowdloanInstance);
       const paymentToken = await getTokenDetailsFromAddress(
-        await getPrincipalToken(termsContractInstance)
+        await getPrincipalToken(crowdloanInstance)
       );
 
       let loanEndTimestamp;
@@ -145,7 +141,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
 
       if (+loanStartTimestamp !== LoanStatuses.NOT_STARTED) {
         const DAYINMILLISECONDS = 86400 * MILLISECONDS;
-        let endTimestamp = await getLoanEndTimestamp(termsContractInstance);
+        let endTimestamp = await getLoanEndTimestamp(crowdloanInstance);
         endTimestamp = new Date(+endTimestamp * MILLISECONDS);
         const now: any = new Date();
         loanEndTimestamp = Math.ceil((endTimestamp - now) / DAYINMILLISECONDS);

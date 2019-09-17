@@ -19,12 +19,12 @@ export interface TabHomeState {
 interface TabHomeProps {
   contributors: any;
   paymentToken?: any
-  termsContract?: any;
+  crowdloan?: any;
 }
 
 class TabHome extends React.Component<TabHomeProps, TabHomeState> {
   tabContentNode: React.RefObject<Element>;
-  constructor(props: {contributors, paymentToken, termsContract}) {
+  constructor(props: {contributors, paymentToken, crowdloan}) {
     super(props);
     this.state = {
       page: 1
@@ -53,7 +53,7 @@ class TabHome extends React.Component<TabHomeProps, TabHomeState> {
       case 1:
         return (
           <Fragment>
-            <Profile contributors={contributors} paymentToken={this.props.paymentToken} termsContract={this.props.termsContract} />
+            <Profile contributors={contributors} paymentToken={this.props.paymentToken} crowdloan={this.props.crowdloan} />
           </Fragment>
         );
       case 2:

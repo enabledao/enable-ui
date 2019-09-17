@@ -48,8 +48,7 @@ interface LoanAmountProps extends RouteComponentProps<any> {}
 interface LoanAmountState {
   transacting: boolean;
   loanAmoutnValue: number;
-  termsContractInstance: object;
-  crowdLoanInstance: any;
+  crowdloanInstance: any;
   loanParams: any;
   paymentToken: any;
 }
@@ -66,8 +65,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
     this.state = {
       transacting: false,
       loanAmoutnValue: 0,
-      crowdLoanInstance: null,
-      termsContractInstance: null,
+      crowdloanInstance: null,
       loanParams: {
         interestRate: 0,
         numScheduledPayments: 0
@@ -90,26 +88,21 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
   componentDidMount = async () => {
     // Get the contract instances for Ines (We'll just bake these in for now).
 
-    const termsContractInstance = await getDeployedFromConfig(
-      "TermsContract",
-      contractAddresses
-    );
-    const crowdLoanInstance = await getDeployedFromConfig(
+    const crowdloanInstance = await getDeployedFromConfig(
       "Crowdloan",
       contractAddresses
     );
 
     try {
-      const principalToken = await getPrincipalToken(termsContractInstance);
+      const principalToken = await getPrincipalToken(crowdloanInstance);
       const paymentToken = await getTokenDetailsFromAddress(principalToken);
-      const interestRate = await getInterestRate(termsContractInstance);
+      const interestRate = await getInterestRate(crowdloanInstance);
       const numScheduledPayments = parseInt(
-        await getNumScheduledPayments(termsContractInstance)
+        await getNumScheduledPayments(crowdloanInstance)
       );
 
       this.setState({
-        crowdLoanInstance,
-        termsContractInstance,
+        crowdloanInstance,
         loanParams: {
           interestRate: prepBigNumber(interestRate, INTEREST_DECIMALS, true),
           numScheduledPayments
@@ -124,8 +117,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
   onSubmit = async (data: any) => {
     const { history } = this.props;
     const {
-      termsContractInstance,
-      crowdLoanInstance,
+      crowdloanInstance,
       loanAmoutnValue
     } = this.state;
     if (!+loanAmoutnValue) {
@@ -134,7 +126,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
 
     // Note: Assuming lender can only fund a loan when the loan is started
     const isLoanStarted =
-      Number(await getLoanStatus(termsContractInstance)) ===
+      Number(await getLoanStatus(crowdloanInstance)) ===
       LoanStatuses.FUNDING_STARTED;
     const paymentTokenInstance = await getInstance(
       this.state.paymentToken.address
@@ -152,18 +144,18 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
       const approvedBalance = await allowance(
         paymentTokenInstance,
         await getInjectedAccountAddress(),
-        crowdLoanInstance.options.address
+        crowdloanInstance.options.address
       );
 
       let tx;
       if (BN(approvedBalance).lt(BN(valueInERC20))) {
         tx = await approveAndFund(
           paymentTokenInstance,
-          crowdLoanInstance,
+          crowdloanInstance,
           valueInERC20
         );
       } else {
-        tx = await fund(crowdLoanInstance, valueInERC20);
+        tx = await fund(crowdloanInstance, valueInERC20);
       }
       console.log(tx);
       this.setState({ transacting: false });

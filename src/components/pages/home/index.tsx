@@ -13,21 +13,21 @@ import {ShowModal} from "../../lib";
 export interface HomeState {
     contributors: any;
     paymentToken: object;
-    termsContract: object;
+    crowdloan: object;
 }
 
 class Home extends React.Component<{}, HomeState> {
     state = {
         contributors: [],
         paymentToken: null,
-        termsContract: null
+        crowdloan: null
     };
     componentDidMount = async () => {
         ShowModal(<ModalWip />);
 
-        const termsContract = await getDeployedFromConfig("TermsContract", contractAddresses);
+        const crowdloan = await getDeployedFromConfig("Crowdloan", contractAddresses);
         const paymentToken = await getTokenDetailsFromAddress(
-            await getPrincipalToken(termsContract)
+            await getPrincipalToken(crowdloan)
         );
 
         const repaymentManagerInstance = await getDeployedFromConfig(
@@ -53,7 +53,7 @@ class Home extends React.Component<{}, HomeState> {
         this.setState({
             contributors,
             paymentToken,
-            termsContract
+            crowdloan
         });
     };
 
@@ -61,7 +61,7 @@ class Home extends React.Component<{}, HomeState> {
         return (
             <React.Fragment>
                 <HomeHero contributors={this.state.contributors} />
-                <TabHome contributors={this.state.contributors} paymentToken={this.state.paymentToken} termsContract={this.state.termsContract} />
+                <TabHome contributors={this.state.contributors} paymentToken={this.state.paymentToken} crowdloan={this.state.crowdloan} />
             </React.Fragment>
         );
     }

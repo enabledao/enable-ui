@@ -56,10 +56,10 @@ class Faucet extends React.Component<FaucetProps, FaucetState> {
     componentDidMount = async () => {
         try {
             
-            const termsContractInstance = await getDeployedFromConfig('TermsContract', contractAddresses);
+            const crowdloanInstance = await getDeployedFromConfig('Crowdloan', contractAddresses);
             const faucetInstance = await getDeployedFromConfig('TokenFaucet', contractAddresses);
 
-            const paymentToken = await getTokenDetailsFromAddress(await getPrincipalToken(termsContractInstance));
+            const paymentToken = await getTokenDetailsFromAddress(await getPrincipalToken(crowdloanInstance));
             const paymentTokenInstance = await getInstance(paymentToken.address);
 
             const faucetBalance = await balanceOf(paymentTokenInstance, faucetInstance.options.address)
