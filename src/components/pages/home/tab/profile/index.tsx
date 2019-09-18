@@ -6,17 +6,6 @@ import { Margin, Padding } from "../../../../../styles/utils";
 import { Row, Col } from "../../../../lib";
 import TestimonialLinkedin from "./testimonial";
 import SimuLationReturn from "../../simulation";
-import { simulateTotalInterest } from "../../../../../utils/jsCalculator";
-import { prepBigNumber } from "../../../../../utils/web3Utils";
-import {
-  getInterestRate,
-  getLoanStartTimestamp,
-  getNumScheduledPayments,
-  getRequestedScheduledPayment,
-  getScheduledPayment
-} from "../../../../../utils/termsContract";
-
-import { INTEREST_DECIMALS } from "../../../../../config/constants";
 import {
   TimelineWrapper,
   TimelineYear,
@@ -24,121 +13,23 @@ import {
   TimelineBlackWrapper
 } from "./styled";
 
-const ONETHOUSAND = 1000;
-
-const calcCummulativePayments = repayment => {
-  return repayment.map((payment, index) =>
-    Object.assign({}, payment, {
-      payment: repayment
-        .slice(0, index + 1)
-        .reduce((a, b) => a + Number(b.total), 0)
-    })
-  );
-};
 
 interface TabProfileProps {
   contributors?: any;
   paymentToken?: any;
-  crowdloan?: any;
+  crowdloanInstance?: any;
+  simulateInterest: (contribution: string | number) => number;
 }
 
 export interface ProfileState {
-  repayments: any,
-  loanParams: object;
   showMoreProfile: boolean;
 }
 class Profile extends React.Component<TabProfileProps, ProfileState> {
   state = {
-    repayments: [],
-    loanParams: {
-      interestRate: 0,
-      numScheduledPayments: 0
-    },
     showMoreProfile: false
   };
 
-  simulateInterest = contribution => {
-    const { interestRate, numScheduledPayments } = this.state.loanParams;
-    return simulateTotalInterest(
-      contribution,
-      interestRate,
-      numScheduledPayments
-    );
-  };
-
   componentDidMount = async () => {
-    let {paymentToken, crowdloan} = this.props;
-    try {
-      const numScheduledPayments = parseInt(
-        await getNumScheduledPayments(crowdloan)
-      );
-      const loanStartTimestamp = await getLoanStartTimestamp(
-        crowdloan
-      );
-      const interestRate = await getInterestRate(crowdloan);
-      const prepDueTimestamp = (dueTimestamp, startTimestamp) =>
-        dueTimestamp * ONETHOUSAND +
-        (startTimestamp === 0 ? new Date().getTime() : 0);
-
-      let repayments = await Promise.all(
-        Array(numScheduledPayments)
-          .fill({})
-          .map(async (element, index) => {
-            const requestedScheduledPayment = await getRequestedScheduledPayment(
-              crowdloan,
-              index + 1
-            );
-            const scheduledPayment = await getScheduledPayment(
-              crowdloan,
-              index + 1
-            );
-            const combined = {
-              dueTimestamp:
-                requestedScheduledPayment.dueTimestamp ||
-                scheduledPayment.dueTimestamp,
-              interestPayment:
-                requestedScheduledPayment.interestPayment ||
-                scheduledPayment.interestPayment,
-              principalPayment:
-                requestedScheduledPayment.principalPayment ||
-                scheduledPayment.principalPayment,
-              totalPayment:
-                requestedScheduledPayment.totalPayment ||
-                scheduledPayment.totalPayment
-            };
-
-            return {
-              due: prepDueTimestamp(combined.dueTimestamp, loanStartTimestamp),
-              interest: prepBigNumber(
-                combined.interestPayment,
-                paymentToken.decimals,
-                true
-              ),
-              principal: prepBigNumber(
-                combined.principalPayment,
-                paymentToken.decimals,
-                true
-              ),
-              total: prepBigNumber(
-                combined.totalPayment,
-                paymentToken.decimals,
-                true
-              )
-            };
-          })
-      );
-      repayments = calcCummulativePayments(repayments);
-
-      this.setState({
-        repayments,
-        loanParams: {
-          interestRate: prepBigNumber(interestRate, INTEREST_DECIMALS, true),
-          numScheduledPayments
-        }
-      });
-    } catch (err) {
-      console.log(err);
-    }
   };
   render() {
     return (
@@ -249,9 +140,6 @@ class Profile extends React.Component<TabProfileProps, ProfileState> {
                     mentor, and opening doors for them on an international
                     stage.
                   </p>
-                  {/* <Margin top={60}>
-                    <Repayment repayments={this.state.repayments} />
-                  </Margin> */}
                 </React.Fragment>
               )}
               <Margin top={32} bottom={60}>
@@ -316,7 +204,7 @@ class Profile extends React.Component<TabProfileProps, ProfileState> {
             <TestimonialLinkedin />
           </Col>
           <Col lg={5} md="hidden">
-            <SimuLationReturn contributors={this.props.contributors} paymentToken={this.props.paymentToken} simulateInterest={this.simulateInterest} />
+            <SimuLationReturn contributors={this.props.contributors} paymentToken={this.props.paymentToken} simulateInterest={this.props.simulateInterest} />
           </Col>
         </Row>
       </React.Fragment>

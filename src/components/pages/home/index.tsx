@@ -90,7 +90,7 @@ class Home extends React.Component<{}, HomeState> {
         return (
             <React.Fragment>
                 <HomeHero loanPeriod={this.state.loanPeriod} interestRate={this.state.interestRate} contributors={this.state.contributors} loanMetadata={this.state.loanMetadata} />
-                <TabHome loanPeriod={this.state.loanPeriod} interestRate={this.state.interestRate} contributors={this.state.contributors} paymentToken={this.state.paymentToken} crowdloanInstance={this.state.crowdloanInstance} loanMetadata={this.state.loanMetadata} simulateInterest={this.simulateInterest} />
+                <TabHome loanPeriod={this.state.loanPeriod} interestRate={this.state.interestRate} contributors={this.state.contributors} paymentToken={this.state.paymentToken} crowdloanInstance={this.state.crowdloanInstance} simulateInterest={this.simulateInterest} />
             </React.Fragment>
         );
     }

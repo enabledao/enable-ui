@@ -22,7 +22,6 @@ interface TabHomeProps {
   contributors: any;
   paymentToken?: any
   crowdloanInstance?: any;
-  loanMetadata?: object;
   simulateInterest: (contribution: string | number) => number;
 }
 
@@ -57,7 +56,7 @@ class TabHome extends React.Component<TabHomeProps, TabHomeState> {
       case 1:
         return (
           <Fragment>
-            <Profile contributors={contributors} paymentToken={this.props.paymentToken} crowdloan={this.props.crowdloan} />
+            <Profile contributors={contributors} paymentToken={paymentToken} crowdloanInstance={this.props.crowdloanInstance} simulateInterest={simulateInterest} />
           </Fragment>
         );
       case 2:
