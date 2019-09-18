@@ -7,6 +7,7 @@ const LoanStatuses = {
     REPAYMENT_CYCLE: 4,
     REPAYMENT_COMPLETE: 5
 };
+const ZERO = 0;
 const MILLISECONDS = 1000;
 const MONTHS_IN_YEAR = 12;
 
@@ -14,5 +15,6 @@ export {
     INTEREST_DECIMALS,
     LoanStatuses,
     MILLISECONDS,
-    MONTHS_IN_YEAR
+    MONTHS_IN_YEAR,
+    ZERO
 }

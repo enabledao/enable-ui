@@ -12,7 +12,7 @@ import {
 import { getDeployedFromConfig } from "../../../utils/getDeployed";
 import { request } from '../../../utils/tokenFaucet';
 import { balanceOf, getTokenDetailsFromAddress, getInstance } from '../../../utils/paymentToken';
-import { getPrincipalToken } from '../../../utils/termsContract';
+import { getPrincipalToken } from '../../../utils/crowdloan';
 
 interface FaucetState {
     paymentToken: object,
@@ -113,12 +113,12 @@ class Faucet extends React.Component<FaucetProps, FaucetState> {
                                     <FaucetBox>
                                         <Row justify='center' text='center'>
                                             <Col lg={4} md={6} sm='hidden'>
-                                                <Button color='purple' disabled={transacting} onClick={this.onRequest}>Request</Button>
+                                                <Button color='green' disabled={transacting} onClick={this.onRequest}>Request</Button>
                                             </Col>
                                         </Row>
                                     </FaucetBox>
                                     <FaucetActionMobile>
-                                        <Button color='purple' disabled={transacting} onClick={this.onRequest}>Request</Button>
+                                        <Button color='green' disabled={transacting} onClick={this.onRequest}>Request</Button>
                                     </FaucetActionMobile>
                                 </Col>
                             </Row>
