@@ -2,32 +2,15 @@ import styled from "styled-components";
 import { MaxWidth } from "../../../../styles/utils";
 
 const HeroWrapper = styled.div`
-  padding: 80px 0;
+  padding-top: 40px;
   position: relative;
-  display: table;
   width: 100%;
-  min-height: calc(100vh - (60px + 75px));
-  ${MaxWidth.md`
-    padding: 80px 0;
-  `}
-  ${MaxWidth.sm`
-    padding: 60px 0;
-  `}
-  &:before {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    content: "";
-    opacity: 0.3;
-    top: 0;
-    left: 0;
-    background-image: linear-gradient(157deg, #ffffff 0%, #f9cec3 86%);
-  }
+  background-color: #363bd3;
 `;
 
 const HeroCell = styled.div`
-  display: table-cell;
-  vertical-align: middle;
+  background-color: white;
+  padding: 50px;
 `;
 
 const HeroButtonLendMobile = styled.div`
@@ -46,15 +29,20 @@ const HeroButtonLendMobile = styled.div`
 `;
 
 const HeroLink = styled.div`
-  color: #0042eb;
   cursor: pointer;
 `;
 
+const HeroStatsRight = styled.div`
+  float: right;
+  color: #6c6d7a;
+`;
+
 const HeroStats = styled.div`
+  display: inline-block;
+  h5,
   h4 {
-    margin-bottom: 4px;
     small {
-      font-size: 12px;
+      font-size: 16px;
     }
   }
 `;
@@ -69,5 +57,6 @@ export {
   HeroButtonLendMobile,
   HeroLink,
   HeroStats,
-  HeroImage
+  HeroImage,
+  HeroStatsRight
 };

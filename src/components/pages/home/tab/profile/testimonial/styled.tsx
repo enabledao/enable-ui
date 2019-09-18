@@ -14,12 +14,8 @@ const TestimonialAvatar = styled.div`
 `;
 
 const TestimonialContent = styled.div`
-  border: 1px solid #e7ebf2;
-  padding: 32px 24px;
+  padding: 24px 0 8px 0;
   border-radius: 4px;
-  h6 {
-    color: #6713c4;
-  }
 `;
 
 export { TestimonialAvatar, TestimonialContent };

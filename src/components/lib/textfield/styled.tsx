@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { TextFieldProps } from "./interface";
 
 const InputWrapper = styled.input<TextFieldProps>`
-  padding: 4px 12px;
+  padding: 16px;
   outline: none;
   border-radius: 2px;
   border: 1px solid #e7ebf2;
@@ -24,7 +24,8 @@ const InputWrapper = styled.input<TextFieldProps>`
 
 const InputLabel = styled.label`
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
+  font-size: 16px;
 `;
 
 export { InputWrapper, InputLabel };
