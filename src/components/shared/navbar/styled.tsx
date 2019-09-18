@@ -1,4 +1,3 @@
-// Style of navbar component
 import styled from "styled-components";
 
 const NavbarWrapper = styled.div`
@@ -27,8 +26,16 @@ const NavbarBrand = styled.div`
   font-size: 20px;
   font-weight: 600;
   a {
+    position: relative;
     color: black;
   }
+`;
+
+const NavbarBrandSmall = styled.div`
+  font-size: 12px;
+  display: inline-block;
+  margin-left: 4px;
+  font-weight: 400;
 `;
 
 const NavbarMenu = styled.ul`
@@ -47,4 +54,11 @@ const NavbarItems = styled.li`
   }
 `;
 
-export { NavbarWrapper, NavbarBox, NavbarBrand, NavbarMenu, NavbarItems };
+export {
+  NavbarWrapper,
+  NavbarBox,
+  NavbarBrand,
+  NavbarMenu,
+  NavbarItems,
+  NavbarBrandSmall
+};

@@ -1,4 +1,3 @@
-// Lib progress component
 import React from "react";
 import { ProgressWrapper } from "./styled";
 

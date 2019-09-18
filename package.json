@@ -3,22 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@enabledao/enable-contracts": "https://github.com/enabledao/enable-contracts.git#demo-branch",
     "@types/jest": "24.0.14",
     "@types/node": "12.0.8",
     "@types/react": "16.8.20",
     "@types/react-dom": "16.8.4",
     "@types/react-router-dom": "^4.3.4",
-    "@types/styled-components": "^4.1.16",
-    "final-form": "^4.16.1",
+    "@types/styled-components": "^4.1.18",
+    "final-form": "^4.18.2",
     "final-form-focus": "^1.1.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-final-form": "^6.3.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "react-share": "^3.0.0",
     "redux-form-validators": "^3.3.2",
-    "styled-components": "^4.3.1",
-    "typescript": "3.5.2"
+    "styled-components": "^4.3.2",
+    "typescript": "3.5.2",
+    "web3": "1.0.0-beta.34"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -42,7 +45,7 @@
     ]
   },
   "devDependencies": {
-    "tslint": "^5.17.0",
+    "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^4.0.0"
   }

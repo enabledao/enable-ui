@@ -1,4 +1,3 @@
-// Lib react component
 import React from "react";
 import { AvatarProps } from "./interface";
 import { AvatarWrapper, AvatarBox, AvatarTooltip } from "./styled";

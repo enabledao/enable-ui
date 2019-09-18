@@ -1,4 +1,3 @@
-// Style of badge
 import styled from "styled-components";
 
 const BadgeWrapper = styled.div`

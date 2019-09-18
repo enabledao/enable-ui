@@ -12,22 +12,31 @@ import {
 } from "./styled";
 
 const listRepayment = [
-  { date: "1 Aug 2019", due: 0.035, status: "Success" },
-  { date: "1 Sept 2019", due: 0.035, status: "Success" },
-  { date: "1 Oct 2019	", due: 0.035, status: "Coming soon" },
-  { date: "1 Nov 2019", due: 0.035, status: "Coming soon" },
-  { date: "1 Dec 2019", due: 0.035, status: "Coming soon" },
-  { date: "1 Jan 2020", due: 0.035, status: "Coming soon" },
-  { date: "1 Feb 2020", due: 0.035, status: "Coming soon" },
-  { date: "1 Mar 2020", due: 0.035, status: "Coming soon" },
-  { date: "1 Apr 2020", due: 0.035, status: "Coming soon" },
-  { date: "1 May 2020", due: 0.035, status: "Coming soon" },
-  { date: "1 Jun 2020", due: 0.035, status: "Coming soon" },
-  { date: "1 Jul 2020", due: 0.035, status: "Coming soon" },
-  { date: "Total", due: 7.42 }
+  { date: "1 Aug 2019", amount: 0.035, paid: true },
+  { date: "1 Sept 2019", amount: 0.035, paid: true },
+  { date: "1 Oct 2019	", amount: 0.035, paid: false },
+  { date: "1 Nov 2019", amount: 0.035, paid: false },
+  { date: "1 Dec 2019", amount: 0.035, paid: false },
+  { date: "1 Jan 2020", amount: 0.035, paid: false },
+  { date: "1 Feb 2020", amount: 0.035, paid: false },
+  { date: "1 Mar 2020", amount: 0.035, paid: false },
+  { date: "1 Apr 2020", amount: 0.035, paid: false },
+  { date: "1 May 2020", amount: 0.035, paid: false },
+  { date: "1 Jun 2020", amount: 0.035, paid: false },
+  { date: "1 Jul 2020", amount: 0.035, paid: false },
+  { date: "Total", amount: 7.42 }
 ];
 
-const RepaymentStatus: React.FC = () => (
+interface Repayment {
+  date: string;
+  amount: string;
+  paid?: boolean;
+}
+interface RepaymentProps {
+  repayments: Repayment[];
+}
+
+const RepaymentStatus: any = ({ repayments }: RepaymentProps) => (
   <RepaymentWrapper>
     <Container>
       <Row justify="center">
@@ -47,19 +56,19 @@ const RepaymentStatus: React.FC = () => (
               </RepaymentTitle>
             </RepaymentTitleWrapper>
           </Margin>
-          {listRepayment.map(res => (
-            <RepaymentCard key={res.date}>
+          {repayments && repayments.map((res, indx) => (
+            <RepaymentCard key={indx}>
               <RepaymentInline>
                 <RepaymentTitleMobile>Date</RepaymentTitleMobile>
-                <p>{res.date}</p>
+                <p>{new Date(res.date).toLocaleDateString()}</p>
               </RepaymentInline>
               <RepaymentInline>
                 <RepaymentTitleMobile>Repayment Due</RepaymentTitleMobile>
-                <p>{res.due} Dai</p>
+                <p>{res.amount} Dai</p>
               </RepaymentInline>
               <RepaymentInline>
                 <RepaymentTitleMobile>Status</RepaymentTitleMobile>
-                <p>{res.status}</p>
+                <p>{res.paid ? 'Success' : 'Coming soon'}</p>
               </RepaymentInline>
             </RepaymentCard>
           ))}
@@ -68,5 +77,9 @@ const RepaymentStatus: React.FC = () => (
     </Container>
   </RepaymentWrapper>
 );
+
+RepaymentStatus.defaultProps = {
+  repayments: listRepayment,
+}
 
 export default RepaymentStatus;

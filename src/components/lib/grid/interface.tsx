@@ -1,4 +1,3 @@
-// interface of grid for row and col utils
 export interface RowProps {
   justify?: string;
   align?: string;

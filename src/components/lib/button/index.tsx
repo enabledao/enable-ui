@@ -1,10 +1,9 @@
-// Lib button component
 import React from "react";
 import { ButtonWrapper } from "./styled";
 import { ButtonProps } from "./interface";
 
-const Button: React.FC<ButtonProps> = ({ type, onClick, color, children }) => (
-  <ButtonWrapper type={type ? type : "button"} onClick={onClick} color={color}>
+const Button: React.FC<ButtonProps> = ({ type, onClick, color, children, disabled }) => (
+  <ButtonWrapper type={type ? type : "button"} onClick={onClick} color={color} disabled={disabled}>
     {children}
   </ButtonWrapper>
 );
