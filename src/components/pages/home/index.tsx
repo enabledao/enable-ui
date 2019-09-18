@@ -5,12 +5,19 @@ import TabHome from "./tab";
 import ModalWip from "./modalWip";
 import {getDeployedFromConfig} from "../../../utils/getDeployed";
 import contractAddresses from "../../../config/ines.fund";
+import { simulateTotalInterest } from "../../../utils/jsCalculator";
 import {getTokenDetailsFromAddress} from "../../../utils/paymentToken";
 import {getPrincipalToken, getLoanMetadataUrl, amountContributed, FundEvent} from "../../../utils/crowdloan";
-import {fetchLoanMetadata} from "../../../utils/metadata";
+import {
+    fetchLoanMetadata, 
+    getInterestRate,
+    getLoanPeriod
+} from "../../../utils/metadata";
 import {ShowModal} from "../../lib";
 
 export interface HomeState {
+    loanPeriod: string;
+    interestRate: string;
     contributors: any;
     paymentToken: object;
     crowdloanInstance: object;
@@ -19,11 +26,23 @@ export interface HomeState {
 
 class Home extends React.Component<{}, HomeState> {
     state = {
+        loanPeriod: null,
+        interestRate: null,
         contributors: [],
         paymentToken: null,
         crowdloanInstance: null,
         loanMetadata: null
     };
+
+    simulateInterest = contribution => {
+        const { interestRate, loanPeriod } = this.state;
+        return simulateTotalInterest(
+            contribution,
+            interestRate,
+            loanPeriod
+        );
+    };
+    
     componentDidMount = async () => {
         ShowModal(<ModalWip />);
 
@@ -38,6 +57,9 @@ class Home extends React.Component<{}, HomeState> {
         const loanMetadataUrl = await getLoanMetadataUrl(crowdloanInstance);
         const loanMetadata = await fetchLoanMetadata(loanMetadataUrl);
 
+        const loanPeriod = await getLoanPeriod(loanMetadata);
+        const interestRate = await getInterestRate(loanMetadata);
+        
         const fundEvents:any[] = await FundEvent(crowdloanInstance, {
             fromBlock: 0,
             toBlock: "latest"
@@ -55,6 +77,8 @@ class Home extends React.Component<{}, HomeState> {
             .sort((a, b) => (+a.amount > +b.amount ? 1 : -1)); // Sort contributors from the highest lending amount to the lending amount
 
         this.setState({
+            loanPeriod,
+            interestRate,
             contributors,
             paymentToken,
             crowdloanInstance,
@@ -65,8 +89,8 @@ class Home extends React.Component<{}, HomeState> {
     render() {
         return (
             <React.Fragment>
-                <HomeHero contributors={this.state.contributors} loanMetadata={this.state.loanMetadata} />
-                <TabHome contributors={this.state.contributors} paymentToken={this.state.paymentToken} crowdloan={this.state.crowdloan} />
+                <HomeHero loanPeriod={this.state.loanPeriod} interestRate={this.state.interestRate} contributors={this.state.contributors} loanMetadata={this.state.loanMetadata} />
+                <TabHome loanPeriod={this.state.loanPeriod} interestRate={this.state.interestRate} contributors={this.state.contributors} paymentToken={this.state.paymentToken} crowdloanInstance={this.state.crowdloanInstance} loanMetadata={this.state.loanMetadata} simulateInterest={this.simulateInterest} />
             </React.Fragment>
         );
     }

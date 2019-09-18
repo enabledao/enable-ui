@@ -17,14 +17,18 @@ export interface TabHomeState {
 }
 
 interface TabHomeProps {
+  loanPeriod: string;
+  interestRate: string;
   contributors: any;
   paymentToken?: any
-  crowdloan?: any;
+  crowdloanInstance?: any;
+  loanMetadata?: object;
+  simulateInterest: (contribution: string | number) => number;
 }
 
 class TabHome extends React.Component<TabHomeProps, TabHomeState> {
   tabContentNode: React.RefObject<Element>;
-  constructor(props: {contributors, paymentToken, crowdloan}) {
+  constructor(props) {
     super(props);
     this.state = {
       page: 1
@@ -42,12 +46,12 @@ class TabHome extends React.Component<TabHomeProps, TabHomeState> {
 
   renderTabContent() {
     const { page } = this.state;
-    const { contributors } = this.props;
+    const { contributors, paymentToken, simulateInterest } = this.props;
     switch (page) {
       case 0:
         return (
           <Fragment>
-            <SimuLationReturn contributors={contributors} paymentToken={this.props.paymentToken} />
+            <SimuLationReturn contributors={contributors} paymentToken={paymentToken} simulateInterest={simulateInterest} />
           </Fragment>
         );
       case 1:
@@ -65,7 +69,7 @@ class TabHome extends React.Component<TabHomeProps, TabHomeState> {
       default:
         return (
           <Fragment>
-            <SimuLationReturn contributors={contributors} paymentToken={this.props.paymentToken} />
+            <SimuLationReturn contributors={contributors} paymentToken={paymentToken} simulateInterest={simulateInterest} />
           </Fragment>
         );
     }

@@ -26,7 +26,7 @@ import { prepBigNumber } from "../../../../utils/web3Utils";
 interface SimuLationReturnProps extends RouteComponentProps<any> {
     contributors?: any;
     paymentToken: any;
-    simulateInterest?: (contribution: string | number) => number;
+    simulateInterest: (contribution: string | number) => number;
 }
 
 export interface SimuLationReturnState {

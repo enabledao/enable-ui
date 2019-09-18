@@ -22,10 +22,8 @@ import {
   getPrincipalToken
 } from "../../../../utils/crowdloan";
 import {
-    getInterestRate,
     getLoanEndTimestamp,
-    getMinimumRepayment,
-    getLoanPeriod
+    getMinimumRepayment
 } from "../../../../utils/metadata";
 import PatternImage from "../../../../images/pattern.png";
 import contractAddresses from "../../../../config/ines.fund";
@@ -47,6 +45,8 @@ import {
 } from "./styled";
 
 interface HomeHeroProps extends RouteComponentProps<any> {
+  loanPeriod: string;
+  interestRate: string;
   contributors: object[];
   loanMetadata: object;
 }
@@ -126,8 +126,6 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     const { loanMetadata } = this.props;
 
     try {
-      const loanPeriod = await getLoanPeriod(loanMetadata);
-      const interestRate = await getInterestRate(loanMetadata);
       const minRepayment = await getMinimumRepayment(loanMetadata);
 
       const principalRequested = await getPrincipalRequested(
@@ -152,8 +150,6 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       }
 
       this.setState({
-        loanPeriod: loanPeriod || "0",
-        interestRate: interestRate || "0",
         loanEndTimestamp: loanEndTimestamp || 0,
         minRepayment: minRepayment || 0,
         totalContributed: _totalContributed || 0,
@@ -301,10 +297,10 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={2}>
                       <HeroStats>
                         <h4>
-                          {!this.state.interestRate
+                          {!this.props.interestRate
                             ? "0"
                             : prepNumber(
-                                this.state.interestRate,
+                                this.props.interestRate,
                                 INTEREST_DECIMALS,
                                 true
                               )}
@@ -316,7 +312,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <Col lg={3}>
                       <HeroStats>
                         <h4>
-                          {!this.state.loanPeriod ? "0" : Math.ceil((+this.state.loanPeriod)/MONTHS_IN_YEAR)}{" "}
+                          {!this.props.loanPeriod ? "0" : Math.ceil((+this.props.loanPeriod)/MONTHS_IN_YEAR)}{" "}
                           yr.
                         </h4>
                         <p>Duration</p>
