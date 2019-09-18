@@ -15,16 +15,18 @@ import { AppPath } from "../../../../constant/appPath";
 import { getDeployedFromConfig } from "../../../../utils/getDeployed";
 import { prepBigNumber, prepNumber } from "../../../../utils/web3Utils";
 import { getTokenDetailsFromAddress } from "../../../../utils/paymentToken";
-import { totalShares } from "../../../../utils/repaymentManager";
 import {
-  getInterestRate,
-  getLoanEndTimestamp,
-  getLoanStartTimestamp,
-  getMinimumRepayment,
-  getNumScheduledPayments,
+  totalContributed,
+  getCrowdfundEnd,
   getPrincipalRequested,
   getPrincipalToken
-} from "../../../../utils/termsContract";
+} from "../../../../utils/crowdloan";
+import {
+    getInterestRate,
+    getLoanEndTimestamp,
+    getMinimumRepayment,
+    getLoanPeriod
+} from "../../../../utils/metadata";
 import PatternImage from "../../../../images/pattern.png";
 import contractAddresses from "../../../../config/ines.fund";
 import {
@@ -46,6 +48,7 @@ import {
 
 interface HomeHeroProps extends RouteComponentProps<any> {
   contributors: object[];
+  loanMetadata: object;
 }
 
 export interface HomeHeroState {
@@ -55,7 +58,7 @@ export interface HomeHeroState {
   interestRate: string;
   loanEndTimestamp: string;
   minRepayment: string;
-  totalShares: string;
+  totalContributed: string;
   principalRequested: string;
   payees: string;
   paymentToken: any;
@@ -104,7 +107,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       interestRate: null,
       loanEndTimestamp: null,
       minRepayment: null,
-      totalShares: null,
+      totalContributed: null,
       principalRequested: null,
       payees: null,
       paymentToken: {}
@@ -120,24 +123,25 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       "Crowdloan",
       contractAddresses
     );
+    const { loanMetadata } = this.props;
 
     try {
-      const loanPeriod = await getNumScheduledPayments(crowdloanInstance);
+      const loanPeriod = await getLoanPeriod(loanMetadata);
+      const interestRate = await getInterestRate(loanMetadata);
+      const minRepayment = await getMinimumRepayment(loanMetadata);
+
       const principalRequested = await getPrincipalRequested(
         crowdloanInstance
       );
-      const interestRate = await getInterestRate(crowdloanInstance);
-      const loanStartTimestamp = await getLoanStartTimestamp(
+      const loanStartTimestamp = await getCrowdfundEnd(
         crowdloanInstance
       );
-      const minRepayment = await getMinimumRepayment(crowdloanInstance);
-      const totaShares = await totalShares(crowdloanInstance);
+      const _totalContributed = await totalContributed(crowdloanInstance);
       const paymentToken = await getTokenDetailsFromAddress(
         await getPrincipalToken(crowdloanInstance)
       );
 
       let loanEndTimestamp;
-      console.log(loanStartTimestamp)
 
       if (+loanStartTimestamp !== LoanStatuses.NOT_STARTED) {
         const DAYINMILLISECONDS = 86400 * MILLISECONDS;
@@ -152,7 +156,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
         interestRate: interestRate || "0",
         loanEndTimestamp: loanEndTimestamp || 0,
         minRepayment: minRepayment || 0,
-        totalShares: totaShares || 0,
+        totalContributed: _totalContributed || 0,
         principalRequested: principalRequested || 0,
         paymentToken
       });
@@ -227,10 +231,10 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 <Margin top={32}>
                   <HeroStats>
                     <h5>
-                      {!this.state.totalShares
+                      {!this.state.totalContributed
                         ? "0"
                         : prepBigNumber(
-                            this.state.totalShares,
+                            this.state.totalContributed,
                             this.state.paymentToken.decimals,
                             true
                           )}
@@ -253,13 +257,13 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                   </HeroStatsRight>
                 </Margin>
                 <Margin vertical={8}>
-                  {!this.state.totalShares || !this.state.principalRequested ? (
+                  {!this.state.totalContributed || !this.state.principalRequested ? (
                     <Progress current={0} />
                   ) : (
                     <Progress
                       current={
                         (+prepBigNumber(
-                          this.state.totalShares,
+                          this.state.totalContributed,
                           this.state.paymentToken.decimals,
                           true
                         ) *
