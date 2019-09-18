@@ -5,55 +5,53 @@ import TabHome from "./tab";
 import ModalWip from "./modalWip";
 import {getDeployedFromConfig} from "../../../utils/getDeployed";
 import contractAddresses from "../../../config/ines.fund";
-import {PayeeAddedEvent, shares} from "../../../utils/repaymentManager";
 import {getTokenDetailsFromAddress} from "../../../utils/paymentToken";
-import {getPrincipalToken} from "../../../utils/termsContract";
+import {getPrincipalToken, amountContributed, FundEvent} from "../../../utils/crowdloan";
 import {ShowModal} from "../../lib";
 
 export interface HomeState {
     contributors: any;
     paymentToken: object;
-    crowdloan: object;
+    crowdloanInstance: object;
 }
 
 class Home extends React.Component<{}, HomeState> {
     state = {
         contributors: [],
         paymentToken: null,
-        crowdloan: null
+        crowdloanInstance: null
     };
     componentDidMount = async () => {
         ShowModal(<ModalWip />);
 
-        const crowdloan = await getDeployedFromConfig("Crowdloan", contractAddresses);
-        const paymentToken = await getTokenDetailsFromAddress(
-            await getPrincipalToken(crowdloan)
-        );
-
-        const repaymentManagerInstance = await getDeployedFromConfig(
-            "RepaymentManager",
+        const crowdloanInstance = await getDeployedFromConfig(
+            "Crowdloan",
             contractAddresses
         );
+        const paymentToken = await getTokenDetailsFromAddress(
+            await getPrincipalToken(crowdloanInstance)
+        );
 
-        const payeeAddedEvents = await PayeeAddedEvent(repaymentManagerInstance, {
+        const fundEvents:any[] = await FundEvent(crowdloanInstance, {
             fromBlock: 0,
             toBlock: "latest"
         });
 
-        const contributors = await Promise.all(
-            payeeAddedEvents
-                .map(async event => {
-                    const address = event.returnValues.account;
-                    const amount = await shares(repaymentManagerInstance, address);
-                    return {address, amount};
-                })
-                .sort((a, b) => (+a.amount > +b.amount ? 1 : -1)) // Sort contributors from the highest lending amount to the lending amount
-        );
+        const contributors = (await Promise.all(
+            [...Object.values(
+                new Set(fundEvents.map( event => event.returnValues.sender))
+            )]
+            .map(async address => {
+                const amount = await amountContributed(crowdloanInstance, address);
+                return {address, amount};
+            })
+            ))
+            .sort((a, b) => (+a.amount > +b.amount ? 1 : -1)); // Sort contributors from the highest lending amount to the lending amount
 
         this.setState({
             contributors,
             paymentToken,
-            crowdloan
+            crowdloanInstance
         });
     };
 

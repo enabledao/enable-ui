@@ -62,13 +62,25 @@ const contractMethodTransaction = async (contract, method, ...args) => {
 }
 
 const contractGetEvents = (contract, eventString="allEvents", eventOptions) => {
-    eventOptions = prepEventOptions(eventOptions);
-    return contract.events[eventString](eventOptions);
+    try{
+        eventOptions = prepEventOptions(eventOptions);
+        return contract.events[eventString](eventOptions);
+    } catch (e) {
+        console.error(eventString, eventOptions, contract);
+        console.error(e);
+        throw(e)
+    }
 }
 
 const contractGetPastEvents = (contract, eventString, eventOptions) => {
-    eventOptions = prepEventOptions(eventOptions);
-    return contract.getPastEvents(eventString, eventOptions);
+    try{
+        eventOptions = prepEventOptions(eventOptions);
+        return contract.getPastEvents(eventString, eventOptions);
+    } catch (e) {
+        console.error(eventString, eventOptions, contract);
+        console.error(e);
+        throw(e)
+    }
 }
 
 const prepTransactionOptions = async (txOptions={}) => {

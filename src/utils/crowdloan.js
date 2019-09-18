@@ -143,6 +143,7 @@ export {
   withdrawRepayment,
   // Derived function
   approveAndFund,
+  approveAndPay,
   //Events
   FundEvent,
   WithdrawPrincipalEvent,

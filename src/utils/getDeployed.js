@@ -32,10 +32,11 @@ const getDeployedAddress = async (contractName, web3) => {
 };
 
 const getContractInstance = async (abi, address, web3) => {
-  try {
+    try {
     web3 = web3 || await getWeb3();
     return new web3.eth.Contract(abi, address);
   } catch (e) {
+    console.log((new Error()).stack )
     console.error(abi, '\r\n', address, '\r\n', web3);
     console.error(e);
     throw(e)
