@@ -15,6 +15,7 @@ const getLoanMetadataUrl = instance =>
 const getPrincipalToken = instance => contractMethodCall(instance, "token");
 const getPrincipalRequested = instance =>
   contractMethodCall(instance, "principalRequested");
+const getRepaymentCap = instance => contractMethodCall(instance, "repaymentCap");
 
 // Crowdfund Terms
 const getCrowdfundStart = instance =>
@@ -36,6 +37,7 @@ const principalWithdrawn = instance =>
 const repaymentWithdrawn = (instance, account) =>
   contractMethodCall(instance, "repaymentWithdrawn", account);
 const amountRepaid = instance => contractMethodCall(instance, "amountRepaid");
+const totalRepaymentWithdrawn = instance => contractMethodCall(instance, "totalRepaymentWithdrawn");
 
 // Transactions
 const startCrowdfund = instance =>
@@ -124,6 +126,7 @@ export {
   getLoanMetadataUrl,
   getPrincipalToken,
   getPrincipalRequested,
+  getRepaymentCap,
   //Crowdfund Terms
   getCrowdfundEnd,
   getCrowdfundStart,
@@ -135,6 +138,7 @@ export {
   //Repayments
   amountRepaid,
   repaymentWithdrawn,
+  totalRepaymentWithdrawn,
   //Contract transactions
   startCrowdfund,
   fund,

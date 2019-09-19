@@ -7,32 +7,49 @@ import { HeroWrapper, HeroContent, BoxStats, HeroTitle } from "./styled";
 import Withdrawal from "./withdrawals";
 import RepaymentStatus from "./repaymentStatus";
 import contractAddresses from "../../../config/ines.fund.js";
-import { MILLISECONDS } from "../../../config/constants.js";
+import { LoanStatuses ,MILLISECONDS, ZERO } from "../../../config/constants.js";
 import PatternImage from "../../../images/pattern.png";
 import {
   getBlock,
   getInjectedAccountAddress,
   prepBigNumber
 } from "../../../utils/web3Utils";
-import {
-  getLoanParams,
-  getPrincipalRequested,
-  getPrincipalDisbursed,
-  getPrincipalToken
-} from "../../../utils/termsContract";
 import { getDeployedFromConfig } from "../../../utils/getDeployed";
 import { getTokenDetailsFromAddress } from "../../../utils/paymentToken";
 import {
-  shares,
-  release,
-  released,
-  releaseAllowance,
-  totalPaid,
-  totalReleased,
-  totalShares,
-  PaymentReceivedEvent,
-  PaymentReleasedEvent
-} from "../../../utils/repaymentManager";
+    availableWithdrawal
+} from "../../../utils/jsCalculator";
+
+import {
+  getBorrower,
+  getLoanMetadataUrl,
+  getPrincipalToken,
+  getPrincipalRequested,
+  getRepaymentCap,
+  getCrowdfundEnd,
+  getCrowdfundStart,
+  getCrowdfundDuration,
+  amountContributed,
+  totalContributed,
+  principalWithdrawn,
+  amountRepaid,
+  repaymentWithdrawn,
+  totalRepaymentWithdrawn,
+  startCrowdfund,
+  withdrawPrincipal,
+  repay,
+  withdrawRepayment,
+  approveAndFund,
+  approveAndPay,
+  WithdrawRepaymentEvent,
+  RepayEvent,
+} from "../../../utils/crowdloan";
+
+import {
+    fetchLoanMetadata, 
+    getInterestRate,
+    getLoanPeriod
+} from "../../../utils/metadata";
 
 interface MyLoanState {
   injectedAccountAddress: string;
@@ -73,7 +90,9 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             borrower: "",
             interestRate: 0,
             loanPeriod: "",
-            loanStatus: ""
+            crowdfundStart: "",
+            crowdfundEnd: "",
+            repaymentCap: ""
         }
     };
 
@@ -88,7 +107,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             this.setState({ transacting: true });
 
             const injectedAccountAddress = await getInjectedAccountAddress();
-            const tx = await release(
+            const tx = await withdrawRepayment(
                 crowdloanInstance,
                 injectedAccountAddress
             );
@@ -105,8 +124,8 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     componentDidMount = async () => {
         try {
             const crowdloanInstance = await getDeployedFromConfig(
-            "Crowdloan",
-            contractAddresses
+                "Crowdloan",
+                contractAddresses
             );
 
             const paymentToken = await getTokenDetailsFromAddress(
@@ -116,59 +135,61 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             const injectedAccountAddress = await getInjectedAccountAddress();
 
 
-            // Terms Contract Calls
-            const loanParams = await getLoanParams(crowdloanInstance);
-            const {0: borrower} = loanParams;
-            const {interestRate, loanPeriod, loanStatus: _loanStatus} = loanParams;
+            const loanMetadataUrl = await getLoanMetadataUrl(crowdloanInstance);
+            const loanMetadata = await fetchLoanMetadata(loanMetadataUrl);
+    
+            const loanPeriod = await getLoanPeriod(loanMetadata);
+            const interestRate = await getInterestRate(loanMetadata);
+
+            // Contract Calls
+            const borrower = await getBorrower(crowdloanInstance);
 
             // Note: principal disbursed and total paid will return zero when the loan is not started
-            const principalDisbursed = await getPrincipalDisbursed(
+            const principalDisbursed = await principalWithdrawn(
                 crowdloanInstance
             );
             const principalRequested = await getPrincipalRequested(
                 crowdloanInstance
             );
 
-            // Repayment Manager calls
-            const _totalPaid = await totalPaid(crowdloanInstance);
 
-            const _totalShares = await totalShares(crowdloanInstance);
-            const _totalReleased = await totalReleased(crowdloanInstance);
-            const injectedAccountShares = await shares(
+            const crowdfundStart = await getCrowdfundStart(crowdloanInstance);
+            const crowdfundEnd = await getCrowdfundEnd(crowdloanInstance);
+            const repaymentCap = await getRepaymentCap(crowdloanInstance);
+            const _totalPaid = await amountRepaid(crowdloanInstance);
+
+            const _totalShares = await totalContributed(crowdloanInstance);
+            const _totalReleased = await totalRepaymentWithdrawn(crowdloanInstance);
+            const injectedAccountShares = await amountContributed(
                 crowdloanInstance,
                 injectedAccountAddress
             );
-            const injectedAccountReleased = await released(
+            const injectedAccountReleased = await repaymentWithdrawn(
                 crowdloanInstance,
                 injectedAccountAddress
             );
 
             let _releaseAllowance;
             if (+injectedAccountShares > 0) {
-                _releaseAllowance = await releaseAllowance(
-                crowdloanInstance,
-                injectedAccountAddress
+                _releaseAllowance = await availableWithdrawal(
+                    injectedAccountShares,
+                    _totalShares,
+                    injectedAccountReleased
                 );
             } else {
                 _releaseAllowance = "0";
             }
 
-            // To do (Dennis): Filter by the injected account directly from this method
-            const paymentReleasedEvents = await PaymentReleasedEvent(
+            const withdrawals = await WithdrawRepaymentEvent(
                 crowdloanInstance,
                 {
                 fromBlock: 0,
                 toBlock: "latest",
-                filter: { to: injectedAccountAddress }
+                filter: { lender: injectedAccountAddress }
                 }
             );
 
-            // To do (Dennis): Need to investigate the return value
-            const withdrawals = paymentReleasedEvents
-            .map(event => event.returnValues)
-            .filter(event => event.to === injectedAccountAddress);
-
-            const paymentReceivedEvent = await PaymentReceivedEvent(
+            const paymentReceivedEvent = await RepayEvent(
             crowdloanInstance,
             {
                 fromBlock: 0,
@@ -197,7 +218,9 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                     borrower,
                     interestRate,
                     loanPeriod,
-                    loanStatus: _loanStatus
+                    crowdfundStart,
+                    crowdfundEnd,
+                    repaymentCap
                 },
                 paymentToken,
                 principalDisbursed,
@@ -217,26 +240,29 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         }
     }
 
-    loanStatus = loanStatusNumber => {
+    loanStatus = () => {
+        const { loanParams: { crowdfundStart, crowdfundEnd, repaymentCap }, totalPaid, totalShares } = this.state;
         let loanStatus;
-        switch (+loanStatusNumber) {
-            case 0:
-                loanStatus = "Not Funding";
+        const now = prepBigNumber(
+            Math.floor(new Date().getTime() / MILLISECONDS),
+            ZERO,
+            true
+        );
+        switch (true) {
+            case (+crowdfundStart === ZERO):
+                loanStatus = LoanStatuses.NOT_STARTED;
                 break;
-            case 1:
-                loanStatus = "Funding Started";
+            case (+crowdfundStart > 0 && +now < +crowdfundEnd):
+                loanStatus = LoanStatuses.FUNDING_STARTED;
                 break;
-            case 2:
-                loanStatus = "Funding Failed";
+            case (+crowdfundEnd < now && +totalShares === ZERO):
+                loanStatus = LoanStatuses.FUNDING_FAILED;
                 break;
-            case 3:
-                loanStatus = "Funding Complete";
+            case (+crowdfundEnd < +now):
+                loanStatus = LoanStatuses.REPAYMENT_CYCLE;
                 break;
-            case 4:
-                loanStatus = "Repayment Cycle";
-                break;
-            case 5:
-                loanStatus = "Repayment Complete";
+            case (+totalPaid === +repaymentCap):
+                loanStatus = LoanStatuses.REPAYMENT_COMPLETE;
                 break;
         }
         return loanStatus;
@@ -337,7 +363,6 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     );
 
     renderBorrowerLoan = (
-        loanStatus,
         paymentToken,
         principalDisbursed,
         totalPaid,
@@ -426,7 +451,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                 <BoxStats>
                                     <p>Status</p>
                                     <h4>
-                                        {this.loanStatus(loanStatus)}
+                                        {this.loanStatus()}
                                     </h4>
                                 </BoxStats>
                             </Col>
@@ -463,7 +488,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             repayments,
             transacting
         } = this.state;
-        const {borrower, loanStatus} = loanParams;
+        const {borrower} = loanParams;
         const isBorrower = injectedAccountAddress === borrower;
 
         return (
@@ -471,7 +496,6 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 {borrower &&
                     (isBorrower
                         ? this.renderBorrowerLoan(
-                              loanStatus,
                               paymentToken,
                               principalDisbursed,
                               totalPaid,

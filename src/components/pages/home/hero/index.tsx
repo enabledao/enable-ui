@@ -29,9 +29,9 @@ import PatternImage from "../../../../images/pattern.png";
 import contractAddresses from "../../../../config/ines.fund";
 import {
   INTEREST_DECIMALS,
-  LoanStatuses,
   MILLISECONDS,
-  MONTHS_IN_YEAR
+  MONTHS_IN_YEAR,
+  ZERO
 } from "../../../../config/constants";
 
 import {
@@ -141,7 +141,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
 
       let loanEndTimestamp;
 
-      if (+loanStartTimestamp !== LoanStatuses.NOT_STARTED) {
+      if (+loanStartTimestamp !== ZERO) {
         const DAYINMILLISECONDS = 86400 * MILLISECONDS;
         let endTimestamp = await getLoanEndTimestamp(crowdloanInstance);
         endTimestamp = new Date(+endTimestamp * MILLISECONDS);
