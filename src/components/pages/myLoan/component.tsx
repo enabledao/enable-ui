@@ -4,6 +4,7 @@ import { Container } from "../../../styles/bases";
 import { Margin } from "../../../styles/utils";
 import { Row, Col } from "../../lib";
 import { HeroWrapper, HeroContent, BoxStats, HeroTitle } from "./styled";
+import BorrowerActions from "./borrowerActions";
 import Withdrawal from "./withdrawals";
 import RepaymentStatus from "./repaymentStatus";
 import contractAddresses from "../../../config/ines.fund.js";
@@ -120,6 +121,97 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             return console.error(e);
         }
     };
+
+    onstartcrowdfund = async () => {
+        const { crowdloanInstance } = this.state;
+
+        try {
+            this.setState({ transacting: true });
+
+            const crowdfundStart = await getCrowdfundStart(crowdloanInstance);
+            if (+crowdfundStart) {
+                return console.error("Crowdfund already started");
+            }
+
+            const tx = await startCrowdfund(
+                crowdloanInstance,
+            );
+            console.log(tx);
+
+            this.setState({ transacting: false });
+            return;
+        } catch (e) {
+            this.setState({ transacting: false });
+            return console.error(e);
+        }
+    }
+    onborrowerwithdraw = async () => {
+        const { crowdloanInstance, paymentToken } = this.state;
+
+        try {
+            this.setState({ transacting: true });
+
+            const amount = window.prompt('How much do you want to withdraw?');
+            if (!+amount) {
+                return console.error('Withdrawal cancelled');
+            }
+
+            const tx = await withdrawPrincipal(
+                crowdloanInstance,
+                prepBigNumber(
+                    amount,
+                    paymentToken.decimals
+                )
+            );
+            console.log(tx);
+
+            this.setState({ transacting: false });
+            return;
+        } catch (e) {
+            this.setState({ transacting: false });
+            return console.error(e);
+        }
+    }
+
+    onrepay = async () => {
+        const { crowdloanInstance, paymentToken } = this.state;
+
+        try {
+            this.setState({ transacting: true });
+
+            const now = prepBigNumber(
+                Math.floor(new Date().getTime() / MILLISECONDS),
+                ZERO,
+                true
+            );
+
+            const crowdfundEnd = await getCrowdfundEnd(crowdloanInstance);
+            if (+crowdfundEnd >= +now) {
+                return console.error("Repayment not yet active");
+            }
+
+            const amount = window.prompt('How much do you want to repay?');
+
+            if (!+amount) {
+                return console.error('Repayment cancelled');
+            }
+
+            const tx = await repay(
+                crowdloanInstance,
+                prepBigNumber(
+                    amount,
+                    paymentToken.decimals
+                )
+            );
+            console.log(tx);
+
+            this.setState({ transacting: false });
+            return;
+        } catch (e) {
+            this.setState({ transacting: false });
+            return console.error(e);
+        }
+    }
 
     componentDidMount = async () => {
         try {
@@ -465,6 +557,11 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         <Col lg={6} md={12}>
                             <HeroContent>
                                 <RepaymentStatus repayments={repayments} />
+                            </HeroContent>
+                        </Col>
+                        <Col lg={6} md={12}>
+                            <HeroContent>
+                                <BorrowerActions loanStatus={this.loanStatus()} onborrowerwithdraw={this.onborrowerwithdraw} onrepay={this.onrepay} onstartcrowdfund={this.onstartcrowdfund} />
                             </HeroContent>
                         </Col>
                     </Row>
