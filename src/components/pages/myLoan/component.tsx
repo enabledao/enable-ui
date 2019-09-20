@@ -11,12 +11,13 @@ import contractAddresses from "../../../config/ines.fund.js";
 import { LoanStatuses ,MILLISECONDS, ZERO } from "../../../config/constants.js";
 import PatternImage from "../../../images/pattern.png";
 import {
-  getBlock,
-  getInjectedAccountAddress,
-  prepBigNumber
+    BN,
+    getBlock,
+    getInjectedAccountAddress,
+    prepBigNumber
 } from "../../../utils/web3Utils";
 import { getDeployedFromConfig } from "../../../utils/getDeployed";
-import { getTokenDetailsFromAddress } from "../../../utils/paymentToken";
+import { allowance, getInstance, getTokenDetailsFromAddress } from "../../../utils/paymentToken";
 import {
     availableWithdrawal
 } from "../../../utils/jsCalculator";
@@ -29,7 +30,6 @@ import {
   getRepaymentCap,
   getCrowdfundEnd,
   getCrowdfundStart,
-  getCrowdfundDuration,
   amountContributed,
   totalContributed,
   principalWithdrawn,
@@ -40,7 +40,6 @@ import {
   withdrawPrincipal,
   repay,
   withdrawRepayment,
-  approveAndFund,
   approveAndPay,
   WithdrawRepaymentEvent,
   RepayEvent,
@@ -174,7 +173,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     }
 
     onrepay = async () => {
-        const { crowdloanInstance, paymentToken } = this.state;
+        const { crowdloanInstance, injectedAccountAddress, paymentToken } = this.state;
 
         try {
             this.setState({ transacting: true });
@@ -196,13 +195,35 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 return console.error('Repayment cancelled');
             }
 
-            const tx = await repay(
-                crowdloanInstance,
-                prepBigNumber(
-                    amount,
-                    paymentToken.decimals
-                )
+            const amountInERC20 = prepBigNumber(
+                amount,
+                paymentToken.decimals
             );
+
+            const paymentTokenInstance = await getInstance(
+                paymentToken.address
+            );
+
+            const approvedBalance = await allowance(
+                paymentTokenInstance,
+                injectedAccountAddress,
+                crowdloanInstance.options.address
+            );
+
+            let tx;
+            if (BN(approvedBalance).lt(BN(amountInERC20))) {
+                tx = await approveAndPay(
+                    paymentTokenInstance,
+                    crowdloanInstance,
+                    amountInERC20
+                );
+            } else {
+                tx = await repay(
+                    crowdloanInstance,
+                    amountInERC20
+                );
+            }
+
             console.log(tx);
 
             this.setState({ transacting: false });
