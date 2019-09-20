@@ -1158,17 +1158,17 @@
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.3.tgz#6310a047f12d21a1036fb031317219892440416f"
   integrity sha512-4zAPlpDEh2VwXswwr/t8xGNDGg8RQiPxtxZ3qQEXyQsBV39ptTdESCjuBvGze1nLMVrxmTIKmnO/nAV8Tqjjzg==
 
-"@enabledao/enable-contracts@^0.1.4-alpha.0":
-  version "0.1.4-alpha.0"
-  resolved "https://registry.yarnpkg.com/@enabledao/enable-contracts/-/enable-contracts-0.1.4-alpha.0.tgz#22341e95cc6bfd51fca9ebf301a0fa4a17fe0afc"
-  integrity sha512-EZOVv2uqlS5BcThuyWYLuxamMHLTgzrGXCEz4BbUD4PB95zdDl2amAaJReJxgq/nO5AQFC9h9B7v2yCLiHVk6Q==
+"@enabledao/enable-contracts@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@enabledao/enable-contracts/-/enable-contracts-0.2.1.tgz#334c4f920d3d5490be1256f7995c42c09e0d542c"
+  integrity sha512-JE9bYdJvM8xQNjV092cjz1JF/hicsLkj7jFaRQmtZGL1MaaHLob6CmycA0+JPnJs3+BhDYCGVTIlDMBeI3wK1Q==
   dependencies:
     "@0x/sol-trace" "^2.0.13"
     "@babel/polyfill" "^7.4.4"
     "@babel/register" "^7.4.4"
     dotenv "^6.2.0"
     minimist "^1.2.0"
-    openzeppelin-eth "^2.2.0"
+    openzeppelin-eth "2.2.0"
     truffle-hdwallet-provider "^1.0.3"
     zos-lib "^2.4.2"
 
@@ -10798,7 +10798,7 @@ onetime@^5.1.0:
   dependencies:
     mimic-fn "^2.1.0"
 
-openzeppelin-eth@^2.2.0:
+openzeppelin-eth@2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/openzeppelin-eth/-/openzeppelin-eth-2.2.0.tgz#a3bcb8ba8332f7fe72addd49539905989b18a07e"
   integrity sha512-q0lpl2oaY60sg1qFF74Ed/fQBf450tvpCxz1f9C+V+KHDg+EAlCf7umPrXOvI77fda3FTWuVFS0bXQp+8VA4xA==
