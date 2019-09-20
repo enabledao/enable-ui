@@ -1,16 +1,19 @@
 const INTEREST_DECIMALS = 2;
 const LoanStatuses = {
-    NOT_STARTED: 0,
-    FUNDING_STARTED: 1,
-    FUNDING_FAILED: 2,
-    FUNDING_COMPLETE: 3,
-    REPAYMENT_CYCLE: 4,
-    REPAYMENT_COMPLETE: 5
+    NOT_STARTED: 'Funding not started',
+    FUNDING_STARTED: "Funding",
+    FUNDING_FAILED: "Funding Failed",
+    REPAYMENT_CYCLE: "Repayment Cycle",
+    REPAYMENT_COMPLETE:  "Repayment Complete"
 };
+const ZERO = 0;
 const MILLISECONDS = 1000;
+const MONTHS_IN_YEAR = 12;
 
 export {
     INTEREST_DECIMALS,
     LoanStatuses,
-    MILLISECONDS
+    MILLISECONDS,
+    MONTHS_IN_YEAR,
+    ZERO
 }

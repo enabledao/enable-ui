@@ -15,21 +15,23 @@ import { AppPath } from "../../../../constant/appPath";
 import { getDeployedFromConfig } from "../../../../utils/getDeployed";
 import { prepBigNumber, prepNumber } from "../../../../utils/web3Utils";
 import { getTokenDetailsFromAddress } from "../../../../utils/paymentToken";
-import { totalShares } from "../../../../utils/repaymentManager";
 import {
-  getInterestRate,
-  getLoanEndTimestamp,
-  getLoanStartTimestamp,
-  getNumScheduledPayments,
+  totalContributed,
+  getCrowdfundEnd,
   getPrincipalRequested,
   getPrincipalToken
-} from "../../../../utils/termsContract";
+} from "../../../../utils/crowdloan";
+import {
+    getLoanEndTimestamp,
+    getMinimumRepayment
+} from "../../../../utils/metadata";
 import PatternImage from "../../../../images/pattern.png";
 import contractAddresses from "../../../../config/ines.fund";
 import {
   INTEREST_DECIMALS,
-  LoanStatuses,
-  MILLISECONDS
+  MILLISECONDS,
+  MONTHS_IN_YEAR,
+  ZERO
 } from "../../../../config/constants";
 
 import {
@@ -42,7 +44,12 @@ import {
   HeroStatsRight
 } from "./styled";
 
-interface HomeHeroProps extends RouteComponentProps<any> {}
+interface HomeHeroProps extends RouteComponentProps<any> {
+  loanPeriod: string;
+  interestRate: string;
+  contributors: object[];
+  loanMetadata: object;
+}
 
 export interface HomeHeroState {
   showModal: boolean;
@@ -50,7 +57,8 @@ export interface HomeHeroState {
   loanPeriod: string;
   interestRate: string;
   loanEndTimestamp: string;
-  totalShares: string;
+  minRepayment: string;
+  totalContributed: string;
   principalRequested: string;
   payees: string;
   paymentToken: any;
@@ -98,7 +106,8 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       loanPeriod: null,
       interestRate: null,
       loanEndTimestamp: null,
-      totalShares: null,
+      minRepayment: null,
+      totalContributed: null,
       principalRequested: null,
       payees: null,
       paymentToken: {}
@@ -110,44 +119,40 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
 
   componentDidMount = async () => {
     // Get the contract instances for Ines (We'll just bake these in for now).
-    const termsContractInstance = await getDeployedFromConfig(
-      "TermsContract",
+    const crowdloanInstance = await getDeployedFromConfig(
+      "Crowdloan",
       contractAddresses
     );
-    const repaymentManagerInstance = await getDeployedFromConfig(
-      "RepaymentManager",
-      contractAddresses
-    );
+    const { loanMetadata } = this.props;
 
     try {
-      const loanPeriod = await getNumScheduledPayments(termsContractInstance);
+      const minRepayment = await getMinimumRepayment(loanMetadata);
+
       const principalRequested = await getPrincipalRequested(
-        termsContractInstance
+        crowdloanInstance
       );
-      const interestRate = await getInterestRate(termsContractInstance);
-      const loanStartTimestamp = await getLoanStartTimestamp(
-        termsContractInstance
+      const loanStartTimestamp = await getCrowdfundEnd(
+        crowdloanInstance
       );
-      const totaShares = await totalShares(repaymentManagerInstance);
+      const _totalContributed = await totalContributed(crowdloanInstance);
       const paymentToken = await getTokenDetailsFromAddress(
-        await getPrincipalToken(termsContractInstance)
+        await getPrincipalToken(crowdloanInstance)
       );
 
       let loanEndTimestamp;
 
-      if (+loanStartTimestamp !== LoanStatuses.NOT_STARTED) {
+      if (+loanStartTimestamp !== ZERO) {
         const DAYINMILLISECONDS = 86400 * MILLISECONDS;
-        let endTimestamp = await getLoanEndTimestamp(termsContractInstance);
+        let endTimestamp = await getLoanEndTimestamp(crowdloanInstance);
         endTimestamp = new Date(+endTimestamp * MILLISECONDS);
         const now: any = new Date();
         loanEndTimestamp = Math.ceil((endTimestamp - now) / DAYINMILLISECONDS);
       }
 
       this.setState({
-        loanPeriod: loanPeriod || "0",
-        interestRate: interestRate || "0",
         loanEndTimestamp: loanEndTimestamp || 0,
-        totalShares: totaShares || 0,
+        minRepayment: minRepayment || 0,
+        totalContributed: _totalContributed || 0,
         principalRequested: principalRequested || 0,
         paymentToken
       });
@@ -158,11 +163,12 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
 
   handleModal() {
     const { showModal } = this.state;
+    const { contributors } = this.props;
     this.setState(
       {
         showModal: !showModal
       },
-      () => ShowModal(<ModalListContributor />)
+      () => ShowModal(<ModalListContributor contributors={contributors} />)
     );
   }
 
@@ -182,6 +188,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
   }
 
   render() {
+    const { contributors } = this.props;
     return (
       <HeroWrapper>
         <img
@@ -220,10 +227,10 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 <Margin top={32}>
                   <HeroStats>
                     <h5>
-                      {!this.state.totalShares
+                      {!this.state.totalContributed
                         ? "0"
                         : prepBigNumber(
-                            this.state.totalShares,
+                            this.state.totalContributed,
                             this.state.paymentToken.decimals,
                             true
                           )}
@@ -246,13 +253,13 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                   </HeroStatsRight>
                 </Margin>
                 <Margin vertical={8}>
-                  {!this.state.totalShares || !this.state.principalRequested ? (
+                  {!this.state.totalContributed || !this.state.principalRequested ? (
                     <Progress current={0} />
                   ) : (
                     <Progress
                       current={
                         (+prepBigNumber(
-                          this.state.totalShares,
+                          this.state.totalContributed,
                           this.state.paymentToken.decimals,
                           true
                         ) *
@@ -270,7 +277,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                   <HeroStats>
                     <HeroLink onClick={this.handleModal}>
                       Powered by
-                      <b> 32 </b>
+                      <b> { !contributors ? "0" : contributors.length } </b>
                       contributors
                     </HeroLink>
                   </HeroStats>
@@ -287,13 +294,13 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 </Margin>
                 <Margin top={24}>
                   <Row>
-                    <Col lg={4}>
+                    <Col lg={2}>
                       <HeroStats>
                         <h4>
-                          {!this.state.interestRate
+                          {!this.props.interestRate
                             ? "0"
                             : prepNumber(
-                                this.state.interestRate,
+                                this.props.interestRate,
                                 INTEREST_DECIMALS,
                                 true
                               )}
@@ -302,10 +309,10 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                         <p>ISA</p>
                       </HeroStats>
                     </Col>
-                    <Col lg={4}>
+                    <Col lg={3}>
                       <HeroStats>
                         <h4>
-                          {!this.state.loanPeriod ? "0" : this.state.loanPeriod}{" "}
+                          {!this.props.loanPeriod ? "0" : Math.ceil((+this.props.loanPeriod)/MONTHS_IN_YEAR)}{" "}
                           yr.
                         </h4>
                         <p>Duration</p>
@@ -313,30 +320,45 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     </Col>
                     <Col lg={4}>
                       <HeroStats>
+                        <h4>
+                          {!this.state.minRepayment
+                            ? "0"
+                            : prepNumber(
+                                this.state.minRepayment,
+                                this.state.paymentToken.decimals,
+                                true
+                              )}
+                          Dai
+                        </h4>
+                        <p>Min Repayment</p>
+                      </HeroStats>
+                    </Col>
+                    <Col lg={3}>
+                      <HeroStats>
                         <h4>2021</h4>
-                        <p>Repayment Start</p>
+                        <p>ISA Start</p>
                       </HeroStats>
                     </Col>
                   </Row>
                   <p style={{ color: "#6c6d7a" }}>
                     <small>
-                      Income Share Agreement (ISA) percentage will be divided
-                      proportionally by the amount of contribution
+                      Income Share Agreement (ISA) is monthly percentage of post-graduation income that will be shared to
+                      investors proportionally by the amount of contribution within the duration or until cap is reached
                     </small>
                   </p>
                 </Margin>
                 <Row>
-                  <Col lg={8} md={12} sm={12}>
+                  <Col lg={6} md={12} sm={12}>
                     <Margin top={16}>
                       <Button color="green" onClick={this.handleLend}>
                         Invest Now
                       </Button>
                     </Margin>
                   </Col>
-                  <Col lg={4} md={12} sm={12}>
+                  <Col lg={6} md={12} sm={12}>
                     <Margin top={16}>
-                      <Button color="green" outline>
-                        Share
+                      <Button color="green" outline onClick={() => window.open("#")}>
+                        Video Interview
                       </Button>
                     </Margin>
                   </Col>

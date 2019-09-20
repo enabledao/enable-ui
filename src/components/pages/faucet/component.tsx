@@ -12,7 +12,7 @@ import {
 import { getDeployedFromConfig } from "../../../utils/getDeployed";
 import { request } from '../../../utils/tokenFaucet';
 import { balanceOf, getTokenDetailsFromAddress, getInstance } from '../../../utils/paymentToken';
-import { getPrincipalToken } from '../../../utils/termsContract';
+import { getPrincipalToken } from '../../../utils/crowdloan';
 
 interface FaucetState {
     paymentToken: object,
@@ -56,10 +56,10 @@ class Faucet extends React.Component<FaucetProps, FaucetState> {
     componentDidMount = async () => {
         try {
             
-            const termsContractInstance = await getDeployedFromConfig('TermsContract', contractAddresses);
+            const crowdloanInstance = await getDeployedFromConfig('Crowdloan', contractAddresses);
             const faucetInstance = await getDeployedFromConfig('TokenFaucet', contractAddresses);
 
-            const paymentToken = await getTokenDetailsFromAddress(await getPrincipalToken(termsContractInstance));
+            const paymentToken = await getTokenDetailsFromAddress(await getPrincipalToken(crowdloanInstance));
             const paymentTokenInstance = await getInstance(paymentToken.address);
 
             const faucetBalance = await balanceOf(paymentTokenInstance, faucetInstance.options.address)
@@ -113,12 +113,12 @@ class Faucet extends React.Component<FaucetProps, FaucetState> {
                                     <FaucetBox>
                                         <Row justify='center' text='center'>
                                             <Col lg={4} md={6} sm='hidden'>
-                                                <Button color='purple' disabled={transacting} onClick={this.onRequest}>Request</Button>
+                                                <Button color='green' disabled={transacting} onClick={this.onRequest}>Request</Button>
                                             </Col>
                                         </Row>
                                     </FaucetBox>
                                     <FaucetActionMobile>
-                                        <Button color='purple' disabled={transacting} onClick={this.onRequest}>Request</Button>
+                                        <Button color='green' disabled={transacting} onClick={this.onRequest}>Request</Button>
                                     </FaucetActionMobile>
                                 </Col>
                             </Row>
