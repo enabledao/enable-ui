@@ -105,7 +105,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
       this.setState({
         crowdloanInstance,
         loanParams: {
-          interestRate: prepBigNumber(interestRate, INTEREST_DECIMALS, true),
+          interestRate,
           loanPeriod
         },
         paymentToken
