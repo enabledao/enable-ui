@@ -18,7 +18,7 @@ interface TabProfileProps {
   contributors?: any;
   paymentToken?: any;
   crowdloanInstance?: any;
-  simulateInterest: (contribution: string | number) => number;
+  simulateInterest: (contribution: string | number) => object;
 }
 
 export interface ProfileState {

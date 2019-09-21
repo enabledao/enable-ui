@@ -25,8 +25,9 @@ import Facebook from "../../../../images/socialMedia/facebook.svg";
 import { prepBigNumber } from "../../../../utils/web3Utils";
 interface SimuLationReturnProps extends RouteComponentProps<any> {
     contributors?: any;
-    paymentToken: any;
-    simulateInterest: (contribution: string | number) => number;
+    expectedSalary?: any;
+    principalRequested: any;
+    simulateInterest: (contribution: string | number) => object;
 }
 
 export interface SimuLationReturnState {
@@ -263,7 +264,14 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                             <hr />
                             <Margin vertical={24}>
                                 <b>0.04</b>% <b>ISA</b> from expected starting salary of{" "}
-                                <b>$86,320/year</b>
+                                <b>$
+                                    {!this.props.expectedSalary
+                                    ? "0"
+                                    : prepBigNumber(
+                                        this.props.expectedSalary,
+                                        this.props.paymentToken.decimals,
+                                        true
+                                    )}/year</b>
                             </Margin>
                             <div style={{position: "absolute"}}>
                                 <img src={CornellLogo} alt='cornell - logo' />
@@ -387,5 +395,9 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
         );
     }
 }
+
+SimuLationReturn.defaultProps = {
+    expectedSalary: "86320000000000000000000"
+  };
 
 export default withRouter<SimuLationReturnProps>(SimuLationReturn);

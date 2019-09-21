@@ -13,7 +13,7 @@ import { Row, Col, Progress, Button, ShowModal } from "../../../lib";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppPath } from "../../../../constant/appPath";
 import { getDeployedFromConfig } from "../../../../utils/getDeployed";
-import { prepBigNumber, prepNumber } from "../../../../utils/web3Utils";
+import { prepBigNumber } from "../../../../utils/web3Utils";
 import { getTokenDetailsFromAddress } from "../../../../utils/paymentToken";
 import {
   totalContributed,
@@ -28,7 +28,6 @@ import {
 import PatternImage from "../../../../images/pattern.png";
 import contractAddresses from "../../../../config/ines.fund";
 import {
-  INTEREST_DECIMALS,
   MILLISECONDS,
   MONTHS_IN_YEAR,
   ZERO

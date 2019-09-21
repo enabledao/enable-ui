@@ -14,24 +14,24 @@ const availableWithdrawal = (amountContributed, totalContributed, amountRepaid, 
         ZERO
     );
 
-const calcInterest = (contribution, totalContribution, shareRate, expectedIncone) =>
+const calcInterest = (contribution, totalContribution, shareRate, expectedIncome) =>
     (+contribution / +totalContribution) || 0 * (
-        (+expectedIncone * +shareRate) || 0 / HUNDRED
+        (+expectedIncome * +shareRate) || 0 / HUNDRED
     );
 
-const calcTotalInterest = (contribution, totalContribution, shareRate, expectedIncone, loanPeriod) =>
-    (calcInterest(contribution, totalContribution, shareRate, expectedIncone) * loanPeriod) || 0 / MONTHS_IN_YEAR
+const calcTotalInterest = (contribution, totalContribution, shareRate, expectedIncome, loanPeriod) =>
+    (calcInterest(contribution, totalContribution, shareRate, expectedIncome) * loanPeriod) || 0 / MONTHS_IN_YEAR
 
 const calcRatioOfIncome = (contribution, totalContribution, shareRate, expectedIncome) =>
     (
         calcInterest(contribution, totalContribution, shareRate, expectedIncome)
-        / expectedIncone
+        / expectedIncome
     );
 
 const calcRatioOfTotalIncome = (contribution, totalContribution, shareRate, expectedIncome, loanPeriod) =>
     (
         calcTotalInterest(contribution, totalContribution, shareRate, expectedIncome, loanPeriod)
-        / expectedIncone * loanPeriod
+        / expectedIncome * loanPeriod
     );
 
 export {

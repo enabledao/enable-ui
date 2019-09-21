@@ -5,11 +5,12 @@ import TabHome from "./tab";
 import ModalWip from "./modalWip";
 import {getDeployedFromConfig} from "../../../utils/getDeployed";
 import contractAddresses from "../../../config/ines.fund";
-import { simulateTotalInterest } from "../../../utils/jsCalculator";
+import { calcTotalInterest, calcRatioOfTotalIncome } from "../../../utils/jsCalculator";
 import {getTokenDetailsFromAddress} from "../../../utils/paymentToken";
-import {getPrincipalToken, getLoanMetadataUrl, amountContributed, FundEvent} from "../../../utils/crowdloan";
+import {getPrincipalToken, getPrincipalRequested, getLoanMetadataUrl, amountContributed, FundEvent} from "../../../utils/crowdloan";
 import {
-    fetchLoanMetadata, 
+    fetchLoanMetadata,
+    getExpectedSalary,
     getInterestRate,
     getLoanPeriod
 } from "../../../utils/metadata";
@@ -18,6 +19,8 @@ import {ShowModal} from "../../lib";
 export interface HomeState {
     loanPeriod: string;
     interestRate: string;
+    principalRequested: string;
+    expectedSalary: string;
     contributors: any;
     paymentToken: object;
     crowdloanInstance: object;
@@ -28,6 +31,8 @@ class Home extends React.Component<{}, HomeState> {
     state = {
         loanPeriod: null,
         interestRate: null,
+        principalRequested: null,
+        expectedSalary: null,
         contributors: [],
         paymentToken: null,
         crowdloanInstance: null,
@@ -35,12 +40,23 @@ class Home extends React.Component<{}, HomeState> {
     };
 
     simulateInterest = contribution => {
-        const { interestRate, loanPeriod } = this.state;
-        return simulateTotalInterest(
-            contribution,
-            interestRate,
-            loanPeriod
-        );
+        const { interestRate, principalRequested, expectedSalary, loanPeriod } = this.state;
+        return {
+            totalAmount: calcTotalInterest(
+                contribution,
+                principalRequested,
+                interestRate,
+                expectedSalary,
+                loanPeriod
+            ),
+            totalPercentage: calcRatioOfTotalIncome(
+                contribution,
+                principalRequested,
+                interestRate,
+                expectedSalary,
+                loanPeriod
+            )
+        };
     };
     
     componentDidMount = async () => {
@@ -55,10 +71,13 @@ class Home extends React.Component<{}, HomeState> {
         );
 
         const loanMetadataUrl = await getLoanMetadataUrl(crowdloanInstance);
+        const principalRequested = await getPrincipalRequested(crowdloanInstance);
         const loanMetadata = await fetchLoanMetadata(loanMetadataUrl);
 
         const loanPeriod = await getLoanPeriod(loanMetadata);
         const interestRate = await getInterestRate(loanMetadata);
+        const expectedSalary = await getExpectedSalary(loanMetadata);
+        
         
         const fundEvents:any[] = await FundEvent(crowdloanInstance, {
             fromBlock: 0,
@@ -79,6 +98,8 @@ class Home extends React.Component<{}, HomeState> {
         this.setState({
             loanPeriod,
             interestRate,
+            expectedSalary,
+            principalRequested,
             contributors,
             paymentToken,
             crowdloanInstance,

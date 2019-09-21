@@ -22,7 +22,7 @@ interface TabHomeProps {
   contributors: any;
   paymentToken?: any
   crowdloanInstance?: any;
-  simulateInterest: (contribution: string | number) => number;
+  simulateInterest: (contribution: string | number) => object;
 }
 
 class TabHome extends React.Component<TabHomeProps, TabHomeState> {
