@@ -1,29 +1,43 @@
-import React from "react";
-import { ModalWipWrapper } from "./styled";
+import React from 'react';
+import { ModalWipWrapper } from './styled';
 
 class ModalWip extends React.Component<{}, {}> {
   render() {
     return (
       <React.Fragment>
-        <h4>Attention</h4>
+        <h4>🚀 This is a testnet site! 🚀</h4>
         <p>
-          We apologize for your inconvenience with the appearance of this popup,
-          we just want to make sure that you know the information about this
-          project as follows:
+          This site lives on the{' '}
+          <a
+            href="https://kovan-testnet.github.io/website/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Kovan testnet
+          </a>
+          , and uses real-life currency that doesn't have any value.
         </p>
         <ModalWipWrapper>
           <li>
             <p>
-              This is a work in progress, and is deployed for user testing
-              purposes
+              Any "loans" made to Ines on this site are <b>NOT</b> real
             </p>
           </li>
           <li>
-            <p>It is also to give the community an idea of our progress</p>
+            <p>
+              Interested to help us with user testing? &nbsp;
+              <a
+                href="https://calendly.com/felix-yuniar/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <b>Sign up here</b>
+              </a>
+            </p>
           </li>
           <li>
             <p>
-              This is project of&nbsp;
+              Learn more about &nbsp;
               <a
                 href="https://www.enable.credit/"
                 target="_blank"
@@ -31,7 +45,7 @@ class ModalWip extends React.Component<{}, {}> {
               >
                 <b>Enable</b>
               </a>
-              , an peer to peer stablecoin loan marketplace
+              , a initiative to build borderless stablecoin loans
             </p>
           </li>
         </ModalWipWrapper>

@@ -327,8 +327,8 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                                 this.state.minRepayment,
                                 this.state.paymentToken.decimals,
                                 true
-                              )}
-                          Dai
+                              )}{" "}
+                              Dai
                         </h4>
                         <p>Min Repayment</p>
                       </HeroStats>
