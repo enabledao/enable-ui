@@ -385,8 +385,8 @@ class SimuLationReturn extends React.Component<
                                 Expected Repayment Calculator
                             </h6>
                             <h5>
-                                15,000 Dai&nbsp;
-                                <small>&nbsp;(Cap Reached)</small>
+                                38,000??? Dai&nbsp;
+                                <small>&nbsp;(Expected Salary)</small>
                             </h5>
                         </Margin>
                         <Button
@@ -400,20 +400,19 @@ class SimuLationReturn extends React.Component<
                 </Margin>
                 <Margin vertical={24}>
                     <SimulationWrapper>
-                        <h5>Gold Tier</h5>
-                        <h6>Lend 30,000 Dai or more</h6>
+                        <h5>Silver Tier</h5>
+                        <h6>Lend 5,000 Dai or more</h6>
                         <p>
-                            I will be your Campus Ambassador at Cornell, and
-                            promote your company, help with event preparations
-                            and publicity
+                            I will put your company's stickers on my laptop, as
+                            well as my graduation robe in 2 years time
                         </p>
                         <Margin top={40} bottom={30}>
                             <h6 style={{ color: '#21b549', cursor: 'pointer' }}>
                                 Expected Repayment Calculator
                             </h6>
                             <h5>
-                                15,000 Dai&nbsp;
-                                <small>&nbsp;(Cap Reached)</small>
+                                6,000??? Dai&nbsp;
+                                <small>&nbsp;(Expected Salary)</small>
                             </h5>
                         </Margin>
                         <Button

@@ -245,7 +245,7 @@ class Profile extends React.Component<TabProfileProps, ProfileState> {
                                     </Padding>
                                 </Margin>
                                 <Margin top={-31}>
-                                    <TimelineYear>2021</TimelineYear>
+                                    <TimelineYear>2027</TimelineYear>
                                 </Margin>
                             </TimelineWrapper>
                         </Margin>
