@@ -5,6 +5,7 @@ import AvatarBrooke from "../../../../images/avatar/brooke.jpg";
 import AvatarIvana from "../../../../images/avatar/ivana.jpg";
 import AvatarShamanta from "../../../../images/avatar/shamanta.jpg";
 import HeroInes from "../../../../images/hero/home.png";
+import YoutubeEmbed from "../../../lib/youtube"
 import ModalListContributor from "../modalListContributor";
 import ModalVideo from "./modalVideo";
 import { Container } from "../../../../styles/bases";
@@ -220,8 +221,10 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
             <Row>
               <Col lg={7} md={12} sm={12} text="center">
                 <HeroImage>
-                  <HeroLink onClick={this.handleModalVideo}>
-                    <img src={HeroInes} alt="HomeHero - Illustraion" />
+                  <HeroLink>
+                    <YoutubeEmbed 
+                      youtubeId="s7oGAs4AkJg" 
+                    />
                   </HeroLink>
                 </HeroImage>
               </Col>
