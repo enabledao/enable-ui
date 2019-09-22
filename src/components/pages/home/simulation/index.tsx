@@ -256,7 +256,7 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                                     <Col lg={12}>
                                         <Margin top={8}>
                                             <TextField
-                                                label='Investment'
+                                                label='Investment Amount'
                                                 type='number'
                                                 placeholder='Enter the number You want to lend'
                                                 value={sliderValue === 0 ? "" : sliderValue}
