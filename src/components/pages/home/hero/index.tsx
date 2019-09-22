@@ -331,10 +331,10 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                         <p>Duration</p>
                       </HeroStats>
                     </Col>
-                    <Col lg={4}>
+                    <Col lg={4} sm={6}>
                       <HeroStats
                       data-for="minRepayment-tooltip"
-                      data-tip="TThe minimum amount the borrower <br> is committed to repay <br> regardless of income"
+                      data-tip="The minimum amount the borrower <br> is committed to repay <br> regardless of income"
                       data-multiline="true"
                       >
                         <h4>
@@ -351,7 +351,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                       </HeroStats>
                       <ReactTooltip id="minRepayment-tooltip"/>
                     </Col>
-                    <Col lg={3}>
+                    <Col lg={3} sm={6}>
                       <HeroStats>
                         <h4>
                           {!this.state.minRepayment
