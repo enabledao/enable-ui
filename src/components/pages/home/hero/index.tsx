@@ -43,6 +43,9 @@ import {
   HeroImage,
   HeroStatsRight
 } from "./styled";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import ReactTooltip from 'react-tooltip'
 
 interface HomeHeroProps extends RouteComponentProps<any> {
   loanPeriod: string;
@@ -300,7 +303,11 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 <Margin top={24}>
                   <Row>
                     <Col lg={2} sm={6}>
-                      <HeroStats>
+                      <HeroStats 
+                        data-for="isa-tooltip"
+                        data-tip="Income Share Agreement (ISA) will be <br> distributed proportionally <br> by the amount of investment"
+                        data-multiline="true"
+                      >
                         <h4>
                           {!this.props.interestRate
                             ? "0"
@@ -308,8 +315,9 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                           }
                           %
                         </h4>
-                        <p>ISA</p>
+                        <p>ISA <FontAwesomeIcon icon={faInfoCircle}/></p>
                       </HeroStats>
+                      <ReactTooltip id="isa-tooltip"/>
                     </Col>
                     <Col lg={3} sm={6}>
                       <HeroStats>
@@ -321,7 +329,11 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                       </HeroStats>
                     </Col>
                     <Col lg={4}>
-                      <HeroStats>
+                      <HeroStats
+                      data-for="minRepayment-tooltip"
+                      data-tip="TThe minimum amount the borrower <br> is committed to repay <br> regardless of income"
+                      data-multiline="true"
+                      >
                         <h4>
                           {!this.state.minRepayment
                             ? "0"
@@ -332,8 +344,9 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                               ))}{" "}
                               Dai
                         </h4>
-                        <p>Min Repayment</p>
+                        <p>Min Repayment <FontAwesomeIcon icon={faInfoCircle}/></p>
                       </HeroStats>
+                      <ReactTooltip id="minRepayment-tooltip"/>
                     </Col>
                     <Col lg={3}>
                       <HeroStats>
