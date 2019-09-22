@@ -1,5 +1,5 @@
-const formatBN = (x: number): string => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const formatBN = (x: string): string => {
+    return x.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 export { formatBN };

@@ -21,6 +21,7 @@ import {
   getPrincipalRequested,
   getPrincipalToken
 } from "../../../../utils/crowdloan";
+import { formatBN } from "../../../../utils/formatters";
 import {
     getMinimumRepayment,
     getRepaymentStart
@@ -233,21 +234,21 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     <h5>
                       {!this.state.totalContributed
                         ? "0"
-                        : prepBigNumber(
+                        : formatBN(prepBigNumber(
                             this.state.totalContributed,
                             this.state.paymentToken.decimals,
                             true
-                          )}
+                          ))}
                       {" Dai "}
                       <small>
                         of&nbsp;
                         {!this.state.principalRequested
                           ? "0"
-                          : prepBigNumber(
+                          : formatBN(prepBigNumber(
                               this.state.principalRequested,
                               this.state.paymentToken.decimals,
                               true
-                            )}{" "}
+                            ))}{" "}
                         goal
                       </small>
                     </h5>
@@ -298,7 +299,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 </Margin>
                 <Margin top={24}>
                   <Row>
-                    <Col lg={2}>
+                    <Col lg={2} sm={6}>
                       <HeroStats>
                         <h4>
                           {!this.props.interestRate
@@ -310,7 +311,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                         <p>ISA</p>
                       </HeroStats>
                     </Col>
-                    <Col lg={3}>
+                    <Col lg={3} sm={6}>
                       <HeroStats>
                         <h4>
                           {!this.props.loanPeriod ? "0" : Math.ceil((+this.props.loanPeriod)/MONTHS_IN_YEAR)}{" "}
@@ -324,11 +325,11 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                         <h4>
                           {!this.state.minRepayment
                             ? "0"
-                            : prepBigNumber(
+                            : formatBN(prepBigNumber(
                                 this.state.minRepayment,
                                 this.state.paymentToken.decimals,
                                 true
-                              )}{" "}
+                              ))}{" "}
                               Dai
                         </h4>
                         <p>Min Repayment</p>
