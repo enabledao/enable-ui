@@ -25,13 +25,15 @@ import Facebook from "../../../../images/socialMedia/facebook.svg";
 import { prepBigNumber } from "../../../../utils/web3Utils";
 interface SimuLationReturnProps extends RouteComponentProps<any> {
     contributors?: any;
+    expectedSalary?: any;
     paymentToken: any;
-    simulateInterest: (contribution: string | number) => number;
+    simulateInterest: (contribution: string | number, salary?: string) => any;
 }
 
 export interface SimuLationReturnState {
     textfieldShow: boolean;
     sliderValue: number;
+    simulated: any;
     sliderMin: number;
     sliderMax: number;
     showModal: boolean;
@@ -75,7 +77,8 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
             sliderMin: 50,
             sliderMax: 30000,
             showModal: false,
-            showModalGuarantor: false
+            showModalGuarantor: false,
+            simulated: null
         };
     }
 
@@ -121,8 +124,18 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
         );
     }
 
+    getSimulated = () => {
+        return this.props.simulateInterest(
+            prepBigNumber(
+                this.state.sliderValue,
+                this.props.paymentToken.decimals,
+            ))
+    }
+
     render() {
         const {sliderValue} = this.state;
+        let { expectedSalary } = this.props;
+
         return (
             <React.Fragment>
                 <Margin top={20} bottom={60}>
@@ -243,7 +256,7 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                                     <Col lg={12}>
                                         <Margin top={8}>
                                             <TextField
-                                                label='Investment'
+                                                label='Investment Amount'
                                                 type='number'
                                                 placeholder='Enter the number You want to lend'
                                                 value={sliderValue === 0 ? "" : sliderValue}
@@ -255,15 +268,34 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                             </Margin>
                             <Margin vertical={24}>
                                 <h4>
-                                    {this.props.simulateInterest && this.props.simulateInterest(sliderValue)}
+                                    {!this.props.paymentToken
+                                    ? "0" 
+                                    : prepBigNumber(
+                                        this.getSimulated().totalAmount,
+                                            this.props.paymentToken.decimals,
+                                            true
+                                    )}
                                     &nbsp;<small>Dai</small>
                                 </h4>
                                 <p>Expected Total Return</p>
                             </Margin>
                             <hr />
                             <Margin vertical={24}>
-                                <b>0.04</b>% <b>ISA</b> from expected starting salary of{" "}
-                                <b>$86,320/year</b>
+                                <b>
+                                    {!this.props.paymentToken
+                                        ? "0"
+                                        : this.getSimulated().percentage.toFixed(4)
+                                    }
+                                    
+                                    </b>% <b>ISA</b> from expected starting salary of{" "}
+                                <b>$
+                                    {!expectedSalary
+                                    ? "0"
+                                    : prepBigNumber(
+                                        expectedSalary,
+                                        this.props.paymentToken.decimals,
+                                        true
+                                    )}/year</b>
                             </Margin>
                             <div style={{position: "absolute"}}>
                                 <img src={CornellLogo} alt='cornell - logo' />
@@ -387,5 +419,6 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
         );
     }
 }
+
 
 export default withRouter<SimuLationReturnProps>(SimuLationReturn);

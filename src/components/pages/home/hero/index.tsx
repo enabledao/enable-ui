@@ -13,7 +13,7 @@ import { Row, Col, Progress, Button, ShowModal } from "../../../lib";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppPath } from "../../../../constant/appPath";
 import { getDeployedFromConfig } from "../../../../utils/getDeployed";
-import { prepBigNumber, prepNumber } from "../../../../utils/web3Utils";
+import { prepBigNumber } from "../../../../utils/web3Utils";
 import { getTokenDetailsFromAddress } from "../../../../utils/paymentToken";
 import {
   totalContributed,
@@ -22,13 +22,12 @@ import {
   getPrincipalToken
 } from "../../../../utils/crowdloan";
 import {
-    getLoanEndTimestamp,
-    getMinimumRepayment
+    getMinimumRepayment,
+    getRepaymentStart
 } from "../../../../utils/metadata";
 import PatternImage from "../../../../images/pattern.png";
 import contractAddresses from "../../../../config/ines.fund";
 import {
-  INTEREST_DECIMALS,
   MILLISECONDS,
   MONTHS_IN_YEAR,
   ZERO
@@ -57,7 +56,8 @@ export interface HomeHeroState {
   loanPeriod: string;
   interestRate: string;
   loanEndTimestamp: string;
-  minRepayment: string;
+  repaymentStart: any;
+  minRepayment: any;
   totalContributed: string;
   principalRequested: string;
   payees: string;
@@ -106,6 +106,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
       loanPeriod: null,
       interestRate: null,
       loanEndTimestamp: null,
+      repaymentStart: null,
       minRepayment: null,
       totalContributed: null,
       principalRequested: null,
@@ -127,7 +128,8 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
 
     try {
       const minRepayment = await getMinimumRepayment(loanMetadata);
-
+      const repaymentStart = await getRepaymentStart(loanMetadata);
+      
       const principalRequested = await getPrincipalRequested(
         crowdloanInstance
       );
@@ -143,15 +145,17 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
 
       if (+loanStartTimestamp !== ZERO) {
         const DAYINMILLISECONDS = 86400 * MILLISECONDS;
-        let endTimestamp = await getLoanEndTimestamp(crowdloanInstance);
-        endTimestamp = new Date(+endTimestamp * MILLISECONDS);
-        const now: any = new Date();
+        let endTimestamp = + (await getCrowdfundEnd(crowdloanInstance));
+        endTimestamp = new Date(endTimestamp * MILLISECONDS).getTime();
+        const now: any = new Date().getTime();
+
         loanEndTimestamp = Math.ceil((endTimestamp - now) / DAYINMILLISECONDS);
       }
 
       this.setState({
         loanEndTimestamp: loanEndTimestamp || 0,
-        minRepayment: minRepayment || 0,
+        repaymentStart: repaymentStart || 0,
+        minRepayment: minRepayment.toString() || 0,
         totalContributed: _totalContributed || 0,
         principalRequested: principalRequested || 0,
         paymentToken
@@ -299,11 +303,8 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                         <h4>
                           {!this.props.interestRate
                             ? "0"
-                            : prepNumber(
-                                this.props.interestRate,
-                                INTEREST_DECIMALS,
-                                true
-                              )}
+                            : this.props.interestRate
+                          }
                           %
                         </h4>
                         <p>ISA</p>
@@ -323,7 +324,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                         <h4>
                           {!this.state.minRepayment
                             ? "0"
-                            : prepNumber(
+                            : prepBigNumber(
                                 this.state.minRepayment,
                                 this.state.paymentToken.decimals,
                                 true
@@ -335,7 +336,11 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     </Col>
                     <Col lg={3}>
                       <HeroStats>
-                        <h4>2021</h4>
+                        <h4>
+                          {!this.state.minRepayment
+                            ? "0"
+                            : new Date(this.state.repaymentStart * MILLISECONDS).getFullYear()
+                              }</h4>
                         <p>ISA Start</p>
                       </HeroStats>
                     </Col>

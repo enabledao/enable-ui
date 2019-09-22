@@ -47,7 +47,6 @@ import {
 
 import {
     fetchLoanMetadata, 
-    getInterestRate,
     getLoanPeriod
 } from "../../../utils/metadata";
 
@@ -88,7 +87,6 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         withdrawals: null,
         loanParams: {
             borrower: "",
-            interestRate: 0,
             loanPeriod: "",
             crowdfundStart: "",
             crowdfundEnd: "",
@@ -252,7 +250,6 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             const loanMetadata = await fetchLoanMetadata(loanMetadataUrl);
     
             const loanPeriod = await getLoanPeriod(loanMetadata);
-            const interestRate = await getInterestRate(loanMetadata);
 
             // Contract Calls
             const borrower = await getBorrower(crowdloanInstance);
@@ -329,7 +326,6 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 injectedAccountAddress,
                 loanParams: {
                     borrower,
-                    interestRate,
                     loanPeriod,
                     crowdfundStart,
                     crowdfundEnd,

@@ -7,6 +7,7 @@ const LoanStatuses = {
     REPAYMENT_COMPLETE:  "Repayment Complete"
 };
 const ZERO = 0;
+const HUNDRED = 100;
 const MILLISECONDS = 1000;
 const MONTHS_IN_YEAR = 12;
 
@@ -15,5 +16,6 @@ export {
     LoanStatuses,
     MILLISECONDS,
     MONTHS_IN_YEAR,
-    ZERO
+    ZERO,
+    HUNDRED
 }

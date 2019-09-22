@@ -16,9 +16,10 @@ import {
 
 interface TabProfileProps {
   contributors?: any;
+  expectedSalary?: any;
   paymentToken?: any;
   crowdloanInstance?: any;
-  simulateInterest: (contribution: string | number) => number;
+  simulateInterest: (contribution: string | number) => object;
 }
 
 export interface ProfileState {
@@ -204,7 +205,7 @@ class Profile extends React.Component<TabProfileProps, ProfileState> {
             <TestimonialLinkedin />
           </Col>
           <Col lg={5} md="hidden">
-            <SimuLationReturn contributors={this.props.contributors} paymentToken={this.props.paymentToken} simulateInterest={this.props.simulateInterest} />
+            <SimuLationReturn contributors={this.props.contributors} paymentToken={this.props.paymentToken} simulateInterest={this.props.simulateInterest} expectedSalary={this.props.expectedSalary} />
           </Col>
         </Row>
       </React.Fragment>
