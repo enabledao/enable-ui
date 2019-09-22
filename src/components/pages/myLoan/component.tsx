@@ -1,72 +1,61 @@
 import React from "react";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Container } from "../../../styles/bases";
-import { Margin } from "../../../styles/utils";
-import { Row, Col } from "../../lib";
-import { HeroWrapper, HeroContent, BoxStats, HeroTitle } from "./styled";
+import {RouteComponentProps, withRouter} from "react-router-dom";
+import {Container} from "../../../styles/bases";
+import {Margin} from "../../../styles/utils";
+import {Row, Col} from "../../lib";
+import {HeroWrapper, HeroContent, BoxStats, HeroTitle} from "./styled";
 import BorrowerActions from "./borrowerActions";
 import Withdrawal from "./withdrawals";
 import RepaymentStatus from "./repaymentStatus";
 import contractAddresses from "../../../config/ines.fund.js";
-import { LoanStatuses ,MILLISECONDS, ZERO } from "../../../config/constants.js";
+import {LoanStatuses, MILLISECONDS, ZERO} from "../../../config/constants.js";
 import PatternImage from "../../../images/pattern.png";
-import {
-    BN,
-    getBlock,
-    getInjectedAccountAddress,
-    prepBigNumber
-} from "../../../utils/web3Utils";
-import { getDeployedFromConfig } from "../../../utils/getDeployed";
-import { allowance, getInstance, getTokenDetailsFromAddress } from "../../../utils/paymentToken";
-import {
-    availableWithdrawal
-} from "../../../utils/jsCalculator";
+import {BN, getBlock, getInjectedAccountAddress, prepBigNumber} from "../../../utils/web3Utils";
+import {getDeployedFromConfig} from "../../../utils/getDeployed";
+import {allowance, getInstance, getTokenDetailsFromAddress} from "../../../utils/paymentToken";
+import {availableWithdrawal} from "../../../utils/jsCalculator";
 
 import {
-  getBorrower,
-  getLoanMetadataUrl,
-  getPrincipalToken,
-  getPrincipalRequested,
-  getRepaymentCap,
-  getCrowdfundEnd,
-  getCrowdfundStart,
-  amountContributed,
-  totalContributed,
-  principalWithdrawn,
-  amountRepaid,
-  repaymentWithdrawn,
-  totalRepaymentWithdrawn,
-  startCrowdfund,
-  withdrawPrincipal,
-  repay,
-  withdrawRepayment,
-  approveAndPay,
-  WithdrawRepaymentEvent,
-  RepayEvent,
+    getBorrower,
+    getLoanMetadataUrl,
+    getPrincipalToken,
+    getPrincipalRequested,
+    getRepaymentCap,
+    getCrowdfundEnd,
+    getCrowdfundStart,
+    amountContributed,
+    totalContributed,
+    principalWithdrawn,
+    amountRepaid,
+    repaymentWithdrawn,
+    totalRepaymentWithdrawn,
+    startCrowdfund,
+    withdrawPrincipal,
+    repay,
+    withdrawRepayment,
+    approveAndPay,
+    WithdrawRepaymentEvent,
+    RepayEvent
 } from "../../../utils/crowdloan";
 
-import {
-    fetchLoanMetadata, 
-    getInterestRate,
-    getLoanPeriod
-} from "../../../utils/metadata";
+import {fetchLoanMetadata, getInterestRate, getLoanPeriod} from "../../../utils/metadata";
 
 interface MyLoanState {
-  injectedAccountAddress: string;
-  paymentToken: object;
-  principalDisbursed: string;
-  principalRequested: string;
-  releaseAllowance: string;
-  repayments: object;
-  crowdloanInstance: object;
-  transacting: boolean;
-  loanParams: object;
-  shares: string;
-  released: string;
-  totalPaid: string;
-  totalReleased: string;
-  totalShares: string;
-  withdrawals: object;
+    injectedAccountAddress: string;
+    paymentToken: object;
+    principalDisbursed: string;
+    principalRequested: string;
+    releaseAllowance: string;
+    repayments: object;
+    crowdloanInstance: object;
+    transacting: boolean;
+    loanParams: object;
+    shares: string;
+    released: string;
+    totalPaid: string;
+    totalReleased: string;
+    totalShares: string;
+    withdrawals: object;
 }
 
 interface MyLoanProps extends RouteComponentProps<any> {}
@@ -98,111 +87,94 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
     onWithdraw = async () => {
         // const {history} = this.props;
-        const { releaseAllowance, crowdloanInstance } = this.state;
+        const {releaseAllowance, crowdloanInstance} = this.state;
 
         if (!+releaseAllowance) {
             return console.error("No balance Available for Withdrawal");
         }
         try {
-            this.setState({ transacting: true });
+            this.setState({transacting: true});
 
             const injectedAccountAddress = await getInjectedAccountAddress();
-            const tx = await withdrawRepayment(
-                crowdloanInstance,
-                injectedAccountAddress
-            );
+            const tx = await withdrawRepayment(crowdloanInstance, injectedAccountAddress);
             console.log(tx);
 
-            this.setState({ transacting: false });
+            this.setState({transacting: false});
             return;
         } catch (e) {
-            this.setState({ transacting: false });
+            this.setState({transacting: false});
             return console.error(e);
         }
     };
 
     onstartcrowdfund = async () => {
-        const { crowdloanInstance } = this.state;
+        const {crowdloanInstance} = this.state;
 
         try {
-            this.setState({ transacting: true });
+            this.setState({transacting: true});
 
             const crowdfundStart = await getCrowdfundStart(crowdloanInstance);
             if (+crowdfundStart) {
                 return console.error("Crowdfund already started");
             }
 
-            const tx = await startCrowdfund(
-                crowdloanInstance,
-            );
+            const tx = await startCrowdfund(crowdloanInstance);
             console.log(tx);
 
-            this.setState({ transacting: false });
+            this.setState({transacting: false});
             return;
         } catch (e) {
-            this.setState({ transacting: false });
+            this.setState({transacting: false});
             return console.error(e);
         }
-    }
+    };
     onborrowerwithdraw = async () => {
-        const { crowdloanInstance, paymentToken } = this.state;
+        const {crowdloanInstance, paymentToken} = this.state;
 
         try {
-            this.setState({ transacting: true });
+            this.setState({transacting: true});
 
-            const amount = window.prompt('How much do you want to withdraw?');
+            const amount = window.prompt("How much do you want to withdraw?");
             if (!+amount) {
-                return console.error('Withdrawal cancelled');
+                return console.error("Withdrawal cancelled");
             }
 
             const tx = await withdrawPrincipal(
                 crowdloanInstance,
-                prepBigNumber(
-                    amount,
-                    paymentToken.decimals
-                )
+                prepBigNumber(amount, paymentToken.decimals)
             );
             console.log(tx);
 
-            this.setState({ transacting: false });
+            this.setState({transacting: false});
             return;
         } catch (e) {
-            this.setState({ transacting: false });
+            this.setState({transacting: false});
             return console.error(e);
         }
-    }
+    };
 
     onrepay = async () => {
-        const { crowdloanInstance, injectedAccountAddress, paymentToken } = this.state;
+        const {crowdloanInstance, injectedAccountAddress, paymentToken} = this.state;
 
         try {
-            this.setState({ transacting: true });
+            this.setState({transacting: true});
 
-            const now = prepBigNumber(
-                Math.floor(new Date().getTime() / MILLISECONDS),
-                ZERO,
-                true
-            );
+            const now = prepBigNumber(Math.floor(new Date().getTime() / MILLISECONDS), ZERO, true);
 
             const crowdfundEnd = await getCrowdfundEnd(crowdloanInstance);
             if (+crowdfundEnd >= +now) {
                 return console.error("Repayment not yet active");
             }
 
-            const amount = window.prompt('How much do you want to repay?');
+            const amount = window.prompt("How much do you want to repay?");
 
             if (!+amount) {
-                return console.error('Repayment cancelled');
+                return console.error("Repayment cancelled");
             }
 
-            const amountInERC20 = prepBigNumber(
-                amount,
-                paymentToken.decimals
-            );
+            const amountInERC20 = prepBigNumber(amount, paymentToken.decimals);
 
-            const paymentTokenInstance = await getInstance(
-                paymentToken.address
-            );
+            const paymentTokenInstance = await getInstance(paymentToken.address);
 
             const approvedBalance = await allowance(
                 paymentTokenInstance,
@@ -212,34 +184,24 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
             let tx;
             if (BN(approvedBalance).lt(BN(amountInERC20))) {
-                tx = await approveAndPay(
-                    paymentTokenInstance,
-                    crowdloanInstance,
-                    amountInERC20
-                );
+                tx = await approveAndPay(paymentTokenInstance, crowdloanInstance, amountInERC20);
             } else {
-                tx = await repay(
-                    crowdloanInstance,
-                    amountInERC20
-                );
+                tx = await repay(crowdloanInstance, amountInERC20);
             }
 
             console.log(tx);
 
-            this.setState({ transacting: false });
+            this.setState({transacting: false});
             return;
         } catch (e) {
-            this.setState({ transacting: false });
+            this.setState({transacting: false});
             return console.error(e);
         }
-    }
+    };
 
     componentDidMount = async () => {
         try {
-            const crowdloanInstance = await getDeployedFromConfig(
-                "Crowdloan",
-                contractAddresses
-            );
+            const crowdloanInstance = await getDeployedFromConfig("Crowdloan", contractAddresses);
 
             const paymentToken = await getTokenDetailsFromAddress(
                 await getPrincipalToken(crowdloanInstance)
@@ -247,10 +209,9 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
             const injectedAccountAddress = await getInjectedAccountAddress();
 
-
             const loanMetadataUrl = await getLoanMetadataUrl(crowdloanInstance);
             const loanMetadata = await fetchLoanMetadata(loanMetadataUrl);
-    
+
             const loanPeriod = await getLoanPeriod(loanMetadata);
             const interestRate = await getInterestRate(loanMetadata);
 
@@ -258,13 +219,8 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             const borrower = await getBorrower(crowdloanInstance);
 
             // Note: principal disbursed and total paid will return zero when the loan is not started
-            const principalDisbursed = await principalWithdrawn(
-                crowdloanInstance
-            );
-            const principalRequested = await getPrincipalRequested(
-                crowdloanInstance
-            );
-
+            const principalDisbursed = await principalWithdrawn(crowdloanInstance);
+            const principalRequested = await getPrincipalRequested(crowdloanInstance);
 
             const crowdfundStart = await getCrowdfundStart(crowdloanInstance);
             const crowdfundEnd = await getCrowdfundEnd(crowdloanInstance);
@@ -293,18 +249,13 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 _releaseAllowance = "0";
             }
 
-            const withdrawals = await WithdrawRepaymentEvent(
-                crowdloanInstance,
-                {
+            const withdrawals = await WithdrawRepaymentEvent(crowdloanInstance, {
                 fromBlock: 0,
                 toBlock: "latest",
-                filter: { lender: injectedAccountAddress }
-                }
-            );
+                filter: {lender: injectedAccountAddress}
+            });
 
-            const paymentReceivedEvent = await RepayEvent(
-            crowdloanInstance,
-            {
+            const paymentReceivedEvent = await RepayEvent(crowdloanInstance, {
                 fromBlock: 0,
                 toBlock: "latest"
             });
@@ -313,14 +264,9 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 paymentReceivedEvent.map(async event => ({
                     date:
                         event.timestamp ||
-                        (await getBlock(event.blockNumber || event.blockHash)).timestamp *
-                        MILLISECONDS,
+                        (await getBlock(event.blockNumber || event.blockHash)).timestamp * MILLISECONDS,
                     from: event.returnValues.from,
-                    amount: prepBigNumber(
-                        event.returnValues.amount || 0,
-                        paymentToken.decimals,
-                        true
-                    ),
+                    amount: prepBigNumber(event.returnValues.amount || 0, paymentToken.decimals, true),
                     paid: true
                 }))
             );
@@ -351,30 +297,30 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         } catch (err) {
             console.log(err);
         }
-    }
+    };
 
     loanStatus = () => {
-        const { loanParams: { crowdfundStart, crowdfundEnd, repaymentCap }, totalPaid, totalShares } = this.state;
+        const {
+            loanParams: {crowdfundStart, crowdfundEnd, repaymentCap},
+            totalPaid,
+            totalShares
+        } = this.state;
         let loanStatus;
-        const now = prepBigNumber(
-            Math.floor(new Date().getTime() / MILLISECONDS),
-            ZERO,
-            true
-        );
+        const now = prepBigNumber(Math.floor(new Date().getTime() / MILLISECONDS), ZERO, true);
         switch (true) {
-            case (+crowdfundStart === ZERO):
+            case +crowdfundStart === ZERO:
                 loanStatus = LoanStatuses.NOT_STARTED;
                 break;
-            case (+crowdfundStart > 0 && +now < +crowdfundEnd):
+            case +crowdfundStart > 0 && +now < +crowdfundEnd:
                 loanStatus = LoanStatuses.FUNDING_STARTED;
                 break;
-            case (+crowdfundEnd < now && +totalShares === ZERO):
+            case +crowdfundEnd < now && +totalShares === ZERO:
                 loanStatus = LoanStatuses.FUNDING_FAILED;
                 break;
-            case (+crowdfundEnd < +now):
+            case +crowdfundEnd < +now:
                 loanStatus = LoanStatuses.REPAYMENT_CYCLE;
                 break;
-            case (+totalPaid === +repaymentCap):
+            case +totalPaid === +repaymentCap:
                 loanStatus = LoanStatuses.REPAYMENT_COMPLETE;
                 break;
         }
@@ -393,20 +339,20 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         <HeroWrapper>
             <HeroTitle>
                 <img
-                style={{
-                    position: "absolute",
-                    top: 0,
-                    height: "100%",
-                    left: 0,
-                    transform: "scaleX(-1)"
-                }}
-                src={PatternImage}
-                alt="pattern"
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        height: "100%",
+                        left: 0,
+                        transform: "scaleX(-1)"
+                    }}
+                    src={PatternImage}
+                    alt='pattern'
                 />
                 <img
-                style={{ position: "absolute", top: 0, height: "100%", right: 0 }}
-                src={PatternImage}
-                alt="pattern"
+                    style={{position: "absolute", top: 0, height: "100%", right: 0}}
+                    src={PatternImage}
+                    alt='pattern'
                 />
                 <Container>
                     <Margin vertical={48}>
@@ -418,10 +364,10 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                         {!releaseAllowance
                                             ? "0"
                                             : prepBigNumber(
-                                                    releaseAllowance,
-                                                    paymentToken.decimals,
-                                                    true
-                                                )}{" "}
+                                                  releaseAllowance,
+                                                  paymentToken.decimals,
+                                                  true
+                                              )}{" "}
                                         Dai
                                     </h4>
                                 </BoxStats>
@@ -453,23 +399,23 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 </Container>
             </HeroTitle>
             <Container>
-                <div style={{ position: "relative", top: -80 }}>
-                <Row>
-                    <Col lg={6} md={12}>
-                    <HeroContent>
-                        <Withdrawal
-                        withdrawals={withdrawals}
-                        transacting={transacting}
-                        onWithdraw={this.onWithdraw}
-                        />
-                    </HeroContent>
-                    </Col>
-                    <Col lg={6} md={12}>
-                    <HeroContent>
-                        <RepaymentStatus repayments={repayments} />
-                    </HeroContent>
-                    </Col>
-                </Row>
+                <div style={{position: "relative", top: -80}}>
+                    <Row>
+                        <Col lg={6} md={12}>
+                            <HeroContent>
+                                <Withdrawal
+                                    withdrawals={withdrawals}
+                                    transacting={transacting}
+                                    onWithdraw={this.onWithdraw}
+                                />
+                            </HeroContent>
+                        </Col>
+                        <Col lg={6} md={12}>
+                            <HeroContent>
+                                <RepaymentStatus repayments={repayments} />
+                            </HeroContent>
+                        </Col>
+                    </Row>
                 </div>
             </Container>
         </HeroWrapper>
@@ -486,20 +432,20 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         <HeroWrapper>
             <HeroTitle>
                 <img
-                style={{
-                    position: "absolute",
-                    top: 0,
-                    height: "100%",
-                    left: 0,
-                    transform: "scaleX(-1)"
-                }}
-                src={PatternImage}
-                alt="pattern"
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        height: "100%",
+                        left: 0,
+                        transform: "scaleX(-1)"
+                    }}
+                    src={PatternImage}
+                    alt='pattern'
                 />
                 <img
-                style={{ position: "absolute", top: 0, height: "100%", right: 0 }}
-                src={PatternImage}
-                alt="pattern"
+                    style={{position: "absolute", top: 0, height: "100%", right: 0}}
+                    src={PatternImage}
+                    alt='pattern'
                 />
                 <Container>
                     <Margin vertical={48}>
@@ -508,10 +454,14 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                 <BoxStats>
                                     <p>Amount raised</p>
                                     <h4>
-                                    {!totalShares
-                                        ? "0"
-                                        : prepBigNumber(totalShares, paymentToken.decimals, true)}{" "}
-                                    Dai
+                                        {!totalShares
+                                            ? "0"
+                                            : prepBigNumber(
+                                                  totalShares,
+                                                  paymentToken.decimals,
+                                                  true
+                                              )}{" "}
+                                        Dai
                                     </h4>
                                 </BoxStats>
                             </Col>
@@ -519,14 +469,14 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                 <BoxStats>
                                     <p>Loan Disbursed</p>
                                     <h4>
-                                    {!principalDisbursed
-                                        ? "0"
-                                        : prepBigNumber(
-                                            principalDisbursed,
-                                            paymentToken.decimals,
-                                            true
-                                        )}{" "}
-                                    Dai
+                                        {!principalDisbursed
+                                            ? "0"
+                                            : prepBigNumber(
+                                                  principalDisbursed,
+                                                  paymentToken.decimals,
+                                                  true
+                                              )}{" "}
+                                        Dai
                                     </h4>
                                 </BoxStats>
                             </Col>
@@ -536,10 +486,10 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                 <BoxStats>
                                     <p>Amount Repaid</p>
                                     <h4>
-                                    {!totalPaid
-                                        ? "0"
-                                        : prepBigNumber(totalPaid, paymentToken.decimals, true)}{" "}
-                                    Dai
+                                        {!totalPaid
+                                            ? "0"
+                                            : prepBigNumber(totalPaid, paymentToken.decimals, true)}{" "}
+                                        Dai
                                     </h4>
                                 </BoxStats>
                             </Col>
@@ -547,14 +497,14 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                 <BoxStats>
                                     <p>Amount withdrawn</p>
                                     <h4>
-                                    {!totalReleased
-                                        ? "0"
-                                        : prepBigNumber(
-                                            totalReleased,
-                                            paymentToken.decimals,
-                                            true
-                                        )}{" "}
-                                    Dai
+                                        {!totalReleased
+                                            ? "0"
+                                            : prepBigNumber(
+                                                  totalReleased,
+                                                  paymentToken.decimals,
+                                                  true
+                                              )}{" "}
+                                        Dai
                                     </h4>
                                 </BoxStats>
                             </Col>
@@ -563,9 +513,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                             <Col lg={6} md={12}>
                                 <BoxStats>
                                     <p>Status</p>
-                                    <h4>
-                                        {this.loanStatus()}
-                                    </h4>
+                                    <h4>{this.loanStatus()}</h4>
                                 </BoxStats>
                             </Col>
                         </Row>
@@ -573,7 +521,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 </Container>
             </HeroTitle>
             <Container>
-                <div style={{ position: "relative", top: -80 }}>
+                <div style={{position: "relative", top: -80}}>
                     <Row>
                         <Col lg={6} md={12}>
                             <HeroContent>
@@ -582,7 +530,12 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         </Col>
                         <Col lg={6} md={12}>
                             <HeroContent>
-                                <BorrowerActions loanStatus={this.loanStatus()} onborrowerwithdraw={this.onborrowerwithdraw} onrepay={this.onrepay} onstartcrowdfund={this.onstartcrowdfund} />
+                                <BorrowerActions
+                                    loanStatus={this.loanStatus()}
+                                    onborrowerwithdraw={this.onborrowerwithdraw}
+                                    onrepay={this.onrepay}
+                                    onstartcrowdfund={this.onstartcrowdfund}
+                                />
                             </HeroContent>
                         </Col>
                     </Row>
@@ -608,28 +561,29 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         } = this.state;
         const {borrower} = loanParams;
         const isBorrower = injectedAccountAddress === borrower;
-
+        console.log(borrower);
         return (
             <React.Fragment>
-                {borrower &&
-                    (isBorrower
-                        ? this.renderBorrowerLoan(
-                              paymentToken,
-                              principalDisbursed,
-                              totalPaid,
-                              totalReleased,
-                              totalShares,
-                              repayments
-                          )
-                        : this.renderLenderLoan(
-                              paymentToken,
-                              shares,
-                              released,
-                              releaseAllowance,
-                              transacting,
-                              repayments,
-                              withdrawals
-                          ))}
+                {
+                }
+                {isBorrower
+                    ? this.renderBorrowerLoan(
+                          paymentToken,
+                          principalDisbursed,
+                          totalPaid,
+                          totalReleased,
+                          totalShares,
+                          repayments
+                      )
+                    : this.renderLenderLoan(
+                          paymentToken,
+                          shares,
+                          released,
+                          releaseAllowance,
+                          transacting,
+                          repayments,
+                          withdrawals
+                      )}
             </React.Fragment>
         );
     }
