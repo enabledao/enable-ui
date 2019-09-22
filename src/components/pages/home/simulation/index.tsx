@@ -2,12 +2,12 @@ import React from 'react'
 import { TextField, Row, Col, Button, ShowModal } from '../../../lib'
 import { Margin, Padding } from '../../../../styles/utils'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import ProfileHover from 'profile-hover'
 import CornellLogo from '../../../../images/cornell.png'
 import BloomLogo from '../../../../images/bloomLogo.png'
 import BoxLogo from '../../../../images/3boxLogo.png'
 import InesSquare from '../../../../images/inesSquare.png'
 import { AppPath } from '../../../../constant/appPath'
-import { EthAddress } from 'rimble-ui'
 import {
     ButtonLendSimulation,
     SimulationWrapper,
@@ -144,6 +144,7 @@ class SimuLationReturn extends React.Component<
                             <Col lg={6}>
                                 <h5>Identity</h5>
                             </Col>
+
                             <Col lg={6} text="right">
                                 <img src={BoxLogo} alt="3DBox - logo" />
                             </Col>
@@ -201,23 +202,34 @@ class SimuLationReturn extends React.Component<
                                 </ProfileSocialLink>
                             </Margin>
                         </Padding>
-                        <div
-                            style={{
-                                backgroundColor: '#f7f7f7',
-                                padding: 16,
-                                marginTop: 24,
-                                overflow: 'hidden',
-                            }}
+                        <ProfileHover
+                            noTheme
+                            orientation={'top'}
+                            address={
+                                '0xf585e6B4173914A296c9b3AFa83f86bfaF4240f6'
+                            }
                         >
-                            <b>
-                                <small>ETH Wallet Key</small>
-                            </b>
-                            <small>
-                                <p>
-                                    0x141A9B024934Bc61d6A07C28B866C0191a381581
-                                </p>
-                            </small>
-                        </div>
+                            <Margin top={24}>
+                                <div
+                                    style={{
+                                        backgroundColor: '#f7f7f7',
+                                        padding: 16,
+                                        marginTop: 24,
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    <b>
+                                        <small>ETH Wallet Key</small>
+                                    </b>
+
+                                    <small>
+                                        <p>
+                                            0xf585e6B4173914A296c9b3AFa83f86bfaF4240f6
+                                        </p>
+                                    </small>
+                                </div>
+                            </Margin>
+                        </ProfileHover>
                         <Margin top={24}>
                             <h6 style={{ color: '#21b549', cursor: 'pointer' }}>
                                 Admission Proof Document
