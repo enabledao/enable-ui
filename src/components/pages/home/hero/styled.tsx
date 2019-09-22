@@ -10,7 +10,7 @@ const HeroWrapper = styled.div`
 
 const HeroCell = styled.div`
     background-color: white;
-    padding: 50px;
+    padding: 30px;
 `
 
 const HeroButtonLendMobile = styled.div`
