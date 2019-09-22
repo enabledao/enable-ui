@@ -74,31 +74,10 @@ class SimuLationReturn extends React.Component<
         })
     }
 
-    handleClickOther = () => {
-        const { textfieldShow } = this.state
-        this.setState({ textfieldShow: !textfieldShow })
-    }
-
-    handleChangeTextfield = e => {
+    handleChangeInvestmentAmount = e => {
         this.setState({
             investmentAmount: Number(e.target.value),
         })
-    }
-
-    handleModalContributor = () => {
-        const { showModal } = this.state
-        this.setState(
-            {
-                showModal: !showModal,
-            },
-            () =>
-                ShowModal(
-                    <ModalListContributor
-                        contributors={this.props.contributors}
-                        paymentToken={this.props.paymentToken}
-                    />
-                )
-        )
     }
 
     getSimulated = () => {
@@ -260,13 +239,13 @@ class SimuLationReturn extends React.Component<
                             <h6>Investment Amount</h6>
                             <TextField
                                 type="number"
-                                placeholder="Enter the number You want to lend"
+                                placeholder="e.g. 5,000"
                                 value={
                                     investmentAmount === 0
                                         ? ''
                                         : investmentAmount
                                 }
-                                onChange={this.handleChangeTextfield}
+                                onChange={this.handleChangeInvestmentAmount}
                             />
                         </Margin>
                         <Margin top={24}>
@@ -278,7 +257,7 @@ class SimuLationReturn extends React.Component<
                                     {!this.props.paymentToken
                                         ? '0'
                                         : this.getSimulated().percentage.toFixed(
-                                              4
+                                              2
                                           )}
                                     %
                                 </b>
@@ -401,7 +380,11 @@ class SimuLationReturn extends React.Component<
                         <Button
                             color="green"
                             outline
-                            onClick={() => window.open('#')}
+                            onClick={() =>
+                                window.open(
+                                    'https://calendly.com/inesfund/video-interview'
+                                )
+                            }
                         >
                             Schedule Video Interview
                         </Button>
@@ -427,7 +410,11 @@ class SimuLationReturn extends React.Component<
                         <Button
                             color="green"
                             outline
-                            onClick={() => window.open('#')}
+                            onClick={() =>
+                                window.open(
+                                    'https://calendly.com/inesfund/video-interview'
+                                )
+                            }
                         >
                             Schedule Video Interview
                         </Button>
@@ -485,14 +472,6 @@ class SimuLationReturn extends React.Component<
                                 </React.Fragment>
                             ))}
                     </Row>
-                    <Margin top={16}>
-                        <h6
-                            style={{ color: '#21b549', cursor: 'pointer' }}
-                            onClick={this.handleModalContributor}
-                        >
-                            See All
-                        </h6>
-                    </Margin>
                 </Margin>
             </React.Fragment>
         )

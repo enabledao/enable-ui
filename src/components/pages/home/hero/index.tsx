@@ -400,7 +400,11 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                                             <Button
                                                 color="green"
                                                 outline
-                                                onClick={() => window.open('#')}
+                                                onClick={() =>
+                                                    window.open(
+                                                        'https://calendly.com/inesfund/video-interview'
+                                                    )
+                                                }
                                             >
                                                 Video Interview
                                             </Button>
