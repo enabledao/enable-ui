@@ -1,17 +1,17 @@
-import styled from "styled-components";
-import { MaxWidth } from "../../../../styles/utils";
+import styled from 'styled-components'
+import { MaxWidth } from '../../../../styles/utils'
 
 const HeroWrapper = styled.div`
-    padding-top: 40px;
+    padding-top: 20px;
     position: relative;
     width: 100%;
     background-color: #363bd3;
-`;
+`
 
 const HeroCell = styled.div`
     background-color: white;
     padding: 50px;
-`;
+`
 
 const HeroButtonLendMobile = styled.div`
     display: none;
@@ -26,16 +26,16 @@ const HeroButtonLendMobile = styled.div`
     left: 0;
     z-index: 10;
   `}
-`;
+`
 
 const HeroLink = styled.div`
     cursor: pointer;
-`;
+`
 
 const HeroStatsRight = styled.div`
     float: right;
     color: #6c6d7a;
-`;
+`
 
 const HeroStats = styled.div`
     display: inline-block;
@@ -49,11 +49,11 @@ const HeroStats = styled.div`
     p {
         font-size: 12px;
     }
-`;
+`
 
 const HeroImage = styled.div`
     position: relative;
-`;
+`
 
 export {
     HeroWrapper,
@@ -62,5 +62,5 @@ export {
     HeroLink,
     HeroStats,
     HeroImage,
-    HeroStatsRight
-};
+    HeroStatsRight,
+}

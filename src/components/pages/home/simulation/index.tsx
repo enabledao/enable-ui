@@ -1,78 +1,79 @@
-import React from "react";
-import { TextField, Row, Col, Button, ShowModal } from "../../../lib";
-import { Margin, Padding } from "../../../../styles/utils";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import CornellLogo from "../../../../images/cornell.png";
-import BloomLogo from "../../../../images/bloomLogo.png";
-import BoxLogo from "../../../../images/3boxLogo.png";
-import InesSquare from "../../../../images/inesSquare.png";
-import { AppPath } from "../../../../constant/appPath";
+import React from 'react'
+import { TextField, Row, Col, Button, ShowModal } from '../../../lib'
+import { Margin, Padding } from '../../../../styles/utils'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
+import CornellLogo from '../../../../images/cornell.png'
+import BloomLogo from '../../../../images/bloomLogo.png'
+import BoxLogo from '../../../../images/3boxLogo.png'
+import InesSquare from '../../../../images/inesSquare.png'
+import { AppPath } from '../../../../constant/appPath'
+import { EthAddress } from 'rimble-ui'
 import {
     ButtonLendSimulation,
     SimulationWrapper,
     SocialContent,
     SocialAvatar,
     IdentityBox,
-    ProfileSocialLink
-} from "./styled";
-import ModalListContributor from "../modalListContributor";
-import AvatarBrahma from "../../../../images/avatar/brahma.jpg";
-import Linkedin from "../../../../images/socialMedia/linkedin.svg";
-import Instagram from "../../../../images/socialMedia/instagram.svg";
-import Twitter from "../../../../images/socialMedia/twitter.svg";
-import Facebook from "../../../../images/socialMedia/facebook.svg";
-import { prepBigNumber } from "../../../../utils/web3Utils";
+    ProfileSocialLink,
+} from './styled'
+import ModalListContributor from '../modalListContributor'
+import AvatarBrahma from '../../../../images/avatar/brahma.jpg'
+import Linkedin from '../../../../images/socialMedia/linkedin.svg'
+import Instagram from '../../../../images/socialMedia/instagram.svg'
+import Twitter from '../../../../images/socialMedia/twitter.svg'
+import Facebook from '../../../../images/socialMedia/facebook.svg'
+import { prepBigNumber } from '../../../../utils/web3Utils'
 interface SimuLationReturnProps extends RouteComponentProps<any> {
-    contributors?: any;
-    expectedSalary?: any;
-    paymentToken: any;
-    simulateInterest: (contribution: string | number, salary?: string) => any;
+    contributors?: any
+    expectedSalary?: any
+    paymentToken: any
+    simulateInterest: (contribution: string | number, salary?: string) => any
 }
 
 export interface SimuLationReturnState {
-    textfieldShow: boolean;
-    sliderValue: number;
-    simulated: any;
-    sliderMin: number;
-    sliderMax: number;
-    showModal: boolean;
-    showModalGuarantor: boolean;
+    textfieldShow: boolean
+    sliderValue: number
+    simulated: any
+    sliderMin: number
+    sliderMax: number
+    showModal: boolean
+    showModalGuarantor: boolean
 }
 
 export const listContributor = [
     {
-        name: "Alex",
-        address: "0x141A9B0….a381581",
-        lendNumber: 100
+        name: 'Alex',
+        address: '0x141A9B0….a381581',
+        lendNumber: 100,
     },
     {
-        name: "Averie",
-        address: "0x141A9B0….a381581",
-        lendNumber: 400
+        name: 'Averie',
+        address: '0x141A9B0….a381581',
+        lendNumber: 400,
     },
     {
-        name: "Brooke",
-        address: "0x141A9B0….a381581",
-        lendNumber: 100
+        name: 'Brooke',
+        address: '0x141A9B0….a381581',
+        lendNumber: 100,
     },
     {
-        name: "Ivana",
-        address: "0x141A9B0….a381581",
-        lendNumber: 200
+        name: 'Ivana',
+        address: '0x141A9B0….a381581',
+        lendNumber: 200,
     },
     {
-        name: "Shamanta",
-        address: "0x141A9B0….a381581",
-        lendNumber: 540
-    }
-];
+        name: 'Shamanta',
+        address: '0x141A9B0….a381581',
+        lendNumber: 540,
+    },
+]
 
 class SimuLationReturn extends React.Component<
     SimuLationReturnProps,
     SimuLationReturnState
 > {
     constructor(props: any) {
-        super(props);
+        super(props)
         this.state = {
             textfieldShow: false,
             sliderValue: 30000 / 2,
@@ -80,37 +81,37 @@ class SimuLationReturn extends React.Component<
             sliderMax: 30000,
             showModal: false,
             showModalGuarantor: false,
-            simulated: null
-        };
+            simulated: null,
+        }
     }
 
     handleLend = () => {
-        const { history } = this.props;
-        history.push(AppPath.LoanPersonalInfo);
-    };
+        const { history } = this.props
+        history.push(AppPath.LoanPersonalInfo)
+    }
 
     handleChangeSlider = e => {
         this.setState({
-            sliderValue: Number(e.target.value)
-        });
-    };
+            sliderValue: Number(e.target.value),
+        })
+    }
 
     handleClickOther = () => {
-        const { textfieldShow } = this.state;
-        this.setState({ textfieldShow: !textfieldShow });
-    };
+        const { textfieldShow } = this.state
+        this.setState({ textfieldShow: !textfieldShow })
+    }
 
     handleChangeTextfield = e => {
         this.setState({
-            sliderValue: Number(e.target.value)
-        });
-    };
+            sliderValue: Number(e.target.value),
+        })
+    }
 
     handleModalContributor = () => {
-        const { showModal } = this.state;
+        const { showModal } = this.state
         this.setState(
             {
-                showModal: !showModal
+                showModal: !showModal,
             },
             () =>
                 ShowModal(
@@ -119,8 +120,8 @@ class SimuLationReturn extends React.Component<
                         paymentToken={this.props.paymentToken}
                     />
                 )
-        );
-    };
+        )
+    }
 
     getSimulated = () => {
         return this.props.simulateInterest(
@@ -128,12 +129,12 @@ class SimuLationReturn extends React.Component<
                 this.state.sliderValue,
                 this.props.paymentToken.decimals
             )
-        );
-    };
+        )
+    }
 
     render() {
-        const { sliderValue } = this.state;
-        let { expectedSalary } = this.props;
+        const { sliderValue } = this.state
+        let { expectedSalary } = this.props
 
         return (
             <React.Fragment>
@@ -144,11 +145,10 @@ class SimuLationReturn extends React.Component<
                                 <h5>Identity</h5>
                             </Col>
                             <Col lg={6} text="right">
-                                <img src={BloomLogo} alt="Bloom - logo" />
                                 <img src={BoxLogo} alt="3DBox - logo" />
                             </Col>
                         </Row>
-                        <div style={{ position: "absolute" }}>
+                        <div style={{ position: 'absolute' }}>
                             <img src={InesSquare} alt="Ines - Square" />
                         </div>
                         <Padding left={124}>
@@ -203,9 +203,10 @@ class SimuLationReturn extends React.Component<
                         </Padding>
                         <div
                             style={{
-                                backgroundColor: "#f7f7f7",
+                                backgroundColor: '#f7f7f7',
                                 padding: 16,
-                                marginTop: 24
+                                marginTop: 24,
+                                overflow: 'hidden',
                             }}
                         >
                             <b>
@@ -218,7 +219,7 @@ class SimuLationReturn extends React.Component<
                             </small>
                         </div>
                         <Margin top={24}>
-                            <h6 style={{ color: "#21b549", cursor: "pointer" }}>
+                            <h6 style={{ color: '#21b549', cursor: 'pointer' }}>
                                 Admission Proof Document
                             </h6>
                         </Margin>
@@ -234,11 +235,11 @@ class SimuLationReturn extends React.Component<
                             <img src={AvatarBrahma} alt="Avatar - User" />
                         </SocialAvatar>
                         <Padding left={56}>
-                            <div style={{ display: "inline-block" }}>
+                            <div style={{ display: 'inline-block' }}>
                                 <h6>Brahma Adhiyasa</h6>
                                 <small>Colleague</small>
                             </div>
-                            <p style={{ float: "right" }}>
+                            <p style={{ float: 'right' }}>
                                 <img src={BloomLogo} alt="Bloom - logo" />
                             </p>
                         </Padding>
@@ -250,11 +251,11 @@ class SimuLationReturn extends React.Component<
                             <img src={AvatarBrahma} alt="Avatar - User" />
                         </SocialAvatar>
                         <Padding left={56}>
-                            <div style={{ display: "inline-block" }}>
+                            <div style={{ display: 'inline-block' }}>
                                 <h6>Brahma Adhiyasa</h6>
                                 <small>Colleague</small>
                             </div>
-                            <p style={{ float: "right" }}>
+                            <p style={{ float: 'right' }}>
                                 <img src={BloomLogo} alt="Bloom - logo" />
                             </p>
                         </Padding>
@@ -276,7 +277,7 @@ class SimuLationReturn extends React.Component<
                                                 placeholder="Enter the number You want to lend"
                                                 value={
                                                     sliderValue === 0
-                                                        ? ""
+                                                        ? ''
                                                         : sliderValue
                                                 }
                                                 onChange={
@@ -290,7 +291,7 @@ class SimuLationReturn extends React.Component<
                             <Margin vertical={24}>
                                 <h4>
                                     {!this.props.paymentToken
-                                        ? "0"
+                                        ? '0'
                                         : prepBigNumber(
                                               this.getSimulated().totalAmount,
                                               this.props.paymentToken.decimals,
@@ -304,16 +305,16 @@ class SimuLationReturn extends React.Component<
                             <Margin vertical={24}>
                                 <b>
                                     {!this.props.paymentToken
-                                        ? "0"
+                                        ? '0'
                                         : this.getSimulated().percentage.toFixed(
                                               4
                                           )}
                                 </b>
-                                % <b>ISA</b> from expected starting salary of{" "}
+                                % <b>ISA</b> from expected starting salary of{' '}
                                 <b>
                                     $
                                     {!expectedSalary
-                                        ? "0"
+                                        ? '0'
                                         : prepBigNumber(
                                               expectedSalary,
                                               this.props.paymentToken.decimals,
@@ -322,7 +323,7 @@ class SimuLationReturn extends React.Component<
                                     /year
                                 </b>
                             </Margin>
-                            <div style={{ position: "absolute" }}>
+                            <div style={{ position: 'absolute' }}>
                                 <img src={CornellLogo} alt="cornell - logo" />
                             </div>
                             <Padding left={80}>
@@ -337,10 +338,10 @@ class SimuLationReturn extends React.Component<
                             <br />
                             <hr />
                             <Margin vertical={24}>
-                                <p style={{ display: "inline-block" }}>
+                                <p style={{ display: 'inline-block' }}>
                                     <b>Minimum payment ?</b>
                                 </p>
-                                <p style={{ float: "right" }}>$35,000</p>
+                                <p style={{ float: 'right' }}>$35,000</p>
                             </Margin>
                             <ButtonLendSimulation>
                                 <Margin vertical={24}>
@@ -416,9 +417,9 @@ class SimuLationReturn extends React.Component<
                                         <small>
                                             <p
                                                 style={{
-                                                    backgroundColor: "#f7f7f7",
+                                                    backgroundColor: '#f7f7f7',
                                                     padding: 8,
-                                                    display: "inline-block"
+                                                    display: 'inline-block',
                                                 }}
                                             >
                                                 {contributor.address.replace(
@@ -426,7 +427,7 @@ class SimuLationReturn extends React.Component<
                                                         10,
                                                         30
                                                     ),
-                                                    "....."
+                                                    '.....'
                                                 )}
                                             </p>
                                         </small>
@@ -440,7 +441,7 @@ class SimuLationReturn extends React.Component<
                                                         .decimals,
                                                     true
                                                 )}
-                                            </b>{" "}
+                                            </b>{' '}
                                             Dai
                                         </h6>
                                         <small>
@@ -453,7 +454,7 @@ class SimuLationReturn extends React.Component<
                     </Row>
                     <Margin top={16}>
                         <h6
-                            style={{ color: "#21b549", cursor: "pointer" }}
+                            style={{ color: '#21b549', cursor: 'pointer' }}
                             onClick={this.handleModalContributor}
                         >
                             See All
@@ -461,8 +462,8 @@ class SimuLationReturn extends React.Component<
                     </Margin>
                 </Margin>
             </React.Fragment>
-        );
+        )
     }
 }
 
-export default withRouter<SimuLationReturnProps>(SimuLationReturn);
+export default withRouter<SimuLationReturnProps>(SimuLationReturn)
