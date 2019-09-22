@@ -5,7 +5,7 @@ import TabHome from "./tab";
 import ModalWip from "./modalWip";
 import {getDeployedFromConfig} from "../../../utils/getDeployed";
 import contractAddresses from "../../../config/ines.fund";
-import { calcTotalInterest, calcRatioOfTotalIncome } from "../../../utils/jsCalculator";
+import { calcTotalInterest, calcRatioOfIncome } from "../../../utils/jsCalculator";
 import {getTokenDetailsFromAddress} from "../../../utils/paymentToken";
 import {getPrincipalToken, getPrincipalRequested, getLoanMetadataUrl, amountContributed, FundEvent} from "../../../utils/crowdloan";
 import {
@@ -39,22 +39,21 @@ class Home extends React.Component<{}, HomeState> {
         loanMetadata: null
     };
 
-    simulateInterest = contribution => {
+    simulateInterest = (contribution, salary?) => {
         const { interestRate, principalRequested, expectedSalary, loanPeriod } = this.state;
         return {
             totalAmount: calcTotalInterest(
                 contribution,
                 principalRequested,
                 interestRate,
-                expectedSalary,
+                salary || expectedSalary,
                 loanPeriod
             ),
-            totalPercentage: calcRatioOfTotalIncome(
+            percentage: calcRatioOfIncome(
                 contribution,
                 principalRequested,
                 interestRate,
-                expectedSalary,
-                loanPeriod
+                salary || expectedSalary
             )
         };
     };
@@ -111,7 +110,7 @@ class Home extends React.Component<{}, HomeState> {
         return (
             <React.Fragment>
                 <HomeHero loanPeriod={this.state.loanPeriod} interestRate={this.state.interestRate} contributors={this.state.contributors} loanMetadata={this.state.loanMetadata} />
-                <TabHome loanPeriod={this.state.loanPeriod} interestRate={this.state.interestRate} contributors={this.state.contributors} paymentToken={this.state.paymentToken} crowdloanInstance={this.state.crowdloanInstance} simulateInterest={this.simulateInterest} />
+                <TabHome loanPeriod={this.state.loanPeriod} interestRate={this.state.interestRate} contributors={this.state.contributors} paymentToken={this.state.paymentToken} crowdloanInstance={this.state.crowdloanInstance} simulateInterest={this.simulateInterest} expectedSalary={this.state.expectedSalary} />
             </React.Fragment>
         );
     }

@@ -26,13 +26,14 @@ import { prepBigNumber } from "../../../../utils/web3Utils";
 interface SimuLationReturnProps extends RouteComponentProps<any> {
     contributors?: any;
     expectedSalary?: any;
-    principalRequested: any;
-    simulateInterest: (contribution: string | number) => object;
+    paymentToken: any;
+    simulateInterest: (contribution: string | number, salary?: string) => any;
 }
 
 export interface SimuLationReturnState {
     textfieldShow: boolean;
     sliderValue: number;
+    simulated: any;
     sliderMin: number;
     sliderMax: number;
     showModal: boolean;
@@ -76,7 +77,8 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
             sliderMin: 50,
             sliderMax: 30000,
             showModal: false,
-            showModalGuarantor: false
+            showModalGuarantor: false,
+            simulated: null
         };
     }
 
@@ -122,8 +124,18 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
         );
     }
 
+    getSimulated = () => {
+        return this.props.simulateInterest(
+            prepBigNumber(
+                this.state.sliderValue,
+                this.props.paymentToken.decimals,
+            ))
+    }
+
     render() {
         const {sliderValue} = this.state;
+        let { expectedSalary } = this.props;
+
         return (
             <React.Fragment>
                 <Margin top={20} bottom={60}>
@@ -256,19 +268,31 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                             </Margin>
                             <Margin vertical={24}>
                                 <h4>
-                                    {this.props.simulateInterest && this.props.simulateInterest(sliderValue)}
+                                    {!this.props.paymentToken
+                                    ? "0" 
+                                    : prepBigNumber(
+                                        this.getSimulated().totalAmount,
+                                            this.props.paymentToken.decimals,
+                                            true
+                                    )}
                                     &nbsp;<small>Dai</small>
                                 </h4>
                                 <p>Expected Total Return</p>
                             </Margin>
                             <hr />
                             <Margin vertical={24}>
-                                <b>0.04</b>% <b>ISA</b> from expected starting salary of{" "}
+                                <b>
+                                    {!this.props.paymentToken
+                                        ? "0"
+                                        : this.getSimulated().percentage.toFixed(4)
+                                    }
+                                    
+                                    </b>% <b>ISA</b> from expected starting salary of{" "}
                                 <b>$
-                                    {!this.props.expectedSalary
+                                    {!expectedSalary
                                     ? "0"
                                     : prepBigNumber(
-                                        this.props.expectedSalary,
+                                        expectedSalary,
                                         this.props.paymentToken.decimals,
                                         true
                                     )}/year</b>
@@ -396,8 +420,5 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
     }
 }
 
-SimuLationReturn.defaultProps = {
-    expectedSalary: "86320000000000000000000"
-  };
 
 export default withRouter<SimuLationReturnProps>(SimuLationReturn);

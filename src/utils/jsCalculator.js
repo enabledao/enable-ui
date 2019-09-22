@@ -1,5 +1,5 @@
 import{ ZERO, HUNDRED, MONTHS_IN_YEAR } from '../config/constants';
-import { prepBigNumber } from "./web3Utils"
+import { BN, prepBigNumber } from "./web3Utils"
 
 const simulateTotalInterest = (contribution, interestRate, loanPeriod) => {
     return Math.floor(+contribution * (+interestRate || 0) * (+loanPeriod||0) /( 12 * 100)) || 0
@@ -15,23 +15,17 @@ const availableWithdrawal = (amountContributed, totalContributed, amountRepaid, 
     );
 
 const calcInterest = (contribution, totalContribution, shareRate, expectedIncome) =>
-    (+contribution / +totalContribution) || 0 * (
-        (+expectedIncome * +shareRate) || 0 / HUNDRED
-    );
+    BN(contribution || 0).mul(BN(expectedIncome || 0)).mul(BN(shareRate || 0)).div(
+        BN(HUNDRED).mul(BN(totalContribution || 0))
+    ).toString();
 
 const calcTotalInterest = (contribution, totalContribution, shareRate, expectedIncome, loanPeriod) =>
-    (calcInterest(contribution, totalContribution, shareRate, expectedIncome) * loanPeriod) || 0 / MONTHS_IN_YEAR
+    BN(calcInterest(contribution, totalContribution, shareRate, expectedIncome)).mul(BN(loanPeriod || 0)).div(BN(MONTHS_IN_YEAR)).toString()
 
 const calcRatioOfIncome = (contribution, totalContribution, shareRate, expectedIncome) =>
     (
-        calcInterest(contribution, totalContribution, shareRate, expectedIncome)
+        +calcInterest(contribution, totalContribution, shareRate, expectedIncome)
         / expectedIncome
-    );
-
-const calcRatioOfTotalIncome = (contribution, totalContribution, shareRate, expectedIncome, loanPeriod) =>
-    (
-        calcTotalInterest(contribution, totalContribution, shareRate, expectedIncome, loanPeriod)
-        / expectedIncome * loanPeriod
     );
 
 export {
@@ -40,5 +34,4 @@ export {
     calcInterest,
     calcTotalInterest,
     calcRatioOfIncome,
-    calcRatioOfTotalIncome
 }
