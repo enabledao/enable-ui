@@ -25,6 +25,7 @@ import Instagram from '../../../../images/socialMedia/instagram.svg'
 import Twitter from '../../../../images/socialMedia/twitter.svg'
 import Facebook from '../../../../images/socialMedia/facebook.svg'
 import { prepBigNumber } from '../../../../utils/web3Utils'
+import { formatBN } from '../../../../utils/formatters'
 
 interface SimuLationReturnProps extends RouteComponentProps<any> {
     contributors?: any
@@ -35,10 +36,11 @@ interface SimuLationReturnProps extends RouteComponentProps<any> {
 
 export interface SimuLationReturnState {
     textfieldShow: boolean
-    sliderValue: number
+    investmentAmount: number
+    salary: number
     simulated: any
-    sliderMin: number
-    sliderMax: number
+    salaryMin: number
+    salaryMax: number
     showModal: boolean
     showModalGuarantor: boolean
 }
@@ -51,9 +53,10 @@ class SimuLationReturn extends React.Component<
         super(props)
         this.state = {
             textfieldShow: false,
-            sliderValue: 30000 / 2,
-            sliderMin: 50,
-            sliderMax: 30000,
+            investmentAmount: 0,
+            salary: 86320,
+            salaryMin: 30000,
+            salaryMax: 150000,
             showModal: false,
             showModalGuarantor: false,
             simulated: null,
@@ -65,9 +68,9 @@ class SimuLationReturn extends React.Component<
         history.push(AppPath.LoanPersonalInfo)
     }
 
-    handleChangeSlider = e => {
+    handleChangeSalary = e => {
         this.setState({
-            sliderValue: Number(e.target.value),
+            salary: Number(e.target.value),
         })
     }
 
@@ -78,7 +81,7 @@ class SimuLationReturn extends React.Component<
 
     handleChangeTextfield = e => {
         this.setState({
-            sliderValue: Number(e.target.value),
+            investmentAmount: Number(e.target.value),
         })
     }
 
@@ -101,14 +104,14 @@ class SimuLationReturn extends React.Component<
     getSimulated = () => {
         return this.props.simulateInterest(
             prepBigNumber(
-                this.state.sliderValue,
+                this.state.investmentAmount,
                 this.props.paymentToken.decimals
             )
         )
     }
 
     render() {
-        const { sliderValue, sliderMin, sliderMax } = this.state
+        const { investmentAmount, salaryMin, salaryMax, salary } = this.state
         let { expectedSalary } = this.props
 
         return (
@@ -214,7 +217,7 @@ class SimuLationReturn extends React.Component<
                 </Margin>
                 <Margin top={40}>
                     <h5>Social Credits</h5>
-                    <p>Attested by 4 guarantors</p>
+                    <p>Attested by 2 guarantors</p>
                 </Margin>
                 <Margin top={8}>
                     <SocialContent>
@@ -235,11 +238,11 @@ class SimuLationReturn extends React.Component<
                 <Margin top={8}>
                     <SocialContent>
                         <SocialAvatar>
-                            <img src={AvatarBrahma} alt="Avatar - User" />
+                            <img src={AvatarBrahma} alt="Daniel Onggunhao" />
                         </SocialAvatar>
                         <Padding left={56}>
                             <div style={{ display: 'inline-block' }}>
-                                <h6>Brahma Adhiyasa</h6>
+                                <h6>Daniel Onggunhao</h6>
                                 <small>Colleague</small>
                             </div>
                             <p style={{ float: 'right' }}>
@@ -248,115 +251,131 @@ class SimuLationReturn extends React.Component<
                         </Padding>
                     </SocialContent>
                 </Margin>
-                <Margin vertical={40}>
+                <Margin top={40}>
                     <h5>Simulate Returns</h5>
                 </Margin>
                 <SimulationWrapper>
-                    <Row justify="flex-end">
-                        <Col lg={12} sm={12}>
-                            <Margin top={16}>
-                                <Row>
-                                    <Col lg={12}>
-                                        <Margin top={8}>
-                                            <TextField
-                                                label="Investment Amount"
-                                                type="number"
-                                                placeholder="Enter the number You want to lend"
-                                                value={
-                                                    sliderValue === 0
-                                                        ? ''
-                                                        : sliderValue
-                                                }
-                                                onChange={
-                                                    this.handleChangeTextfield
-                                                }
-                                            />
-                                        </Margin>
-                                    </Col>
-                                </Row>
-                            </Margin>
-                            <Margin vertical={24}>
-                                <h4>
-                                    {!this.props.paymentToken
-                                        ? '0'
-                                        : prepBigNumber(
-                                              this.getSimulated().totalAmount,
-                                              this.props.paymentToken.decimals,
-                                              true
-                                          )}
-                                    &nbsp;<small>Dai</small>
-                                </h4>
-                                <p>Expected Total Return</p>
-                            </Margin>
-                            <hr />
-                            <SliderInput
-                                type="range"
-                                min={sliderMin}
-                                max={sliderMax}
-                                value={sliderValue}
-                                onChange={this.handleChangeSlider}
+                    <Margin>
+                        <Margin top={8}>
+                            <h6>Investment Amount</h6>
+                            <TextField
+                                type="number"
+                                placeholder="Enter the number You want to lend"
+                                value={
+                                    investmentAmount === 0
+                                        ? ''
+                                        : investmentAmount
+                                }
+                                onChange={this.handleChangeTextfield}
                             />
-                            <SliderMinMax>
-                                <b>
-                                    <p>{sliderMin} Dai</p>
-                                </b>
-                                <b>
-                                    <p>{sliderMax} Dai</p>
-                                </b>
-                            </SliderMinMax>
-                            <Margin vertical={24}>
+                        </Margin>
+                        <Margin top={24}>
+                            <p style={{ display: 'inline-block' }}>
+                                Income Shares
+                            </p>
+                            <p style={{ float: 'right' }}>
                                 <b>
                                     {!this.props.paymentToken
                                         ? '0'
                                         : this.getSimulated().percentage.toFixed(
                                               4
                                           )}
+                                    %
                                 </b>
-                                % <b>ISA</b> from expected starting salary of{' '}
-                                <b>
-                                    $
-                                    {!expectedSalary
-                                        ? '0'
-                                        : prepBigNumber(
-                                              expectedSalary,
-                                              this.props.paymentToken.decimals,
-                                              true
-                                          )}
-                                    /year
-                                </b>
-                            </Margin>
+                            </p>
+                        </Margin>
+                        <Margin>
+                            <p style={{ display: 'inline-block' }}>
+                                Min Repayment
+                            </p>
+                            <p style={{ float: 'right' }}>
+                                <b>$35,000</b>
+                            </p>
+                        </Margin>
+                        <Margin bottom={8}>
+                            <p style={{ display: 'inline-block' }}>
+                                Max Repayment
+                            </p>
+                            <p style={{ float: 'right' }}>
+                                <b>$35,000</b>
+                            </p>
+                        </Margin>
+                    </Margin>
+                    <hr />
+                    <Margin top={18}>
+                        <h6>Postgraduation Salary</h6>
+                        <Margin top={30}>
+                            <SliderInput
+                                type="range"
+                                min={salaryMin}
+                                max={salaryMax}
+                                value={salary}
+                                onChange={this.handleChangeSalary}
+                            />
+                            <SliderMinMax>
+                                <p>Below Average</p>
+                                <p>Above Average</p>
+                            </SliderMinMax>
+                        </Margin>
+                        <Margin top={20}>
+                            <p style={{ display: 'inline-block' }}>
+                                Simulated Salary
+                            </p>
+                            <p style={{ float: 'right' }}>
+                                ${formatBN(salary.toString())}
+                            </p>
+                        </Margin>
+                        <Margin top={14} bottom={24}>
                             <div style={{ position: 'absolute' }}>
                                 <img src={CornellLogo} alt="cornell - logo" />
                             </div>
                             <Padding left={80}>
-                                <p>
-                                    Expected salary based on data released by
-                                    Cornell University
-                                </p>
-                                <b>
-                                    <p>Learn More</p>
-                                </b>
+                                <small>
+                                    Based on{' '}
+                                    <a href="">
+                                        reported 2018 median salary of $86,320{' '}
+                                    </a>{' '}
+                                    of graduates of Cornell University ILR
+                                    program
+                                </small>
                             </Padding>
-                            <br />
-                            <hr />
-                            <Margin vertical={24}>
-                                <p style={{ display: 'inline-block' }}>
-                                    <b>Minimum payment ?</b>
-                                </p>
-                                <p style={{ float: 'right' }}>$35,000</p>
-                            </Margin>
-                            <ButtonLendSimulation>
-                                <Margin vertical={24}>
-                                    <Button
-                                        color="green"
-                                        onClick={this.handleLend}
-                                    >
-                                        Invest Now
-                                    </Button>
-                                </Margin>
-                            </ButtonLendSimulation>
-                        </Col>
-                    </Row>
+                        </Margin>
+                    </Margin>
+                    <hr />
+                    <Margin top={10}>
+                        <p style={{ display: 'inline-block' }}>
+                            Estimated Monthly Repayment
+                        </p>
+                        <p style={{ float: 'right' }}>21.5 Dai</p>
+                    </Margin>
+                    <Margin bottom={8}>
+                        <p style={{ display: 'inline-block' }}>Duration</p>
+                        <p style={{ float: 'right' }}>6 years</p>
+                    </Margin>
+                    <Margin vertical={24}>
+                        <h4>
+                            {!this.props.paymentToken
+                                ? '0'
+                                : formatBN(
+                                      prepBigNumber(
+                                          this.getSimulated().totalAmount,
+                                          this.props.paymentToken.decimals,
+                                          true
+                                      )
+                                  )}
+                            &nbsp;<small>Dai</small>
+                        </h4>
+                        <small>Expected Total Return</small>
+                    </Margin>
+                    <ButtonLendSimulation>
+                        <Margin vertical={24}>
+                            <Button color="green" onClick={this.handleLend}>
+                                Invest Now
+                            </Button>
+                        </Margin>
+                    </ButtonLendSimulation>
+                    {/* </Col>
+                    </Row> */}
                 </SimulationWrapper>
                 <Margin vertical={40}>
                     <h5>Company Sponsorships</h5>
