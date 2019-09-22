@@ -9,6 +9,8 @@ import BoxLogo from '../../../../images/3boxLogo.png'
 import InesSquare from '../../../../images/inesSquare.png'
 import { AppPath } from '../../../../constant/appPath'
 import {
+    SliderInput,
+    SliderMinMax,
     ButtonLendSimulation,
     SimulationWrapper,
     SocialContent,
@@ -23,6 +25,7 @@ import Instagram from '../../../../images/socialMedia/instagram.svg'
 import Twitter from '../../../../images/socialMedia/twitter.svg'
 import Facebook from '../../../../images/socialMedia/facebook.svg'
 import { prepBigNumber } from '../../../../utils/web3Utils'
+
 interface SimuLationReturnProps extends RouteComponentProps<any> {
     contributors?: any
     expectedSalary?: any
@@ -39,34 +42,6 @@ export interface SimuLationReturnState {
     showModal: boolean
     showModalGuarantor: boolean
 }
-
-export const listContributor = [
-    {
-        name: 'Alex',
-        address: '0x141A9B0….a381581',
-        lendNumber: 100,
-    },
-    {
-        name: 'Averie',
-        address: '0x141A9B0….a381581',
-        lendNumber: 400,
-    },
-    {
-        name: 'Brooke',
-        address: '0x141A9B0….a381581',
-        lendNumber: 100,
-    },
-    {
-        name: 'Ivana',
-        address: '0x141A9B0….a381581',
-        lendNumber: 200,
-    },
-    {
-        name: 'Shamanta',
-        address: '0x141A9B0….a381581',
-        lendNumber: 540,
-    },
-]
 
 class SimuLationReturn extends React.Component<
     SimuLationReturnProps,
@@ -133,7 +108,7 @@ class SimuLationReturn extends React.Component<
     }
 
     render() {
-        const { sliderValue } = this.state
+        const { sliderValue, sliderMin, sliderMax } = this.state
         let { expectedSalary } = this.props
 
         return (
@@ -314,6 +289,21 @@ class SimuLationReturn extends React.Component<
                                 <p>Expected Total Return</p>
                             </Margin>
                             <hr />
+                            <SliderInput
+                                type="range"
+                                min={sliderMin}
+                                max={sliderMax}
+                                value={sliderValue}
+                                onChange={this.handleChangeSlider}
+                            />
+                            <SliderMinMax>
+                                <b>
+                                    <p>{sliderMin} Dai</p>
+                                </b>
+                                <b>
+                                    <p>{sliderMax} Dai</p>
+                                </b>
+                            </SliderMinMax>
                             <Margin vertical={24}>
                                 <b>
                                     {!this.props.paymentToken

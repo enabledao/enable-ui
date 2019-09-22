@@ -1,10 +1,4 @@
 import React from 'react'
-import AvatarAlex from '../../../../images/avatar/alex.jpg'
-import AvatarAverie from '../../../../images/avatar/averie.jpg'
-import AvatarBrooke from '../../../../images/avatar/brooke.jpg'
-import AvatarIvana from '../../../../images/avatar/ivana.jpg'
-import AvatarShamanta from '../../../../images/avatar/shamanta.jpg'
-import HeroInes from '../../../../images/hero/home.png'
 import YoutubeEmbed from '../../../lib/youtube'
 import ModalListContributor from '../modalListContributor'
 import ModalVideo from './modalVideo'
@@ -68,39 +62,6 @@ export interface HomeHeroState {
     payees: string
     paymentToken: any
 }
-
-export const listContributor = [
-    {
-        name: 'Alex',
-        image: AvatarAlex,
-        address: '0x1239123...',
-        lendNumber: 100,
-    },
-    {
-        name: 'Averie',
-        image: AvatarAverie,
-        address: '0x1239123...',
-        lendNumber: 400,
-    },
-    {
-        name: 'Brooke',
-        image: AvatarBrooke,
-        address: '0x1239123...',
-        lendNumber: 100,
-    },
-    {
-        name: 'Ivana',
-        image: AvatarIvana,
-        address: '0x1239123...',
-        lendNumber: 200,
-    },
-    {
-        name: 'Shamanta',
-        image: AvatarShamanta,
-        address: '0x1239123...',
-        lendNumber: 540,
-    },
-]
 
 class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     constructor(props: HomeHeroProps) {
