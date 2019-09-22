@@ -369,47 +369,60 @@ class SimuLationReturn extends React.Component<
                     </Row>
                 </SimulationWrapper>
                 <Margin vertical={40}>
-                    <h5>Thank You Gifts</h5>
-                    <p>Additional rewards from Ines</p>
+                    <h5>Company Sponsorships</h5>
                 </Margin>
                 <Margin vertical={24}>
                     <SimulationWrapper>
-                        <h5>Invest 100 Dai or more</h5>
-                        <p>- I will send personal thank you emails</p>
+                        <h5>Gold Tier</h5>
+                        <h6>Lend 30,000 Dai or more</h6>
+                        <p>
+                            I will be your Campus Ambassador at Cornell, and
+                            promote your company, help with event preparations
+                            and publicity
+                        </p>
+                        <Margin top={40} bottom={30}>
+                            <h6 style={{ color: '#21b549', cursor: 'pointer' }}>
+                                Expected Repayment Calculator
+                            </h6>
+                            <h5>
+                                15,000 Dai&nbsp;
+                                <small>&nbsp;(Cap Reached)</small>
+                            </h5>
+                        </Margin>
+                        <Button
+                            color="green"
+                            outline
+                            onClick={() => window.open('#')}
+                        >
+                            Schedule Video Interview
+                        </Button>
                     </SimulationWrapper>
                 </Margin>
                 <Margin vertical={24}>
                     <SimulationWrapper>
-                        <h5>Invest 100 Dai or more</h5>
-                        <p>- Personal thank you emails</p>
-                        <p>- Personal thank you call</p>
-                    </SimulationWrapper>
-                </Margin>
-                <Margin vertical={24}>
-                    <SimulationWrapper>
-                        <h5>Invest 5,000 Dai or more</h5>
-                        <p>- Personal thank you emails</p>
-                        <p>- Personal thank you call</p>
-                        <p>- Your sticker on my Laptop and Graduation Robe</p>
-                    </SimulationWrapper>
-                </Margin>
-                <Margin vertical={24}>
-                    <SimulationWrapper>
-                        <h5>Invest 10,000 Dai or more</h5>
-                        <p>- Personal thank you emails</p>
-                        <p>- Personal thank you call</p>
-                        <p>- Your sticker on my Laptop and Graduation Robe</p>
-                        <p>- I will be Campus Ambassador for your company</p>
-                    </SimulationWrapper>
-                </Margin>
-                <Margin vertical={24}>
-                    <SimulationWrapper>
-                        <h5>Invest 30,000 Dai or more</h5>
-                        <p>- Personal thank you emails</p>
-                        <p>- Personal thank you call</p>
-                        <p>- Your sticker on my Laptop and Graduation Robe</p>
-                        <p>- I will be Campus Ambassador for your company</p>
-                        <p>- I will do a research project for your company</p>
+                        <h5>Gold Tier</h5>
+                        <h6>Lend 30,000 Dai or more</h6>
+                        <p>
+                            I will be your Campus Ambassador at Cornell, and
+                            promote your company, help with event preparations
+                            and publicity
+                        </p>
+                        <Margin top={40} bottom={30}>
+                            <h6 style={{ color: '#21b549', cursor: 'pointer' }}>
+                                Expected Repayment Calculator
+                            </h6>
+                            <h5>
+                                15,000 Dai&nbsp;
+                                <small>&nbsp;(Cap Reached)</small>
+                            </h5>
+                        </Margin>
+                        <Button
+                            color="green"
+                            outline
+                            onClick={() => window.open('#')}
+                        >
+                            Schedule Video Interview
+                        </Button>
                     </SimulationWrapper>
                 </Margin>
                 <Margin vertical={40}>
