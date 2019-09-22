@@ -28,7 +28,7 @@ import { approveAndFund, fund, getPrincipalToken, getPrincipalRequested, getCrow
 import {
     fetchLoanMetadata,
     getExpectedSalary, 
-    getInterestRate,
+    getIncomeSharePercentage,
     getLoanPeriod
 } from "../../../../utils/metadata";
 import {
@@ -112,7 +112,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
       const loanMetadata = await fetchLoanMetadata(loanMetadataUrl);
 
       const loanPeriod = await getLoanPeriod(loanMetadata);
-      const interestRate = await getInterestRate(loanMetadata);
+      const interestRate = await getIncomeSharePercentage(loanMetadata);
       const expectedSalary = await getExpectedSalary(loanMetadata);
 
       this.setState({

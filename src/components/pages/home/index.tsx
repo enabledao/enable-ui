@@ -1,20 +1,29 @@
 import React from "react";
-import {withNavbarAndFooter} from "../../hoc";
+import { withNavbarAndFooter } from "../../hoc";
 import HomeHero from "./hero";
 import TabHome from "./tab";
 import ModalWip from "./modalWip";
-import {getDeployedFromConfig} from "../../../utils/getDeployed";
+import { getDeployedFromConfig } from "../../../utils/getDeployed";
 import contractAddresses from "../../../config/ines.fund";
-import { calcTotalInterest, calcRatioOfIncome } from "../../../utils/jsCalculator";
-import {getTokenDetailsFromAddress} from "../../../utils/paymentToken";
-import {getPrincipalToken, getPrincipalRequested, getLoanMetadataUrl, amountContributed, FundEvent} from "../../../utils/crowdloan";
+import {
+    calcTotalInterest,
+    calcRatioOfIncome
+} from "../../../utils/jsCalculator";
+import { getTokenDetailsFromAddress } from "../../../utils/paymentToken";
+import {
+    getPrincipalToken,
+    getPrincipalRequested,
+    getLoanMetadataUrl,
+    amountContributed,
+    FundEvent
+} from "../../../utils/crowdloan";
 import {
     fetchLoanMetadata,
     getExpectedSalary,
-    getInterestRate,
+    getIncomeSharePercentage,
     getLoanPeriod
 } from "../../../utils/metadata";
-import {ShowModal} from "../../lib";
+import { ShowModal } from "../../lib";
 
 export interface HomeState {
     loanPeriod: string;
@@ -40,7 +49,12 @@ class Home extends React.Component<{}, HomeState> {
     };
 
     simulateInterest = (contribution, salary?) => {
-        const { interestRate, principalRequested, expectedSalary, loanPeriod } = this.state;
+        const {
+            interestRate,
+            principalRequested,
+            expectedSalary,
+            loanPeriod
+        } = this.state;
         return {
             totalAmount: calcTotalInterest(
                 contribution,
@@ -57,7 +71,7 @@ class Home extends React.Component<{}, HomeState> {
             )
         };
     };
-    
+
     componentDidMount = async () => {
         ShowModal(<ModalWip />);
 
@@ -70,29 +84,33 @@ class Home extends React.Component<{}, HomeState> {
         );
 
         const loanMetadataUrl = await getLoanMetadataUrl(crowdloanInstance);
-        const principalRequested = await getPrincipalRequested(crowdloanInstance);
+        const principalRequested = await getPrincipalRequested(
+            crowdloanInstance
+        );
         const loanMetadata = await fetchLoanMetadata(loanMetadataUrl);
 
         const loanPeriod = await getLoanPeriod(loanMetadata);
-        const interestRate = await getInterestRate(loanMetadata);
+        const interestRate = await getIncomeSharePercentage(loanMetadata);
         const expectedSalary = await getExpectedSalary(loanMetadata);
-        
-        
-        const fundEvents:any[] = await FundEvent(crowdloanInstance, {
+
+        const fundEvents: any[] = await FundEvent(crowdloanInstance, {
             fromBlock: 0,
             toBlock: "latest"
         });
 
         const contributors = (await Promise.all(
-            [...Object.values(
-                new Set(fundEvents.map( event => event.returnValues.sender))
-            )]
-            .map(async address => {
-                const amount = await amountContributed(crowdloanInstance, address);
-                return {address, amount};
+            [
+                ...Object.values(
+                    new Set(fundEvents.map(event => event.returnValues.sender))
+                )
+            ].map(async address => {
+                const amount = await amountContributed(
+                    crowdloanInstance,
+                    address
+                );
+                return { address, amount };
             })
-            ))
-            .sort((a, b) => (+a.amount > +b.amount ? 1 : -1)); // Sort contributors from the highest lending amount to the lending amount
+        )).sort((a, b) => (+a.amount > +b.amount ? 1 : -1)); // Sort contributors from the highest lending amount to the lending amount
 
         this.setState({
             loanPeriod,
@@ -109,8 +127,21 @@ class Home extends React.Component<{}, HomeState> {
     render() {
         return (
             <React.Fragment>
-                <HomeHero loanPeriod={this.state.loanPeriod} interestRate={this.state.interestRate} contributors={this.state.contributors} loanMetadata={this.state.loanMetadata} />
-                <TabHome loanPeriod={this.state.loanPeriod} interestRate={this.state.interestRate} contributors={this.state.contributors} paymentToken={this.state.paymentToken} crowdloanInstance={this.state.crowdloanInstance} simulateInterest={this.simulateInterest} expectedSalary={this.state.expectedSalary} />
+                <HomeHero
+                    loanPeriod={this.state.loanPeriod}
+                    interestRate={this.state.interestRate}
+                    contributors={this.state.contributors}
+                    loanMetadata={this.state.loanMetadata}
+                />
+                <TabHome
+                    loanPeriod={this.state.loanPeriod}
+                    interestRate={this.state.interestRate}
+                    contributors={this.state.contributors}
+                    paymentToken={this.state.paymentToken}
+                    crowdloanInstance={this.state.crowdloanInstance}
+                    simulateInterest={this.simulateInterest}
+                    expectedSalary={this.state.expectedSalary}
+                />
             </React.Fragment>
         );
     }
