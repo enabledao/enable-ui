@@ -6109,7 +6109,7 @@ cssnano-util-get-match@^4.0.0:
   integrity sha1-wOTKB/U4a7F+xeUiULT1lhNlFW0=
 
 cssnano-util-raw-cache@^4.0.1:
-  version "4.0.1
+  version "4.0.1"
   resolved "https://registry.yarnpkg.com/cssnano-util-raw-cache/-/cssnano-util-raw-cache-4.0.1.tgz#b26d5fd5f72a11dfe7a7846fb4c67260f96bf282"
   integrity sha512-qLuYtWK2b2Dy55I8ZX3ky1Z16WYsx544Q0UWViebptpwn/xDBmog2TLg4f+DBMg1rJ6JDWtn96WHbOKDWt1WQA==
   dependencies:
