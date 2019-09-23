@@ -8,6 +8,10 @@ const getNetworkId = async (web3) => {
     return await web3.eth.net.getId();
 }
 
+const connectToWallet = async () => {
+    return await window.ethereum.enable();
+}
+
 const getAccounts = async (web3) => {
     web3 = web3 || await getWeb3();
     return await web3.eth.getAccounts();
@@ -122,6 +126,7 @@ const prepNumber = (number, decimals, inbound) => {//Allows Decimals
 
 export {
     BN,
+    connectToWallet,
     contractGetEvents,
     contractGetPastEvents,
     contractMethodCall,

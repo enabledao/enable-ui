@@ -14,6 +14,7 @@ import {BN, getBlock, getInjectedAccountAddress, prepBigNumber} from "../../../u
 import {getDeployedFromConfig} from "../../../utils/getDeployed";
 import {allowance, getInstance, getTokenDetailsFromAddress} from "../../../utils/paymentToken";
 import {availableWithdrawal} from "../../../utils/jsCalculator";
+import {connectToWallet} from '../../../utils/web3Utils';
 
 import {
     getBorrower,
@@ -382,7 +383,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                                 <p>Connecting your wallet to see your investment</p>
                                             </Col>
                                             <Col lg={3} md={12}>
-                                                <Button color='green'>Connect Wallet</Button>
+                                                <Button color='green' onClick={async () => await connectToWallet()}>Connect Wallet</Button>
                                             </Col>
                                         </BoxStats>
                                     </Col>
@@ -521,7 +522,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                                 <p>Connecting your wallet to see your investment</p>
                                             </Col>
                                             <Col lg={3} md={12}>
-                                                <Button color='green'>Connect Wallet</Button>
+                                                <Button color='green' onClick={async () => await connectToWallet()}>Connect Wallet</Button>
                                             </Col>
                                         </BoxStats>
                                     </Col>
