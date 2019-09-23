@@ -1,9 +1,16 @@
 import Web3 from "web3";
+import { INFURA_PROVIDER } from '../config/constants';
 
-const FALLBACK_WEB3_PROVIDER = "http://localhost:8545";
+const infuraProjectId = process.env.REACT_APP_INFURA_PROJECT_ID;
 
 let web3;
 let gettingWeb3;
+
+const getBackupProvider = () => {
+  return process.env.NODE_ENV === 'development' && process.env.REACT_APP_LOCAL_NODE ?
+    'https://localhost:8545' :
+    `${INFURA_PROVIDER}${infuraProjectId}`;
+}
 
 const getWeb3 = () =>
   new Promise((resolve, reject) => {
@@ -32,7 +39,7 @@ const getWeb3 = () =>
       }
       // Fallback to localhost; use dev console port by default...
       else {
-        _web3 = new Web3(FALLBACK_WEB3_PROVIDER);
+        _web3 = new Web3(getBackupProvider());
         console.log("No web3 instance injected, using Infura/Local web3.");
       }
       _web3.eth.defaultAccount = (await _web3.eth.getAccounts())[0]
