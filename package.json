@@ -27,6 +27,7 @@
         "redux-form-validators": "^3.3.2",
         "rimble-ui": "^0.9.8",
         "styled-components": "^4.3.2",
+        "styled-spinkit": "^0.7.4",
         "typescript": "3.5.2",
         "web3": "1.0.0-beta.34"
     },
