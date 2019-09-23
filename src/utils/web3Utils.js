@@ -1,6 +1,5 @@
 import Web3 from "web3";
 import getWeb3 from "./getWeb3";
-import { formatBN } from "./formatters";
 
 const BN = number => Web3.utils.toBN(number);
 
