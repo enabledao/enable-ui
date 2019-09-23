@@ -2,7 +2,7 @@ import React from "react";
 import {RouteComponentProps, withRouter} from "react-router-dom";
 import {Container} from "../../../styles/bases";
 import {Margin} from "../../../styles/utils";
-import {Row, Col} from "../../lib";
+import {Button, Row, Col} from "../../lib";
 import {HeroWrapper, HeroContent, BoxStats, HeroTitle} from "./styled";
 import BorrowerActions from "./borrowerActions";
 import Withdrawal from "./withdrawals";
@@ -61,7 +61,7 @@ interface MyLoanState {
 interface MyLoanProps extends RouteComponentProps<any> {}
 class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     state = {
-        injectedAccountAddress: "",
+        injectedAccountAddress: null,
         paymentToken: null,
         principalDisbursed: "",
         principalRequested: "",
@@ -328,6 +328,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     };
 
     renderLenderLoan = (
+        injectedAccountAddress,
         paymentToken,
         shares,
         released,
@@ -354,49 +355,94 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                     src={PatternImage}
                     alt='pattern'
                 />
-                <Container>
-                    <Margin vertical={48}>
-                        <Row>
-                            <Col lg={4} md={4} sm={4} xs={4}>
-                                <BoxStats>
-                                    <p>Account Balance</p>
-                                    <h4>
-                                        {!releaseAllowance
-                                            ? "0"
-                                            : prepBigNumber(
-                                                  releaseAllowance,
-                                                  paymentToken.decimals,
-                                                  true
-                                              )}{" "}
-                                        Dai
-                                    </h4>
-                                </BoxStats>
-                            </Col>
-                            <Col lg={4} md={4} sm={4} xs={4}>
-                                <BoxStats>
-                                    <p>Repaid</p>
-                                    <h4>
-                                        {!released
-                                            ? "0"
-                                            : prepBigNumber(released, paymentToken.decimals, true)}{" "}
-                                        Dai
-                                    </h4>
-                                </BoxStats>
-                            </Col>
-                            <Col lg={4} md={4} sm={4} xs={4}>
-                                <BoxStats>
-                                    <p>Invested Amount</p>
-                                    <h4>
-                                        {!shares
-                                            ? "0"
-                                            : prepBigNumber(shares, paymentToken.decimals, true)}{" "}
-                                        Dai
-                                    </h4>
-                                </BoxStats>
-                            </Col>
-                        </Row>
-                    </Margin>
-                </Container>
+                {!injectedAccountAddress ? (
+                    <HeroTitle>
+                        <img
+                            style={{
+                                position: "absolute",
+                                top: 0,
+                                height: "100%",
+                                left: 0,
+                                transform: "scaleX(-1)"
+                            }}
+                            src={PatternImage}
+                            alt='pattern'
+                        />
+                        <img
+                            style={{position: "absolute", top: 0, height: "100%", right: 0}}
+                            src={PatternImage}
+                            alt='pattern'
+                        />
+                        <Container>
+                            <Margin vertical={48}>
+                                <Row>
+                                    <Col lg={12} md={12} sm={12} xs={12}>
+                                        <BoxStats>
+                                            <Col lg={9} md={12}>
+                                                <p>Connecting your wallet to see your investment</p>
+                                            </Col>
+                                            <Col lg={3} md={12}>
+                                                <Button color='green'>Connect Wallet</Button>
+                                            </Col>
+                                        </BoxStats>
+                                    </Col>
+                                </Row>
+                            </Margin>
+                        </Container>
+                    </HeroTitle>
+                ) : (
+                    <Container>
+                        <Margin vertical={48}>
+                            <Row>
+                                <Col lg={4} md={4} sm={4} xs={4}>
+                                    <BoxStats>
+                                        <p>Account Balance</p>
+                                        <h4>
+                                            {!releaseAllowance
+                                                ? "0"
+                                                : prepBigNumber(
+                                                      releaseAllowance,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{" "}
+                                            Dai
+                                        </h4>
+                                    </BoxStats>
+                                </Col>
+                                <Col lg={4} md={4} sm={4} xs={4}>
+                                    <BoxStats>
+                                        <p>Repaid</p>
+                                        <h4>
+                                            {!released
+                                                ? "0"
+                                                : prepBigNumber(
+                                                      released,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{" "}
+                                            Dai
+                                        </h4>
+                                    </BoxStats>
+                                </Col>
+                                <Col lg={4} md={4} sm={4} xs={4}>
+                                    <BoxStats>
+                                        <p>Invested Amount</p>
+                                        <h4>
+                                            {!shares
+                                                ? "0"
+                                                : prepBigNumber(
+                                                      shares,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{" "}
+                                            Dai
+                                        </h4>
+                                    </BoxStats>
+                                </Col>
+                            </Row>
+                        </Margin>
+                    </Container>
+                )}
             </HeroTitle>
             <Container>
                 <div style={{position: "relative", top: -80}}>
@@ -422,6 +468,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     );
 
     renderBorrowerLoan = (
+        injectedAccountAddress,
         paymentToken,
         principalDisbursed,
         totalPaid,
@@ -447,78 +494,119 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                     src={PatternImage}
                     alt='pattern'
                 />
-                <Container>
-                    <Margin vertical={48}>
-                        <Row>
-                            <Col lg={6} md={12}>
-                                <BoxStats>
-                                    <p>Amount raised</p>
-                                    <h4>
-                                        {!totalShares
-                                            ? "0"
-                                            : prepBigNumber(
-                                                  totalShares,
-                                                  paymentToken.decimals,
-                                                  true
-                                              )}{" "}
-                                        Dai
-                                    </h4>
-                                </BoxStats>
-                            </Col>
-                            <Col lg={6} md={12}>
-                                <BoxStats>
-                                    <p>Loan Disbursed</p>
-                                    <h4>
-                                        {!principalDisbursed
-                                            ? "0"
-                                            : prepBigNumber(
-                                                  principalDisbursed,
-                                                  paymentToken.decimals,
-                                                  true
-                                              )}{" "}
-                                        Dai
-                                    </h4>
-                                </BoxStats>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col lg={6} md={12}>
-                                <BoxStats>
-                                    <p>Amount Repaid</p>
-                                    <h4>
-                                        {!totalPaid
-                                            ? "0"
-                                            : prepBigNumber(totalPaid, paymentToken.decimals, true)}{" "}
-                                        Dai
-                                    </h4>
-                                </BoxStats>
-                            </Col>
-                            <Col lg={6} md={12}>
-                                <BoxStats>
-                                    <p>Amount withdrawn</p>
-                                    <h4>
-                                        {!totalReleased
-                                            ? "0"
-                                            : prepBigNumber(
-                                                  totalReleased,
-                                                  paymentToken.decimals,
-                                                  true
-                                              )}{" "}
-                                        Dai
-                                    </h4>
-                                </BoxStats>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col lg={6} md={12}>
-                                <BoxStats>
-                                    <p>Status</p>
-                                    <h4>{this.loanStatus()}</h4>
-                                </BoxStats>
-                            </Col>
-                        </Row>
-                    </Margin>
-                </Container>
+                {!injectedAccountAddress ? (
+                    <HeroTitle>
+                        <img
+                            style={{
+                                position: "absolute",
+                                top: 0,
+                                height: "100%",
+                                left: 0,
+                                transform: "scaleX(-1)"
+                            }}
+                            src={PatternImage}
+                            alt='pattern'
+                        />
+                        <img
+                            style={{position: "absolute", top: 0, height: "100%", right: 0}}
+                            src={PatternImage}
+                            alt='pattern'
+                        />
+                        <Container>
+                            <Margin vertical={48}>
+                                <Row>
+                                    <Col lg={12} md={12} sm={12} xs={12}>
+                                        <BoxStats>
+                                            <Col lg={9} md={12}>
+                                                <p>Connecting your wallet to see your investment</p>
+                                            </Col>
+                                            <Col lg={3} md={12}>
+                                                <Button color='green'>Connect Wallet</Button>
+                                            </Col>
+                                        </BoxStats>
+                                    </Col>
+                                </Row>
+                            </Margin>
+                        </Container>
+                    </HeroTitle>
+                ) : (
+                    <Container>
+                        <Margin vertical={48}>
+                            <Row>
+                                <Col lg={6} md={12}>
+                                    <BoxStats>
+                                        <p>Amount raised</p>
+                                        <h4>
+                                            {!totalShares
+                                                ? "0"
+                                                : prepBigNumber(
+                                                      totalShares,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{" "}
+                                            Dai
+                                        </h4>
+                                    </BoxStats>
+                                </Col>
+                                <Col lg={6} md={12}>
+                                    <BoxStats>
+                                        <p>Loan Disbursed</p>
+                                        <h4>
+                                            {!principalDisbursed
+                                                ? "0"
+                                                : prepBigNumber(
+                                                      principalDisbursed,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{" "}
+                                            Dai
+                                        </h4>
+                                    </BoxStats>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col lg={6} md={12}>
+                                    <BoxStats>
+                                        <p>Amount Repaid</p>
+                                        <h4>
+                                            {!totalPaid
+                                                ? "0"
+                                                : prepBigNumber(
+                                                      totalPaid,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{" "}
+                                            Dai
+                                        </h4>
+                                    </BoxStats>
+                                </Col>
+                                <Col lg={6} md={12}>
+                                    <BoxStats>
+                                        <p>Amount withdrawn</p>
+                                        <h4>
+                                            {!totalReleased
+                                                ? "0"
+                                                : prepBigNumber(
+                                                      totalReleased,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{" "}
+                                            Dai
+                                        </h4>
+                                    </BoxStats>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col lg={6} md={12}>
+                                    <BoxStats>
+                                        <p>Status</p>
+                                        <h4>{this.loanStatus()}</h4>
+                                    </BoxStats>
+                                </Col>
+                            </Row>
+                        </Margin>
+                    </Container>
+                )}
             </HeroTitle>
             <Container>
                 <div style={{position: "relative", top: -80}}>
@@ -561,13 +649,11 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         } = this.state;
         const {borrower} = loanParams;
         const isBorrower = injectedAccountAddress === borrower;
-        console.log(borrower);
         return (
             <React.Fragment>
-                {
-                }
                 {isBorrower
                     ? this.renderBorrowerLoan(
+                          injectedAccountAddress,
                           paymentToken,
                           principalDisbursed,
                           totalPaid,
@@ -576,6 +662,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                           repayments
                       )
                     : this.renderLenderLoan(
+                          injectedAccountAddress,
                           paymentToken,
                           shares,
                           released,
