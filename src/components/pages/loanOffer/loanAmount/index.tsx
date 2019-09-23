@@ -22,12 +22,13 @@ import {
 } from "../../../../constant/validation";
 import createDecorator from "final-form-focus";
 import contractAddresses from "../../../../config/ines.fund";
-import { MILLISECONDS, INTEREST_DECIMALS, ZERO } from "../../../../config/constants";
-import { simulateTotalInterest } from "../../../../utils/jsCalculator";
-import { approveAndFund, fund, getPrincipalToken, getCrowdfundStart, getCrowdfundEnd, getLoanMetadataUrl } from "../../../../utils/crowdloan";
+import { MILLISECONDS, ZERO } from "../../../../config/constants";
+import { calcTotalInterest } from "../../../../utils/jsCalculator";
+import { approveAndFund, fund, getPrincipalToken, getPrincipalRequested, getCrowdfundStart, getCrowdfundEnd, getLoanMetadataUrl } from "../../../../utils/crowdloan";
 import {
-    fetchLoanMetadata, 
-    getInterestRate,
+    fetchLoanMetadata,
+    getExpectedSalary, 
+    getIncomeSharePercentage,
     getLoanPeriod
 } from "../../../../utils/metadata";
 import {
@@ -67,7 +68,9 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
       crowdloanInstance: null,
       loanParams: {
         interestRate: 0,
-        loanPeriod: 0
+        loanPeriod: 0,
+        principalRequested: 0,
+        expectedSalary: 0,
       },
       paymentToken: {}
   };
@@ -76,11 +79,19 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
   }
 
   simulateInterest = contribution => {
-    const { interestRate, loanPeriod } = this.state.loanParams;
-    return simulateTotalInterest(
-      contribution,
-      interestRate,
-      loanPeriod
+    const { interestRate, loanPeriod, principalRequested, expectedSalary } = this.state.loanParams;
+    if (!interestRate || !loanPeriod || !principalRequested || !expectedSalary ) {
+      return "0";
+    }
+    return calcTotalInterest(
+        prepBigNumber(
+          contribution,
+          this.state.paymentToken.decimals,
+        ),
+        principalRequested,
+        interestRate,
+        expectedSalary,
+        loanPeriod
     );
   };
 
@@ -97,15 +108,19 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
       const paymentToken = await getTokenDetailsFromAddress(principalToken);
 
       const loanMetadataUrl = await getLoanMetadataUrl(crowdloanInstance);
+      const principalRequested = await getPrincipalRequested(crowdloanInstance);
       const loanMetadata = await fetchLoanMetadata(loanMetadataUrl);
 
       const loanPeriod = await getLoanPeriod(loanMetadata);
-      const interestRate = await getInterestRate(loanMetadata);
+      const interestRate = await getIncomeSharePercentage(loanMetadata);
+      const expectedSalary = await getExpectedSalary(loanMetadata);
 
       this.setState({
         crowdloanInstance,
         loanParams: {
-          interestRate: prepBigNumber(interestRate, INTEREST_DECIMALS, true),
+          interestRate,
+          principalRequested,
+          expectedSalary,
           loanPeriod
         },
         paymentToken
@@ -307,7 +322,14 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                       <p>You can expect to earn a total interest of:</p>
                       <Margin vertical={24}>
                         <h4>
-                          {this.simulateInterest(loanAmoutnValue)}
+                          {!this.state.paymentToken
+                            ? "0" 
+                            : prepBigNumber(
+                              this.simulateInterest(loanAmoutnValue),
+                                this.state.paymentToken.decimals,
+                                true
+                            )}
+                          {}
                           &nbsp;<small>Dai</small>
                         </h4>
                       </Margin>

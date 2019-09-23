@@ -1,21 +1,21 @@
-import styled from "styled-components";
-import { MaxWidth } from "../../../../styles/utils";
+import styled from 'styled-components'
+import { MaxWidth } from '../../../../styles/utils'
 
 const HeroWrapper = styled.div`
-  padding-top: 40px;
-  position: relative;
-  width: 100%;
-  background-color: #363bd3;
-`;
+    padding-top: 20px;
+    position: relative;
+    width: 100%;
+    background-color: #363bd3;
+`
 
 const HeroCell = styled.div`
-  background-color: white;
-  padding: 50px;
-`;
+    background-color: white;
+    padding: 30px;
+`
 
 const HeroButtonLendMobile = styled.div`
-  display: none;
-  ${MaxWidth.sm`
+    display: none;
+    ${MaxWidth.sm`
     display: block;
     position: fixed;
     bottom: 0;
@@ -26,37 +26,41 @@ const HeroButtonLendMobile = styled.div`
     left: 0;
     z-index: 10;
   `}
-`;
+`
 
 const HeroLink = styled.div`
-  cursor: pointer;
-`;
+    cursor: pointer;
+`
 
 const HeroStatsRight = styled.div`
-  float: right;
-  color: #6c6d7a;
-`;
+    float: right;
+    color: #6c6d7a;
+`
 
 const HeroStats = styled.div`
-  display: inline-block;
-  h5,
-  h4 {
-    small {
-      font-size: 16px;
+    display: inline-block;
+    h5,
+    h4 {
+        font-size: 20px;
+        small {
+            font-size: 16px;
+        }
     }
-  }
-`;
+    p {
+        font-size: 12px;
+    }
+`
 
 const HeroImage = styled.div`
-  position: relative;
-`;
+    position: relative;
+`
 
 export {
-  HeroWrapper,
-  HeroCell,
-  HeroButtonLendMobile,
-  HeroLink,
-  HeroStats,
-  HeroImage,
-  HeroStatsRight
-};
+    HeroWrapper,
+    HeroCell,
+    HeroButtonLendMobile,
+    HeroLink,
+    HeroStats,
+    HeroImage,
+    HeroStatsRight,
+}
