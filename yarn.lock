@@ -16398,7 +16398,7 @@ pull-window@^2.1.4:
   dependencies:
     looper "^2.0.0"
 
-"pull-ws@github:hugomrdias/pull-ws#fix/bundle-size":
+pull-ws@hugomrdias/pull-ws#fix/bundle-size:
   version "3.3.1"
   resolved "https://codeload.github.com/hugomrdias/pull-ws/tar.gz/8e2ce0bb3b1cd6804828316e937fff8e0bef6225"
   dependencies:
@@ -18707,6 +18707,11 @@ styled-components@^4.3.2:
     stylis "^3.5.0"
     stylis-rule-sheet "^0.0.10"
     supports-color "^5.5.0"
+
+styled-spinkit@^0.7.4:
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/styled-spinkit/-/styled-spinkit-0.7.4.tgz#16ea29a2c844dedd1e66db11500dd2ec7de5fca7"
+  integrity sha512-USb4BJ7wB4sx14tSJzxCVkrMZI8d0bzQDqcNd/5Tr2GViJW6SkLRmL8C/hEBen+3ggA43pVvUZxvrJYFFYr6Lw==
 
 styled-system@^2.0.0:
   version "2.3.6"
