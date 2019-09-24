@@ -22,9 +22,9 @@ const calcInterest = (contribution, totalContribution, shareRate, expectedIncome
 const calcTotalInterest = (contribution, totalContribution, shareRate, expectedIncome, loanPeriod) =>
     BN(calcInterest(contribution, totalContribution, shareRate, expectedIncome)).mul(BN(loanPeriod || 0)).div(BN(MONTHS_IN_YEAR)).toString()
 
-const calcRatioOfIncome = (contribution, totalContribution, shareRate, expectedIncome) =>
+const calcPercentageOfIncome = (contribution, totalContribution, shareRate, expectedIncome) =>
     (
-        +calcInterest(contribution, totalContribution, shareRate, expectedIncome)
+        BN(calcInterest(contribution, totalContribution, shareRate, expectedIncome)).mul(BN(HUNDRED))
         / expectedIncome
     );
 
@@ -33,5 +33,5 @@ export {
     simulateTotalInterest,
     calcInterest,
     calcTotalInterest,
-    calcRatioOfIncome,
+    calcPercentageOfIncome,
 }

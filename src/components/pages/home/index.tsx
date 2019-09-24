@@ -7,7 +7,7 @@ import { getDeployedFromConfig } from '../../../utils/getDeployed'
 import contractAddresses from '../../../config/ines.fund'
 import {
     calcTotalInterest,
-    calcRatioOfIncome,
+    calcPercentageOfIncome,
 } from '../../../utils/jsCalculator'
 import { getTokenDetailsFromAddress } from '../../../utils/paymentToken'
 import {
@@ -63,7 +63,7 @@ class Home extends React.Component<{}, HomeState> {
                 salary || expectedSalary,
                 loanPeriod
             ),
-            percentage: calcRatioOfIncome(
+            percentage: calcPercentageOfIncome(
                 contribution,
                 principalRequested,
                 interestRate,
