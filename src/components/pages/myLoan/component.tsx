@@ -1,5 +1,6 @@
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { ChasingDots } from 'styled-spinkit'
 import { Container } from '../../../styles/bases'
 import { Margin } from '../../../styles/utils'
 import { Button, Row, Col } from '../../lib'
@@ -66,6 +67,7 @@ interface MyLoanState {
     totalReleased: string
     totalShares: string
     withdrawals: object
+    loaded: boolean
 }
 
 interface MyLoanProps extends RouteComponentProps<any> {}
@@ -85,6 +87,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         transacting: false,
         releaseAllowance: '',
         withdrawals: null,
+        loaded: false,
         loanParams: {
             borrower: '',
             loanPeriod: '',
@@ -332,6 +335,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 withdrawals,
                 repayments,
                 crowdloanInstance,
+                loaded: true,
             })
         } catch (err) {
             console.log(err)
@@ -734,26 +738,31 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         const isBorrower = injectedAccountAddress === borrower
         return (
             <React.Fragment>
-                {isBorrower
-                    ? this.renderBorrowerLoan(
-                          injectedAccountAddress,
-                          paymentToken,
-                          principalDisbursed,
-                          totalPaid,
-                          totalReleased,
-                          totalShares,
-                          repayments
-                      )
-                    : this.renderLenderLoan(
-                          injectedAccountAddress,
-                          paymentToken,
-                          shares,
-                          released,
-                          releaseAllowance,
-                          transacting,
-                          repayments,
-                          withdrawals
-                      )}
+                {this.state.loaded ? (
+                    borrower &&
+                    (isBorrower
+                        ? this.renderBorrowerLoan(
+                              injectedAccountAddress,
+                              paymentToken,
+                              principalDisbursed,
+                              totalPaid,
+                              totalReleased,
+                              totalShares,
+                              repayments
+                          )
+                        : this.renderLenderLoan(
+                              injectedAccountAddress,
+                              paymentToken,
+                              shares,
+                              released,
+                              releaseAllowance,
+                              transacting,
+                              repayments,
+                              withdrawals
+                          ))
+                ) : (
+                    <ChasingDots />
+                )}
             </React.Fragment>
         )
     }

@@ -18708,6 +18708,11 @@ styled-components@^4.3.2:
     stylis-rule-sheet "^0.0.10"
     supports-color "^5.5.0"
 
+styled-spinkit@^0.7.4:
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/styled-spinkit/-/styled-spinkit-0.7.4.tgz#16ea29a2c844dedd1e66db11500dd2ec7de5fca7"
+  integrity sha512-USb4BJ7wB4sx14tSJzxCVkrMZI8d0bzQDqcNd/5Tr2GViJW6SkLRmL8C/hEBen+3ggA43pVvUZxvrJYFFYr6Lw==
+
 styled-system@^2.0.0:
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/styled-system/-/styled-system-2.3.6.tgz#a38c1ffa04a5c35adec46473984e463c48b16f7c"

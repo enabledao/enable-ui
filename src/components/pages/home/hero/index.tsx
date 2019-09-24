@@ -1,4 +1,5 @@
 import React from 'react'
+import { ChasingDots } from 'styled-spinkit'
 import YoutubeEmbed from '../../../lib/youtube'
 import ModalListContributor from '../modalListContributor'
 import ModalVideo from './modalVideo'
@@ -61,6 +62,7 @@ export interface HomeHeroState {
     principalRequested: string
     payees: string
     paymentToken: any
+    loaded: boolean
 }
 
 class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
@@ -78,6 +80,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
             principalRequested: null,
             payees: null,
             paymentToken: {},
+            loaded: false,
         }
         this.handleModal = this.handleModal.bind(this)
         this.handleModalVideo = this.handleModalVideo.bind(this)
@@ -125,6 +128,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 totalContributed: _totalContributed || 0,
                 principalRequested: principalRequested || 0,
                 paymentToken,
+                loaded: true,
             })
         } catch (err) {
             console.error(err)
@@ -203,178 +207,200 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                                     Help me raise 60,000 Dai to attend Cornell
                                     University
                                 </h2>
-                                <Margin top={32}>
-                                    <HeroStats>
-                                        <h5>
-                                            {!this.state.totalContributed
-                                                ? '0'
-                                                : formatBN(
-                                                      prepBigNumber(
-                                                          this.state
-                                                              .totalContributed,
-                                                          this.state
-                                                              .paymentToken
-                                                              .decimals,
-                                                          true
-                                                      )
-                                                  )}
-                                            {' Dai '}
-                                            <small>
-                                                of&nbsp;
-                                                {!this.state.principalRequested
+                                {this.state.loaded ? (
+                                    <Margin top={32}>
+                                        <HeroStats>
+                                            <h5>
+                                                {!this.state.totalContributed
                                                     ? '0'
                                                     : formatBN(
                                                           prepBigNumber(
                                                               this.state
-                                                                  .principalRequested,
+                                                                  .totalContributed,
                                                               this.state
                                                                   .paymentToken
                                                                   .decimals,
                                                               true
                                                           )
-                                                      )}{' '}
-                                                goal
-                                            </small>
-                                        </h5>
-                                    </HeroStats>
-                                    <HeroStatsRight>
-                                        <p>1 Dai = 1 USD</p>
-                                    </HeroStatsRight>
-                                </Margin>
-                                <Margin vertical={8}>
-                                    {!this.state.totalContributed ||
-                                    !this.state.principalRequested ? (
-                                        <Progress current={0} />
-                                    ) : (
-                                        <Progress
-                                            current={
-                                                (+prepBigNumber(
-                                                    this.state.totalContributed,
-                                                    this.state.paymentToken
-                                                        .decimals,
-                                                    true
-                                                ) *
-                                                    100) /
-                                                +prepBigNumber(
-                                                    this.state
-                                                        .principalRequested,
-                                                    this.state.paymentToken
-                                                        .decimals,
-                                                    true
-                                                )
-                                            }
-                                        />
-                                    )}
-                                </Margin>
-                                <Margin top={8}>
-                                    <HeroStats>
-                                        <HeroLink onClick={this.handleModal}>
-                                            Powered by
-                                            <b>
-                                                {' '}
-                                                {!contributors
-                                                    ? '0'
-                                                    : contributors.length}{' '}
-                                            </b>
-                                            contributors
-                                        </HeroLink>
-                                    </HeroStats>
-                                    <HeroStatsRight>
-                                        <p style={{ color: 'black' }}>
-                                            <b>
-                                                {!this.state.loanEndTimestamp
-                                                    ? '0'
-                                                    : this.state
-                                                          .loanEndTimestamp}{' '}
-                                            </b>
-                                            <small>Days left</small>
-                                        </p>
-                                    </HeroStatsRight>
-                                </Margin>
-                                <Margin top={24}>
-                                    <Row>
-                                        <Col lg={2} sm={6}>
-                                            <HeroStats
-                                                data-for="isa-tooltip"
-                                                data-tip="Income Share Agreement (ISA) will be <br> distributed proportionally <br> by the amount of investment"
-                                                data-multiline="true"
-                                            >
-                                                <h4>
-                                                    {!this.props.interestRate
-                                                        ? '0'
-                                                        : this.props
-                                                              .interestRate}
-                                                    %
-                                                </h4>
-                                                <p>
-                                                    ISA{' '}
-                                                    <FontAwesomeIcon
-                                                        icon={faInfoCircle}
-                                                    />
-                                                </p>
-                                            </HeroStats>
-                                            <ReactTooltip id="isa-tooltip" />
-                                        </Col>
-                                        <Col lg={3} sm={6}>
-                                            <HeroStats>
-                                                <h4>
-                                                    {!this.props.loanPeriod
-                                                        ? '0'
-                                                        : Math.ceil(
-                                                              +this.props
-                                                                  .loanPeriod /
-                                                                  MONTHS_IN_YEAR
-                                                          )}{' '}
-                                                    yr.
-                                                </h4>
-                                                <p>Duration</p>
-                                            </HeroStats>
-                                        </Col>
-                                        <Col lg={4} sm={6}>
-                                            <HeroStats
-                                                data-for="minRepayment-tooltip"
-                                                data-tip="The minimum amount the borrower <br> is committed to repay <br> regardless of income"
-                                                data-multiline="true"
-                                            >
-                                                <h4>
-                                                    {!this.state.minRepayment
+                                                      )}
+                                                {' Dai '}
+                                                <small>
+                                                    of&nbsp;
+                                                    {!this.state
+                                                        .principalRequested
                                                         ? '0'
                                                         : formatBN(
                                                               prepBigNumber(
                                                                   this.state
-                                                                      .minRepayment,
+                                                                      .principalRequested,
                                                                   this.state
                                                                       .paymentToken
                                                                       .decimals,
                                                                   true
                                                               )
                                                           )}{' '}
-                                                    Dai
-                                                </h4>
-                                                <p>
-                                                    Min Repayment{' '}
-                                                    <FontAwesomeIcon
-                                                        icon={faInfoCircle}
-                                                    />
-                                                </p>
-                                            </HeroStats>
-                                            <ReactTooltip id="minRepayment-tooltip" />
-                                        </Col>
-                                        <Col lg={3} sm={6}>
+                                                    goal
+                                                </small>
+                                            </h5>
+                                        </HeroStats>
+                                        <HeroStatsRight>
+                                            <p>1 Dai = 1 USD</p>
+                                        </HeroStatsRight>
+                                    </Margin>
+                                ) : (
+                                    <Margin top={32}>
+                                        <ChasingDots />
+                                    </Margin>
+                                )}
+                                {this.state.loaded && (
+                                    <div>
+                                        <Margin vertical={8}>
+                                            {!this.state.totalContributed ||
+                                            !this.state.principalRequested ? (
+                                                <Progress current={0} />
+                                            ) : (
+                                                <Progress
+                                                    current={
+                                                        (+prepBigNumber(
+                                                            this.state
+                                                                .totalContributed,
+                                                            this.state
+                                                                .paymentToken
+                                                                .decimals,
+                                                            true
+                                                        ) *
+                                                            100) /
+                                                        +prepBigNumber(
+                                                            this.state
+                                                                .principalRequested,
+                                                            this.state
+                                                                .paymentToken
+                                                                .decimals,
+                                                            true
+                                                        )
+                                                    }
+                                                />
+                                            )}
+                                        </Margin>
+                                        <Margin top={8}>
                                             <HeroStats>
-                                                <h4>
-                                                    {!this.state.minRepayment
-                                                        ? '0'
-                                                        : new Date(
-                                                              this.state
-                                                                  .repaymentStart *
-                                                                  MILLISECONDS
-                                                          ).getFullYear()}
-                                                </h4>
-                                                <p>ISA Start</p>
+                                                <HeroLink
+                                                    onClick={this.handleModal}
+                                                >
+                                                    Powered by
+                                                    <b>
+                                                        {' '}
+                                                        {!contributors
+                                                            ? '0'
+                                                            : contributors.length}{' '}
+                                                    </b>
+                                                    contributors
+                                                </HeroLink>
                                             </HeroStats>
-                                        </Col>
-                                    </Row>
+                                            <HeroStatsRight>
+                                                <p style={{ color: 'black' }}>
+                                                    <b>
+                                                        {!this.state
+                                                            .loanEndTimestamp
+                                                            ? '0'
+                                                            : this.state
+                                                                  .loanEndTimestamp}{' '}
+                                                    </b>
+                                                    <small>Days left</small>
+                                                </p>
+                                            </HeroStatsRight>
+                                        </Margin>
+                                    </div>
+                                )}
+                                <Margin top={24}>
+                                    {this.state.loaded && (
+                                        <Row>
+                                            <Col lg={2} sm={6}>
+                                                <HeroStats
+                                                    data-for="isa-tooltip"
+                                                    data-tip="Income Share Agreement (ISA) will be <br> distributed proportionally <br> by the amount of investment"
+                                                    data-multiline="true"
+                                                >
+                                                    <h4>
+                                                        {!this.props
+                                                            .interestRate
+                                                            ? '0'
+                                                            : this.props
+                                                                  .interestRate}
+                                                        %
+                                                    </h4>
+                                                    <p>
+                                                        ISA{' '}
+                                                        <FontAwesomeIcon
+                                                            icon={faInfoCircle}
+                                                        />
+                                                    </p>
+                                                </HeroStats>
+                                                <ReactTooltip id="isa-tooltip" />
+                                            </Col>
+                                            <Col lg={3} sm={6}>
+                                                <HeroStats>
+                                                    <h4>
+                                                        {!this.props.loanPeriod
+                                                            ? '0'
+                                                            : Math.ceil(
+                                                                  +this.props
+                                                                      .loanPeriod /
+                                                                      MONTHS_IN_YEAR
+                                                              )}{' '}
+                                                        yr.
+                                                    </h4>
+                                                    <p>Duration</p>
+                                                </HeroStats>
+                                            </Col>
+                                            <Col lg={4} sm={6}>
+                                                <HeroStats
+                                                    data-for="minRepayment-tooltip"
+                                                    data-tip="The minimum amount the borrower <br> is committed to repay <br> regardless of income"
+                                                    data-multiline="true"
+                                                >
+                                                    <h4>
+                                                        {!this.state
+                                                            .minRepayment
+                                                            ? '0'
+                                                            : formatBN(
+                                                                  prepBigNumber(
+                                                                      this.state
+                                                                          .minRepayment,
+                                                                      this.state
+                                                                          .paymentToken
+                                                                          .decimals,
+                                                                      true
+                                                                  )
+                                                              )}{' '}
+                                                        Dai
+                                                    </h4>
+                                                    <p>
+                                                        Min Repayment{' '}
+                                                        <FontAwesomeIcon
+                                                            icon={faInfoCircle}
+                                                        />
+                                                    </p>
+                                                </HeroStats>
+                                                <ReactTooltip id="minRepayment-tooltip" />
+                                            </Col>
+                                            <Col lg={3} sm={6}>
+                                                <HeroStats>
+                                                    <h4>
+                                                        {!this.state
+                                                            .minRepayment
+                                                            ? '0'
+                                                            : new Date(
+                                                                  this.state
+                                                                      .repaymentStart *
+                                                                      MILLISECONDS
+                                                              ).getFullYear()}
+                                                    </h4>
+                                                    <p>ISA Start</p>
+                                                </HeroStats>
+                                            </Col>
+                                        </Row>
+                                    )}
                                     <p style={{ color: '#6c6d7a' }}>
                                         <small>
                                             Income Share Agreement (ISA) is
