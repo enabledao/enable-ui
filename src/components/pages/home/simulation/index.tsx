@@ -26,6 +26,7 @@ import Twitter from '../../../../images/socialMedia/twitter.svg'
 import Facebook from '../../../../images/socialMedia/facebook.svg'
 import { prepBigNumber } from '../../../../utils/web3Utils'
 import { formatBN } from '../../../../utils/formatters'
+import { simulateInterest2 } from '../../../../utils/jsCalculator'
 
 interface SimuLationReturnProps extends RouteComponentProps<any> {
     contributors?: any
