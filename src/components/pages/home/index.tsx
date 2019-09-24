@@ -63,7 +63,6 @@ class Home extends React.Component<{}, HomeState> {
                 salary || expectedSalary,
                 loanPeriod
             ),
-            percentage: calcIncomeSharePercentage(contribution),
         }
     }
 

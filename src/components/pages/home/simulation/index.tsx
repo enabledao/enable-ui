@@ -25,6 +25,12 @@ import Twitter from '../../../../images/socialMedia/twitter.svg'
 import Facebook from '../../../../images/socialMedia/facebook.svg'
 import { prepBigNumber } from '../../../../utils/web3Utils'
 import { formatBN } from '../../../../utils/formatters'
+import {
+    calcIncomeSharePercentage,
+    calcEstimatedMonthlyRepayment,
+    calcMinRepayment,
+    calcMaxRepayment,
+} from '../../../../utils/jsCalculator'
 
 interface SimuLationReturnProps extends RouteComponentProps<any> {
     contributors?: any
@@ -313,7 +319,9 @@ class SimuLationReturn extends React.Component<
                             <b>
                                 {!this.props.paymentToken
                                     ? '0'
-                                    : this.getSimulated().percentage.toFixed(2)}
+                                    : calcIncomeSharePercentage(
+                                          investmentAmount
+                                      )}
                                 %
                             </b>{' '}
                             of 18%

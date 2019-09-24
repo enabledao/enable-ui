@@ -99,17 +99,23 @@ const calcExpectedReturn = (
         .toString()
 }
 
-const calcIncomeSharePercentage = contribution => {
-    const incomeShareBasisPoints = BN(contribution || 0)
+const calcIncomeSharePercentage = investmentAmount => {
+    const paddedInvestmentAmount = Web3.utils.toWei(
+        investmentAmount.toString(),
+        'ether'
+    )
+    const incomeShareBasisPoints = BN(paddedInvestmentAmount || 0)
         .mul(isaPercentage)
-        .mul(BN(100)) // in basis points because of BN.js
+        .mul(BN(1000)) // in basis points because of BN.js
         .div(BN(fundraisingTarget))
         .toNumber()
-    const incomeSharePercentage = incomeShareBasisPoints / 100
+    const incomeSharePercentage = incomeShareBasisPoints / 1000
     return incomeSharePercentage
 }
 
 const calcEstimatedMonthlyRepayment = () => {}
+const calcMinRepayment = () => {}
+const calcMaxRepayment = () => {}
 
 export {
     availableWithdrawal,
@@ -118,4 +124,7 @@ export {
     simulateInterest2,
     calcExpectedReturn,
     calcIncomeSharePercentage,
+    calcEstimatedMonthlyRepayment,
+    calcMinRepayment,
+    calcMaxRepayment,
 }
