@@ -77,16 +77,15 @@ const calcTotalInterest = (
         .div(BN(MONTHS_IN_YEAR))
         .toString()
 
-const calcRatioOfIncome = (
+const calcPercentageOfIncome = (
     contribution,
     totalContribution,
     shareRate,
     expectedIncome
-) => {
-    // console.log(BN(contribution))
-    console.log(BN(60000))
-    return ((+contribution / 60000) * 10) ^ 8
-}
+) =>
+    BN(
+        calcInterest(contribution, totalContribution, shareRate, expectedIncome)
+    ).mul(BN(HUNDRED)) / expectedIncome
 
 export {
     availableWithdrawal,
@@ -94,5 +93,5 @@ export {
     calcInterest,
     simulateInterest2,
     calcTotalInterest,
-    calcRatioOfIncome,
+    calcPercentageOfIncome,
 }
