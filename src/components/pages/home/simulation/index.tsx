@@ -18,7 +18,6 @@ import {
     IdentityBox,
     ProfileSocialLink,
 } from './styled'
-import ModalListContributor from '../modalListContributor'
 import AvatarBrahma from '../../../../images/avatar/brahma.jpg'
 import Linkedin from '../../../../images/socialMedia/linkedin.svg'
 import Instagram from '../../../../images/socialMedia/instagram.svg'
@@ -26,7 +25,6 @@ import Twitter from '../../../../images/socialMedia/twitter.svg'
 import Facebook from '../../../../images/socialMedia/facebook.svg'
 import { prepBigNumber } from '../../../../utils/web3Utils'
 import { formatBN } from '../../../../utils/formatters'
-import { simulateInterest2 } from '../../../../utils/jsCalculator'
 
 interface SimuLationReturnProps extends RouteComponentProps<any> {
     contributors?: any
@@ -249,21 +247,6 @@ class SimuLationReturn extends React.Component<
                                 onChange={this.handleChangeInvestmentAmount}
                             />
                         </Margin>
-                        <Margin top={24}>
-                            <p style={{ display: 'inline-block' }}>
-                                Income Shares
-                            </p>
-                            <p style={{ float: 'right' }}>
-                                <b>
-                                    {!this.props.paymentToken
-                                        ? '0'
-                                        : this.getSimulated().percentage.toFixed(
-                                              2
-                                          )}
-                                    %
-                                </b>
-                            </p>
-                        </Margin>
                         <Margin>
                             <p style={{ display: 'inline-block' }}>
                                 Min Repayment
@@ -322,16 +305,31 @@ class SimuLationReturn extends React.Component<
                         </Margin>
                     </Margin>
                     <hr />
-                    <Margin top={10}>
+                    <Margin top={18}>
+                        <p style={{ display: 'inline-block' }}>
+                            Income Share Ownership
+                        </p>
+                        <p style={{ float: 'right' }}>
+                            <b>
+                                {!this.props.paymentToken
+                                    ? '0'
+                                    : this.getSimulated().percentage.toFixed(2)}
+                                %
+                            </b>{' '}
+                            of 18%
+                        </p>
+                    </Margin>
+                    <Margin>
                         <p style={{ display: 'inline-block' }}>
                             Estimated Monthly Repayment
                         </p>
                         <p style={{ float: 'right' }}>21.5 Dai</p>
                     </Margin>
-                    <Margin bottom={8}>
+                    <Margin>
                         <p style={{ display: 'inline-block' }}>Duration</p>
                         <p style={{ float: 'right' }}>6 years</p>
                     </Margin>
+
                     <Margin vertical={24}>
                         <h4>
                             {!this.props.paymentToken

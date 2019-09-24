@@ -6,8 +6,8 @@ import ModalWip from './modalWip'
 import { getDeployedFromConfig } from '../../../utils/getDeployed'
 import contractAddresses from '../../../config/ines.fund'
 import {
-    calcTotalInterest,
-    calcPercentageOfIncome,
+    calcExpectedReturn,
+    calcIncomeSharePercentage,
 } from '../../../utils/jsCalculator'
 import { getTokenDetailsFromAddress } from '../../../utils/paymentToken'
 import {
@@ -56,19 +56,14 @@ class Home extends React.Component<{}, HomeState> {
             loanPeriod,
         } = this.state
         return {
-            totalAmount: calcTotalInterest(
+            totalAmount: calcExpectedReturn(
                 contribution,
                 principalRequested,
                 interestRate,
                 salary || expectedSalary,
                 loanPeriod
             ),
-            percentage: calcPercentageOfIncome(
-                contribution,
-                principalRequested,
-                interestRate,
-                salary || expectedSalary
-            ),
+            percentage: calcIncomeSharePercentage(contribution),
         }
     }
 

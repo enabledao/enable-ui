@@ -1,6 +1,14 @@
 import { ZERO, HUNDRED, MONTHS_IN_YEAR } from '../config/constants'
 import { BN, prepBigNumber } from './web3Utils'
 import Web3 from 'web3'
+import {
+    isaPercentage,
+    isaRate,
+    minRepayment,
+    maxRepayment,
+    isaDurationMonths,
+    fundraisingTarget,
+} from '../config/isaConstants'
 
 const simulateTotalInterest = (contribution, interestRate, loanPeriod) => {
     return (
@@ -37,14 +45,14 @@ const simulateInterest2 = (
     loanPeriod
 ) => {
     return {
-        totalAmount: calcTotalInterest(
+        totalAmount: calcExpectedReturn(
             contribution,
             principalRequested,
             interestRate,
             salary || expectedSalary,
             loanPeriod
         ),
-        percentage: calcPercentageOfIncome(
+        percentage: calcIncomeSharePercentage(
             contribution,
             principalRequested,
             interestRate,
@@ -58,40 +66,56 @@ const calcInterest = (
     totalContribution,
     shareRate,
     expectedIncome
-) =>
-    BN(contribution || 0)
+) => {
+    // console.log('--------')
+    // console.log(contribution)
+    // console.log(totalContribution)
+    // console.log(shareRate)
+    // console.log(expectedIncome)
+    return BN(contribution || 0)
         .mul(BN(expectedIncome || 0))
         .mul(BN(shareRate || 0))
         .div(BN(HUNDRED).mul(BN(totalContribution || 0)))
         .toString()
+}
 
-const calcTotalInterest = (
+const calcExpectedReturn = (
     contribution,
-    totalContribution,
+    principalRequested,
     shareRate,
     expectedIncome,
     loanPeriod
-) =>
-    BN(calcInterest(contribution, totalContribution, shareRate, expectedIncome))
+) => {
+    return BN(
+        calcInterest(
+            contribution,
+            principalRequested,
+            shareRate,
+            expectedIncome
+        )
+    )
         .mul(BN(loanPeriod || 0))
         .div(BN(MONTHS_IN_YEAR))
         .toString()
+}
 
-const calcPercentageOfIncome = (
-    contribution,
-    totalContribution,
-    shareRate,
-    expectedIncome
-) =>
-    BN(
-        calcInterest(contribution, totalContribution, shareRate, expectedIncome)
-    ).mul(BN(HUNDRED)) / expectedIncome
+const calcIncomeSharePercentage = contribution => {
+    const incomeShareBasisPoints = BN(contribution || 0)
+        .mul(isaPercentage)
+        .mul(BN(100)) // in basis points because of BN.js
+        .div(BN(fundraisingTarget))
+        .toNumber()
+    const incomeSharePercentage = incomeShareBasisPoints / 100
+    return incomeSharePercentage
+}
+
+const calcEstimatedMonthlyRepayment = () => {}
 
 export {
     availableWithdrawal,
     simulateTotalInterest,
     calcInterest,
     simulateInterest2,
-    calcTotalInterest,
-    calcPercentageOfIncome,
+    calcExpectedReturn,
+    calcIncomeSharePercentage,
 }
