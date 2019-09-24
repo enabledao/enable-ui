@@ -44,7 +44,7 @@ const simulateInterest2 = (
             salary || expectedSalary,
             loanPeriod
         ),
-        percentage: calcRatioOfIncome(
+        percentage: calcPercentageOfIncome(
             contribution,
             principalRequested,
             interestRate,
