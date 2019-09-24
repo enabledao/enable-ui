@@ -5,12 +5,11 @@ import AvatarAverie from '../../../../images/avatar/averie.jpg'
 import AvatarBrooke from '../../../../images/avatar/brooke.jpg'
 import AvatarIvana from '../../../../images/avatar/ivana.jpg'
 import AvatarShamanta from '../../../../images/avatar/shamanta.jpg'
-import HeroInes from '../../../../images/hero/home.png'
 import YoutubeEmbed from '../../../lib/youtube'
 import ModalListContributor from '../modalListContributor'
 import ModalVideo from './modalVideo'
 import { Container } from '../../../../styles/bases'
-import { Margin, MobileTextCenter } from '../../../../styles/utils'
+import { Margin } from '../../../../styles/utils'
 import { Row, Col, Progress, Button, ShowModal } from '../../../lib'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { AppPath } from '../../../../constant/appPath'
@@ -132,7 +131,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
             'Crowdloan',
             contractAddresses
         )
-        const { loanMetadata } = this.props
+        const { loanMetadata } = this.props;
 
         try {
             const minRepayment = await getMinimumRepayment(loanMetadata)
