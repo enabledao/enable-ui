@@ -58,7 +58,7 @@ class SimuLationReturn extends React.Component<
             textfieldShow: false,
             investmentAmount: 10000,
             salary: 86320,
-            salaryMin: 50000,
+            salaryMin: 30000,
             salaryMax: 150000,
             showModal: false,
             showModalGuarantor: false,
