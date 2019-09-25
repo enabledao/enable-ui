@@ -9,12 +9,10 @@ import { formatBN } from './formatters'
 import Web3 from 'web3'
 import {
     ISA_PERCENTAGE,
-    ISA_INVESTMENT_RATE,
     ISA_MIN_REPAYMENT,
     ISA_MAX_REPAYMENT,
     ISA_DURATION_MONTHS,
     ISA_FUNDRAISING_TARGET,
-    ISA_EXPECTED_SALARY,
 } from '../config/isaConstants'
 
 const convertPaddedBN = num => BN(Web3.utils.toWei(num.toString(), 'ether'))
