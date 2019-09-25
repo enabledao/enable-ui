@@ -2,13 +2,18 @@
  * TODO(Dan, Anthony): These values are hardcoded for the POC loan, but should be read from the smart contract OR IPFS metadata in the future
  * @param {*} loanMetadataUrl
  */
-import Web3 from 'web3'
+import {
+    ISA_PERCENTAGE,
+    ISA_MIN_REPAYMENT,
+    ISA_DURATION_MONTHS,
+    ISA_EXPECTED_SALARY,
+} from '../config/isaConstants'
 
 const fetchLoanMetadata = loanMetadataUrl => null
-const getIncomeSharePercentage = loanMetadata => '18'
-const getLoanPeriod = loanMetadata => '72'
-const getMinimumRepayment = loanMetadata => Web3.utils.toWei('65000', 'ether')
-const getExpectedSalary = loanMetadata => Web3.utils.toWei('86320', 'ether')
+const getIncomeSharePercentage = loanMetadata => ISA_PERCENTAGE.toString()
+const getLoanPeriod = loanMetadata => ISA_DURATION_MONTHS.toString()
+const getMinimumRepayment = loanMetadata => ISA_MIN_REPAYMENT.toString()
+const getExpectedSalary = loanMetadata => ISA_EXPECTED_SALARY.toString()
 const getRepaymentStart = loanMetadata => '1609455600'
 
 export {
