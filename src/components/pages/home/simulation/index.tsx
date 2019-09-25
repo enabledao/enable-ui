@@ -28,9 +28,13 @@ import { formatBN } from '../../../../utils/formatters'
 import {
     calcIncomeSharePercentage,
     calcEstimatedMonthlyRepayment,
+    calcExpectedTotalReturn,
     calcMinRepayment,
     calcMaxRepayment,
 } from '../../../../utils/jsCalculator'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import ReactTooltip from 'react-tooltip'
 
 interface SimuLationReturnProps extends RouteComponentProps<any> {
     contributors?: any
@@ -58,7 +62,7 @@ class SimuLationReturn extends React.Component<
         super(props)
         this.state = {
             textfieldShow: false,
-            investmentAmount: 0,
+            investmentAmount: 100,
             salary: 86320,
             salaryMin: 30000,
             salaryMax: 150000,
@@ -253,26 +257,26 @@ class SimuLationReturn extends React.Component<
                                 onChange={this.handleChangeInvestmentAmount}
                             />
                         </Margin>
-                        <Margin>
+                        <Margin top={10}>
                             <p style={{ display: 'inline-block' }}>
-                                Min Repayment
+                                Min. Repayment
                             </p>
                             <p style={{ float: 'right' }}>
-                                <b>$35,000</b>
+                                <b>{calcMinRepayment(investmentAmount)} Dai</b>
                             </p>
                         </Margin>
                         <Margin bottom={8}>
                             <p style={{ display: 'inline-block' }}>
-                                Max Repayment
+                                Max. Repayment
                             </p>
                             <p style={{ float: 'right' }}>
-                                <b>$35,000</b>
+                                <b>{calcMaxRepayment(investmentAmount)} Dai</b>
                             </p>
                         </Margin>
                     </Margin>
                     <hr />
                     <Margin top={18}>
-                        <h6>Postgraduation Salary</h6>
+                        <h6>Simulate Salary</h6>
                         <Margin top={30}>
                             <SliderInput
                                 type="range"
@@ -288,7 +292,7 @@ class SimuLationReturn extends React.Component<
                         </Margin>
                         <Margin top={20}>
                             <p style={{ display: 'inline-block' }}>
-                                Simulated Salary
+                                Average Annual Salary
                             </p>
                             <p style={{ float: 'right' }}>
                                 ${formatBN(salary.toString())}
@@ -312,24 +316,25 @@ class SimuLationReturn extends React.Component<
                     </Margin>
                     <hr />
                     <Margin top={18}>
-                        <p style={{ display: 'inline-block' }}>
-                            Income Share Ownership
+                        <p
+                            data-for="income-ownership-tooltip"
+                            data-tip="This represents % of borrower's future income"
+                            style={{ display: 'inline-block' }}
+                        >
+                            Income Ownership{' '}
+                            <FontAwesomeIcon icon={faInfoCircle} />
                         </p>
+                        <ReactTooltip id="income-ownership-tooltip" />
                         <p style={{ float: 'right' }}>
                             <b>
-                                {!this.props.paymentToken
-                                    ? '0'
-                                    : calcIncomeSharePercentage(
-                                          investmentAmount
-                                      )}
-                                %
+                                {calcIncomeSharePercentage(investmentAmount)}%
                             </b>{' '}
                             of 18%
                         </p>
                     </Margin>
                     <Margin>
                         <p style={{ display: 'inline-block' }}>
-                            Estimated Monthly Repayment
+                            Simulated Repayment
                         </p>
                         <p style={{ float: 'right' }}>21.5 Dai</p>
                     </Margin>
@@ -340,15 +345,7 @@ class SimuLationReturn extends React.Component<
 
                     <Margin vertical={24}>
                         <h4>
-                            {!this.props.paymentToken
-                                ? '0'
-                                : formatBN(
-                                      prepBigNumber(
-                                          this.getSimulated().totalAmount,
-                                          this.props.paymentToken.decimals,
-                                          true
-                                      )
-                                  )}
+                            {calcExpectedTotalReturn(investmentAmount, salary)}
                             &nbsp;<small>Dai</small>
                         </h4>
                         <small>Expected Total Return</small>

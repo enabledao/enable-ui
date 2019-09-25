@@ -1,23 +1,23 @@
-import { ZERO, HUNDRED, MONTHS_IN_YEAR } from '../config/constants'
+import {
+    ZERO,
+    HUNDRED,
+    MONTHS_IN_YEAR,
+    ISA_PERCENTAGE_DECIMALS,
+} from '../config/constants'
 import { BN, prepBigNumber } from './web3Utils'
+import { formatBN } from './formatters'
 import Web3 from 'web3'
 import {
-    isaPercentage,
-    isaRate,
-    minRepayment,
-    maxRepayment,
-    isaDurationMonths,
-    fundraisingTarget,
+    ISA_PERCENTAGE,
+    ISA_INVESTMENT_RATE,
+    ISA_MIN_REPAYMENT,
+    ISA_MAX_REPAYMENT,
+    ISA_DURATION_MONTHS,
+    ISA_FUNDRAISING_TARGET,
+    ISA_EXPECTED_SALARY,
 } from '../config/isaConstants'
 
-const simulateTotalInterest = (contribution, interestRate, loanPeriod) => {
-    return (
-        Math.floor(
-            (+contribution * (+interestRate || 0) * (+loanPeriod || 0)) /
-                (12 * 100)
-        ) || 0
-    )
-}
+const convertPaddedBN = num => BN(Web3.utils.toWei(num.toString(), 'ether'))
 
 const availableWithdrawal = (
     amountContributed,
@@ -33,45 +33,12 @@ const availableWithdrawal = (
         ZERO
     )
 
-/** TODO(Dan): Refactor the convoluted simulateInterest passing into helper method
- *
- */
-const simulateInterest2 = (
-    contribution,
-    salary,
-    interestRate,
-    principalRequested,
-    expectedSalary,
-    loanPeriod
-) => {
-    return {
-        totalAmount: calcExpectedReturn(
-            contribution,
-            principalRequested,
-            interestRate,
-            salary || expectedSalary,
-            loanPeriod
-        ),
-        percentage: calcIncomeSharePercentage(
-            contribution,
-            principalRequested,
-            interestRate,
-            salary || expectedSalary
-        ),
-    }
-}
-
 const calcInterest = (
     contribution,
     totalContribution,
     shareRate,
     expectedIncome
 ) => {
-    // console.log('--------')
-    // console.log(contribution)
-    // console.log(totalContribution)
-    // console.log(shareRate)
-    // console.log(expectedIncome)
     return BN(contribution || 0)
         .mul(BN(expectedIncome || 0))
         .mul(BN(shareRate || 0))
@@ -86,6 +53,9 @@ const calcExpectedReturn = (
     expectedIncome,
     loanPeriod
 ) => {
+    //TODO(Dan): Refactor to prevent multiple calculations using BN
+    // incomesharepercentage*salary
+
     return BN(
         calcInterest(
             contribution,
@@ -100,30 +70,66 @@ const calcExpectedReturn = (
 }
 
 const calcIncomeSharePercentage = investmentAmount => {
-    const paddedInvestmentAmount = Web3.utils.toWei(
-        investmentAmount.toString(),
-        'ether'
-    )
-    const incomeShareBasisPoints = BN(paddedInvestmentAmount || 0)
-        .mul(isaPercentage)
-        .mul(BN(1000)) // in basis points because of BN.js
-        .div(BN(fundraisingTarget))
+    const paddedInvestmentAmount = convertPaddedBN(investmentAmount)
+
+    // TODO(Dan): Rename b/c we are not using traditional basis points (we need 3 precision)
+    const incomeShareBasisPoints = paddedInvestmentAmount
+        .mul(ISA_PERCENTAGE)
+        .mul(BN(10 ** ISA_PERCENTAGE_DECIMALS)) // in because of BN.js
+        .div(BN(ISA_FUNDRAISING_TARGET))
         .toNumber()
-    const incomeSharePercentage = incomeShareBasisPoints / 1000
+    const incomeSharePercentage =
+        incomeShareBasisPoints / 10 ** ISA_PERCENTAGE_DECIMALS
     return incomeSharePercentage
 }
 
-const calcEstimatedMonthlyRepayment = () => {}
-const calcMinRepayment = () => {}
-const calcMaxRepayment = () => {}
+const calcExpectedTotalReturn = (investmentAmount, salary) => {
+    //TODO(Dan): Refactor calcIncomeSharePercentage and this method to reduce duplicate calculation
+    const incomeSharePercentage =
+        calcIncomeSharePercentage(investmentAmount) / 100
+    console.log(incomeSharePercentage)
+    console.log(salary)
+    return formatBN(
+        ((salary * incomeSharePercentage * ISA_DURATION_MONTHS) / 12).toFixed(2)
+    )
+}
+
+const calcMinRepayment = investmentAmount => {
+    const paddedInvestmentAmount = convertPaddedBN(investmentAmount)
+    const paddedMinRepayment = ISA_MIN_REPAYMENT.mul(paddedInvestmentAmount)
+        .div(ISA_FUNDRAISING_TARGET)
+        .toString()
+    return formatBN(
+        parseFloat(Web3.utils.fromWei(paddedMinRepayment, 'ether')).toFixed(2)
+    )
+}
+
+const calcMaxRepayment = investmentAmount => {
+    const paddedInvestmentAmount = convertPaddedBN(investmentAmount)
+    const paddedMinRepayment = ISA_MAX_REPAYMENT.mul(paddedInvestmentAmount)
+        .div(ISA_FUNDRAISING_TARGET)
+        .toString()
+    return formatBN(
+        parseFloat(Web3.utils.fromWei(paddedMinRepayment, 'ether')).toFixed(2)
+    )
+}
+
+const calcEstimatedMonthlyRepayment = (investmentAmount, simulatedSalary) => {
+    const paddedInvestmentAmount = convertPaddedBN(investmentAmount)
+    const paddedMinRepayment = ISA_MAX_REPAYMENT.mul(paddedInvestmentAmount)
+        .div(ISA_FUNDRAISING_TARGET)
+        .toString()
+    return formatBN(
+        parseFloat(Web3.utils.fromWei(paddedMinRepayment, 'ether')).toFixed(2)
+    )
+}
 
 export {
     availableWithdrawal,
-    simulateTotalInterest,
     calcInterest,
-    simulateInterest2,
     calcExpectedReturn,
     calcIncomeSharePercentage,
+    calcExpectedTotalReturn,
     calcEstimatedMonthlyRepayment,
     calcMinRepayment,
     calcMaxRepayment,
