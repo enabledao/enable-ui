@@ -25,8 +25,8 @@ const availableWithdrawal = (
 ) =>
     prepBigNumber(
         Math.floor(
-            (amountContributed / totalContributed) * amountRepaid -
-                repaymentWithdrawn
+            BN(amountContributed || 0).div(BN(totalContributed || 0)).mul(BN(amountRepaid || 0))
+                .sub(BN(repaymentWithdrawn || 0))
         ),
         ZERO
     )

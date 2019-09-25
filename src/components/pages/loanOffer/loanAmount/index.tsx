@@ -156,26 +156,27 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
             return console.error('Can not contribute Zero(0)')
         }
 
-        // Note: Assuming lender can only fund a loan when the loan is started
-        const isLoanStarted =
-            +(await getCrowdfundStart(crowdloanInstance)) !== ZERO
-
-        const isLoanEnded =
-            +(await getCrowdfundEnd(crowdloanInstance)) <
-            +prepBigNumber(new Date().getDate() / MILLISECONDS, ZERO, true)
-
-        if (!isLoanStarted) {
-            return console.error('Crowdloan not yet started')
-        }
-        if (!isLoanEnded) {
-            return console.error('Crowdloan already completed')
-        }
-        const paymentTokenInstance = await getInstance(
-            this.state.paymentToken.address
-        )
-
         try {
             this.setState({ transacting: true })
+
+            // Note: Assuming lender can only fund a loan when the loan is started
+            const isLoanStarted =
+                +(await getCrowdfundStart(crowdloanInstance)) !== ZERO;
+
+            const isLoanEnded =
+                +(await getCrowdfundEnd(crowdloanInstance)) <
+                +prepBigNumber(Math.floor(new Date().getTime() / MILLISECONDS), ZERO, true);
+
+            if (!isLoanStarted) {
+                return console.error('Crowdloan not yet started')
+            }
+            if (isLoanEnded) {
+                return console.error('Crowdloan already completed')
+            }
+            const paymentTokenInstance = await getInstance(
+                this.state.paymentToken.address
+            );
+
             const valueInERC20 = prepBigNumber(
                 loanAmoutnValue,
                 this.state.paymentToken.decimals
@@ -433,7 +434,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                                                     <Button
                                                         color="green"
                                                         type="submit"
-                                                        disabled={transacting}
+                                                        disabled={transacting || !this.state.crowdloanInstance}
                                                     >
                                                         Submit
                                                     </Button>

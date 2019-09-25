@@ -126,8 +126,8 @@ const prepEventOptions = ({ filter, topics, fromBlock, toBlock }) => {
 
 const prepBigNumber = (number, decimals, inbound) => {
     //No Decimals in BigNumbers
-    const bnNumber = Web3.utils.toBN(number)
-    const bnDecimals = Web3.utils.toBN(10).pow(Web3.utils.toBN(decimals || 0))
+    const bnNumber = BN(number)
+    const bnDecimals = BN(10).pow(BN(decimals || 0))
     return (inbound
         ? bnNumber.div(bnDecimals)
         : bnNumber.mul(bnDecimals)
