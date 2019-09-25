@@ -26,8 +26,8 @@ import Facebook from '../../../../images/socialMedia/facebook.svg'
 import { prepBigNumber } from '../../../../utils/web3Utils'
 import { formatBN } from '../../../../utils/formatters'
 import {
+    simulateReturns,
     calcIncomeSharePercentage,
-    calcEstimatedMonthlyRepayment,
     calcExpectedTotalReturn,
     calcMinRepayment,
     calcMaxRepayment,
@@ -62,10 +62,10 @@ class SimuLationReturn extends React.Component<
         super(props)
         this.state = {
             textfieldShow: false,
-            investmentAmount: 100,
+            investmentAmount: 10000,
             salary: 86320,
-            salaryMin: 30000,
-            salaryMax: 150000,
+            salaryMin: 50000,
+            salaryMax: 100000,
             showModal: false,
             showModalGuarantor: false,
             simulated: null,
@@ -100,6 +100,14 @@ class SimuLationReturn extends React.Component<
 
     render() {
         const { investmentAmount, salaryMin, salaryMax, salary } = this.state
+        const {
+            minRepayment,
+            maxRepayment,
+            incomeSharePercentage,
+            expectedTotalReturn,
+            simulatedMonthlyRepayment,
+        } = simulateReturns(investmentAmount, salary)
+
         let { expectedSalary } = this.props
 
         return (
@@ -259,25 +267,33 @@ class SimuLationReturn extends React.Component<
                         </Margin>
                         <Margin top={10}>
                             <p style={{ display: 'inline-block' }}>
-                                Min. Repayment
+                                Repayment Floor
                             </p>
                             <p style={{ float: 'right' }}>
-                                <b>{calcMinRepayment(investmentAmount)} Dai</b>
+                                <b>{minRepayment} Dai</b>
                             </p>
                         </Margin>
                         <Margin bottom={8}>
                             <p style={{ display: 'inline-block' }}>
-                                Max. Repayment
+                                Repayment Ceiling
                             </p>
                             <p style={{ float: 'right' }}>
-                                <b>{calcMaxRepayment(investmentAmount)} Dai</b>
+                                <b>{maxRepayment} Dai</b>
                             </p>
                         </Margin>
                     </Margin>
                     <hr />
                     <Margin top={18}>
                         <h6>Simulate Salary</h6>
-                        <Margin top={30}>
+                        <Margin top={10}>
+                            <p style={{ display: 'inline-block' }}>
+                                Average Annual Salary
+                            </p>
+                            <p style={{ float: 'right' }}>
+                                ${formatBN(salary.toString())}
+                            </p>
+                        </Margin>
+                        <Margin top={20}>
                             <SliderInput
                                 type="range"
                                 min={salaryMin}
@@ -290,14 +306,6 @@ class SimuLationReturn extends React.Component<
                                 <p>Above Average</p>
                             </SliderMinMax>
                         </Margin>
-                        <Margin top={20}>
-                            <p style={{ display: 'inline-block' }}>
-                                Average Annual Salary
-                            </p>
-                            <p style={{ float: 'right' }}>
-                                ${formatBN(salary.toString())}
-                            </p>
-                        </Margin>
                         <Margin top={14} bottom={24}>
                             <div style={{ position: 'absolute' }}>
                                 <img src={CornellLogo} alt="cornell - logo" />
@@ -305,7 +313,12 @@ class SimuLationReturn extends React.Component<
                             <Padding left={80}>
                                 <small>
                                     Based on{' '}
-                                    <a href="">
+                                    <a
+                                        href="https://www.ilr.cornell.edu/sites/default/files/ILR_CS_MastersDataBrochure2018%20Final_0.pdf
+"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         reported 2018 median salary of $86,320{' '}
                                     </a>{' '}
                                     of graduates of Cornell University ILR
@@ -326,17 +339,16 @@ class SimuLationReturn extends React.Component<
                         </p>
                         <ReactTooltip id="income-ownership-tooltip" />
                         <p style={{ float: 'right' }}>
-                            <b>
-                                {calcIncomeSharePercentage(investmentAmount)}%
-                            </b>{' '}
-                            of 18%
+                            <b>{incomeSharePercentage}%</b> of 18%
                         </p>
                     </Margin>
                     <Margin>
                         <p style={{ display: 'inline-block' }}>
-                            Simulated Repayment
+                            Simulated Monthly Payment
                         </p>
-                        <p style={{ float: 'right' }}>21.5 Dai</p>
+                        <p style={{ float: 'right' }}>
+                            {simulatedMonthlyRepayment} Dai
+                        </p>
                     </Margin>
                     <Margin>
                         <p style={{ display: 'inline-block' }}>Duration</p>
@@ -345,7 +357,7 @@ class SimuLationReturn extends React.Component<
 
                     <Margin vertical={24}>
                         <h4>
-                            {calcExpectedTotalReturn(investmentAmount, salary)}
+                            {expectedTotalReturn}
                             &nbsp;<small>Dai</small>
                         </h4>
                         <small>Expected Total Return</small>
