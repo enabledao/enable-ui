@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextField, Row, Col, Button, ShowModal } from '../../../lib'
+import { TextField, Row, Col, Button } from '../../../lib'
 import { Margin, Padding } from '../../../../styles/utils'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import ProfileHover from 'profile-hover'
@@ -25,13 +25,7 @@ import Twitter from '../../../../images/socialMedia/twitter.svg'
 import Facebook from '../../../../images/socialMedia/facebook.svg'
 import { prepBigNumber } from '../../../../utils/web3Utils'
 import { formatBN } from '../../../../utils/formatters'
-import {
-    simulateReturns,
-    calcIncomeSharePercentage,
-    calcExpectedTotalReturn,
-    calcMinRepayment,
-    calcMaxRepayment,
-} from '../../../../utils/jsCalculator'
+import { simulateReturns } from '../../../../utils/jsCalculator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import ReactTooltip from 'react-tooltip'
@@ -65,7 +59,7 @@ class SimuLationReturn extends React.Component<
             investmentAmount: 10000,
             salary: 86320,
             salaryMin: 50000,
-            salaryMax: 100000,
+            salaryMax: 150000,
             showModal: false,
             showModalGuarantor: false,
             simulated: null,
@@ -107,8 +101,6 @@ class SimuLationReturn extends React.Component<
             expectedTotalReturn,
             simulatedMonthlyRepayment,
         } = simulateReturns(investmentAmount, salary)
-
-        let { expectedSalary } = this.props
 
         return (
             <React.Fragment>
