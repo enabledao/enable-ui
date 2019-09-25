@@ -1,10 +1,5 @@
 import React from 'react'
-import { ChasingDots } from 'styled-spinkit';
-import AvatarAlex from '../../../../images/avatar/alex.jpg'
-import AvatarAverie from '../../../../images/avatar/averie.jpg'
-import AvatarBrooke from '../../../../images/avatar/brooke.jpg'
-import AvatarIvana from '../../../../images/avatar/ivana.jpg'
-import AvatarShamanta from '../../../../images/avatar/shamanta.jpg'
+import { ChasingDots } from 'styled-spinkit'
 import YoutubeEmbed from '../../../lib/youtube'
 import ModalListContributor from '../modalListContributor'
 import ModalVideo from './modalVideo'
@@ -32,7 +27,7 @@ import contractAddresses from '../../../../config/ines.fund'
 import {
     MILLISECONDS,
     MONTHS_IN_YEAR,
-    ZERO
+    ZERO,
 } from '../../../../config/constants'
 
 import {
@@ -67,41 +62,8 @@ export interface HomeHeroState {
     principalRequested: string
     payees: string
     paymentToken: any
-    loaded: boolean;
+    loaded: boolean
 }
-
-export const listContributor = [
-    {
-        name: 'Alex',
-        image: AvatarAlex,
-        address: '0x1239123...',
-        lendNumber: 100,
-    },
-    {
-        name: 'Averie',
-        image: AvatarAverie,
-        address: '0x1239123...',
-        lendNumber: 400,
-    },
-    {
-        name: 'Brooke',
-        image: AvatarBrooke,
-        address: '0x1239123...',
-        lendNumber: 100,
-    },
-    {
-        name: 'Ivana',
-        image: AvatarIvana,
-        address: '0x1239123...',
-        lendNumber: 200,
-    },
-    {
-        name: 'Shamanta',
-        image: AvatarShamanta,
-        address: '0x1239123...',
-        lendNumber: 540,
-    },
-]
 
 class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     constructor(props: HomeHeroProps) {
@@ -118,7 +80,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
             principalRequested: null,
             payees: null,
             paymentToken: {},
-            loaded: false
+            loaded: false,
         }
         this.handleModal = this.handleModal.bind(this)
         this.handleModalVideo = this.handleModalVideo.bind(this)
@@ -131,7 +93,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
             'Crowdloan',
             contractAddresses
         )
-        const { loanMetadata } = this.props;
+        const { loanMetadata } = this.props
 
         try {
             const minRepayment = await getMinimumRepayment(loanMetadata)
@@ -166,7 +128,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 totalContributed: _totalContributed || 0,
                 principalRequested: principalRequested || 0,
                 paymentToken,
-                loaded: true
+                loaded: true,
             })
         } catch (err) {
             console.error(err)
@@ -245,38 +207,38 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                                     Help me raise 60,000 Dai to attend Cornell
                                     University
                                 </h2>
-                                {
-                                    this.state.loaded ?
+                                {this.state.loaded ? (
                                     <Margin top={32}>
                                         <HeroStats>
                                             <h5>
                                                 {!this.state.totalContributed
                                                     ? '0'
                                                     : formatBN(
-                                                        prepBigNumber(
-                                                            this.state
-                                                                .totalContributed,
-                                                            this.state
-                                                                .paymentToken
-                                                                .decimals,
-                                                            true
-                                                        )
-                                                    )}
+                                                          prepBigNumber(
+                                                              this.state
+                                                                  .totalContributed,
+                                                              this.state
+                                                                  .paymentToken
+                                                                  .decimals,
+                                                              true
+                                                          )
+                                                      )}
                                                 {' Dai '}
                                                 <small>
                                                     of&nbsp;
-                                                    {!this.state.principalRequested
+                                                    {!this.state
+                                                        .principalRequested
                                                         ? '0'
                                                         : formatBN(
-                                                            prepBigNumber(
-                                                                this.state
-                                                                    .principalRequested,
-                                                                this.state
-                                                                    .paymentToken
-                                                                    .decimals,
-                                                                true
-                                                            )
-                                                        )}{' '}
+                                                              prepBigNumber(
+                                                                  this.state
+                                                                      .principalRequested,
+                                                                  this.state
+                                                                      .paymentToken
+                                                                      .decimals,
+                                                                  true
+                                                              )
+                                                          )}{' '}
                                                     goal
                                                 </small>
                                             </h5>
@@ -284,69 +246,74 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                                         <HeroStatsRight>
                                             <p>1 Dai = 1 USD</p>
                                         </HeroStatsRight>
-                                    </Margin> :
+                                    </Margin>
+                                ) : (
                                     <Margin top={32}>
                                         <ChasingDots />
                                     </Margin>
-                                }
-                                {
-                                    this.state.loaded &&
-                                        <div>
-                                            <Margin vertical={8}>
-                                                {!this.state.totalContributed ||
-                                                !this.state.principalRequested ? (
-                                                    <Progress current={0} />
-                                                ) : (
-                                                    <Progress
-                                                        current={
-                                                            (+prepBigNumber(
-                                                                this.state.totalContributed,
-                                                                this.state.paymentToken
-                                                                    .decimals,
-                                                                true
-                                                            ) *
-                                                                100) /
-                                                            +prepBigNumber(
-                                                                this.state
-                                                                    .principalRequested,
-                                                                this.state.paymentToken
-                                                                    .decimals,
-                                                                true
-                                                            )
-                                                        }
-                                                    />
-                                                )}
-                                            </Margin>
-                                            <Margin top={8}>
-                                                <HeroStats>
-                                                    <HeroLink onClick={this.handleModal}>
-                                                        Powered by
-                                                        <b>
-                                                            {' '}
-                                                            {!contributors
-                                                                ? '0'
-                                                                : contributors.length}{' '}
-                                                        </b>
-                                                        contributors
-                                                    </HeroLink>
-                                                </HeroStats>
-                                                <HeroStatsRight>
-                                                    <p style={{ color: 'black' }}>
-                                                        <b>
-                                                            {!this.state.loanEndTimestamp
-                                                                ? '0'
-                                                                : this.state
-                                                                    .loanEndTimestamp}{' '}
-                                                        </b>
-                                                        <small>Days left</small>
-                                                    </p>
-                                                </HeroStatsRight>
-                                            </Margin>
-                                        </div>
-                                }
+                                )}
+                                {this.state.loaded && (
+                                    <div>
+                                        <Margin vertical={8}>
+                                            {!this.state.totalContributed ||
+                                            !this.state.principalRequested ? (
+                                                <Progress current={0} />
+                                            ) : (
+                                                <Progress
+                                                    current={
+                                                        (+prepBigNumber(
+                                                            this.state
+                                                                .totalContributed,
+                                                            this.state
+                                                                .paymentToken
+                                                                .decimals,
+                                                            true
+                                                        ) *
+                                                            100) /
+                                                        +prepBigNumber(
+                                                            this.state
+                                                                .principalRequested,
+                                                            this.state
+                                                                .paymentToken
+                                                                .decimals,
+                                                            true
+                                                        )
+                                                    }
+                                                />
+                                            )}
+                                        </Margin>
+                                        <Margin top={8}>
+                                            <HeroStats>
+                                                <HeroLink
+                                                    onClick={this.handleModal}
+                                                >
+                                                    Powered by
+                                                    <b>
+                                                        {' '}
+                                                        {!contributors
+                                                            ? '0'
+                                                            : contributors.length}{' '}
+                                                    </b>
+                                                    contributors
+                                                </HeroLink>
+                                            </HeroStats>
+                                            <HeroStatsRight>
+                                                <p style={{ color: 'black' }}>
+                                                    <b>
+                                                        {!this.state
+                                                            .loanEndTimestamp
+                                                            ? '0'
+                                                            : this.state
+                                                                  .loanEndTimestamp}{' '}
+                                                    </b>
+                                                    <small>Days left</small>
+                                                </p>
+                                            </HeroStatsRight>
+                                        </Margin>
+                                    </div>
+                                )}
                                 <Margin top={24}>
-                                    {
-                                        this.state.loaded &&
+                                    {this.state.loaded && (
                                         <Row>
                                             <Col lg={2} sm={6}>
                                                 <HeroStats
@@ -355,10 +322,11 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                                                     data-multiline="true"
                                                 >
                                                     <h4>
-                                                        {!this.props.interestRate
+                                                        {!this.props
+                                                            .interestRate
                                                             ? '0'
                                                             : this.props
-                                                                .interestRate}
+                                                                  .interestRate}
                                                         %
                                                     </h4>
                                                     <p>
@@ -376,10 +344,10 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                                                         {!this.props.loanPeriod
                                                             ? '0'
                                                             : Math.ceil(
-                                                                +this.props
-                                                                    .loanPeriod /
-                                                                    MONTHS_IN_YEAR
-                                                            )}{' '}
+                                                                  +this.props
+                                                                      .loanPeriod /
+                                                                      MONTHS_IN_YEAR
+                                                              )}{' '}
                                                         yr.
                                                     </h4>
                                                     <p>Duration</p>
@@ -392,18 +360,19 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                                                     data-multiline="true"
                                                 >
                                                     <h4>
-                                                        {!this.state.minRepayment
+                                                        {!this.state
+                                                            .minRepayment
                                                             ? '0'
                                                             : formatBN(
-                                                                prepBigNumber(
-                                                                    this.state
-                                                                        .minRepayment,
-                                                                    this.state
-                                                                        .paymentToken
-                                                                        .decimals,
-                                                                    true
-                                                                )
-                                                            )}{' '}
+                                                                  prepBigNumber(
+                                                                      this.state
+                                                                          .minRepayment,
+                                                                      this.state
+                                                                          .paymentToken
+                                                                          .decimals,
+                                                                      true
+                                                                  )
+                                                              )}{' '}
                                                         Dai
                                                     </h4>
                                                     <p>
@@ -418,19 +387,20 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                                             <Col lg={3} sm={6}>
                                                 <HeroStats>
                                                     <h4>
-                                                        {!this.state.minRepayment
+                                                        {!this.state
+                                                            .minRepayment
                                                             ? '0'
                                                             : new Date(
-                                                                this.state
-                                                                    .repaymentStart *
-                                                                    MILLISECONDS
-                                                            ).getFullYear()}
+                                                                  this.state
+                                                                      .repaymentStart *
+                                                                      MILLISECONDS
+                                                              ).getFullYear()}
                                                     </h4>
                                                     <p>ISA Start</p>
                                                 </HeroStats>
                                             </Col>
                                         </Row>
-                                    }
+                                    )}
                                     <p style={{ color: '#6c6d7a' }}>
                                         <small>
                                             Income Share Agreement (ISA) is
@@ -456,7 +426,11 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                                             <Button
                                                 color="green"
                                                 outline
-                                                onClick={() => window.open('#')}
+                                                onClick={() =>
+                                                    window.open(
+                                                        'https://calendly.com/inesfund/video-interview'
+                                                    )
+                                                }
                                             >
                                                 Video Interview
                                             </Button>
