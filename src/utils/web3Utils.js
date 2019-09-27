@@ -8,6 +8,22 @@ const getNetworkId = async web3 => {
     return await web3.eth.net.getId()
 }
 
+const getNetworkName = async () => {
+    const networkId = +(await getNetworkId())
+    switch (networkId) {
+        case 1:
+            return 'mainnet'
+        case 3:
+            return 'ropsten'
+        case 4:
+            return 'rinkeby'
+        case 42:
+            return 'kovan'
+        default:
+            return 'localhost'
+    }
+}
+
 const connectToWallet = async () => {
     return await window.ethereum.enable()
 }
@@ -151,6 +167,7 @@ export {
     getBlock,
     getInjectedAccountAddress,
     getNetworkId,
+    getNetworkName,
     getTransaction,
     prepBigNumber,
     prepNumber,
