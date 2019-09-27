@@ -7,6 +7,7 @@ import React from "react";
 export default ({ youtubeId }) => {
     return (
         <iframe
+            title={youtubeId}
             style={{
                 position: "absolute",
                 top: 0,

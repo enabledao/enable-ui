@@ -2,6 +2,7 @@ import React from 'react'
 import { Form, Field } from 'react-final-form'
 import { Container } from '../../../../styles/bases'
 import { Margin, Padding } from '../../../../styles/utils'
+import{ Spinner } from '../../../lib';
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { AppPath } from '../../../../constant/appPath'
 import {
@@ -437,6 +438,9 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                                                         disabled={transacting || !this.state.crowdloanInstance}
                                                     >
                                                         Submit
+                                                        {transacting &&
+                                                            <Spinner size="16"/>
+                                                        }
                                                     </Button>
                                                 </Margin>
                                             </Col>
