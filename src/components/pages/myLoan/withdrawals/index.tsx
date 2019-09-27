@@ -1,6 +1,6 @@
 import React from "react";
 import { Margin, Padding } from "../../../../styles/utils";
-import { Row, Col, Button } from "../../../lib";
+import { Row, Col, Button, Spinner } from "../../../lib";
 import { WithdrawalBox } from "./styled";
 import FileIcon from "../../../../images/fileIcon.png";
 import {
@@ -33,6 +33,9 @@ const Withdrawal: any = ({
           <Col lg={6} md={12}>
             <Button color="green" onClick={onWithdraw} disabled={transacting}>
               Withdraw
+              {transacting &&
+                  <Spinner size="16"/>
+              }
             </Button>
           </Col>
         </Row>
