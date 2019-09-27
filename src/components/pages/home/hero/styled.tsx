@@ -11,6 +11,9 @@ const HeroWrapper = styled.div`
 const HeroCell = styled.div`
     background-color: white;
     padding: 30px;
+    ${MaxWidth.sm`
+        padding: 0 20px 20px;
+    `}
 `
 
 const HeroButtonLendMobile = styled.div`
@@ -55,6 +58,20 @@ const HeroImage = styled.div`
     position: relative;
 `
 
+const HeroVideo = styled.div`
+    className: video;
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 25
+    height: 0
+    ${MaxWidth.sm`
+        padding-top: 0;
+        margin-top: -8px;
+        margin-left: -20px;
+        margin-right: -20px;
+    `}
+`
+
 export {
     HeroWrapper,
     HeroCell,
@@ -62,5 +79,6 @@ export {
     HeroLink,
     HeroStats,
     HeroImage,
+    HeroVideo,
     HeroStatsRight,
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { ChasingDots } from 'styled-spinkit'
-import { Container } from '../../../styles/bases'
+import { Container, MainContainer } from '../../../styles/bases'
 import { Margin } from '../../../styles/utils'
 import { Button, Row, Col } from '../../lib'
 import { HeroWrapper, HeroContent, BoxStats, HeroTitle } from './styled'
@@ -511,7 +511,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                     </Container>
                 )}
             </HeroTitle>
-            <Container>
+            <MainContainer>
                 <div style={{ position: 'relative', top: -80 }}>
                     <Row>
                         <Col lg={6} md={12}>
@@ -530,7 +530,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         </Col>
                     </Row>
                 </div>
-            </Container>
+            </MainContainer>
         </HeroWrapper>
     )
 
@@ -695,7 +695,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                     </Container>
                 )}
             </HeroTitle>
-            <Container>
+            <MainContainer>
                 <div style={{ position: 'relative', top: -80 }}>
                     <Row>
                         <Col lg={6} md={12}>
@@ -715,7 +715,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         </Col>
                     </Row>
                 </div>
-            </Container>
+            </MainContainer>
         </HeroWrapper>
     )
     render() {
