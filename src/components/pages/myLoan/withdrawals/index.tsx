@@ -15,39 +15,43 @@ interface Withdrawal {
   amount: string;
 }
 interface WithdrawalProps {
+  allowance: string;
   withdrawals: Withdrawal[];
   transacting: boolean;
   onWithdraw: () => {};
 }
 
 const Withdrawal: any = ({
+  allowance,
   withdrawals,
   transacting,
   onWithdraw
 }: WithdrawalProps) => (
   <React.Fragment>
-    <h5>Withdrawals</h5>
+    <h5>Withdrawal</h5>
     <Margin top={32}>
       <WithdrawalBox>
-        <Row>
-          <Col lg={6} md={12}>
-            <Button color="green" onClick={onWithdraw} disabled={transacting}>
-              Withdraw
-            </Button>
-          </Col>
-        </Row>
+        { Boolean(+allowance) &&
+          <Row>
+            <Col lg={6} md={12}>
+              <Button color="green" onClick={onWithdraw} disabled={transacting}>
+                Withdraw
+              </Button>
+            </Col>
+          </Row>
+        }
         {!withdrawals || withdrawals.length === 0 ? (
           <React.Fragment>
             <Margin top={24}>
               <TableTitleWrapper>
                 <TableTitle>
-                  <p>Date</p>
+                  <p>DATE</p>
                 </TableTitle>
                 <TableTitle>
-                  <p>Amount</p>
+                  <p>WITHDRAWAL AMOUNT</p>
                 </TableTitle>
                 <TableTitle>
-                  <p>Status</p>
+                  <p>STATUS</p>
                 </TableTitle>
               </TableTitleWrapper>
             </Margin>
