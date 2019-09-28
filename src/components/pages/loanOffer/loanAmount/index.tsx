@@ -2,7 +2,7 @@ import React from 'react'
 import { Form, Field } from 'react-final-form'
 import { Container } from '../../../../styles/bases'
 import { Margin, Padding } from '../../../../styles/utils'
-import { Spinner } from '../../../lib';
+import { Spinner } from '../../../lib'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { AppPath } from '../../../../constant/appPath'
 import {
@@ -159,6 +159,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
 
         try {
             this.setState({ transacting: true })
+            console.log('Hello')
 
             // Note: Assuming lender can only fund a loan when the loan is started
             const isLoanStarted =
@@ -446,9 +447,9 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                                                         }
                                                     >
                                                         Submit
-                                                        {transacting &&
-                                                            <Spinner size="16"/>
-                                                        }
+                                                        {transacting && (
+                                                            <Spinner size="16" />
+                                                        )}
                                                     </Button>
                                                 </Margin>
                                             </Col>

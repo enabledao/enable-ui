@@ -20,8 +20,9 @@ import {
     composeValidators,
 } from '../../../../constant/validation'
 import createDecorator from 'final-form-focus'
+import { withNavbarAndFooter } from '../../../hoc'
 
-interface PersonalInfoProps extends RouteComponentProps<any> {}
+interface CheckoutProps extends RouteComponentProps<any> {}
 
 const focusOnErrors = createDecorator()
 const bredcrumbData = [
@@ -29,8 +30,8 @@ const bredcrumbData = [
     { title: 'Detail amount', active: false },
 ]
 
-class PersonalInfo extends React.Component<PersonalInfoProps, {}> {
-    constructor(props: PersonalInfoProps) {
+class Checkout extends React.Component<CheckoutProps, {}> {
+    constructor(props: CheckoutProps) {
         super(props)
         this.onSubmit = this.onSubmit.bind(this)
     }
@@ -156,4 +157,4 @@ class PersonalInfo extends React.Component<PersonalInfoProps, {}> {
     }
 }
 
-export default withRouter<PersonalInfoProps>(PersonalInfo)
+export default withRouter<CheckoutProps>(withNavbarAndFooter(Checkout))
