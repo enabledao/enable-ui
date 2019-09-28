@@ -23,9 +23,11 @@ import {
     getIncomeSharePercentage,
     getLoanPeriod,
 } from '../../../utils/metadata'
+import { getNetworkName } from '../../../utils/web3Utils'
 import { ShowModal } from '../../lib'
 
 export interface HomeState {
+    networkName: string
     loanPeriod: string
     interestRate: string
     principalRequested: string
@@ -38,6 +40,7 @@ export interface HomeState {
 
 class Home extends React.Component<{}, HomeState> {
     state = {
+        networkName: null,
         loanPeriod: null,
         interestRate: null,
         principalRequested: null,
@@ -67,7 +70,8 @@ class Home extends React.Component<{}, HomeState> {
     }
 
     componentDidMount = async () => {
-        ShowModal(<ModalWip />)
+        const networkName = await getNetworkName()
+        ShowModal(<ModalWip networkName={networkName} />)
 
         const crowdloanInstance = await getDeployedFromConfig(
             'Crowdloan',
@@ -107,6 +111,7 @@ class Home extends React.Component<{}, HomeState> {
         )).sort((a, b) => (+a.amount > +b.amount ? 1 : -1)) // Sort contributors from the highest lending amount to the lending amount
 
         this.setState({
+            networkName,
             loanPeriod,
             interestRate,
             expectedSalary,
