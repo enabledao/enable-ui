@@ -13,7 +13,7 @@ import {
     Button,
     FieldError,
 } from '../../../lib'
-import { StepLoanOfferWrapper } from '../styled'
+import { CheckoutWrapper } from '../styled'
 import {
     requiredField,
     emailFormat,
@@ -44,7 +44,7 @@ class Checkout extends React.Component<CheckoutProps, {}> {
     render() {
         const { history } = this.props
         return (
-            <StepLoanOfferWrapper>
+            <CheckoutWrapper>
                 <Container>
                     <Row justify="center">
                         <Col lg={6} md={12}>
@@ -152,7 +152,7 @@ class Checkout extends React.Component<CheckoutProps, {}> {
                         </Col>
                     </Row>
                 </Container>
-            </StepLoanOfferWrapper>
+            </CheckoutWrapper>
         )
     }
 }

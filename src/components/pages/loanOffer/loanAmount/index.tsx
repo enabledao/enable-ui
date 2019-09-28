@@ -14,7 +14,7 @@ import {
     Checkbox,
     FieldError,
 } from '../../../lib'
-import { StepLoanOfferWrapper, LoanAmountSimulation } from '../styled'
+import { CheckoutWrapper, LoanAmountSimulation } from '../styled'
 import {
     requiredField,
     mustBeNumber,
@@ -225,7 +225,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
         const { history } = this.props
         const { loanAmoutnValue, transacting } = this.state
         return (
-            <StepLoanOfferWrapper>
+            <CheckoutWrapper>
                 <Container>
                     <h4>You're almost done!</h4>
                     <p>
@@ -460,7 +460,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                         )}
                     />
                 </Container>
-            </StepLoanOfferWrapper>
+            </CheckoutWrapper>
         )
     }
 }
