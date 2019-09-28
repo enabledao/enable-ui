@@ -4,7 +4,7 @@ import walletIcon from '../../../images/icons/wallet.svg'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Container } from '../../../styles/bases'
 import { Margin, Padding } from '../../../styles/utils'
-import { Row, Col, Button } from '../../lib'
+import { Row, Col, Button, Spinner } from '../../lib'
 import { FaucetActionMobile, FaucetBox, FaucetWrapper } from './styled'
 import contractAddresses from '../../../config/ines.fund.js'
 import { prepBigNumber } from '../../../utils/web3Utils'
@@ -164,6 +164,9 @@ class Faucet extends React.Component<FaucetProps, FaucetState> {
                                                         onClick={this.onRequest}
                                                     >
                                                         Request
+                                                        {transacting &&
+                                                            <Spinner size="16"/>
+                                                        }
                                                     </Button>
                                                 </Col>
                                             </Row>
@@ -175,6 +178,9 @@ class Faucet extends React.Component<FaucetProps, FaucetState> {
                                                 onClick={this.onRequest}
                                             >
                                                 Request
+                                                {transacting &&
+                                                    <Spinner size="16"/>
+                                                }
                                             </Button>
                                         </FaucetActionMobile>
                                     </Col>
