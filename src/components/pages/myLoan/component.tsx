@@ -1,7 +1,7 @@
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { ChasingDots } from 'styled-spinkit'
-import { Container } from '../../../styles/bases'
+import { Container, MainContainer } from '../../../styles/bases'
 import { Margin } from '../../../styles/utils'
 import { Button, Row, Col } from '../../lib'
 import { HeroWrapper, HeroContent, BoxStats, HeroTitle } from './styled'
@@ -226,7 +226,19 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         }
     }
 
-    componentDidMount = async () => {
+    componentDidMount = async () => await this.loadInvestment();
+
+    connectWallet = async () => {
+        try {
+            this.setState({ loaded: false });
+            await connectToWallet();
+            this.loadInvestment();
+        } catch {
+            this.setState({ loaded: true });
+        }
+    }
+
+    loadInvestment = async () => {
         try {
             const crowdloanInstance = await getDeployedFromConfig(
                 'Crowdloan',
@@ -374,8 +386,82 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         return loanStatus
     }
 
+    renderConnectWallet = () => (
+        <HeroWrapper>
+            <HeroTitle>
+                <img
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        height: '100%',
+                        left: 0,
+                        transform: 'scaleX(-1)',
+                    }}
+                    src={PatternImage}
+                    alt="pattern"
+                />
+                <img
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        height: '100%',
+                        right: 0,
+                    }}
+                    src={PatternImage}
+                    alt="pattern"
+                />
+                    <HeroTitle>
+                        <img
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                height: '100%',
+                                left: 0,
+                                transform: 'scaleX(-1)',
+                            }}
+                            src={PatternImage}
+                            alt="pattern"
+                        />
+                        <img
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                height: '100%',
+                                right: 0,
+                            }}
+                            src={PatternImage}
+                            alt="pattern"
+                        />
+                        <Container>
+                            <Margin vertical={48}>
+                                <Row>
+                                    <Col lg={12} md={12} sm={12} xs={12}>
+                                        <BoxStats>
+                                            <Col lg={9} md={12}>
+                                                <p>
+                                                    Connect your wallet to
+                                                    see your investment
+                                                </p>
+                                            </Col>
+                                            <Col lg={3} md={12}>
+                                                <Button
+                                                    color="green"
+                                                    onClick={async () => await this.connectWallet()}
+                                                >
+                                                    Connect Wallet
+                                                </Button>
+                                            </Col>
+                                        </BoxStats>
+                                    </Col>
+                                </Row>
+                            </Margin>
+                        </Container>
+                    </HeroTitle>
+                </HeroTitle>
+            </HeroWrapper>   
+    );
+
     renderLenderLoan = (
-        injectedAccountAddress,
         paymentToken,
         shares,
         released,
@@ -407,111 +493,59 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                     src={PatternImage}
                     alt="pattern"
                 />
-                {!injectedAccountAddress ? (
-                    <HeroTitle>
-                        <img
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                height: '100%',
-                                left: 0,
-                                transform: 'scaleX(-1)',
-                            }}
-                            src={PatternImage}
-                            alt="pattern"
-                        />
-                        <img
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                height: '100%',
-                                right: 0,
-                            }}
-                            src={PatternImage}
-                            alt="pattern"
-                        />
-                        <Container>
-                            <Margin vertical={48}>
-                                <Row>
-                                    <Col lg={12} md={12} sm={12} xs={12}>
-                                        <BoxStats>
-                                            <Col lg={9} md={12}>
-                                                <p>
-                                                    Connecting your wallet to
-                                                    see your investment
-                                                </p>
-                                            </Col>
-                                            <Col lg={3} md={12}>
-                                                <Button
-                                                    color="green"
-                                                    onClick={async () =>
-                                                        await connectToWallet()
-                                                    }
-                                                >
-                                                    Connect Wallet
-                                                </Button>
-                                            </Col>
-                                        </BoxStats>
-                                    </Col>
-                                </Row>
-                            </Margin>
-                        </Container>
-                    </HeroTitle>
-                ) : (
-                    <Container>
-                        <Margin vertical={48}>
-                            <Row>
-                                <Col lg={4} md={4} sm={4} xs={4}>
-                                    <BoxStats>
-                                        <p>Account Balance</p>
-                                        <h4>
-                                            {!releaseAllowance
-                                                ? '0'
-                                                : prepBigNumber(
-                                                      releaseAllowance,
-                                                      paymentToken.decimals,
-                                                      true
-                                                  )}{' '}
-                                            Dai
-                                        </h4>
-                                    </BoxStats>
-                                </Col>
-                                <Col lg={4} md={4} sm={4} xs={4}>
-                                    <BoxStats>
-                                        <p>Repaid</p>
-                                        <h4>
-                                            {!released
-                                                ? '0'
-                                                : prepBigNumber(
-                                                      released,
-                                                      paymentToken.decimals,
-                                                      true
-                                                  )}{' '}
-                                            Dai
-                                        </h4>
-                                    </BoxStats>
-                                </Col>
-                                <Col lg={4} md={4} sm={4} xs={4}>
-                                    <BoxStats>
-                                        <p>Invested Amount</p>
-                                        <h4>
-                                            {!shares
-                                                ? '0'
-                                                : prepBigNumber(
-                                                      shares,
-                                                      paymentToken.decimals,
-                                                      true
-                                                  )}{' '}
-                                            Dai
-                                        </h4>
-                                    </BoxStats>
-                                </Col>
-                            </Row>
-                        </Margin>
-                    </Container>
-                )}
+                <Container>
+                    <Margin vertical={48}>
+                        <Row>
+                            <Col lg={4} md={4} sm={4} xs={4}>
+                                <BoxStats>
+                                    <p>Account Balance</p>
+                                    <h4>
+                                        {!releaseAllowance
+                                            ? '0'
+                                            : prepBigNumber(
+                                                    releaseAllowance,
+                                                    paymentToken.decimals,
+                                                    true
+                                                )}{' '}
+                                        Dai
+                                    </h4>
+                                </BoxStats>
+                            </Col>
+                            <Col lg={4} md={4} sm={4} xs={4}>
+                                <BoxStats>
+                                    <p>Repaid</p>
+                                    <h4>
+                                        {!released
+                                            ? '0'
+                                            : prepBigNumber(
+                                                    released,
+                                                    paymentToken.decimals,
+                                                    true
+                                                )}{' '}
+                                        Dai
+                                    </h4>
+                                </BoxStats>
+                            </Col>
+                            <Col lg={4} md={4} sm={4} xs={4}>
+                                <BoxStats>
+                                    <p>Invested Amount</p>
+                                    <h4>
+                                        {!shares
+                                            ? '0'
+                                            : prepBigNumber(
+                                                    shares,
+                                                    paymentToken.decimals,
+                                                    true
+                                                )}{' '}
+                                        Dai
+                                    </h4>
+                                </BoxStats>
+                            </Col>
+                        </Row>
+                    </Margin>
+                </Container>
             </HeroTitle>
-            <Container>
+            <MainContainer>
                 <div style={{ position: 'relative', top: -80 }}>
                     <Row>
                         <Col lg={6} md={12}>
@@ -530,12 +564,11 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         </Col>
                     </Row>
                 </div>
-            </Container>
+            </MainContainer>
         </HeroWrapper>
     )
 
     renderBorrowerLoan = (
-        injectedAccountAddress,
         paymentToken,
         principalDisbursed,
         totalPaid,
@@ -566,136 +599,84 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                     src={PatternImage}
                     alt="pattern"
                 />
-                {!injectedAccountAddress ? (
-                    <HeroTitle>
-                        <img
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                height: '100%',
-                                left: 0,
-                                transform: 'scaleX(-1)',
-                            }}
-                            src={PatternImage}
-                            alt="pattern"
-                        />
-                        <img
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                height: '100%',
-                                right: 0,
-                            }}
-                            src={PatternImage}
-                            alt="pattern"
-                        />
-                        <Container>
-                            <Margin vertical={48}>
-                                <Row>
-                                    <Col lg={12} md={12} sm={12} xs={12}>
-                                        <BoxStats>
-                                            <Col lg={9} md={12}>
-                                                <p>
-                                                    Connecting your wallet to
-                                                    see your investment
-                                                </p>
-                                            </Col>
-                                            <Col lg={3} md={12}>
-                                                <Button
-                                                    color="green"
-                                                    onClick={async () =>
-                                                        await connectToWallet()
-                                                    }
-                                                >
-                                                    Connect Wallet
-                                                </Button>
-                                            </Col>
-                                        </BoxStats>
-                                    </Col>
-                                </Row>
-                            </Margin>
-                        </Container>
-                    </HeroTitle>
-                ) : (
-                    <Container>
-                        <Margin vertical={48}>
-                            <Row>
-                                <Col lg={6} md={12}>
-                                    <BoxStats>
-                                        <p>Amount raised</p>
-                                        <h4>
-                                            {!totalShares
-                                                ? '0'
-                                                : prepBigNumber(
-                                                      totalShares,
-                                                      paymentToken.decimals,
-                                                      true
-                                                  )}{' '}
-                                            Dai
-                                        </h4>
-                                    </BoxStats>
-                                </Col>
-                                <Col lg={6} md={12}>
-                                    <BoxStats>
-                                        <p>Loan Disbursed</p>
-                                        <h4>
-                                            {!principalDisbursed
-                                                ? '0'
-                                                : prepBigNumber(
-                                                      principalDisbursed,
-                                                      paymentToken.decimals,
-                                                      true
-                                                  )}{' '}
-                                            Dai
-                                        </h4>
-                                    </BoxStats>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col lg={6} md={12}>
-                                    <BoxStats>
-                                        <p>Amount Repaid</p>
-                                        <h4>
-                                            {!totalPaid
-                                                ? '0'
-                                                : prepBigNumber(
-                                                      totalPaid,
-                                                      paymentToken.decimals,
-                                                      true
-                                                  )}{' '}
-                                            Dai
-                                        </h4>
-                                    </BoxStats>
-                                </Col>
-                                <Col lg={6} md={12}>
-                                    <BoxStats>
-                                        <p>Amount withdrawn</p>
-                                        <h4>
-                                            {!totalReleased
-                                                ? '0'
-                                                : prepBigNumber(
-                                                      totalReleased,
-                                                      paymentToken.decimals,
-                                                      true
-                                                  )}{' '}
-                                            Dai
-                                        </h4>
-                                    </BoxStats>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col lg={6} md={12}>
-                                    <BoxStats>
-                                        <p>Status</p>
-                                        <h4>{this.loanStatus()}</h4>
-                                    </BoxStats>
-                                </Col>
-                            </Row>
-                        </Margin>
-                    </Container>
-                )}
+                <Container>
+                    <Margin vertical={48}>
+                        <Row>
+                            <Col lg={6} md={12}>
+                                <BoxStats>
+                                    <p>Amount raised</p>
+                                    <h4>
+                                        {!totalShares
+                                            ? '0'
+                                            : prepBigNumber(
+                                                    totalShares,
+                                                    paymentToken.decimals,
+                                                    true
+                                                )}{' '}
+                                        Dai
+                                    </h4>
+                                </BoxStats>
+                            </Col>
+                            <Col lg={6} md={12}>
+                                <BoxStats>
+                                    <p>Loan Disbursed</p>
+                                    <h4>
+                                        {!principalDisbursed
+                                            ? '0'
+                                            : prepBigNumber(
+                                                    principalDisbursed,
+                                                    paymentToken.decimals,
+                                                    true
+                                                )}{' '}
+                                        Dai
+                                    </h4>
+                                </BoxStats>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col lg={6} md={12}>
+                                <BoxStats>
+                                    <p>Amount Repaid</p>
+                                    <h4>
+                                        {!totalPaid
+                                            ? '0'
+                                            : prepBigNumber(
+                                                    totalPaid,
+                                                    paymentToken.decimals,
+                                                    true
+                                                )}{' '}
+                                        Dai
+                                    </h4>
+                                </BoxStats>
+                            </Col>
+                            <Col lg={6} md={12}>
+                                <BoxStats>
+                                    <p>Amount withdrawn</p>
+                                    <h4>
+                                        {!totalReleased
+                                            ? '0'
+                                            : prepBigNumber(
+                                                    totalReleased,
+                                                    paymentToken.decimals,
+                                                    true
+                                                )}{' '}
+                                        Dai
+                                    </h4>
+                                </BoxStats>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col lg={6} md={12}>
+                                <BoxStats>
+                                    <p>Status</p>
+                                    <h4>{this.loanStatus()}</h4>
+                                </BoxStats>
+                            </Col>
+                        </Row>
+                    </Margin>
+                </Container>
             </HeroTitle>
-            <Container>
+            <MainContainer>
                 <div style={{ position: 'relative', top: -80 }}>
                     <Row>
                         <Col lg={6} md={12}>
@@ -715,7 +696,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         </Col>
                     </Row>
                 </div>
-            </Container>
+            </MainContainer>
         </HeroWrapper>
     )
     render() {
@@ -739,28 +720,28 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         return (
             <React.Fragment>
                 {this.state.loaded ? (
-                    borrower &&
-                    (isBorrower
-                        ? this.renderBorrowerLoan(
-                              injectedAccountAddress,
-                              paymentToken,
-                              principalDisbursed,
-                              totalPaid,
-                              totalReleased,
-                              totalShares,
-                              repayments
-                          )
-                        : this.renderLenderLoan(
-                              injectedAccountAddress,
-                              paymentToken,
-                              shares,
-                              released,
-                              releaseAllowance,
-                              transacting,
-                              repayments,
-                              withdrawals
-                          ))
-                ) : (
+                    (!injectedAccountAddress ?
+                        this.renderConnectWallet() :
+                        (borrower &&
+                            (isBorrower
+                                ? this.renderBorrowerLoan(
+                                    paymentToken,
+                                    principalDisbursed,
+                                    totalPaid,
+                                    totalReleased,
+                                    totalShares,
+                                    repayments
+                                )
+                                : this.renderLenderLoan(
+                                    paymentToken,
+                                    shares,
+                                    released,
+                                    releaseAllowance,
+                                    transacting,
+                                    repayments,
+                                    withdrawals
+                                )))
+                )) : (
                     <ChasingDots />
                 )}
             </React.Fragment>
