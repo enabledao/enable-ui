@@ -161,11 +161,15 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
 
             // Note: Assuming lender can only fund a loan when the loan is started
             const isLoanStarted =
-                +(await getCrowdfundStart(crowdloanInstance)) !== ZERO;
+                +(await getCrowdfundStart(crowdloanInstance)) !== ZERO
 
             const isLoanEnded =
                 +(await getCrowdfundEnd(crowdloanInstance)) <
-                +prepBigNumber(Math.floor(new Date().getTime() / MILLISECONDS), ZERO, true);
+                +prepBigNumber(
+                    Math.floor(new Date().getTime() / MILLISECONDS),
+                    ZERO,
+                    true
+                )
 
             if (!isLoanStarted) {
                 return console.error('Crowdloan not yet started')
@@ -175,7 +179,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
             }
             const paymentTokenInstance = await getInstance(
                 this.state.paymentToken.address
-            );
+            )
 
             const valueInERC20 = prepBigNumber(
                 loanAmoutnValue,
@@ -434,7 +438,11 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                                                     <Button
                                                         color="green"
                                                         type="submit"
-                                                        disabled={transacting || !this.state.crowdloanInstance}
+                                                        disabled={
+                                                            transacting ||
+                                                            !this.state
+                                                                .crowdloanInstance
+                                                        }
                                                     >
                                                         Submit
                                                     </Button>
