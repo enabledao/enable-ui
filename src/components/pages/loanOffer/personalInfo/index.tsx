@@ -4,6 +4,7 @@ import { Container } from '../../../../styles/bases'
 import { Margin } from '../../../../styles/utils'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { AppPath } from '../../../../constant/appPath'
+import PatternImage from '../../../../images/pattern.png'
 import {
     Breadcrumb,
     Row,
@@ -45,6 +46,27 @@ class Checkout extends React.Component<CheckoutProps, {}> {
         const { history } = this.props
         return (
             <CheckoutWrapper>
+                <img
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        height: '100%',
+                        left: 0,
+                        transform: 'scaleX(-1)',
+                    }}
+                    src={PatternImage}
+                    alt="pattern"
+                />
+                <img
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        height: '100%',
+                        right: 0,
+                    }}
+                    src={PatternImage}
+                    alt="pattern"
+                />
                 <Container>
                     <Row justify="center">
                         <Col lg={6} md={12}>
