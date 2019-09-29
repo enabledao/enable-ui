@@ -6,6 +6,7 @@ import Button from "./button";
 import Checkbox from "./checkbox";
 import TextField from "./textfield";
 import Progress from "./progress";
+import Spinner from "./spinner";
 import ShowModal from "./modal";
 import { Row, Col } from "./grid";
 import FieldError from "./feedback/fieldError";
@@ -16,6 +17,7 @@ export {
   Badge,
   Checkbox,
   Progress,
+  Spinner,
   Row,
   Col,
   Button,

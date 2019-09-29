@@ -1,6 +1,6 @@
 import React from "react";
 import { Margin } from "../../../../styles/utils";
-import { Row, Col, Button } from "../../../lib";
+import { Row, Col, Button, Spinner } from "../../../lib";
 import { BorrowerActionBox } from "./styled";
 import{ LoanStatuses } from "../../../../config/constants";
 
@@ -28,6 +28,9 @@ const BorrowerAction: any = ({
             <Col lg={6} md={12}>
               <Button color="green" onClick={onstartcrowdfund} disabled={transacting}>
                 Start Crowdfund
+                {transacting &&
+                    <Spinner size="16"/>
+                }
               </Button>
             </Col>
           </Row>
@@ -36,6 +39,9 @@ const BorrowerAction: any = ({
           <Col lg={6} md={12}>
             <Button color="green" onClick={onborrowerwithdraw} disabled={transacting}>
               Withdraw Principal
+              {transacting &&
+                  <Spinner size="16"/>
+              }
             </Button>
           </Col>
         </Row>
@@ -44,6 +50,9 @@ const BorrowerAction: any = ({
             <Col lg={6} md={12}>
               <Button color="green" onClick={onrepay} disabled={transacting}>
                 Repay
+                {transacting &&
+                    <Spinner size="16"/>
+                }
               </Button>
             </Col>
           </Row>

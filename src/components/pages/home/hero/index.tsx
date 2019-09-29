@@ -3,7 +3,7 @@ import { ChasingDots } from 'styled-spinkit'
 import YoutubeEmbed from '../../../lib/youtube'
 import ModalListContributor from '../modalListContributor'
 import ModalVideo from './modalVideo'
-import { Container } from '../../../../styles/bases'
+import { MainContainer } from '../../../../styles/bases'
 import { Margin } from '../../../../styles/utils'
 import { Row, Col, Progress, Button, ShowModal } from '../../../lib'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
@@ -37,6 +37,7 @@ import {
     HeroLink,
     HeroStats,
     HeroImage,
+    HeroVideo,
     HeroStatsRight,
 } from './styled'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -187,13 +188,15 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                     src={PatternImage}
                     alt="pattern"
                 />
-                <Container>
+                <MainContainer>
                     <HeroCell>
                         <Row>
                             <Col lg={7} md={12} sm={12} text="center">
                                 <HeroImage>
                                     <HeroLink>
-                                        <YoutubeEmbed youtubeId="s7oGAs4AkJg" />
+                                        <HeroVideo>
+                                            <YoutubeEmbed youtubeId="s7oGAs4AkJg" />
+                                        </HeroVideo>
                                     </HeroLink>
                                 </HeroImage>
                             </Col>
@@ -448,7 +451,7 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                             </Col>
                         </Row>
                     </HeroCell>
-                </Container>
+                </MainContainer>
             </HeroWrapper>
         )
     }
