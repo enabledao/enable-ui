@@ -11,7 +11,7 @@ const HeroWrapper = styled.div`
 const HeroCell = styled.div`
     background-color: white;
     padding: 30px;
-    ${MaxWidth.sm`
+    ${MaxWidth.xs`
         padding: 0 20px 20px;
     `}
 `
@@ -64,7 +64,7 @@ const HeroVideo = styled.div`
     padding-bottom: 56.25%;
     padding-top: 25
     height: 0
-    ${MaxWidth.sm`
+    ${MaxWidth.xs`
         padding-top: 0;
         margin-top: -8px;
         margin-left: -20px;
