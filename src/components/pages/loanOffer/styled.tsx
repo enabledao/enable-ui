@@ -15,7 +15,7 @@ const HeroCell = styled.div`
     background-color: white;
     padding: 30px;
     ${MaxWidth.sm`
-        padding: 0 20px 20px;
+        padding: 20px 20px 20px;
     `}
 `
 
@@ -27,6 +27,14 @@ const CheckoutContainer = styled.div`
         color: grey;
         font-size: 12px;
     }
+    ${MaxWidth.md`
+      padding-left: 20px;
+      padding-right: 20px;
+    `}
+    ${MaxWidth.sm`
+    padding-left: 20px;
+    padding-right: 20px;
+    `}
 `
 
 const LoanAmountSimulation = styled.div`

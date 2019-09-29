@@ -31,10 +31,6 @@ import { withNavbarAndFooter } from '../../../hoc'
 interface CheckoutProps extends RouteComponentProps<any> {}
 
 const focusOnErrors = createDecorator()
-const bredcrumbData = [
-    { title: ' Personal information', active: true },
-    { title: 'Detail amount', active: false },
-]
 
 class Checkout extends React.Component<CheckoutProps, {}> {
     constructor(props: CheckoutProps) {
@@ -48,7 +44,6 @@ class Checkout extends React.Component<CheckoutProps, {}> {
     }
 
     render() {
-        const { history } = this.props
         return (
             <CheckoutWrapper>
                 <HeroWrapper>
@@ -101,14 +96,14 @@ class Checkout extends React.Component<CheckoutProps, {}> {
                                                                 {...input}
                                                                 {...meta}
                                                             />
-                                                            {/* {meta.touched &&
+                                                            {meta.touched &&
                                                                 meta.error && (
                                                                     <FieldError>
                                                                         {
                                                                             meta.error
                                                                         }
                                                                     </FieldError>
-                                                                )} */}
+                                                                )}
                                                         </React.Fragment>
                                                     )}
                                                 />
@@ -134,26 +129,17 @@ class Checkout extends React.Component<CheckoutProps, {}> {
                                                                 {...input}
                                                                 {...meta}
                                                             />
-                                                            {/* {meta.touched &&
+                                                            {meta.touched &&
                                                                 meta.error && (
                                                                     <FieldError>
                                                                         {
                                                                             meta.error
                                                                         }
                                                                     </FieldError>
-                                                                )} */}
+                                                                )}
                                                         </React.Fragment>
                                                     )}
                                                 />
-                                                <Margin top={10}>
-                                                    <small>
-                                                        <Checkbox
-                                                            id="anonymous"
-                                                            name="anonymous"
-                                                            label="Stay anonymous"
-                                                        />
-                                                    </small>
-                                                </Margin>
                                             </Margin>
                                             <Margin bottom={32}>
                                                 <Field
