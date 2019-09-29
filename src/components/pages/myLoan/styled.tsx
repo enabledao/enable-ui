@@ -85,9 +85,6 @@ const TableTitle = styled.div`
   display: inline-block;
   vertical-align: top;
   text-transform: uppercase;
-  ${MaxWidth.sm`
-    display: none;
-  `}
   &:last-child {
     text-align: right;
   }

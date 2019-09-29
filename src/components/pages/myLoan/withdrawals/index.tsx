@@ -76,13 +76,13 @@ const Withdrawal: any = ({
             <Margin top={24}>
               <TableTitleWrapper>
                 <TableTitle>
-                  <p>Date</p>
+                  <p>DATE</p>
                 </TableTitle>
                 <TableTitle>
-                  <p>Amount</p>
+                  <p>WITHDRAWAL AMOUNT</p>
                 </TableTitle>
                 <TableTitle>
-                  <p>Status</p>
+                  <p>STATUS</p>
                 </TableTitle>
               </TableTitleWrapper>
               <TableCard>

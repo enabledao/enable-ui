@@ -497,7 +497,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 <Container>
                     <Margin vertical={48}>
                         <Row>
-                            <Col sm={"hidden"} xs={12}>
+                            <Col lg="hidden" md="hidden" sm="hidden" xs={12}>
                                 <BoxStats>
                                     <p>Account Balance
                                         <BoldDetails>
@@ -589,7 +589,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             <MainContainer>
                 <div style={{ position: 'relative', top: -80 }}>
                     <Row>
-                        <Col xs={12}>
+                        <Col  lg="hidden" md="hidden" sm="hidden" xs={12}>
                             <Tabs
                                 borrower={false}
                                 withdrawals={withdrawals}
@@ -653,7 +653,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 <Container>
                     <Margin vertical={48}>
                         <Row>
-                            <Col sm={"hidden"} xs={12}>
+                            <Col lg="hidden" md="hidden" sm="hidden" xs={12}>
                                 <BoxStats>
                                     <p>Amount raised
                                         <BoldDetails>
@@ -710,7 +710,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                     </p>
                                 </BoxStats>
                             </Col>
-                            <Col lg={6} md={12} xs={"hidden"}>
+                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
                                 <BoxStats>
                                     <p>Amount raised</p>
                                     <h4>
@@ -725,7 +725,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                     </h4>
                                 </BoxStats>
                             </Col>
-                            <Col lg={6} md={12} xs={"hidden"}>
+                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
                                 <BoxStats>
                                     <p>Loan Disbursed</p>
                                     <h4>
@@ -742,7 +742,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                             </Col>
                         </Row>
                         <Row>
-                            <Col lg={6} md={12} xs={"hidden"}>
+                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
                                 <BoxStats>
                                     <p>Amount Repaid</p>
                                     <h4>
@@ -757,7 +757,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                     </h4>
                                 </BoxStats>
                             </Col>
-                            <Col lg={6} md={12} xs={"hidden"}>
+                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
                                 <BoxStats>
                                     <p>Amount withdrawn</p>
                                     <h4>
@@ -774,7 +774,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                             </Col>
                         </Row>
                         <Row>
-                            <Col lg={6} md={12} xs={"hidden"}>
+                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
                                 <BoxStats>
                                     <p>Status</p>
                                     <h4>{this.loanStatus()}</h4>
@@ -787,7 +787,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             <MainContainer>
                 <div style={{ position: 'relative', top: -80 }}>
                     <Row>
-                        <Col xs={12}>
+                        <Col lg="hidden" md="hidden" sm="hidden" xs={12}>
                             <Tabs
                                 borrower={true}
                                 loanStatus={this.loanStatus()}
