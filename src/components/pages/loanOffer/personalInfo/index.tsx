@@ -46,7 +46,7 @@ class Checkout extends React.Component<CheckoutProps, {}> {
         const { history } = this.props
         return (
             <CheckoutWrapper>
-                <img
+                {/* <img
                     style={{
                         position: 'absolute',
                         top: 0,
@@ -66,20 +66,15 @@ class Checkout extends React.Component<CheckoutProps, {}> {
                     }}
                     src={PatternImage}
                     alt="pattern"
-                />
+                /> */}
                 <Container>
                     <Row justify="center">
                         <Col lg={6} md={12}>
-                            <h4>One step closer to helping Ines!</h4>
-                            <p>Hi</p>
                             <Form
                                 onSubmit={this.onSubmit}
                                 decorators={[focusOnErrors]}
                                 render={({ handleSubmit }) => (
                                     <form onSubmit={handleSubmit}>
-                                        <Margin top={24} bottom={48}>
-                                            <Breadcrumb data={bredcrumbData} />
-                                        </Margin>
                                         <Margin bottom={32}>
                                             <Field
                                                 name="name"
