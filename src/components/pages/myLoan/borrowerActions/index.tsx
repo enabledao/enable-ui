@@ -2,6 +2,7 @@ import React from "react";
 import { Margin } from "../../../../styles/utils";
 import { Row, Col, Button, Spinner } from "../../../lib";
 import { BorrowerActionBox } from "./styled";
+import { WebViewH5 } from "../styled";
 import{ LoanStatuses } from "../../../../config/constants";
 
 interface BorrowerActionProps {
@@ -20,7 +21,7 @@ const BorrowerAction: any = ({
   onstartcrowdfund
 }: BorrowerActionProps) => (
   <React.Fragment>
-    <h5>Actions</h5>
+    <WebViewH5>Actions</WebViewH5>
     <Margin top={32}>
       <BorrowerActionBox>
         { loanStatus === LoanStatuses.NOT_STARTED &&

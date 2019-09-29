@@ -4,10 +4,11 @@ import { ChasingDots } from 'styled-spinkit'
 import { Container, MainContainer } from '../../../styles/bases'
 import { Margin } from '../../../styles/utils'
 import { Button, Row, Col } from '../../lib'
-import { HeroWrapper, HeroContent, BoxStats, HeroTitle } from './styled'
+import { BoldDetails, HeroWrapper, HeroContent, BoxStats, HeroTitle } from './styled'
 import BorrowerActions from './borrowerActions'
 import Withdrawal from './withdrawals'
 import RepaymentStatus from './repaymentStatus'
+import Tabs from './tab'
 import contractAddresses from '../../../config/ines.fund.js'
 import { LoanStatuses, MILLISECONDS, ZERO } from '../../../config/constants.js'
 import PatternImage from '../../../images/pattern.png'
@@ -496,7 +497,47 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 <Container>
                     <Margin vertical={48}>
                         <Row>
-                            <Col lg={4} md={4} sm={4} xs={4}>
+                            <Col sm={"hidden"} xs={12}>
+                                <BoxStats>
+                                    <p>Account Balance
+                                        <BoldDetails>
+                                            {!releaseAllowance
+                                                ? '0'
+                                                : prepBigNumber(
+                                                        releaseAllowance,
+                                                        paymentToken.decimals,
+                                                        true
+                                                    )}{' '}
+                                            Dai
+                                        </BoldDetails>
+                                    </p>
+                                    <p>Repaid
+                                        <BoldDetails>
+                                            {!released
+                                                ? '0'
+                                                : prepBigNumber(
+                                                        released,
+                                                        paymentToken.decimals,
+                                                        true
+                                                    )}{' '}
+                                            Dai
+                                        </BoldDetails>
+                                    </p>
+                                    <p>Invested Amount
+                                        <BoldDetails>
+                                            {!shares
+                                                ? '0'
+                                                : prepBigNumber(
+                                                        shares,
+                                                        paymentToken.decimals,
+                                                        true
+                                                    )}{' '}
+                                            Dai
+                                        </BoldDetails>
+                                    </p>
+                                </BoxStats>
+                            </Col>
+                            <Col lg={4} md={4} sm={4} xs="hidden">
                                 <BoxStats>
                                     <p>Account Balance</p>
                                     <h4>
@@ -511,7 +552,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                     </h4>
                                 </BoxStats>
                             </Col>
-                            <Col lg={4} md={4} sm={4} xs={4}>
+                            <Col lg={4} md={4} sm={4} xs="hidden">
                                 <BoxStats>
                                     <p>Repaid</p>
                                     <h4>
@@ -526,7 +567,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                     </h4>
                                 </BoxStats>
                             </Col>
-                            <Col lg={4} md={4} sm={4} xs={4}>
+                            <Col lg={4} md={4} sm={4} xs="hidden">
                                 <BoxStats>
                                     <p>Invested Amount</p>
                                     <h4>
@@ -548,7 +589,16 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             <MainContainer>
                 <div style={{ position: 'relative', top: -80 }}>
                     <Row>
-                        <Col lg={6} md={12}>
+                        <Col xs={12}>
+                            <Tabs
+                                borrower={false}
+                                withdrawals={withdrawals}
+                                transacting={transacting}
+                                onWithdraw={this.onWithdraw}
+                                repayments={repayments}
+                            />
+                        </Col>
+                        <Col lg={6} md={12} xs="hidden">
                             <HeroContent>
                                 <Withdrawal
                                     allowance={releaseAllowance}
@@ -558,7 +608,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                 />
                             </HeroContent>
                         </Col>
-                        <Col lg={6} md={12}>
+                        <Col lg={6} md={12} xs="hidden">
                             <HeroContent>
                                 <RepaymentStatus repayments={repayments} />
                             </HeroContent>
@@ -603,7 +653,64 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 <Container>
                     <Margin vertical={48}>
                         <Row>
-                            <Col lg={6} md={12}>
+                            <Col sm={"hidden"} xs={12}>
+                                <BoxStats>
+                                    <p>Amount raised
+                                        <BoldDetails>
+                                            {!totalShares
+                                                ? '0'
+                                                : prepBigNumber(
+                                                        totalShares,
+                                                        paymentToken.decimals,
+                                                        true
+                                                    )}{' '}
+                                            Dai
+                                        </BoldDetails>
+                                    </p>
+                                    <p>Loan Disbursed
+                                        <BoldDetails>
+                                            {!principalDisbursed
+                                                ? '0'
+                                                : prepBigNumber(
+                                                        principalDisbursed,
+                                                        paymentToken.decimals,
+                                                        true
+                                                    )}{' '}
+                                            Dai
+                                        </BoldDetails>
+                                    </p>
+                                    <p>Amount Repaid
+                                        <BoldDetails>
+                                            {!totalPaid
+                                                ? '0'
+                                                : prepBigNumber(
+                                                        totalPaid,
+                                                        paymentToken.decimals,
+                                                        true
+                                                    )}{' '}
+                                            Dai
+                                        </BoldDetails>
+                                    </p>
+                                    <p>Amount withdrawn
+                                        <BoldDetails>
+                                            {!totalReleased
+                                                ? '0'
+                                                : prepBigNumber(
+                                                        totalReleased,
+                                                        paymentToken.decimals,
+                                                        true
+                                                    )}{' '}
+                                            Dai
+                                        </BoldDetails>
+                                    </p>
+                                    <p>Status
+                                        <BoldDetails>
+                                            {this.loanStatus()}
+                                        </BoldDetails>
+                                    </p>
+                                </BoxStats>
+                            </Col>
+                            <Col lg={6} md={12} xs={"hidden"}>
                                 <BoxStats>
                                     <p>Amount raised</p>
                                     <h4>
@@ -618,7 +725,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                     </h4>
                                 </BoxStats>
                             </Col>
-                            <Col lg={6} md={12}>
+                            <Col lg={6} md={12} xs={"hidden"}>
                                 <BoxStats>
                                     <p>Loan Disbursed</p>
                                     <h4>
@@ -635,7 +742,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                             </Col>
                         </Row>
                         <Row>
-                            <Col lg={6} md={12}>
+                            <Col lg={6} md={12} xs={"hidden"}>
                                 <BoxStats>
                                     <p>Amount Repaid</p>
                                     <h4>
@@ -650,7 +757,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                     </h4>
                                 </BoxStats>
                             </Col>
-                            <Col lg={6} md={12}>
+                            <Col lg={6} md={12} xs={"hidden"}>
                                 <BoxStats>
                                     <p>Amount withdrawn</p>
                                     <h4>
@@ -667,7 +774,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                             </Col>
                         </Row>
                         <Row>
-                            <Col lg={6} md={12}>
+                            <Col lg={6} md={12} xs={"hidden"}>
                                 <BoxStats>
                                     <p>Status</p>
                                     <h4>{this.loanStatus()}</h4>
@@ -680,12 +787,22 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             <MainContainer>
                 <div style={{ position: 'relative', top: -80 }}>
                     <Row>
-                        <Col lg={6} md={12}>
+                        <Col xs={12}>
+                            <Tabs
+                                borrower={true}
+                                loanStatus={this.loanStatus()}
+                                onborrowerwithdraw={this.onborrowerwithdraw}
+                                onrepay={this.onrepay}
+                                onstartcrowdfund={this.onstartcrowdfund}
+                                repayments={repayments}
+                            />
+                        </Col>
+                        <Col lg={6} md={12} xs="hidden">
                             <HeroContent>
                                 <RepaymentStatus repayments={repayments} />
                             </HeroContent>
                         </Col>
-                        <Col lg={6} md={12}>
+                        <Col lg={6} md={12} xs="hidden">
                             <HeroContent>
                                 <BorrowerActions
                                     loanStatus={this.loanStatus()}

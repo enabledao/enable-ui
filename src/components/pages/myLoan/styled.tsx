@@ -101,7 +101,18 @@ const TableTitleMobile = styled.small`
   `}
 `;
 
+const BoldDetails = styled.b`
+  float: right
+`;
+
+const WebViewH5 = styled.h5`
+  ${MaxWidth.xs`
+    display: none
+  `}
+`;
+
 export {
+  BoldDetails,
   MyLoanWrapper,
   HeroWrapper,
   HeroContent,
@@ -111,5 +122,6 @@ export {
   TableTitleWrapper,
   TableTitle,
   TableTitleMobile,
-  HeroTitle
+  HeroTitle,
+  WebViewH5
 };

@@ -2,6 +2,7 @@ import React from "react";
 import { Margin, Padding } from "../../../../styles/utils";
 import { Row, Col, Button, Spinner } from "../../../lib";
 import { WithdrawalBox } from "./styled";
+import { WebViewH5 } from "../styled";
 import FileIcon from "../../../../images/fileIcon.png";
 import {
   TableCard,
@@ -28,7 +29,7 @@ const Withdrawal: any = ({
   onWithdraw
 }: WithdrawalProps) => (
   <React.Fragment>
-    <h5>Withdrawal</h5>
+    <WebViewH5>Withdrawals</WebViewH5>
     <Margin top={32}>
       <WithdrawalBox>
         { Boolean(+allowance) &&
