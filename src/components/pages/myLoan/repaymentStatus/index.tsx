@@ -39,7 +39,7 @@ interface RepaymentProps {
 
 const RepaymentStatus: any = ({ repayments }: RepaymentProps) => (
   <RepaymentWrapper>
-    <h5>Repayment</h5>
+    <h5>Income Sharing</h5>
     <Margin top={28}>
       <h5>
         12/72&nbsp;
@@ -56,13 +56,13 @@ const RepaymentStatus: any = ({ repayments }: RepaymentProps) => (
     <Margin top={24}>
       <TableTitleWrapper>
         <TableTitle>
-          <p>Date</p>
+          <p>DATE</p>
         </TableTitle>
         <TableTitle>
-          <p>Repayment Due</p>
+          <p>ISA DUE</p>
         </TableTitle>
         <TableTitle>
-          <p>Status</p>
+          <p>STATUS</p>
         </TableTitle>
       </TableTitleWrapper>
       {repayments && repayments.length !== 0 ? (

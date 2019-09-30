@@ -553,6 +553,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         <Col lg={6} md={12}>
                             <HeroContent>
                                 <Withdrawal
+                                    allowance={releaseAllowance}
                                     withdrawals={withdrawals}
                                     transacting={transacting}
                                     onWithdraw={this.onWithdraw}
