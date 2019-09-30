@@ -1,49 +1,51 @@
-import React from "react";
-// import { listContributor } from "./hero";
-import {Row, Col} from "../../lib";
-import {prepBigNumber} from "../../../utils/web3Utils";
+import React from 'react'
+import { Row, Col } from '../../lib'
+import { prepBigNumber } from '../../../utils/web3Utils'
 
 interface Contributor {
-    address: string;
-    amount: string;
+    address: string
+    amount: string
 }
 interface ModalListContributorProps {
-    contributors: Contributor[];
-    paymentToken: any;
+    contributors: Contributor[]
+    paymentToken: any
 }
 
 // To Do (Dennis): Missing the name of the contributor
-const ModalListContributor: any = ({contributors, paymentToken}: ModalListContributorProps) => (
+const ModalListContributor: any = ({
+    contributors,
+    paymentToken,
+}: ModalListContributorProps) => (
     <React.Fragment>
         <h4>List of contributing lenders</h4>
         <Row>
             {contributors &&
                 contributors.map(contributor => (
                     <Col lg={4} md={6} sm={12} key={contributor.address}>
-                        <h6>Daniel</h6>
+                        <h6>Anonymous</h6>
                         <small>
                             <p>
                                 {contributor.address.replace(
                                     contributor.address.substring(10, 30),
-                                    "....."
+                                    '.....'
                                 )}
                             </p>
                         </small>
                         <p>
-                            Contribute{" "}
+                            Contribute{' '}
                             <b>
                                 {prepBigNumber(
                                     contributor.amount || 0,
                                     paymentToken.decimals,
                                     true
                                 )}
-                            </b>{" "}
+                            </b>{' '}
                             Dai
                         </p>
                     </Col>
                 ))}
         </Row>
     </React.Fragment>
-);
+)
 
-export default ModalListContributor;
+export default ModalListContributor

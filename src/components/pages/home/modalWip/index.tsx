@@ -1,43 +1,64 @@
-import React from "react";
-import { ModalWipWrapper } from "./styled";
+import React from 'react'
+import { ModalWipWrapper } from './styled'
 
-class ModalWip extends React.Component<{}, {}> {
-  render() {
-    return (
-      <React.Fragment>
-        <h4>Attention</h4>
-        <p>
-          We apologize for your inconvenience with the appearance of this popup,
-          we just want to make sure that you know the information about this
-          project as follows:
-        </p>
-        <ModalWipWrapper>
-          <li>
-            <p>
-              This is a work in progress, and is deployed for user testing
-              purposes
-            </p>
-          </li>
-          <li>
-            <p>It is also to give the community an idea of our progress</p>
-          </li>
-          <li>
-            <p>
-              This is project of&nbsp;
-              <a
-                href="https://www.enable.credit/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <b>Enable</b>
-              </a>
-              , an peer to peer stablecoin loan marketplace
-            </p>
-          </li>
-        </ModalWipWrapper>
-      </React.Fragment>
-    );
-  }
+interface ModalWipProps {
+    networkName: string
 }
 
-export default ModalWip;
+const ModalWip: React.FC<ModalWipProps> = ({ networkName }) => {
+    return (
+        <React.Fragment>
+            <h4>🚀 This is a testnet site! 🚀</h4>
+            <p>
+                This site lives on the{' '}
+                <a
+                    href={
+                        networkName === 'mainnet'
+                            ? `https://etherscan.io/`
+                            : `https://${networkName}.etherscan.io/`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {networkName === 'mainnet' ? 'ethereum ' : ''} {networkName}{' '}
+                    {networkName === 'mainnet' ? '' : 'testnet'}
+                </a>
+                , and uses real-life currency that doesn't have any value.
+            </p>
+            <ModalWipWrapper>
+                <li>
+                    <p>
+                        Any "loans" made to Ines on this site are <b>NOT</b>{' '}
+                        real
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Interested to help us with user testing? &nbsp;
+                        <a
+                            href="https://calendly.com/felix-yuniar/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <b>Sign up here</b>
+                        </a>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Learn more about &nbsp;
+                        <a
+                            href="https://www.enable.credit/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <b>Enable</b>
+                        </a>
+                        , a initiative to build borderless stablecoin loans
+                    </p>
+                </li>
+            </ModalWipWrapper>
+        </React.Fragment>
+    )
+}
+export default ModalWip

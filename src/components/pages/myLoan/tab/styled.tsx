@@ -18,7 +18,7 @@ const TabContentWrapper = styled.div<{ ref: any }>`
 `
 
 const TabContent = styled.div`
-    padding: 20px 30px;
+    padding: 20px 0px;
     background-color: #fff;
 `
 

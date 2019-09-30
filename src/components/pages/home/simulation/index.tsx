@@ -1,128 +1,107 @@
-import React from "react";
-import {TextField, Row, Col, Button, ShowModal} from "../../../lib";
-import {Margin, Padding} from "../../../../styles/utils";
-import {RouteComponentProps, withRouter} from "react-router-dom";
-import CornellLogo from "../../../../images/cornell.png";
-import BloomLogo from "../../../../images/bloomLogo.png";
-import BoxLogo from "../../../../images/3boxLogo.png";
-import InesSquare from "../../../../images/inesSquare.png";
-import {AppPath} from "../../../../constant/appPath";
+import React from 'react'
+import { TextField, Row, Col, Button } from '../../../lib'
+import { Margin, Padding } from '../../../../styles/utils'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
+import ProfileHover from 'profile-hover'
+import CornellLogo from '../../../../images/cornell.png'
+import BloomLogo from '../../../../images/bloomLogo.png'
+import BoxLogo from '../../../../images/3boxLogo.png'
+import InesSquare from '../../../../images/inesSquare.png'
+import { AppPath } from '../../../../constant/appPath'
 import {
+    SliderInput,
+    SliderMinMax,
     ButtonLendSimulation,
     SimulationWrapper,
     SocialContent,
     SocialAvatar,
     IdentityBox,
-    ProfileSocialLink
-} from "./styled";
-import ModalListContributor from "../modalListContributor";
-import ModalListGuarantor from "../modalListGuarantor";
-import AvatarBrahma from "../../../../images/avatar/brahma.jpg";
-import Linkedin from "../../../../images/socialMedia/linkedin.svg";
-import Instagram from "../../../../images/socialMedia/instagram.svg";
-import Twitter from "../../../../images/socialMedia/twitter.svg";
-import Facebook from "../../../../images/socialMedia/facebook.svg";
-import { prepBigNumber } from "../../../../utils/web3Utils";
+    ProfileSocialLink,
+} from './styled'
+import AvatarBrahma from '../../../../images/avatar/brahma.jpg'
+import Linkedin from '../../../../images/socialMedia/linkedin.svg'
+import Instagram from '../../../../images/socialMedia/instagram.svg'
+import Twitter from '../../../../images/socialMedia/twitter.svg'
+import Facebook from '../../../../images/socialMedia/facebook.svg'
+import { prepBigNumber } from '../../../../utils/web3Utils'
+import { formatBN } from '../../../../utils/formatters'
+import { simulateReturns } from '../../../../utils/jsCalculator'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import ReactTooltip from 'react-tooltip'
+
 interface SimuLationReturnProps extends RouteComponentProps<any> {
-    contributors?: any;
-    paymentToken: any;
-    simulateInterest?: (contribution: string | number) => number;
+    contributors?: any
+    expectedSalary?: any
+    paymentToken: any
+    simulateInterest: (contribution: string | number, salary?: string) => any
 }
 
 export interface SimuLationReturnState {
-    textfieldShow: boolean;
-    sliderValue: number;
-    sliderMin: number;
-    sliderMax: number;
-    showModal: boolean;
-    showModalGuarantor: boolean;
+    textfieldShow: boolean
+    investmentAmount: number
+    salary: number
+    simulated: any
+    salaryMin: number
+    salaryMax: number
+    showModal: boolean
+    showModalGuarantor: boolean
 }
 
-export const listContributor = [
-    {
-        name: "Alex",
-        address: "0x141A9B0….a381581",
-        lendNumber: 100
-    },
-    {
-        name: "Averie",
-        address: "0x141A9B0….a381581",
-        lendNumber: 400
-    },
-    {
-        name: "Brooke",
-        address: "0x141A9B0….a381581",
-        lendNumber: 100
-    },
-    {
-        name: "Ivana",
-        address: "0x141A9B0….a381581",
-        lendNumber: 200
-    },
-    {
-        name: "Shamanta",
-        address: "0x141A9B0….a381581",
-        lendNumber: 540
-    }
-];
-
-class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLationReturnState> {
+class SimuLationReturn extends React.Component<
+    SimuLationReturnProps,
+    SimuLationReturnState
+> {
     constructor(props: any) {
-        super(props);
+        super(props)
         this.state = {
             textfieldShow: false,
-            sliderValue: 30000 / 2,
-            sliderMin: 50,
-            sliderMax: 30000,
+            investmentAmount: 10000,
+            salary: 86320,
+            salaryMin: 30000,
+            salaryMax: 150000,
             showModal: false,
-            showModalGuarantor: false
-        };
+            showModalGuarantor: false,
+            simulated: null,
+        }
     }
 
     handleLend = () => {
-        const {history} = this.props;
-        history.push(AppPath.LoanPersonalInfo);
+        const { history } = this.props
+        history.push(AppPath.LoanPersonalInfo)
     }
 
-    handleChangeSlider = (e) => {
+    handleChangeSalary = e => {
         this.setState({
-            sliderValue: Number(e.target.value)
-        });
+            salary: Number(e.target.value),
+        })
     }
 
-    handleClickOther = () => {
-        const {textfieldShow} = this.state;
-        this.setState({textfieldShow: !textfieldShow});
-    }
-
-    handleChangeTextfield = (e) => {
+    handleChangeInvestmentAmount = e => {
         this.setState({
-            sliderValue: Number(e.target.value)
-        });
+            investmentAmount: Number(e.target.value),
+        })
     }
 
-    handleModalContributor = () => {
-        const {showModal} = this.state;
-        this.setState(
-            {
-                showModal: !showModal
-            },
-            () => ShowModal(<ModalListContributor contributors={this.props.contributors} paymentToken={this.props.paymentToken} />)
-        );
-    }
-
-    handleModalGuarantor = () => {
-        const {showModalGuarantor} = this.state;
-        this.setState(
-            {
-                showModalGuarantor: !showModalGuarantor
-            },
-            () => ShowModal(<ModalListGuarantor />)
-        );
+    getSimulated = () => {
+        return this.props.simulateInterest(
+            prepBigNumber(
+                this.state.investmentAmount,
+                this.props.paymentToken.decimals
+            )
+        )
     }
 
     render() {
-        const {sliderValue} = this.state;
+        const { investmentAmount, salaryMin, salaryMax, salary } = this.state
+        const {
+            minRepayment,
+            maxRepayment,
+            incomeSharePercentage,
+            expectedTotalReturn,
+            simulatedMonthlyRepayment,
+        } = simulateReturns(investmentAmount, salary)
+
         return (
             <React.Fragment>
                 <Margin top={20} bottom={60}>
@@ -131,58 +110,94 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                             <Col lg={6}>
                                 <h5>Identity</h5>
                             </Col>
-                            <Col lg={6} text='right'>
-                                <img src={BloomLogo} alt='Bloom - logo' />
-                                <img src={BoxLogo} alt='3DBox - logo' />
+
+                            <Col lg={6} text="right">
+                                <img src={BoxLogo} alt="3DBox - logo" />
                             </Col>
                         </Row>
-                        <div style={{position: "absolute"}}>
-                            <img src={InesSquare} alt='Ines - Square' />
+                        <div style={{ position: 'absolute' }}>
+                            <img src={InesSquare} alt="Ines - Square" />
                         </div>
                         <Padding left={124}>
                             <h5>Widya Imanesti</h5>
                             <p>Jakarta - Indonesia</p>
                             <Margin top={16}>
                                 <ProfileSocialLink
-                                    href='https://id.linkedin.com/in/widya-imanesti'
-                                    target='_blank'
-                                    rel='noopener noreferrer'
+                                    href="https://id.linkedin.com/in/widya-imanesti"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                 >
-                                    <img src={Linkedin} alt='Socila - Media' width={20} />
+                                    <img
+                                        src={Linkedin}
+                                        alt="Socila - Media"
+                                        width={20}
+                                    />
                                 </ProfileSocialLink>
                                 <ProfileSocialLink
-                                    href='https://www.instagram.com/wimanesti/?hl=en'
-                                    target='_blank'
-                                    rel='noopener noreferrer'
+                                    href="https://www.instagram.com/wimanesti/?hl=en"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                 >
-                                    <img src={Instagram} alt='Socila - Media' width={20} />
+                                    <img
+                                        src={Instagram}
+                                        alt="Socila - Media"
+                                        width={20}
+                                    />
                                 </ProfileSocialLink>
                                 <ProfileSocialLink
-                                    href='https://twitter.com/itsenamiw'
-                                    target='_blank'
-                                    rel='noopener noreferrer'
+                                    href="https://twitter.com/itsenamiw"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                 >
-                                    <img src={Twitter} alt='Socila - Media' width={20} />
+                                    <img
+                                        src={Twitter}
+                                        alt="Socila - Media"
+                                        width={20}
+                                    />
                                 </ProfileSocialLink>
                                 <ProfileSocialLink
-                                    href='https://www.facebook.com/widya.imanesti'
-                                    target='_blank'
-                                    rel='noopener noreferrer'
+                                    href="https://www.facebook.com/widya.imanesti"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                 >
-                                    <img src={Facebook} alt='Socila - Media' width={20} />
+                                    <img
+                                        src={Facebook}
+                                        alt="Socila - Media"
+                                        width={20}
+                                    />
                                 </ProfileSocialLink>
                             </Margin>
                         </Padding>
-                        <div style={{backgroundColor: "#f7f7f7", padding: 16, marginTop: 24}}>
-                            <b>
-                                <small>ETH Wallet Key</small>
-                            </b>
-                            <small>
-                                <p>0x141A9B024934Bc61d6A07C28B866C0191a381581</p>
-                            </small>
-                        </div>
+                        <ProfileHover
+                            noTheme
+                            orientation={'top'}
+                            address={
+                                '0xf585e6B4173914A296c9b3AFa83f86bfaF4240f6'
+                            }
+                        >
+                            <Margin top={24}>
+                                <div
+                                    style={{
+                                        backgroundColor: '#f7f7f7',
+                                        padding: 16,
+                                        marginTop: 24,
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    <b>
+                                        <small>ETH Wallet Key</small>
+                                    </b>
+
+                                    <small>
+                                        <p>
+                                            0xf585e6B4173914A296c9b3AFa83f86bfaF4240f6
+                                        </p>
+                                    </small>
+                                </div>
+                            </Margin>
+                        </ProfileHover>
                         <Margin top={24}>
-                            <h6 style={{color: "#21b549", cursor: "pointer"}}>
+                            <h6 style={{ color: '#21b549', cursor: 'pointer' }}>
                                 Admission Proof Document
                             </h6>
                         </Margin>
@@ -190,20 +205,20 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                 </Margin>
                 <Margin top={40}>
                     <h5>Social Credits</h5>
-                    <p>Attested by 4 guarantors</p>
+                    <p>Attested by 2 guarantors</p>
                 </Margin>
                 <Margin top={8}>
                     <SocialContent>
                         <SocialAvatar>
-                            <img src={AvatarBrahma} alt='Avatar - User' />
+                            <img src={AvatarBrahma} alt="Avatar - User" />
                         </SocialAvatar>
                         <Padding left={56}>
-                            <div style={{display: "inline-block"}}>
+                            <div style={{ display: 'inline-block' }}>
                                 <h6>Brahma Adhiyasa</h6>
                                 <small>Colleague</small>
                             </div>
-                            <p style={{float: "right"}}>
-                                <img src={BloomLogo} alt='Bloom - logo' />
+                            <p style={{ float: 'right' }}>
+                                <img src={BloomLogo} alt="Bloom - logo" />
                             </p>
                         </Padding>
                     </SocialContent>
@@ -211,129 +226,206 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                 <Margin top={8}>
                     <SocialContent>
                         <SocialAvatar>
-                            <img src={AvatarBrahma} alt='Avatar - User' />
+                            <img src={AvatarBrahma} alt="Daniel Onggunhao" />
                         </SocialAvatar>
                         <Padding left={56}>
-                            <div style={{display: "inline-block"}}>
-                                <h6>Brahma Adhiyasa</h6>
+                            <div style={{ display: 'inline-block' }}>
+                                <h6>Daniel Onggunhao</h6>
                                 <small>Colleague</small>
                             </div>
-                            <p style={{float: "right"}}>
-                                <img src={BloomLogo} alt='Bloom - logo' />
+                            <p style={{ float: 'right' }}>
+                                <img src={BloomLogo} alt="Bloom - logo" />
                             </p>
                         </Padding>
                     </SocialContent>
                 </Margin>
-                <Margin top={24} bottom={40}>
-                    <h6
-                        style={{color: "#21b549", cursor: "pointer"}}
-                        onClick={this.handleModalGuarantor}
-                    >
-                        See All
-                    </h6>
-                </Margin>
-                <Margin vertical={40}>
+                <Margin top={40}>
                     <h5>Simulate Returns</h5>
                 </Margin>
                 <SimulationWrapper>
-                    <Row justify='flex-end'>
-                        <Col lg={12} sm={12}>
-                            <Margin top={16}>
-                                <Row>
-                                    <Col lg={12}>
-                                        <Margin top={8}>
-                                            <TextField
-                                                label='Investment'
-                                                type='number'
-                                                placeholder='Enter the number You want to lend'
-                                                value={sliderValue === 0 ? "" : sliderValue}
-                                                onChange={this.handleChangeTextfield}
-                                            />
-                                        </Margin>
-                                    </Col>
-                                </Row>
-                            </Margin>
-                            <Margin vertical={24}>
-                                <h4>
-                                    {this.props.simulateInterest && this.props.simulateInterest(sliderValue)}
-                                    &nbsp;<small>Dai</small>
-                                </h4>
-                                <p>Expected Total Return</p>
-                            </Margin>
-                            <hr />
-                            <Margin vertical={24}>
-                                <b>0.04</b>% <b>ISA</b> from expected starting salary of{" "}
-                                <b>$86,320/year</b>
-                            </Margin>
-                            <div style={{position: "absolute"}}>
-                                <img src={CornellLogo} alt='cornell - logo' />
+                    <Margin>
+                        <Margin top={8}>
+                            <h6>Investment Amount</h6>
+                            <TextField
+                                type="number"
+                                placeholder="e.g. 5,000"
+                                value={
+                                    investmentAmount === 0
+                                        ? ''
+                                        : investmentAmount
+                                }
+                                onChange={this.handleChangeInvestmentAmount}
+                            />
+                        </Margin>
+                        <Margin top={10}>
+                            <p style={{ display: 'inline-block' }}>
+                                Repayment Floor
+                            </p>
+                            <p style={{ float: 'right' }}>
+                                <b>{minRepayment} Dai</b>
+                            </p>
+                        </Margin>
+                        <Margin bottom={8}>
+                            <p style={{ display: 'inline-block' }}>
+                                Repayment Ceiling
+                            </p>
+                            <p style={{ float: 'right' }}>
+                                <b>{maxRepayment} Dai</b>
+                            </p>
+                        </Margin>
+                    </Margin>
+                    <hr />
+                    <Margin top={18}>
+                        <h6>Simulate Salary</h6>
+                        <Margin top={10}>
+                            <p style={{ display: 'inline-block' }}>
+                                Average Annual Salary
+                            </p>
+                            <p style={{ float: 'right' }}>
+                                ${formatBN(salary.toString())}
+                            </p>
+                        </Margin>
+                        <Margin top={20}>
+                            <SliderInput
+                                type="range"
+                                min={salaryMin}
+                                max={salaryMax}
+                                value={salary}
+                                onChange={this.handleChangeSalary}
+                            />
+                            <SliderMinMax>
+                                <p>Below Average</p>
+                                <p>Above Average</p>
+                            </SliderMinMax>
+                        </Margin>
+                        <Margin top={14} bottom={24}>
+                            <div style={{ position: 'absolute' }}>
+                                <img src={CornellLogo} alt="cornell - logo" />
                             </div>
                             <Padding left={80}>
-                                <p>Expected salary based on data released by Cornell University</p>
-                                <b>
-                                    <p>Learn More</p>
-                                </b>
+                                <small>
+                                    Based on{' '}
+                                    <a
+                                        href="https://www.ilr.cornell.edu/sites/default/files/ILR_CS_MastersDataBrochure2018%20Final_0.pdf
+"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        reported 2018 median salary of $86,320{' '}
+                                    </a>{' '}
+                                    of graduates of Cornell University ILR
+                                    program
+                                </small>
                             </Padding>
-                            <br />
-                            <hr />
-                            <Margin vertical={24}>
-                                <p style={{display: "inline-block"}}>
-                                    <b>Minimum payment ?</b>
-                                </p>
-                                <p style={{float: "right"}}>$35,000</p>
-                            </Margin>
-                            <ButtonLendSimulation>
-                                <Margin vertical={24}>
-                                    <Button color='green' onClick={this.handleLend}>
-                                        Invest Now
-                                    </Button>
-                                </Margin>
-                            </ButtonLendSimulation>
-                        </Col>
-                    </Row>
+                        </Margin>
+                    </Margin>
+                    <hr />
+                    <Margin top={18}>
+                        <p
+                            data-for="income-ownership-tooltip"
+                            data-tip="This represents % of borrower's future income"
+                            style={{ display: 'inline-block' }}
+                        >
+                            Income Ownership{' '}
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                        </p>
+                        <ReactTooltip id="income-ownership-tooltip" />
+                        <p style={{ float: 'right' }}>
+                            <b>{incomeSharePercentage}%</b> of 18%
+                        </p>
+                    </Margin>
+                    <Margin>
+                        <p style={{ display: 'inline-block' }}>
+                            Simulated Monthly Payment
+                        </p>
+                        <p style={{ float: 'right' }}>
+                            {simulatedMonthlyRepayment} Dai
+                        </p>
+                    </Margin>
+                    <Margin>
+                        <p style={{ display: 'inline-block' }}>Duration</p>
+                        <p style={{ float: 'right' }}>6 years</p>
+                    </Margin>
+
+                    <Margin vertical={24}>
+                        <h4>
+                            {expectedTotalReturn}
+                            &nbsp;<small>Dai</small>
+                        </h4>
+                        <small>Expected Total Return</small>
+                    </Margin>
+                    <ButtonLendSimulation>
+                        <Margin vertical={24}>
+                            <Button color="green" onClick={this.handleLend}>
+                                Invest Now
+                            </Button>
+                        </Margin>
+                    </ButtonLendSimulation>
+                    {/* </Col>
+                    </Row> */}
                 </SimulationWrapper>
                 <Margin vertical={40}>
-                    <h5>Thank You Gifts</h5>
-                    <p>Additional rewards from Ines</p>
+                    <h5>Company Sponsorships</h5>
                 </Margin>
                 <Margin vertical={24}>
                     <SimulationWrapper>
-                        <h5>Invest 100 Dai or more</h5>
-                        <p>- I will send personal thank you emails</p>
+                        <h5>Gold Tier</h5>
+                        <h6>Lend 30,000 Dai or more</h6>
+                        <p>
+                            I will be your Campus Ambassador at Cornell, and
+                            promote your company, help with event preparations
+                            and publicity
+                        </p>
+                        <Margin top={40} bottom={30}>
+                            <h6 style={{ color: '#21b549', cursor: 'pointer' }}>
+                                Expected Repayment Calculator
+                            </h6>
+                            <h5>
+                                38,000??? Dai&nbsp;
+                                <small>&nbsp;(Expected Salary)</small>
+                            </h5>
+                        </Margin>
+                        <Button
+                            color="green"
+                            outline
+                            onClick={() =>
+                                window.open(
+                                    'https://calendly.com/inesfund/video-interview'
+                                )
+                            }
+                        >
+                            Schedule Video Interview
+                        </Button>
                     </SimulationWrapper>
                 </Margin>
                 <Margin vertical={24}>
                     <SimulationWrapper>
-                        <h5>Invest 100 Dai or more</h5>
-                        <p>- Personal thank you emails</p>
-                        <p>- Personal thank you call</p>
-                    </SimulationWrapper>
-                </Margin>
-                <Margin vertical={24}>
-                    <SimulationWrapper>
-                        <h5>Invest 5,000 Dai or more</h5>
-                        <p>- Personal thank you emails</p>
-                        <p>- Personal thank you call</p>
-                        <p>- Your sticker on my Laptop and Graduation Robe</p>
-                    </SimulationWrapper>
-                </Margin>
-                <Margin vertical={24}>
-                    <SimulationWrapper>
-                        <h5>Invest 10,000 Dai or more</h5>
-                        <p>- Personal thank you emails</p>
-                        <p>- Personal thank you call</p>
-                        <p>- Your sticker on my Laptop and Graduation Robe</p>
-                        <p>- I will be Campus Ambassador for your company</p>
-                    </SimulationWrapper>
-                </Margin>
-                <Margin vertical={24}>
-                    <SimulationWrapper>
-                        <h5>Invest 30,000 Dai or more</h5>
-                        <p>- Personal thank you emails</p>
-                        <p>- Personal thank you call</p>
-                        <p>- Your sticker on my Laptop and Graduation Robe</p>
-                        <p>- I will be Campus Ambassador for your company</p>
-                        <p>- I will do a research project for your company</p>
+                        <h5>Silver Tier</h5>
+                        <h6>Lend 5,000 Dai or more</h6>
+                        <p>
+                            I will put your company's stickers on my laptop, as
+                            well as my graduation robe in 2 years time
+                        </p>
+                        <Margin top={40} bottom={30}>
+                            <h6 style={{ color: '#21b549', cursor: 'pointer' }}>
+                                Expected Repayment Calculator
+                            </h6>
+                            <h5>
+                                6,000??? Dai&nbsp;
+                                <small>&nbsp;(Expected Salary)</small>
+                            </h5>
+                        </Margin>
+                        <Button
+                            color="green"
+                            outline
+                            onClick={() =>
+                                window.open(
+                                    'https://calendly.com/inesfund/video-interview'
+                                )
+                            }
+                        >
+                            Schedule Video Interview
+                        </Button>
                     </SimulationWrapper>
                 </Margin>
                 <Margin vertical={40}>
@@ -342,50 +434,56 @@ class SimuLationReturn extends React.Component<SimuLationReturnProps, SimuLation
                 </Margin>
                 <Margin top={40} bottom={24}>
                     <Row>
-                    {
-                      // To Do (Dennis): Missing the name of the contributor and the date of contribution
-                    }
-                    {this.props.contributors && this.props.contributors.map(contributor => (
-                            <React.Fragment key={contributor.address}>
-                                <Col lg={6}>
-                                    <h6>Daniel</h6>
-                                    <small>
-                                        <p
-                                            style={{
-                                                backgroundColor: "#f7f7f7",
-                                                padding: 8,
-                                                display: "inline-block"
-                                            }}
-                                        >
-                                            {contributor.address.replace(contributor.address.substring(10, 30), ".....")}
-                                        </p>
-                                    </small>
-                                </Col>
-                                <Col lg={6} text='right'>
-                                    <h6>
-                                        <b>{prepBigNumber(
-                                            contributor.amount || 0,
-                                            this.props.paymentToken.decimals,
-                                            true
-                                        )}</b> Dai
-                                    </h6>
-                                    <small>
-                                        <p>12 Days ago</p>
-                                    </small>
-                                </Col>
-                                <Margin vertical={50} />
-                            </React.Fragment>
-                        ))}
+                        {
+                            // To Do (Dennis): Missing the name of the contributor and the date of contribution
+                        }
+                        {this.props.contributors &&
+                            this.props.contributors.map(contributor => (
+                                <React.Fragment key={contributor.address}>
+                                    <Col lg={6}>
+                                        <h6>Daniel</h6>
+                                        <small>
+                                            <p
+                                                style={{
+                                                    backgroundColor: '#f7f7f7',
+                                                    padding: 8,
+                                                    display: 'inline-block',
+                                                }}
+                                            >
+                                                {contributor.address.replace(
+                                                    contributor.address.substring(
+                                                        10,
+                                                        30
+                                                    ),
+                                                    '.....'
+                                                )}
+                                            </p>
+                                        </small>
+                                    </Col>
+                                    <Col lg={6} text="right">
+                                        <h6>
+                                            <b>
+                                                {prepBigNumber(
+                                                    contributor.amount || 0,
+                                                    this.props.paymentToken
+                                                        .decimals,
+                                                    true
+                                                )}
+                                            </b>{' '}
+                                            Dai
+                                        </h6>
+                                        <small>
+                                            <p>12 Days ago</p>
+                                        </small>
+                                    </Col>
+                                    <Margin vertical={50} />
+                                </React.Fragment>
+                            ))}
                     </Row>
-                    <Margin top={16}>
-                        <h6 style={{color: "#21b549", cursor: "pointer"}} onClick={this.handleModalContributor}>
-                            See All
-                        </h6>
-                    </Margin>
                 </Margin>
             </React.Fragment>
-        );
+        )
     }
 }
 
-export default withRouter<SimuLationReturnProps>(SimuLationReturn);
+export default withRouter<SimuLationReturnProps>(SimuLationReturn)
