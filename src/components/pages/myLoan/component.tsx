@@ -226,15 +226,15 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         }
     }
 
-    componentDidMount = async () => await this.loadInvestment();
+    componentDidMount = async () => await this.loadInvestment()
 
     connectWallet = async () => {
         try {
-            this.setState({ loaded: false });
-            await connectToWallet();
-            this.loadInvestment();
+            this.setState({ loaded: false })
+            await connectToWallet()
+            this.loadInvestment()
         } catch {
-            this.setState({ loaded: true });
+            this.setState({ loaded: true })
         }
     }
 
@@ -410,56 +410,58 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                     src={PatternImage}
                     alt="pattern"
                 />
-                    <HeroTitle>
-                        <img
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                height: '100%',
-                                left: 0,
-                                transform: 'scaleX(-1)',
-                            }}
-                            src={PatternImage}
-                            alt="pattern"
-                        />
-                        <img
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                height: '100%',
-                                right: 0,
-                            }}
-                            src={PatternImage}
-                            alt="pattern"
-                        />
-                        <Container>
-                            <Margin vertical={48}>
-                                <Row>
-                                    <Col lg={12} md={12} sm={12} xs={12}>
-                                        <BoxStats>
-                                            <Col lg={9} md={12}>
-                                                <p>
-                                                    Connect your wallet to
-                                                    see your investment
-                                                </p>
-                                            </Col>
-                                            <Col lg={3} md={12}>
-                                                <Button
-                                                    color="green"
-                                                    onClick={async () => await this.connectWallet()}
-                                                >
-                                                    Connect Wallet
-                                                </Button>
-                                            </Col>
-                                        </BoxStats>
-                                    </Col>
-                                </Row>
-                            </Margin>
-                        </Container>
-                    </HeroTitle>
+                <HeroTitle>
+                    <img
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            height: '100%',
+                            left: 0,
+                            transform: 'scaleX(-1)',
+                        }}
+                        src={PatternImage}
+                        alt="pattern"
+                    />
+                    <img
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            height: '100%',
+                            right: 0,
+                        }}
+                        src={PatternImage}
+                        alt="pattern"
+                    />
+                    <Container>
+                        <Margin vertical={48}>
+                            <Row>
+                                <Col lg={12} md={12} sm={12} xs={12}>
+                                    <BoxStats>
+                                        <Col lg={9} md={12}>
+                                            <p>
+                                                Connect your wallet to see your
+                                                investment
+                                            </p>
+                                        </Col>
+                                        <Col lg={3} md={12}>
+                                            <Button
+                                                color="green"
+                                                onClick={async () =>
+                                                    await this.connectWallet()
+                                                }
+                                            >
+                                                Connect Wallet
+                                            </Button>
+                                        </Col>
+                                    </BoxStats>
+                                </Col>
+                            </Row>
+                        </Margin>
+                    </Container>
                 </HeroTitle>
-            </HeroWrapper>   
-    );
+            </HeroTitle>
+        </HeroWrapper>
+    )
 
     renderLenderLoan = (
         paymentToken,
@@ -503,10 +505,10 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                         {!releaseAllowance
                                             ? '0'
                                             : prepBigNumber(
-                                                    releaseAllowance,
-                                                    paymentToken.decimals,
-                                                    true
-                                                )}{' '}
+                                                  releaseAllowance,
+                                                  paymentToken.decimals,
+                                                  true
+                                              )}{' '}
                                         Dai
                                     </h4>
                                 </BoxStats>
@@ -518,10 +520,10 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                         {!released
                                             ? '0'
                                             : prepBigNumber(
-                                                    released,
-                                                    paymentToken.decimals,
-                                                    true
-                                                )}{' '}
+                                                  released,
+                                                  paymentToken.decimals,
+                                                  true
+                                              )}{' '}
                                         Dai
                                     </h4>
                                 </BoxStats>
@@ -533,10 +535,10 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                         {!shares
                                             ? '0'
                                             : prepBigNumber(
-                                                    shares,
-                                                    paymentToken.decimals,
-                                                    true
-                                                )}{' '}
+                                                  shares,
+                                                  paymentToken.decimals,
+                                                  true
+                                              )}{' '}
                                         Dai
                                     </h4>
                                 </BoxStats>
@@ -610,10 +612,10 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                         {!totalShares
                                             ? '0'
                                             : prepBigNumber(
-                                                    totalShares,
-                                                    paymentToken.decimals,
-                                                    true
-                                                )}{' '}
+                                                  totalShares,
+                                                  paymentToken.decimals,
+                                                  true
+                                              )}{' '}
                                         Dai
                                     </h4>
                                 </BoxStats>
@@ -625,10 +627,10 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                         {!principalDisbursed
                                             ? '0'
                                             : prepBigNumber(
-                                                    principalDisbursed,
-                                                    paymentToken.decimals,
-                                                    true
-                                                )}{' '}
+                                                  principalDisbursed,
+                                                  paymentToken.decimals,
+                                                  true
+                                              )}{' '}
                                         Dai
                                     </h4>
                                 </BoxStats>
@@ -642,10 +644,10 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                         {!totalPaid
                                             ? '0'
                                             : prepBigNumber(
-                                                    totalPaid,
-                                                    paymentToken.decimals,
-                                                    true
-                                                )}{' '}
+                                                  totalPaid,
+                                                  paymentToken.decimals,
+                                                  true
+                                              )}{' '}
                                         Dai
                                     </h4>
                                 </BoxStats>
@@ -657,10 +659,10 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                         {!totalReleased
                                             ? '0'
                                             : prepBigNumber(
-                                                    totalReleased,
-                                                    paymentToken.decimals,
-                                                    true
-                                                )}{' '}
+                                                  totalReleased,
+                                                  paymentToken.decimals,
+                                                  true
+                                              )}{' '}
                                         Dai
                                     </h4>
                                 </BoxStats>
@@ -721,28 +723,30 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         return (
             <React.Fragment>
                 {this.state.loaded ? (
-                    (!injectedAccountAddress ?
-                        this.renderConnectWallet() :
-                        (borrower &&
-                            (isBorrower
-                                ? this.renderBorrowerLoan(
-                                    paymentToken,
-                                    principalDisbursed,
-                                    totalPaid,
-                                    totalReleased,
-                                    totalShares,
-                                    repayments
-                                )
-                                : this.renderLenderLoan(
-                                    paymentToken,
-                                    shares,
-                                    released,
-                                    releaseAllowance,
-                                    transacting,
-                                    repayments,
-                                    withdrawals
-                                )))
-                )) : (
+                    !injectedAccountAddress ? (
+                        this.renderConnectWallet()
+                    ) : (
+                        borrower &&
+                        (isBorrower
+                            ? this.renderBorrowerLoan(
+                                  paymentToken,
+                                  principalDisbursed,
+                                  totalPaid,
+                                  totalReleased,
+                                  totalShares,
+                                  repayments
+                              )
+                            : this.renderLenderLoan(
+                                  paymentToken,
+                                  shares,
+                                  released,
+                                  releaseAllowance,
+                                  transacting,
+                                  repayments,
+                                  withdrawals
+                              ))
+                    )
+                ) : (
                     <ChasingDots />
                 )}
             </React.Fragment>

@@ -2,7 +2,7 @@ import React from 'react'
 import { Form, Field } from 'react-final-form'
 import { Container } from '../../../../styles/bases'
 import { Margin, Padding } from '../../../../styles/utils'
-import { Spinner } from '../../../lib';
+import { Spinner } from '../../../lib'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { AppPath } from '../../../../constant/appPath'
 import {
@@ -14,7 +14,7 @@ import {
     Checkbox,
     FieldError,
 } from '../../../lib'
-import { StepLoanOfferWrapper, LoanAmountSimulation } from '../styled'
+import { CheckoutWrapper, LoanAmountSimulation } from '../styled'
 import {
     requiredField,
     mustBeNumber,
@@ -56,7 +56,7 @@ interface LoanAmountProps extends RouteComponentProps<any> {}
 
 interface LoanAmountState {
     transacting: boolean
-    loanAmoutnValue: number
+    investmentAmount: number
     crowdloanInstance: any
     loanParams: any
     paymentToken: any
@@ -73,7 +73,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
         super(props)
         this.state = {
             transacting: false,
-            loanAmoutnValue: 0,
+            investmentAmount: 0,
             crowdloanInstance: null,
             loanParams: {
                 interestRate: 0,
@@ -152,21 +152,26 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
 
     onSubmit = async (data: any) => {
         const { history } = this.props
-        const { crowdloanInstance, loanAmoutnValue } = this.state
-        if (!+loanAmoutnValue) {
+        const { crowdloanInstance, investmentAmount } = this.state
+        if (!+investmentAmount) {
             return console.error('Can not contribute Zero(0)')
         }
 
         try {
             this.setState({ transacting: true })
+            console.log('Hello')
 
             // Note: Assuming lender can only fund a loan when the loan is started
             const isLoanStarted =
-                +(await getCrowdfundStart(crowdloanInstance)) !== ZERO;
+                +(await getCrowdfundStart(crowdloanInstance)) !== ZERO
 
             const isLoanEnded =
                 +(await getCrowdfundEnd(crowdloanInstance)) <
-                +prepBigNumber(Math.floor(new Date().getTime() / MILLISECONDS), ZERO, true);
+                +prepBigNumber(
+                    Math.floor(new Date().getTime() / MILLISECONDS),
+                    ZERO,
+                    true
+                )
 
             if (!isLoanStarted) {
                 return console.error('Crowdloan not yet started')
@@ -176,10 +181,10 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
             }
             const paymentTokenInstance = await getInstance(
                 this.state.paymentToken.address
-            );
+            )
 
             const valueInERC20 = prepBigNumber(
-                loanAmoutnValue,
+                investmentAmount,
                 this.state.paymentToken.decimals
             )
             const approvedBalance = await allowance(
@@ -212,15 +217,15 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
 
     handleChange(e: { target: { value: any } }) {
         this.setState({
-            loanAmoutnValue: +e.target.value,
+            investmentAmount: +e.target.value,
         })
     }
 
     render() {
         const { history } = this.props
-        const { loanAmoutnValue, transacting } = this.state
+        const { investmentAmount, transacting } = this.state
         return (
-            <StepLoanOfferWrapper>
+            <CheckoutWrapper>
                 <Container>
                     <h4>You're almost done!</h4>
                     <p>
@@ -259,10 +264,10 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                                                                         true
                                                                     }
                                                                     value={
-                                                                        loanAmoutnValue ===
+                                                                        investmentAmount ===
                                                                         0
                                                                             ? ''
-                                                                            : loanAmoutnValue
+                                                                            : investmentAmount
                                                                     }
                                                                     onChangeCustom={
                                                                         this
@@ -290,7 +295,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                                             <p>Total loan amount:</p>
                                             <Margin top={16}>
                                                 <h3>
-                                                    {loanAmoutnValue}
+                                                    {investmentAmount}
                                                     &nbsp;<small>Dai</small>
                                                 </h3>
                                                 <p>
@@ -393,7 +398,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                                                         ? '0'
                                                         : prepBigNumber(
                                                               this.simulateInterest(
-                                                                  loanAmoutnValue
+                                                                  investmentAmount
                                                               ),
                                                               this.state
                                                                   .paymentToken
@@ -435,12 +440,16 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                                                     <Button
                                                         color="green"
                                                         type="submit"
-                                                        disabled={transacting || !this.state.crowdloanInstance}
+                                                        disabled={
+                                                            transacting ||
+                                                            !this.state
+                                                                .crowdloanInstance
+                                                        }
                                                     >
                                                         Submit
-                                                        {transacting &&
-                                                            <Spinner size="16"/>
-                                                        }
+                                                        {transacting && (
+                                                            <Spinner size="16" />
+                                                        )}
                                                     </Button>
                                                 </Margin>
                                             </Col>
@@ -451,7 +460,7 @@ class LoanAmount extends React.Component<LoanAmountProps, LoanAmountState> {
                         )}
                     />
                 </Container>
-            </StepLoanOfferWrapper>
+            </CheckoutWrapper>
         )
     }
 }

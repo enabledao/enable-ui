@@ -1,30 +1,58 @@
-import styled from "styled-components";
-import { MaxWidth } from "../../../styles/utils";
+import styled from 'styled-components'
+import { MaxWidth } from '../../../styles/utils'
 
-const StepLoanOfferWrapper = styled.div`
-  padding: 100px 0;
-  display: flex;
-  align-items: center;
-  min-height: 100vh;
-  ${MaxWidth.md`
-    padding: 80px 0;
-  `}
+const CheckoutWrapper = styled.div`
+    background-image: linear-gradient(to bottom, #ffffff, #f6f7fb);
+`
 
-  ${MaxWidth.sm`
-    padding: 60px 0;
-  `}
-`;
+const HeroWrapper = styled.div`
+    background-color: #363bd3;
+    min-height: 50vh;
+    position: relative;
+`
+
+const HeroCell = styled.div`
+    background-color: white;
+    padding: 30px;
+    ${MaxWidth.sm`
+        padding: 20px 20px 20px;
+    `}
+`
+
+const CheckoutContainer = styled.div`
+    top: -45vh;
+    padding-left: 200px;
+    padding-right: 200px;
+    small {
+        color: grey;
+        font-size: 12px;
+    }
+    ${MaxWidth.md`
+      padding-left: 20px;
+      padding-right: 20px;
+    `}
+    ${MaxWidth.sm`
+    padding-left: 20px;
+    padding-right: 20px;
+    `}
+`
 
 const LoanAmountSimulation = styled.div`
-  margin: 48px;
-  ${MaxWidth.md`
+    margin: 48px;
+    ${MaxWidth.md`
     margin: 48px 0;
   `}
 
-  ${MaxWidth.sm`
+    ${MaxWidth.sm`
     margin-top: 0;
     margin-bottom: 48px;
   `}
-`;
+`
 
-export { StepLoanOfferWrapper, LoanAmountSimulation };
+export {
+    CheckoutWrapper,
+    CheckoutContainer,
+    HeroWrapper,
+    HeroCell,
+    LoanAmountSimulation,
+}
