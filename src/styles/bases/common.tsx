@@ -30,7 +30,7 @@ const MainContainer = styled.div`
   ${MinWidth.xs`
     max-width: auto;
     min-width: auto;
-    padding: 0;
+    padding: 0 16px;
   `}
   ${MinWidth.sm`
     max-width: 750px;
@@ -48,7 +48,7 @@ const MainContainer = styled.div`
     max-width: 1300px;
     min-width: 1300px;
   `}
-  padding: 0 16px;
+  padding: 0;
   margin: 0 auto;
 `;
 
