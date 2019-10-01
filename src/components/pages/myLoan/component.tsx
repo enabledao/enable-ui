@@ -144,6 +144,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             return console.error(e)
         }
     }
+
     onborrowerwithdraw = async () => {
         const { crowdloanInstance, paymentToken } = this.state
 
