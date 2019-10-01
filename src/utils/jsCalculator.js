@@ -1,10 +1,9 @@
 import {
-    ZERO,
     HUNDRED,
     MONTHS_IN_YEAR,
     ISA_PERCENTAGE_DECIMALS,
 } from '../config/constants'
-import { BN, prepBigNumber } from './web3Utils'
+import { BN } from './web3Utils'
 import { formatBN } from './formatters'
 import Web3 from 'web3'
 import {
@@ -22,14 +21,8 @@ const availableWithdrawal = (
     totalContributed,
     amountRepaid,
     repaymentWithdrawn
-) =>
-    prepBigNumber(
-        Math.floor(
-            BN(amountContributed || 0).div(BN(totalContributed || 0)).mul(BN(amountRepaid || 0))
-                .sub(BN(repaymentWithdrawn || 0))
-        ),
-        ZERO
-    )
+) =>    BN(amountContributed || 0).mul(BN(amountRepaid || 0)).div(BN(totalContributed || 0))
+            .sub(BN(repaymentWithdrawn || 0))
 
 const calcInterest = (
     contribution,
