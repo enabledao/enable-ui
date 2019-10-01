@@ -117,9 +117,11 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 endTimestamp = new Date(endTimestamp * MILLISECONDS).getTime()
                 const now: any = new Date().getTime()
 
-                loanEndTimestamp = Math.ceil(
-                    (endTimestamp - now) / DAYINMILLISECONDS
-                )
+                loanEndTimestamp = endTimestamp > now ?
+                    Math.ceil(
+                        (endTimestamp - now) / DAYINMILLISECONDS
+                    ) :
+                    null;
             }
 
             this.setState({
