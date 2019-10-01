@@ -12,8 +12,8 @@
 
 export default {
     1: {
-        Crowdloan: '',
-        CrowdloanFactory: '',
+        Crowdloan: '0x08A1f29EEA68b28D68467192457291CB09D10935',
+        CrowdloanFactory: '0x1a3058D8E07b1127b855854550658aE803A4Bdec',
         TokenFaucet: '',
     },
     3: {
