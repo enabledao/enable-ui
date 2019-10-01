@@ -28,9 +28,9 @@ const BorrowerAction: any = ({
           <Row>
             <Col lg={6} md={12}>
               <Button color="green" onClick={onstartcrowdfund} disabled={transacting}>
-                Start Crowdfund
-                {transacting &&
-                    <Spinner size="16"/>
+                {transacting ?
+                    <Spinner size="16"/> :
+                    ("Start Crowdfund")
                 }
               </Button>
             </Col>
@@ -39,10 +39,10 @@ const BorrowerAction: any = ({
         <Row>
           <Col lg={6} md={12}>
             <Button color="green" onClick={onborrowerwithdraw} disabled={transacting}>
-              Withdraw Principal
-              {transacting &&
-                  <Spinner size="16"/>
-              }
+              {transacting ?
+                  <Spinner size="16"/> :
+                  ("Withdraw Principal")
+            }
             </Button>
           </Col>
         </Row>
@@ -50,10 +50,10 @@ const BorrowerAction: any = ({
           <Row>
             <Col lg={6} md={12}>
               <Button color="green" onClick={onrepay} disabled={transacting}>
-                Repay
-                {transacting &&
-                    <Spinner size="16"/>
-                }
+                {transacting ?
+                    <Spinner size="16"/> :
+                    ("Repay")
+              }
               </Button>
             </Col>
           </Row>

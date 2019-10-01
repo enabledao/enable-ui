@@ -45,11 +45,11 @@ const startCrowdfund = instance =>
 const fund = (instance, amount, txOptions) =>
   contractMethodTransaction(instance, "fund", amount, txOptions);
 const withdrawPrincipal = (instance, amount, txOptions) =>
-  contractMethodTransaction(instance, "repay", amount, txOptions);
+  contractMethodTransaction(instance, "withdrawPrincipal", amount, txOptions);
 const repay = (instance, amount, txOptions) =>
   contractMethodTransaction(instance, "repay", amount, txOptions);
-const withdrawRepayment = (instance, amount, txOptions) =>
-  contractMethodTransaction(instance, "repay", amount, txOptions);
+const withdrawRepayment = (instance, txOptions) =>
+  contractMethodTransaction(instance, "withdrawRepayment", txOptions);
 
 const approveAndFund = async (
   paymentTokenInstance,
