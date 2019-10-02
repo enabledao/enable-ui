@@ -48,24 +48,6 @@ class Home extends React.Component<{}, HomeState> {
         loanMetadata: null,
     }
 
-    simulateInterest = (contribution, salary?) => {
-        const {
-            interestRate,
-            principalRequested,
-            expectedSalary,
-            loanPeriod,
-        } = this.state
-        return {
-            totalAmount: calcExpectedReturn(
-                contribution,
-                principalRequested,
-                interestRate,
-                salary || expectedSalary,
-                loanPeriod
-            ),
-        }
-    }
-
     componentDidMount = async () => {
         const networkName = await getNetworkName()
         ShowModal(<ModalWip networkName={networkName} />)
@@ -135,7 +117,6 @@ class Home extends React.Component<{}, HomeState> {
                     contributors={this.state.contributors}
                     paymentToken={this.state.paymentToken}
                     crowdloanInstance={this.state.crowdloanInstance}
-                    simulateInterest={this.simulateInterest}
                     expectedSalary={this.state.expectedSalary}
                 />
             </React.Fragment>

@@ -34,7 +34,6 @@ interface SimuLationReturnProps extends RouteComponentProps<any> {
     contributors?: any
     expectedSalary?: any
     paymentToken: any
-    simulateInterest: (contribution: string | number, salary?: string) => any
 }
 
 export interface SimuLationReturnState {
@@ -59,7 +58,7 @@ class SimuLationReturn extends React.Component<
             investmentAmount: 10000,
             salary: 86320,
             salaryMin: 30000,
-            salaryMax: 130000,
+            salaryMax: 120000,
             showModal: false,
             showModalGuarantor: false,
             simulated: null,
@@ -82,15 +81,6 @@ class SimuLationReturn extends React.Component<
             investmentAmount: Number(e.target.value),
         })
     }
-
-    // getSimulated = () => {
-    //     return this.props.simulateInterest(
-    //         prepBigNumber(
-    //             this.state.investmentAmount,
-    //             this.props.paymentToken.decimals
-    //         )
-    //     )
-    // }
 
     render() {
         const { investmentAmount, salaryMin, salaryMax, salary } = this.state
