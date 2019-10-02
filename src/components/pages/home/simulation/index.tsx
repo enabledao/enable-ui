@@ -59,7 +59,7 @@ class SimuLationReturn extends React.Component<
             investmentAmount: 10000,
             salary: 86320,
             salaryMin: 30000,
-            salaryMax: 150000,
+            salaryMax: 130000,
             showModal: false,
             showModalGuarantor: false,
             simulated: null,
@@ -83,14 +83,14 @@ class SimuLationReturn extends React.Component<
         })
     }
 
-    getSimulated = () => {
-        return this.props.simulateInterest(
-            prepBigNumber(
-                this.state.investmentAmount,
-                this.props.paymentToken.decimals
-            )
-        )
-    }
+    // getSimulated = () => {
+    //     return this.props.simulateInterest(
+    //         prepBigNumber(
+    //             this.state.investmentAmount,
+    //             this.props.paymentToken.decimals
+    //         )
+    //     )
+    // }
 
     render() {
         const { investmentAmount, salaryMin, salaryMax, salary } = this.state

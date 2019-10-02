@@ -5,10 +5,7 @@ import TabHome from './tab'
 import ModalWip from './modalWip'
 import { getDeployedFromConfig } from '../../../utils/getDeployed'
 import contractAddresses from '../../../config/ines.fund'
-import {
-    calcExpectedReturn,
-    calcIncomeSharePercentage,
-} from '../../../utils/jsCalculator'
+import { calcExpectedReturn } from '../../../utils/jsCalculator'
 import { getTokenDetailsFromAddress } from '../../../utils/paymentToken'
 import {
     getPrincipalToken,
