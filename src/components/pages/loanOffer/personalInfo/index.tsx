@@ -1,20 +1,11 @@
 import React from 'react'
 import { Form, Field } from 'react-final-form'
-import { Container, MainContainer } from '../../../../styles/bases'
 import { Margin, Padding } from '../../../../styles/utils'
 import { Spinner } from '../../../lib'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { AppPath } from '../../../../constant/appPath'
 import PatternImage from '../../../../images/pattern.png'
-import {
-    Breadcrumb,
-    Row,
-    Col,
-    TextField,
-    Checkbox,
-    Button,
-    FieldError,
-} from '../../../lib'
+import { Row, Col, TextField, Checkbox, Button, FieldError } from '../../../lib'
 import {
     CheckoutWrapper,
     HeroCell,
@@ -94,11 +85,6 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
         this.handleChange = this.handleChange.bind(this)
     }
 
-    // onSubmit = (data: any) => {
-    //     const { history } = this.props
-    //     history.push(AppPath.LoanOfferAmount)
-    // }
-
     onSubmit = async (data: any) => {
         const { history } = this.props
         const { crowdloanInstance, investmentAmount } = this.state
@@ -108,8 +94,6 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
 
         try {
             this.setState({ transacting: true })
-            console.log('Hello')
-
             // Note: Assuming lender can only fund a loan when the loan is started
             const isLoanStarted =
                 +(await getCrowdfundStart(crowdloanInstance)) !== ZERO
@@ -210,9 +194,7 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
     }
 
     render() {
-        const { history } = this.props
         const { investmentAmount, transacting } = this.state
-        console.log(this.state)
         return (
             <CheckoutWrapper>
                 <HeroWrapper>
