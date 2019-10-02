@@ -74,7 +74,7 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
             investmentAmount: 0,
             crowdloanInstance: null,
             loanParams: {
-                interestRate: 0,
+                incomeSharePercentage: 0,
                 loanPeriod: 0,
                 principalRequested: 0,
                 expectedSalary: 0,
@@ -169,13 +169,15 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
             const loanMetadata = await fetchLoanMetadata(loanMetadataUrl)
 
             const loanPeriod = await getLoanPeriod(loanMetadata)
-            const interestRate = await getIncomeSharePercentage(loanMetadata)
+            const incomeSharePercentage = await getIncomeSharePercentage(
+                loanMetadata
+            )
             const expectedSalary = await getExpectedSalary(loanMetadata)
 
             this.setState({
                 crowdloanInstance,
                 loanParams: {
-                    interestRate,
+                    incomeSharePercentage,
                     principalRequested,
                     expectedSalary,
                     loanPeriod,
@@ -194,6 +196,7 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
     }
 
     render() {
+        console.log(this.state)
         const { investmentAmount, transacting } = this.state
         return (
             <CheckoutWrapper>
