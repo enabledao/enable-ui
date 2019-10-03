@@ -29,6 +29,7 @@ import { simulateReturns } from '../../../../utils/jsCalculator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import ReactTooltip from 'react-tooltip'
+import ListContributor from '../listContributor'
 
 interface SimuLationReturnProps extends RouteComponentProps<any> {
     contributors?: any
@@ -83,6 +84,8 @@ class SimuLationReturn extends React.Component<
     }
 
     render() {
+        const { contributors, paymentToken } = this.props
+        console.log(contributors)
         const { investmentAmount, salaryMin, salaryMax, salary } = this.state
         const {
             minRepayment,
@@ -297,8 +300,7 @@ class SimuLationReturn extends React.Component<
                                 <small>
                                     Based on{' '}
                                     <a
-                                        href="https://www.ilr.cornell.edu/sites/default/files/ILR_CS_MastersDataBrochure2018%20Final_0.pdf
-"
+                                        href="https://www.ilr.cornell.edu/sites/default/files/ILR_CS_MastersDataBrochure2018%20Final_0.pdf"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
@@ -424,59 +426,10 @@ class SimuLationReturn extends React.Component<
                         </Button>
                     </SimulationWrapper>
                 </Margin>
-                <Margin vertical={40}>
-                    <h5>Contributors</h5>
-                    <p>Highest contributors to date</p>
-                </Margin>
-                <Margin top={40} bottom={24}>
-                    <Row>
-                        {
-                            // To Do (Dennis): Missing the name of the contributor and the date of contribution
-                        }
-                        {this.props.contributors &&
-                            this.props.contributors.map(contributor => (
-                                <React.Fragment key={contributor.address}>
-                                    <Col lg={6}>
-                                        <h6>Anonymous</h6>
-                                        <small>
-                                            <p
-                                                style={{
-                                                    backgroundColor: '#f7f7f7',
-                                                    padding: 8,
-                                                    display: 'inline-block',
-                                                }}
-                                            >
-                                                {contributor.address.replace(
-                                                    contributor.address.substring(
-                                                        10,
-                                                        30
-                                                    ),
-                                                    '.....'
-                                                )}
-                                            </p>
-                                        </small>
-                                    </Col>
-                                    <Col lg={6} text="right">
-                                        <h6>
-                                            <b>
-                                                {prepBigNumber(
-                                                    contributor.amount || 0,
-                                                    this.props.paymentToken
-                                                        .decimals,
-                                                    true
-                                                )}
-                                            </b>{' '}
-                                            Dai
-                                        </h6>
-                                        <small>
-                                            <p>12 Days ago</p>
-                                        </small>
-                                    </Col>
-                                    <Margin vertical={50} />
-                                </React.Fragment>
-                            ))}
-                    </Row>
-                </Margin>
+                <ListContributor
+                    contributors={contributors}
+                    paymentToken={paymentToken}
+                />
             </React.Fragment>
         )
     }
