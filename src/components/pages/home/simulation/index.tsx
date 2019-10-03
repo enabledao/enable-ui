@@ -67,7 +67,7 @@ class SimuLationReturn extends React.Component<
 
     handleLend = () => {
         const { history } = this.props
-        history.push(AppPath.LoanPersonalInfo)
+        history.push(AppPath.checkout)
     }
 
     handleChangeSalary = e => {

@@ -1,11 +1,19 @@
 import React from 'react'
 import { Form, Field } from 'react-final-form'
 import { Margin, Padding } from '../../../../styles/utils'
-import { Spinner } from '../../../lib'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { AppPath } from '../../../../constant/appPath'
 import PatternImage from '../../../../images/pattern.png'
-import { Row, Col, TextField, Checkbox, Button, FieldError } from '../../../lib'
+import {
+    Spinner,
+    Row,
+    Col,
+    TextField,
+    Checkbox,
+    Button,
+    FieldError,
+    RowButton,
+} from '../../../lib'
 import {
     CheckoutWrapper,
     HeroCell,
@@ -84,6 +92,7 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
         }
         this.onSubmit = this.onSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleAmountSelected = this.handleAmountSelected.bind(this)
     }
 
     onSubmit = async (data: any) => {
@@ -195,9 +204,13 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
         })
     }
 
+    handleAmountSelected = value => {
+        this.setState({ investmentAmount: value })
+    }
+
     render() {
-        console.log(this.state)
         const { investmentAmount, transacting } = this.state
+        console.log(investmentAmount)
         return (
             <CheckoutWrapper>
                 <HeroWrapper>
@@ -234,7 +247,47 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                                     render={({ handleSubmit }) => (
                                         <form onSubmit={handleSubmit}>
                                             <h5>Complete Your Investment</h5>
-                                            <Margin top={32} bottom={32}>
+                                            <Margin top={40}>
+                                                <h6>Investment Amount</h6>
+                                            </Margin>
+                                            <Margin
+                                                top={10}
+                                                left={15}
+                                                right={15}
+                                            >
+                                                <Row>
+                                                    <RowButton
+                                                        value={100}
+                                                        onClick={
+                                                            this
+                                                                .handleAmountSelected
+                                                        }
+                                                    />
+                                                    <RowButton
+                                                        value={250}
+                                                        onClick={
+                                                            this
+                                                                .handleAmountSelected
+                                                        }
+                                                    />
+                                                    <RowButton
+                                                        value={1000}
+                                                        onClick={
+                                                            this
+                                                                .handleAmountSelected
+                                                        }
+                                                    />
+                                                    <RowButton
+                                                        value={5000}
+                                                        onClick={
+                                                            this
+                                                                .handleAmountSelected
+                                                        }
+                                                    />
+                                                </Row>
+                                            </Margin>
+
+                                            <Margin top={5} bottom={32}>
                                                 <Field
                                                     name="amount"
                                                     type="number"
@@ -248,14 +301,11 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                                                     }) => (
                                                         <React.Fragment>
                                                             <TextField
-                                                                label="Investment Amount"
+                                                                // label="Investment Amount"
                                                                 placeholder="100 Dai"
                                                                 autoFocus={true}
                                                                 value={
-                                                                    investmentAmount ===
-                                                                    0
-                                                                        ? ''
-                                                                        : investmentAmount
+                                                                    investmentAmount
                                                                 }
                                                                 onChangeCustom={
                                                                     this

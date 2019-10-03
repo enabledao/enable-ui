@@ -22,7 +22,7 @@ const App: React.FC = () => {
                     />
                     <Route
                         exact={true}
-                        path={AppPath.LoanPersonalInfo}
+                        path={AppPath.checkout}
                         component={Checkout}
                     />
                     <Route
