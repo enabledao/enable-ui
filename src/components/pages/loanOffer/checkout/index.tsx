@@ -80,7 +80,7 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
         super(props)
         this.state = {
             transacting: false,
-            investmentAmount: 0,
+            investmentAmount: 1000,
             crowdloanInstance: null,
             loanParams: {
                 incomeSharePercentage: 0,
@@ -210,7 +210,6 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
 
     render() {
         const { investmentAmount, transacting } = this.state
-        console.log(investmentAmount)
         return (
             <CheckoutWrapper>
                 <HeroWrapper>
@@ -244,17 +243,18 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                                 <Form
                                     onSubmit={this.onSubmit}
                                     decorators={[focusOnErrors]}
+                                    validate={values => {
+                                        const errors = {}
+                                        console.log(values)
+                                        return errors
+                                    }}
                                     render={({ handleSubmit }) => (
                                         <form onSubmit={handleSubmit}>
                                             <h5>Complete Your Investment</h5>
                                             <Margin top={40}>
                                                 <h6>Investment Amount</h6>
                                             </Margin>
-                                            <Margin
-                                                top={10}
-                                                left={15}
-                                                right={15}
-                                            >
+                                            <Margin top={10} horizontal={15}>
                                                 <Row>
                                                     <RowButton
                                                         value={100}
@@ -287,14 +287,11 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                                                 </Row>
                                             </Margin>
 
-                                            <Margin top={5} bottom={32}>
+                                            <Margin top={10} bottom={32}>
                                                 <Field
                                                     name="amount"
                                                     type="number"
-                                                    validate={composeValidators(
-                                                        requiredField,
-                                                        mustBeNumber
-                                                    )}
+                                                    // validate={mustBeNumber}
                                                     render={({
                                                         input,
                                                         meta,
@@ -302,16 +299,16 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                                                         <React.Fragment>
                                                             <TextField
                                                                 // label="Investment Amount"
-                                                                placeholder="100 Dai"
+                                                                placeholder="e.g. 100"
                                                                 autoFocus={true}
                                                                 value={
                                                                     investmentAmount
                                                                 }
-                                                                onChangeCustom={
+                                                                onChange={
                                                                     this
                                                                         .handleChange
                                                                 }
-                                                                {...input}
+                                                                // {...input}
                                                                 {...meta}
                                                             />
                                                             {meta.touched &&

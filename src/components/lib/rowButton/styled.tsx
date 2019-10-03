@@ -4,15 +4,11 @@ import { ButtonProps } from './interface'
 const ButtonWrapper = styled.button<ButtonProps>`
   float:left;
   width: 25%;
-  // display: inline-block;
-  // flex-basis: unset;
-  // width: 25%;
   padding: 8px 16px;
-  // margin-left: -8px;
-  // margin-right: -8px;
-  // min-width: 100px;
   cursor: pointer;
   outline: none;
+  font-size: 14px;
+  border-radius: 30px;
   text-decoration: none;
   text-align: center;
   // font-weight: 600;

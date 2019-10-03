@@ -1,6 +1,7 @@
 import React from 'react'
 import { ButtonWrapper } from './styled'
 import { ButtonProps } from './interface'
+import { formatBN } from '../../../utils/formatters'
 
 const RowButton: React.FC<ButtonProps> = ({
     type,
@@ -13,11 +14,11 @@ const RowButton: React.FC<ButtonProps> = ({
     <ButtonWrapper
         type={type ? type : 'button'}
         onClick={() => onClick(value)}
-        color={color}
+        color={'Blue'}
         disabled={disabled}
         outline={true}
     >
-        {value}
+        {formatBN(value.toString())}
     </ButtonWrapper>
 )
 
