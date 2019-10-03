@@ -2,6 +2,7 @@ import React from 'react'
 import { TextField, Button } from '../../lib'
 import { Margin, Padding } from '../../../styles/utils'
 import CornellLogo from '../../../images/cornell.png'
+import InesPhoto from '../../../images/inesSquare.png'
 import {
     SliderInput,
     SliderMinMax,
@@ -57,42 +58,40 @@ class IncomeShareCalculator extends React.Component<
             <React.Fragment>
                 <SimulationWrapper>
                     <Margin>
-                        {/* <Margin top={8}>
-                            <h6>Investment Amount</h6>
-                            <TextField
-                                type="number"
-                                placeholder="e.g. 5,000"
-                                value={
-                                    investmentAmount === 0
-                                        ? ''
-                                        : investmentAmount
-                                }
-                                onChange={this.handleChangeInvestmentAmount}
-                            />
-                        </Margin> */}
-                        <Margin top={10}>
-                            <p style={{ display: 'inline-block' }}>
-                                Repayment Floor
-                            </p>
-                            <p style={{ float: 'right' }}>
-                                <b>{minRepayment} Dai</b>
-                            </p>
-                        </Margin>
-                        <Margin bottom={8}>
-                            <p style={{ display: 'inline-block' }}>
-                                Repayment Ceiling
-                            </p>
-                            <p style={{ float: 'right' }}>
-                                <b>{maxRepayment} Dai</b>
-                            </p>
+                        <Margin top={8}>
+                            <h5>Simulate Returns</h5>
+                            <Margin top={14} bottom={24}>
+                                <div
+                                    style={{
+                                        position: 'absolute',
+                                        height: '70px',
+                                        width: '70px',
+                                    }}
+                                >
+                                    <img src={InesPhoto} alt="Ines - Photo" />
+                                </div>
+                                <Padding left={80}>
+                                    <small>
+                                        Ines is offering a{' '}
+                                        <a
+                                            href="https://ines.fund"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            18% Income Share Agreement over 6
+                                            years{' '}
+                                        </a>{' '}
+                                        to raise 60,000 Dai to attend Cornell's
+                                        MILR program.
+                                    </small>
+                                </Padding>
+                            </Margin>
                         </Margin>
                     </Margin>
-                    <hr />
-                    <Margin top={18}>
-                        <h6>Simulate Salary</h6>
+                    <Margin top={35}>
                         <Margin top={10}>
                             <p style={{ display: 'inline-block' }}>
-                                Average Annual Salary
+                                Simulated Annual Salary
                             </p>
                             <p style={{ float: 'right' }}>
                                 ${formatBN(salary.toString())}
@@ -149,7 +148,7 @@ class IncomeShareCalculator extends React.Component<
                     </Margin>
                     <Margin>
                         <p style={{ display: 'inline-block' }}>
-                            Simulated Monthly Payment
+                            Monthly Payment
                         </p>
                         <p style={{ float: 'right' }}>
                             {simulatedMonthlyRepayment} Dai
@@ -158,6 +157,18 @@ class IncomeShareCalculator extends React.Component<
                     <Margin>
                         <p style={{ display: 'inline-block' }}>Duration</p>
                         <p style={{ float: 'right' }}>6 years</p>
+                    </Margin>
+                    <Margin>
+                        <p style={{ display: 'inline-block' }}>
+                            Min. Repayment
+                        </p>
+                        <p style={{ float: 'right' }}>{minRepayment} Dai</p>
+                    </Margin>
+                    <Margin bottom={8}>
+                        <p style={{ display: 'inline-block' }}>
+                            Max. Repayment
+                        </p>
+                        <p style={{ float: 'right' }}>{maxRepayment} Dai</p>
                     </Margin>
 
                     <Margin vertical={24}>

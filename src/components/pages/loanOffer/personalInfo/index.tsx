@@ -146,7 +146,6 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
             this.setState({ transacting: false })
             return console.error(e)
         }
-        // TO DO (Dennis): Display an error message or redirect to the home page if the loan is not yet started, failed, or completed.
     }
 
     componentDidMount = async () => {
