@@ -21,6 +21,7 @@ import {
 } from '../../../../constant/validation'
 import createDecorator from 'final-form-focus'
 import { withNavbarAndFooter } from '../../../hoc'
+import IncomeShareCalculator from '../../../financial/incomeShareCalculator'
 
 /**
  * Invest functionality
@@ -440,7 +441,9 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                                 />
                             </Col>
                             <Col lg={6} md={12}>
-                                {' '}
+                                <IncomeShareCalculator
+                                    investmentAmount={investmentAmount}
+                                />
                             </Col>
                         </Row>
                     </HeroCell>

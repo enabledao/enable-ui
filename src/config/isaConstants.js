@@ -14,7 +14,7 @@ const ISA_MAX_REPAYMENT = BN(Web3.utils.toWei('120000', 'ether'))
 const ISA_DURATION_MONTHS = 72
 const ISA_EXPECTED_SALARY = BN(Web3.utils.toWei('86320', 'ether'))
 const SIMULATION_MAX_SALARY = 120000
-const SIMULATION_MIN_SALARY = 30000
+const SIMULATION_MIN_SALARY = 25000
 
 export {
     ISA_PERCENTAGE,

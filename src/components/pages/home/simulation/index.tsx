@@ -57,7 +57,7 @@ class SimuLationReturn extends React.Component<
             textfieldShow: false,
             investmentAmount: 10000,
             salary: 86320,
-            salaryMin: 30000,
+            salaryMin: 25000,
             salaryMax: 120000,
             showModal: false,
             showModalGuarantor: false,
@@ -229,6 +229,7 @@ class SimuLationReturn extends React.Component<
                         </Padding>
                     </SocialContent>
                 </Margin>
+
                 <Margin top={40}>
                     <h5>Simulate Returns</h5>
                 </Margin>
@@ -342,7 +343,7 @@ class SimuLationReturn extends React.Component<
                             {expectedTotalReturn}
                             &nbsp;<small>Dai</small>
                         </h4>
-                        <small>Expected Total Return</small>
+                        <small>Simulated Total Return</small>
                     </Margin>
                     <ButtonLendSimulation>
                         <Margin vertical={24}>
@@ -354,6 +355,7 @@ class SimuLationReturn extends React.Component<
                     {/* </Col>
                     </Row> */}
                 </SimulationWrapper>
+
                 <Margin vertical={40}>
                     <h5>Company Sponsorships</h5>
                 </Margin>
