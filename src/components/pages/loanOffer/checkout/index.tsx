@@ -95,8 +95,9 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
         this.handleAmountSelected = this.handleAmountSelected.bind(this)
     }
 
-    onSubmit = async (data: any) => {
+    onSubmit = async (values: any) => {
         const { history } = this.props
+        const { name, email } = values
         const { crowdloanInstance, investmentAmount } = this.state
         if (!+investmentAmount) {
             return console.error('Can not contribute Zero(0)')
@@ -135,6 +136,14 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                 await getInjectedAccountAddress(),
                 crowdloanInstance.options.address
             )
+
+            console.log(`
+            investmentAmount:       ${investmentAmount}
+            valueInERC20:           ${valueInERC20}
+            Approved Balance:       ${approvedBalance}
+            Name:                   ${name}
+            Email:                  ${email}
+            `)
 
             let tx
             if (BN(approvedBalance).lt(BN(valueInERC20))) {
@@ -243,11 +252,6 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                                 <Form
                                     onSubmit={this.onSubmit}
                                     decorators={[focusOnErrors]}
-                                    validate={values => {
-                                        const errors = {}
-                                        console.log(values)
-                                        return errors
-                                    }}
                                     render={({ handleSubmit }) => (
                                         <form onSubmit={handleSubmit}>
                                             <h5>Complete Your Investment</h5>
