@@ -21,8 +21,8 @@ const HeroCell = styled.div`
 
 const CheckoutContainer = styled.div`
     top: -45vh;
-    padding-left: 200px;
-    padding-right: 200px;
+    max-width: 900px;
+    margin: auto;
     small {
         color: grey;
         font-size: 12px;

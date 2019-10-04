@@ -18,7 +18,6 @@ interface TabProfileProps {
     expectedSalary?: any
     paymentToken?: any
     crowdloanInstance?: any
-    simulateInterest: (contribution: string | number) => object
 }
 
 export interface ProfileState {
@@ -256,7 +255,6 @@ class Profile extends React.Component<TabProfileProps, ProfileState> {
                             <SimuLationReturn
                                 contributors={this.props.contributors}
                                 paymentToken={this.props.paymentToken}
-                                simulateInterest={this.props.simulateInterest}
                                 expectedSalary={this.props.expectedSalary}
                             />
                         </Padding>

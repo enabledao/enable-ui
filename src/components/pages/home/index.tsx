@@ -5,10 +5,7 @@ import TabHome from './tab'
 import ModalWip from './modalWip'
 import { getDeployedFromConfig } from '../../../utils/getDeployed'
 import contractAddresses from '../../../config/ines.fund'
-import {
-    calcExpectedReturn,
-    calcIncomeSharePercentage,
-} from '../../../utils/jsCalculator'
+import { calcExpectedReturn } from '../../../utils/jsCalculator'
 import { getTokenDetailsFromAddress } from '../../../utils/paymentToken'
 import {
     getPrincipalToken,
@@ -49,24 +46,6 @@ class Home extends React.Component<{}, HomeState> {
         paymentToken: null,
         crowdloanInstance: null,
         loanMetadata: null,
-    }
-
-    simulateInterest = (contribution, salary?) => {
-        const {
-            interestRate,
-            principalRequested,
-            expectedSalary,
-            loanPeriod,
-        } = this.state
-        return {
-            totalAmount: calcExpectedReturn(
-                contribution,
-                principalRequested,
-                interestRate,
-                salary || expectedSalary,
-                loanPeriod
-            ),
-        }
     }
 
     componentDidMount = async () => {
@@ -138,7 +117,6 @@ class Home extends React.Component<{}, HomeState> {
                     contributors={this.state.contributors}
                     paymentToken={this.state.paymentToken}
                     crowdloanInstance={this.state.crowdloanInstance}
-                    simulateInterest={this.simulateInterest}
                     expectedSalary={this.state.expectedSalary}
                 />
             </React.Fragment>
