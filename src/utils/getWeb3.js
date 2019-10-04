@@ -1,7 +1,10 @@
 import Web3 from 'web3'
 import { INFURA_PROVIDER } from '../config/constants'
 
-const infuraProjectId = process.env.REACT_APP_INFURA_PROJECT_ID
+/**
+ * TODO(Dan): Should be injected server-side once we move to Next.js
+ */
+const infuraProjectId = '6cbcb14ceae14decac19c71afc7c6c5d'
 
 let web3
 let gettingWeb3

@@ -3,11 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { NormalizeStyle } from './styles/bases'
 import Home from './components/pages/home'
 import ErrorNotFound from './components/pages/error'
-import {
-    Checkout,
-    LoanAmount,
-    LoanOfferThankYou,
-} from './components/pages/loanOffer'
+import { Checkout, LoanOfferThankYou } from './components/pages/loanOffer'
 import Faucet from './components/pages/faucet'
 import MyLoan from './components/pages/myLoan'
 import { AppPath } from './constant/appPath'
@@ -26,13 +22,8 @@ const App: React.FC = () => {
                     />
                     <Route
                         exact={true}
-                        path={AppPath.LoanPersonalInfo}
+                        path={AppPath.checkout}
                         component={Checkout}
-                    />
-                    <Route
-                        exact={true}
-                        path={AppPath.LoanOfferAmount}
-                        component={LoanAmount}
                     />
                     <Route
                         exact={true}

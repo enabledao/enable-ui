@@ -17,6 +17,7 @@ export default ({ youtubeId }) => {
             }}
             src={`https://www.youtube.com/embed/${youtubeId}`}
             frameBorder="0"
+            allowFullScreen
         />
     );
 };

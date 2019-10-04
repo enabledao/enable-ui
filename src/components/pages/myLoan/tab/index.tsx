@@ -19,6 +19,7 @@ export interface TabHomeState {
 interface TabHomeProps {
   borrower?: boolean;
   transacting?: boolean;
+  allowance?: string;
   loanStatus?: string;
   withdrawals?: object;
   repayments?: object;
@@ -50,6 +51,7 @@ class TabHome extends React.Component<TabHomeProps, TabHomeState> {
     const { page } = this.state;
     const {
       transacting,
+      allowance,
       loanStatus,
       withdrawals,
       repayments,
@@ -64,6 +66,7 @@ class TabHome extends React.Component<TabHomeProps, TabHomeState> {
         return (
           <Fragment>
             <Withdrawal
+              allowance={allowance}
               withdrawals={withdrawals}
               transacting={transacting}
               onWithdraw={onWithdraw}
@@ -80,6 +83,7 @@ class TabHome extends React.Component<TabHomeProps, TabHomeState> {
         return (
           <Fragment>
             <BorrowerActions
+              transacting={transacting}
               loanStatus={loanStatus}
               onborrowerwithdraw={onborrowerwithdraw}
               onrepay={onrepay}

@@ -12,24 +12,23 @@
 
 export default {
     1: {
-        Crowdloan: "",
-        CrowdloanFactory: "",
-        TokenFaucet: ""
+        Crowdloan: '0xdff3216bbc36beb9c9b54b9619d9a9283584af5e',
+        CrowdloanFactory: '0x1a3058D8E07b1127b855854550658aE803A4Bdec',
+        TokenFaucet: '',
     },
     3: {
-        Crowdloan: "",
-        CrowdloanFactory: "",
-        TokenFaucet: ""
+        Crowdloan: '',
+        CrowdloanFactory: '',
+        TokenFaucet: '',
     },
-    42:{
-        Crowdloan: "0x9f924eEc2db7631F45024F1518F8eb9A3768c583",
-        CrowdloanFactory: "0xa1E3b1B0bE47F3067AA0d96394517e1d8E9A2745",
-        TokenFaucet: "0x54A983EE975627D2b3c0fB1862f8D1160665637c",
+    42: {
+        Crowdloan: '0x6052943849a3d977a9bbb0d651e88991b9e631d6',
+        CrowdloanFactory: '0xa1E3b1B0bE47F3067AA0d96394517e1d8E9A2745',
+        TokenFaucet: '0x54A983EE975627D2b3c0fB1862f8D1160665637c',
     },
     1002: {
-        Crowdloan: "",
-        CrowdloanFactory: "",
-        TokenFaucet: ""
-    }
-    
+        Crowdloan: '',
+        CrowdloanFactory: '',
+        TokenFaucet: '',
+    },
 }

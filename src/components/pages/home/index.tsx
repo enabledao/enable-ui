@@ -5,10 +5,7 @@ import TabHome from './tab'
 import ModalWip from './modalWip'
 import { getDeployedFromConfig } from '../../../utils/getDeployed'
 import contractAddresses from '../../../config/ines.fund'
-import {
-    calcExpectedReturn,
-    calcIncomeSharePercentage,
-} from '../../../utils/jsCalculator'
+import { calcExpectedReturn } from '../../../utils/jsCalculator'
 import { getTokenDetailsFromAddress } from '../../../utils/paymentToken'
 import {
     getPrincipalToken,
@@ -51,24 +48,6 @@ class Home extends React.Component<{}, HomeState> {
         loanMetadata: null,
     }
 
-    simulateInterest = (contribution, salary?) => {
-        const {
-            interestRate,
-            principalRequested,
-            expectedSalary,
-            loanPeriod,
-        } = this.state
-        return {
-            totalAmount: calcExpectedReturn(
-                contribution,
-                principalRequested,
-                interestRate,
-                salary || expectedSalary,
-                loanPeriod
-            ),
-        }
-    }
-
     componentDidMount = async () => {
         const networkName = await getNetworkName()
         ShowModal(<ModalWip networkName={networkName} />)
@@ -97,18 +76,17 @@ class Home extends React.Component<{}, HomeState> {
         })
 
         const contributors = (await Promise.all(
-            [
-                ...Object.values(
-                    new Set(fundEvents.map(event => event.returnValues.sender))
-                ),
-            ].map(async address => {
+            Array.from(
+                new Set(fundEvents.map(event => event.returnValues.sender))
+            )
+            .map(async address => {
                 const amount = await amountContributed(
                     crowdloanInstance,
                     address
                 )
                 return { address, amount }
             })
-        )).sort((a, b) => (+a.amount > +b.amount ? 1 : -1)) // Sort contributors from the highest lending amount to the lending amount
+        )).sort((a, b) => (+a.amount > +b.amount ? -1 : 1)) // Sort contributors from the highest lending amount to the lending amount
 
         this.setState({
             networkName,
@@ -138,7 +116,6 @@ class Home extends React.Component<{}, HomeState> {
                     contributors={this.state.contributors}
                     paymentToken={this.state.paymentToken}
                     crowdloanInstance={this.state.crowdloanInstance}
-                    simulateInterest={this.simulateInterest}
                     expectedSalary={this.state.expectedSalary}
                 />
             </React.Fragment>

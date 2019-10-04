@@ -34,7 +34,6 @@ interface SimuLationReturnProps extends RouteComponentProps<any> {
     contributors?: any
     expectedSalary?: any
     paymentToken: any
-    simulateInterest: (contribution: string | number, salary?: string) => any
 }
 
 export interface SimuLationReturnState {
@@ -58,8 +57,8 @@ class SimuLationReturn extends React.Component<
             textfieldShow: false,
             investmentAmount: 10000,
             salary: 86320,
-            salaryMin: 30000,
-            salaryMax: 150000,
+            salaryMin: 25000,
+            salaryMax: 120000,
             showModal: false,
             showModalGuarantor: false,
             simulated: null,
@@ -68,7 +67,7 @@ class SimuLationReturn extends React.Component<
 
     handleLend = () => {
         const { history } = this.props
-        history.push(AppPath.LoanPersonalInfo)
+        history.push(AppPath.checkout)
     }
 
     handleChangeSalary = e => {
@@ -81,15 +80,6 @@ class SimuLationReturn extends React.Component<
         this.setState({
             investmentAmount: Number(e.target.value),
         })
-    }
-
-    getSimulated = () => {
-        return this.props.simulateInterest(
-            prepBigNumber(
-                this.state.investmentAmount,
-                this.props.paymentToken.decimals
-            )
-        )
     }
 
     render() {
@@ -203,7 +193,7 @@ class SimuLationReturn extends React.Component<
                         </Margin>
                     </IdentityBox>
                 </Margin>
-                <Margin top={40}>
+                {/* <Margin top={40}>
                     <h5>Social Credits</h5>
                     <p>Attested by 2 guarantors</p>
                 </Margin>
@@ -238,7 +228,8 @@ class SimuLationReturn extends React.Component<
                             </p>
                         </Padding>
                     </SocialContent>
-                </Margin>
+                </Margin> */}
+
                 <Margin top={40}>
                     <h5>Simulate Returns</h5>
                 </Margin>
@@ -352,7 +343,7 @@ class SimuLationReturn extends React.Component<
                             {expectedTotalReturn}
                             &nbsp;<small>Dai</small>
                         </h4>
-                        <small>Expected Total Return</small>
+                        <small>Simulated Total Return</small>
                     </Margin>
                     <ButtonLendSimulation>
                         <Margin vertical={24}>
@@ -364,6 +355,7 @@ class SimuLationReturn extends React.Component<
                     {/* </Col>
                     </Row> */}
                 </SimulationWrapper>
+
                 <Margin vertical={40}>
                     <h5>Company Sponsorships</h5>
                 </Margin>
@@ -381,8 +373,10 @@ class SimuLationReturn extends React.Component<
                                 Expected Repayment Calculator
                             </h6>
                             <h5>
-                                38,000??? Dai&nbsp;
-                                <small>&nbsp;(Expected Salary)</small>
+                                46,612 Dai&nbsp;
+                                <small>
+                                    &nbsp;(simulated $86,320 annual salary)
+                                </small>
                             </h5>
                         </Margin>
                         <Button
@@ -411,8 +405,10 @@ class SimuLationReturn extends React.Component<
                                 Expected Repayment Calculator
                             </h6>
                             <h5>
-                                6,000??? Dai&nbsp;
-                                <small>&nbsp;(Expected Salary)</small>
+                                7,768 Dai&nbsp;
+                                <small>
+                                    &nbsp;(simulated $86,320 annual salary)
+                                </small>
                             </h5>
                         </Margin>
                         <Button
@@ -441,7 +437,7 @@ class SimuLationReturn extends React.Component<
                             this.props.contributors.map(contributor => (
                                 <React.Fragment key={contributor.address}>
                                     <Col lg={6}>
-                                        <h6>Daniel</h6>
+                                        <h6>Anonymous</h6>
                                         <small>
                                             <p
                                                 style={{

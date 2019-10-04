@@ -36,9 +36,9 @@ const Withdrawal: any = ({
           <Row>
             <Col lg={6} md={12}>
               <Button color="green" onClick={onWithdraw} disabled={transacting}>
-                Withdraw
-                {transacting &&
-                    <Spinner size="16"/>
+                {transacting ?
+                    <Spinner size="16"/> :
+                    ("Withdraw")
                 }
               </Button>
             </Col>

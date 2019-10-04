@@ -108,14 +108,12 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         try {
             this.setState({ transacting: true })
 
-            const injectedAccountAddress = await getInjectedAccountAddress()
             const tx = await withdrawRepayment(
-                crowdloanInstance,
-                injectedAccountAddress
+                crowdloanInstance
             )
             console.log(tx)
 
-            this.setState({ transacting: false })
+            this.setState({ transacting: false, loaded: false }, () => this.loadInvestment())
             return
         } catch (e) {
             this.setState({ transacting: false })
@@ -137,20 +135,21 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             const tx = await startCrowdfund(crowdloanInstance)
             console.log(tx)
 
-            this.setState({ transacting: false })
+            this.setState({ transacting: false, loaded: false }, () => this.loadInvestment())
             return
         } catch (e) {
             this.setState({ transacting: false })
             return console.error(e)
         }
     }
+
     onborrowerwithdraw = async () => {
         const { crowdloanInstance, paymentToken } = this.state
 
         try {
+            const amount = window.prompt('How much do you want to withdraw?')
             this.setState({ transacting: true })
 
-            const amount = window.prompt('How much do you want to withdraw?')
             if (!+amount) {
                 return console.error('Withdrawal cancelled')
             }
@@ -161,7 +160,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             )
             console.log(tx)
 
-            this.setState({ transacting: false })
+            this.setState({ transacting: false, loaded: false }, () => this.loadInvestment())
             return
         } catch (e) {
             this.setState({ transacting: false })
@@ -177,6 +176,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         } = this.state
 
         try {
+            const amount = window.prompt('How much do you want to repay?')
             this.setState({ transacting: true })
 
             const now = prepBigNumber(
@@ -189,8 +189,6 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             if (+crowdfundEnd >= +now) {
                 return console.error('Repayment not yet active')
             }
-
-            const amount = window.prompt('How much do you want to repay?')
 
             if (!+amount) {
                 return console.error('Repayment cancelled')
@@ -219,7 +217,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
             console.log(tx)
 
-            this.setState({ transacting: false })
+            this.setState({ transacting: false, loaded: false }, () => this.loadInvestment())
             return
         } catch (e) {
             this.setState({ transacting: false })
@@ -291,6 +289,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 _releaseAllowance = await availableWithdrawal(
                     injectedAccountShares,
                     _totalShares,
+                    _totalPaid,
                     injectedAccountReleased
                 )
             } else {
@@ -594,6 +593,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         <Col  lg="hidden" md="hidden" sm="hidden" xs={12}>
                             <Tabs
                                 borrower={false}
+                                allowance={releaseAllowance}
                                 withdrawals={withdrawals}
                                 transacting={transacting}
                                 onWithdraw={this.onWithdraw}
@@ -792,6 +792,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         <Col lg="hidden" md="hidden" sm="hidden" xs={12}>
                             <Tabs
                                 borrower={true}
+                                transacting={this.state.transacting}
                                 loanStatus={this.loanStatus()}
                                 onborrowerwithdraw={this.onborrowerwithdraw}
                                 onrepay={this.onrepay}
@@ -807,6 +808,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         <Col lg={6} md={12} xs="hidden">
                             <HeroContent>
                                 <BorrowerActions
+                                    transacting={this.state.transacting}
                                     loanStatus={this.loanStatus()}
                                     onborrowerwithdraw={this.onborrowerwithdraw}
                                     onrepay={this.onrepay}

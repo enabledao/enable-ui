@@ -1,19 +1,18 @@
 import React from 'react'
 import { Form, Field } from 'react-final-form'
-import { Container, MainContainer } from '../../../../styles/bases'
 import { Margin, Padding } from '../../../../styles/utils'
-import { Spinner } from '../../../lib'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { AppPath } from '../../../../constant/appPath'
 import PatternImage from '../../../../images/pattern.png'
 import {
-    Breadcrumb,
+    Spinner,
     Row,
     Col,
     TextField,
     Checkbox,
     Button,
     FieldError,
+    RowButton,
 } from '../../../lib'
 import {
     CheckoutWrapper,
@@ -30,6 +29,7 @@ import {
 } from '../../../../constant/validation'
 import createDecorator from 'final-form-focus'
 import { withNavbarAndFooter } from '../../../hoc'
+import IncomeShareCalculator from '../../../financial/incomeShareCalculator'
 
 /**
  * Invest functionality
@@ -80,10 +80,10 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
         super(props)
         this.state = {
             transacting: false,
-            investmentAmount: 0,
+            investmentAmount: 1000,
             crowdloanInstance: null,
             loanParams: {
-                interestRate: 0,
+                incomeSharePercentage: 0,
                 loanPeriod: 0,
                 principalRequested: 0,
                 expectedSalary: 0,
@@ -92,15 +92,12 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
         }
         this.onSubmit = this.onSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleAmountSelected = this.handleAmountSelected.bind(this)
     }
 
-    // onSubmit = (data: any) => {
-    //     const { history } = this.props
-    //     history.push(AppPath.LoanOfferAmount)
-    // }
-
-    onSubmit = async (data: any) => {
+    onSubmit = async (values: any) => {
         const { history } = this.props
+        const { name, email } = values
         const { crowdloanInstance, investmentAmount } = this.state
         if (!+investmentAmount) {
             return console.error('Can not contribute Zero(0)')
@@ -108,8 +105,6 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
 
         try {
             this.setState({ transacting: true })
-            console.log('Hello')
-
             // Note: Assuming lender can only fund a loan when the loan is started
             const isLoanStarted =
                 +(await getCrowdfundStart(crowdloanInstance)) !== ZERO
@@ -142,6 +137,14 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                 crowdloanInstance.options.address
             )
 
+            console.log(`
+            investmentAmount:       ${investmentAmount}
+            valueInERC20:           ${valueInERC20}
+            Approved Balance:       ${approvedBalance}
+            Name:                   ${name}
+            Email:                  ${email}
+            `)
+
             let tx
             if (BN(approvedBalance).lt(BN(valueInERC20))) {
                 tx = await approveAndFund(
@@ -161,7 +164,6 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
             this.setState({ transacting: false })
             return console.error(e)
         }
-        // TO DO (Dennis): Display an error message or redirect to the home page if the loan is not yet started, failed, or completed.
     }
 
     componentDidMount = async () => {
@@ -185,13 +187,15 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
             const loanMetadata = await fetchLoanMetadata(loanMetadataUrl)
 
             const loanPeriod = await getLoanPeriod(loanMetadata)
-            const interestRate = await getIncomeSharePercentage(loanMetadata)
+            const incomeSharePercentage = await getIncomeSharePercentage(
+                loanMetadata
+            )
             const expectedSalary = await getExpectedSalary(loanMetadata)
 
             this.setState({
                 crowdloanInstance,
                 loanParams: {
-                    interestRate,
+                    incomeSharePercentage,
                     principalRequested,
                     expectedSalary,
                     loanPeriod,
@@ -209,10 +213,12 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
         })
     }
 
+    handleAmountSelected = value => {
+        this.setState({ investmentAmount: value })
+    }
+
     render() {
-        const { history } = this.props
         const { investmentAmount, transacting } = this.state
-        console.log(this.state)
         return (
             <CheckoutWrapper>
                 <HeroWrapper>
@@ -249,34 +255,64 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                                     render={({ handleSubmit }) => (
                                         <form onSubmit={handleSubmit}>
                                             <h5>Complete Your Investment</h5>
-                                            <Margin top={32} bottom={32}>
+                                            <Margin top={40}>
+                                                <h6>Investment Amount</h6>
+                                            </Margin>
+                                            <Margin top={10} horizontal={15}>
+                                                <Row>
+                                                    <RowButton
+                                                        value={100}
+                                                        onClick={
+                                                            this
+                                                                .handleAmountSelected
+                                                        }
+                                                    />
+                                                    <RowButton
+                                                        value={250}
+                                                        onClick={
+                                                            this
+                                                                .handleAmountSelected
+                                                        }
+                                                    />
+                                                    <RowButton
+                                                        value={1000}
+                                                        onClick={
+                                                            this
+                                                                .handleAmountSelected
+                                                        }
+                                                    />
+                                                    <RowButton
+                                                        value={5000}
+                                                        onClick={
+                                                            this
+                                                                .handleAmountSelected
+                                                        }
+                                                    />
+                                                </Row>
+                                            </Margin>
+
+                                            <Margin top={10} bottom={32}>
                                                 <Field
                                                     name="amount"
                                                     type="number"
-                                                    validate={composeValidators(
-                                                        requiredField,
-                                                        mustBeNumber
-                                                    )}
+                                                    // validate={mustBeNumber}
                                                     render={({
                                                         input,
                                                         meta,
                                                     }) => (
                                                         <React.Fragment>
                                                             <TextField
-                                                                label="Investment Amount"
-                                                                placeholder="100 Dai"
+                                                                // label="Investment Amount"
+                                                                placeholder="e.g. 100"
                                                                 autoFocus={true}
                                                                 value={
-                                                                    investmentAmount ===
-                                                                    0
-                                                                        ? ''
-                                                                        : investmentAmount
+                                                                    investmentAmount
                                                                 }
-                                                                onChangeCustom={
+                                                                onChange={
                                                                     this
                                                                         .handleChange
                                                                 }
-                                                                {...input}
+                                                                // {...input}
                                                                 {...meta}
                                                             />
                                                             {meta.touched &&
@@ -292,7 +328,7 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                                                 />
                                                 <Margin top={5}>
                                                     <small>
-                                                        Minimum 50 Dai
+                                                        Minimum 10 Dai
                                                     </small>
                                                 </Margin>
                                             </Margin>
@@ -455,7 +491,9 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                                 />
                             </Col>
                             <Col lg={6} md={12}>
-                                {' '}
+                                <IncomeShareCalculator
+                                    investmentAmount={investmentAmount}
+                                />
                             </Col>
                         </Row>
                     </HeroCell>
