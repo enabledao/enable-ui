@@ -441,7 +441,7 @@ class SimuLationReturn extends React.Component<
                             this.props.contributors.map(contributor => (
                                 <React.Fragment key={contributor.address}>
                                     <Col lg={6}>
-                                        <h6>Daniel</h6>
+                                        <h6>Anonymous</h6>
                                         <small>
                                             <p
                                                 style={{
