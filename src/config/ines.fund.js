@@ -12,7 +12,7 @@
 
 export default {
     1: {
-        Crowdloan: '0x08A1f29EEA68b28D68467192457291CB09D10935',
+        Crowdloan: '0x263433AE36C888A87fb8e0d279FfB7825343322D',
         CrowdloanFactory: '0x1a3058D8E07b1127b855854550658aE803A4Bdec',
         TokenFaucet: '',
     },
