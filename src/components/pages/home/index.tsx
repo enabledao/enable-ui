@@ -76,18 +76,17 @@ class Home extends React.Component<{}, HomeState> {
         })
 
         const contributors = (await Promise.all(
-            [
-                ...Object.values(
-                    new Set(fundEvents.map(event => event.returnValues.sender))
-                ),
-            ].map(async address => {
+            Array.from(
+                new Set(fundEvents.map(event => event.returnValues.sender))
+            )
+            .map(async address => {
                 const amount = await amountContributed(
                     crowdloanInstance,
                     address
                 )
                 return { address, amount }
             })
-        )).sort((a, b) => (+a.amount > +b.amount ? 1 : -1)) // Sort contributors from the highest lending amount to the lending amount
+        )).sort((a, b) => (+a.amount > +b.amount ? -1 : 1)) // Sort contributors from the highest lending amount to the lending amount
 
         this.setState({
             networkName,

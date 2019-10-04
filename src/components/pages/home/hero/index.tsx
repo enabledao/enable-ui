@@ -138,14 +138,14 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
     }
 
     handleModal() {
-        const { showModal } = this.state
+        const { showModal, paymentToken } = this.state
         const { contributors } = this.props
         this.setState(
             {
                 showModal: !showModal,
             },
             () =>
-                ShowModal(<ModalListContributor contributors={contributors} />)
+                ShowModal(<ModalListContributor contributors={contributors} paymentToken={paymentToken} />)
         )
     }
 
