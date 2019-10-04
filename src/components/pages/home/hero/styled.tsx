@@ -33,6 +33,8 @@ const HeroButtonLendMobile = styled.div`
 
 const HeroLink = styled.div`
     cursor: pointer;
+    height: 100%;
+    width: 100%;
 `
 
 const HeroStatsRight = styled.div`
@@ -56,6 +58,8 @@ const HeroStats = styled.div`
 
 const HeroImage = styled.div`
     position: relative;
+    height: 100%;
+    width: 100%;
 `
 
 const HeroVideo = styled.div`
@@ -63,7 +67,7 @@ const HeroVideo = styled.div`
     position: relative;
     padding-bottom: 56.25%;
     padding-top: 25
-    height: 0
+    height: 100%
     ${MaxWidth.xs`
         padding-top: 0;
         margin-top: -8px;
