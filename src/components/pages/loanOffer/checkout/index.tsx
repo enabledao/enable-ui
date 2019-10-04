@@ -328,7 +328,7 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                                                 />
                                                 <Margin top={5}>
                                                     <small>
-                                                        Minimum 50 Dai
+                                                        Minimum 10 Dai
                                                     </small>
                                                 </Margin>
                                             </Margin>

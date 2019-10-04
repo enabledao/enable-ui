@@ -193,7 +193,7 @@ class SimuLationReturn extends React.Component<
                         </Margin>
                     </IdentityBox>
                 </Margin>
-                <Margin top={40}>
+                {/* <Margin top={40}>
                     <h5>Social Credits</h5>
                     <p>Attested by 2 guarantors</p>
                 </Margin>
@@ -228,7 +228,7 @@ class SimuLationReturn extends React.Component<
                             </p>
                         </Padding>
                     </SocialContent>
-                </Margin>
+                </Margin> */}
 
                 <Margin top={40}>
                     <h5>Simulate Returns</h5>
@@ -373,8 +373,10 @@ class SimuLationReturn extends React.Component<
                                 Expected Repayment Calculator
                             </h6>
                             <h5>
-                                38,000??? Dai&nbsp;
-                                <small>&nbsp;(Expected Salary)</small>
+                                46,612 Dai&nbsp;
+                                <small>
+                                    &nbsp;(simulated $86,320 annual salary)
+                                </small>
                             </h5>
                         </Margin>
                         <Button
@@ -403,8 +405,10 @@ class SimuLationReturn extends React.Component<
                                 Expected Repayment Calculator
                             </h6>
                             <h5>
-                                6,000??? Dai&nbsp;
-                                <small>&nbsp;(Expected Salary)</small>
+                                7,768 Dai&nbsp;
+                                <small>
+                                    &nbsp;(simulated $86,320 annual salary)
+                                </small>
                             </h5>
                         </Margin>
                         <Button
