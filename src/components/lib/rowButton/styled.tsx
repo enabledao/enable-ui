@@ -11,9 +11,7 @@ const ButtonWrapper = styled.button<ButtonProps>`
   border-radius: 30px;
   text-decoration: none;
   text-align: center;
-  // font-weight: 600;
   color: white;
-  // width: 100%;
   line-height: 30px;
   transition: all ease-in-out 0.2s;
   color: black;
