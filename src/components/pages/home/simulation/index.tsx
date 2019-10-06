@@ -2,11 +2,8 @@ import React from 'react'
 import { TextField, Row, Col, Button } from '../../../lib'
 import { Margin, Padding } from '../../../../styles/utils'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import ProfileHover from 'profile-hover'
 import CornellLogo from '../../../../images/cornell.png'
 import BloomLogo from '../../../../images/bloomLogo.png'
-import BoxLogo from '../../../../images/3boxLogo.png'
-import InesSquare from '../../../../images/inesSquare.png'
 import { AppPath } from '../../../../constant/appPath'
 import {
     SliderInput,
@@ -15,14 +12,8 @@ import {
     SimulationWrapper,
     SocialContent,
     SocialAvatar,
-    IdentityBox,
-    ProfileSocialLink,
 } from './styled'
 import AvatarBrahma from '../../../../images/avatar/brahma.jpg'
-import Linkedin from '../../../../images/socialMedia/linkedin.svg'
-import Instagram from '../../../../images/socialMedia/instagram.svg'
-import Twitter from '../../../../images/socialMedia/twitter.svg'
-import Facebook from '../../../../images/socialMedia/facebook.svg'
 import { prepBigNumber } from '../../../../utils/web3Utils'
 import { formatBN } from '../../../../utils/formatters'
 import { simulateReturns } from '../../../../utils/jsCalculator'
@@ -30,6 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import ReactTooltip from 'react-tooltip'
 import ListContributor from '../listContributor'
+import BorrowerIdentityCard from '../borrowerIdentityCard'
 
 interface SimuLationReturnProps extends RouteComponentProps<any> {
     contributors?: any
@@ -98,103 +90,7 @@ class SimuLationReturn extends React.Component<
         return (
             <React.Fragment>
                 <Margin top={20} bottom={60}>
-                    <IdentityBox>
-                        <Row>
-                            <Col lg={6}>
-                                <h5>Identity</h5>
-                            </Col>
-
-                            <Col lg={6} text="right">
-                                <img src={BoxLogo} alt="3DBox - logo" />
-                            </Col>
-                        </Row>
-                        <div style={{ position: 'absolute' }}>
-                            <img src={InesSquare} alt="Ines - Square" />
-                        </div>
-                        <Padding left={124}>
-                            <h5>Widya Imanesti</h5>
-                            <p>Jakarta - Indonesia</p>
-                            <Margin top={16}>
-                                <ProfileSocialLink
-                                    href="https://id.linkedin.com/in/widya-imanesti"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    <img
-                                        src={Linkedin}
-                                        alt="Socila - Media"
-                                        width={20}
-                                    />
-                                </ProfileSocialLink>
-                                <ProfileSocialLink
-                                    href="https://www.instagram.com/wimanesti/?hl=en"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    <img
-                                        src={Instagram}
-                                        alt="Socila - Media"
-                                        width={20}
-                                    />
-                                </ProfileSocialLink>
-                                <ProfileSocialLink
-                                    href="https://twitter.com/itsenamiw"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    <img
-                                        src={Twitter}
-                                        alt="Socila - Media"
-                                        width={20}
-                                    />
-                                </ProfileSocialLink>
-                                <ProfileSocialLink
-                                    href="https://www.facebook.com/widya.imanesti"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    <img
-                                        src={Facebook}
-                                        alt="Socila - Media"
-                                        width={20}
-                                    />
-                                </ProfileSocialLink>
-                            </Margin>
-                        </Padding>
-                        <ProfileHover
-                            noTheme
-                            orientation={'top'}
-                            address={
-                                '0xf585e6B4173914A296c9b3AFa83f86bfaF4240f6'
-                            }
-                        >
-                            <Margin top={24}>
-                                <div
-                                    style={{
-                                        backgroundColor: '#f7f7f7',
-                                        padding: 16,
-                                        marginTop: 24,
-                                        overflow: 'hidden',
-                                    }}
-                                >
-                                    <b>
-                                        <small>ETH Wallet Key</small>
-                                    </b>
-
-                                    <small>
-                                        <p>
-                                            0xf585e6B4173914A296c9b3AFa83f86bfaF4240f6
-                                        </p>
-                                    </small>
-                                </div>
-                            </Margin>
-                        </ProfileHover>
-                        <Margin top={24}>
-                            <h6 style={{ color: '#21b549', cursor: 'pointer' }}>
-                                Admission Proof Document
-                            </h6>
-                        </Margin>
-                    </IdentityBox>
+                    <BorrowerIdentityCard />
                 </Margin>
                 {/* <Margin top={40}>
                     <h5>Social Credits</h5>
