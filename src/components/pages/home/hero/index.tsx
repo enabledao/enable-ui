@@ -1,7 +1,7 @@
 import React from 'react'
 import { ChasingDots } from 'styled-spinkit'
 import YoutubeEmbed from '../../../lib/youtube'
-import ModalListContributor from '../modalListContributor'
+import ModalListContributor from '../contributor/modalListContributor'
 import ModalVideo from './modalVideo'
 import { MainContainer } from '../../../../styles/bases'
 import { Margin } from '../../../../styles/utils'
@@ -145,7 +145,12 @@ class HomeHero extends React.Component<HomeHeroProps, HomeHeroState> {
                 showModal: !showModal,
             },
             () =>
-                ShowModal(<ModalListContributor contributors={contributors} paymentToken={paymentToken} />)
+                ShowModal(
+                    <ModalListContributor
+                        contributors={contributors}
+                        paymentToken={paymentToken}
+                    />
+                )
         )
     }
 

@@ -20,7 +20,7 @@ import { simulateReturns } from '../../../../utils/jsCalculator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import ReactTooltip from 'react-tooltip'
-import ListContributor from '../listContributor'
+import ListContributor from '../contributor/listContributor'
 import BorrowerIdentityCard from '../borrowerIdentityCard'
 import CompanySponsorships from './companySponsorships'
 

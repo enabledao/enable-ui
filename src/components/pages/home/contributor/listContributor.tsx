@@ -1,7 +1,7 @@
 import React from 'react'
-import { Margin } from '../../../styles/utils'
-import { Row, Col } from '../../lib'
-import { prepBigNumber } from '../../../utils/web3Utils'
+import { Margin } from '../../../../styles/utils'
+import { Row, Col } from '../../../lib'
+import { prepBigNumber } from '../../../../utils/web3Utils'
 
 interface Contributor {
     address: string
