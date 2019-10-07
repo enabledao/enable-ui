@@ -1,64 +1,29 @@
 import React from 'react'
-import { ModalWipWrapper } from './styled'
+import { connect } from 'react-redux'
+import KovanNotice from './kovanNotice'
+import MainnetNotice from './mainnetNotice'
+import NoWeb3Notice from './noWeb3Notice'
 
 interface ModalWipProps {
-    networkName: string
+    networkId: number
 }
 
-const ModalWip: React.FC<ModalWipProps> = ({ networkName }) => {
-    return (
-        <React.Fragment>
-            <h4>🚀 This is a testnet site! 🚀</h4>
-            <p>
-                This site lives on the{' '}
-                <a
-                    href={
-                        networkName === 'mainnet'
-                            ? `https://etherscan.io/`
-                            : `https://${networkName}.etherscan.io/`
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    {networkName === 'mainnet' ? 'ethereum ' : ''} {networkName}{' '}
-                    {networkName === 'mainnet' ? '' : 'testnet'}
-                </a>
-                , and uses real-life currency that doesn't have any value.
-            </p>
-            <ModalWipWrapper>
-                <li>
-                    <p>
-                        Any "loans" made to Ines on this site are <b>NOT</b>{' '}
-                        real
-                    </p>
-                </li>
-                <li>
-                    <p>
-                        Interested to help us with user testing? &nbsp;
-                        <a
-                            href="https://calendly.com/felix-yuniar/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <b>Sign up here</b>
-                        </a>
-                    </p>
-                </li>
-                <li>
-                    <p>
-                        Learn more about &nbsp;
-                        <a
-                            href="https://www.enable.credit/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <b>Enable</b>
-                        </a>
-                        , a initiative to build borderless stablecoin loans
-                    </p>
-                </li>
-            </ModalWipWrapper>
-        </React.Fragment>
-    )
+const ModalWip: React.FC<ModalWipProps> = ({ networkId }) => {
+    switch (networkId) {
+        case 1:
+            return <MainnetNotice />
+        case 42:
+            return <KovanNotice />
+        default:
+            return <NoWeb3Notice />
+    }
 }
-export default ModalWip
+
+function mapState(state) {
+    return { networkId: state.networkId }
+}
+
+export default connect(
+    mapState,
+    {}
+)(ModalWip)

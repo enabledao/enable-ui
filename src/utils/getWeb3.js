@@ -1,10 +1,12 @@
 import Web3 from 'web3'
 import { INFURA_PROVIDER } from '../config/constants'
+import { store } from '../store'
+import { setNetworkId } from '../store/networkId'
 
 /**
  * TODO(Dan): Should be injected server-side once we move to Next.js
  */
-const infuraProjectId = '6cbcb14ceae14decac19c71afc7c6c5d'
+const infuraProjectId = '67f26d677db04c0eb9a51c2789fa37e7'
 
 let web3
 let gettingWeb3
@@ -51,6 +53,8 @@ const getWeb3 = () =>
                 )
             }
             _web3.eth.defaultAccount = (await _web3.eth.getAccounts())[0]
+            const networkId = await _web3.eth.net.getId()
+            store.dispatch(setNetworkId(networkId))
             web3 = _web3
             gettingWeb3 = false
             resolve(web3)

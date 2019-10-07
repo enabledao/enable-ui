@@ -9,7 +9,7 @@ const ZERO = 0
 const HUNDRED = 100
 const MILLISECONDS = 1000
 const MONTHS_IN_YEAR = 12
-const INFURA_PROVIDER = 'https://kovan.infura.io/v3/'
+const INFURA_PROVIDER = 'https://mainnet.infura.io/v3/'
 const ISA_PERCENTAGE_DECIMALS = 3
 
 export {
