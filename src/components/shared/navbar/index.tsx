@@ -1,9 +1,10 @@
 import Navbar from './component'
-import { getNetworkId } from '../../../utils/web3Utils'
+import { connect } from 'react-redux'
 
-const GetNetworkId = async () => {
-    const networkId = await getNetworkId()
-    console.log(networkId)
+function mapState(state) {
+    return { networkId: state.networkId }
 }
-
-export default Navbar
+export default connect(
+    mapState,
+    {}
+)(Navbar)

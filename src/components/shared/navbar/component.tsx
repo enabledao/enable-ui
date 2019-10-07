@@ -15,7 +15,11 @@ const NavbarItemActive: any = {
     fontWeight: 700,
 }
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+    networkId: number
+}
+
+const Navbar: React.FC<NavbarProps> = ({ networkId }) => {
     return (
         <NavbarWrapper>
             <Container>
@@ -45,16 +49,17 @@ const Navbar: React.FC = () => {
                                 My Investment
                             </NavLink>
                         </NavbarItems>
-
-                        <NavbarItems>
-                            <NavLink
-                                exact={true}
-                                to={AppPath.faucet}
-                                activeStyle={NavbarItemActive}
-                            >
-                                Faucet
-                            </NavLink>
-                        </NavbarItems>
+                        {networkId === 42 && (
+                            <NavbarItems>
+                                <NavLink
+                                    exact={true}
+                                    to={AppPath.faucet}
+                                    activeStyle={NavbarItemActive}
+                                >
+                                    Faucet
+                                </NavLink>
+                            </NavbarItems>
+                        )}
                     </NavbarMenu>
                 </NavbarBox>
             </Container>
