@@ -1,38 +1,24 @@
-import styled from "styled-components";
-import { MaxWidth } from "../../../../styles/utils";
+import styled from 'styled-components'
+import { MaxWidth } from '../../../../styles/utils'
 
 const HeroWrapper = styled.div`
-  padding: 80px 0;
-  position: relative;
-  display: table;
-  width: 100%;
-  min-height: calc(100vh - (60px + 75px));
-  ${MaxWidth.md`
-    padding: 80px 0;
-  `}
-  ${MaxWidth.sm`
-    padding: 60px 0;
-  `}
-  &:before {
-    position: absolute;
+    padding-top: 20px;
+    position: relative;
     width: 100%;
-    height: 100%;
-    content: "";
-    opacity: 0.3;
-    top: 0;
-    left: 0;
-    background-image: linear-gradient(157deg, #ffffff 0%, #f9cec3 86%);
-  }
-`;
+    background-color: #363bd3;
+`
 
 const HeroCell = styled.div`
-  display: table-cell;
-  vertical-align: middle;
-`;
+    background-color: white;
+    padding: 30px;
+    ${MaxWidth.xs`
+        padding: 0 20px 20px;
+    `}
+`
 
 const HeroButtonLendMobile = styled.div`
-  display: none;
-  ${MaxWidth.sm`
+    display: none;
+    ${MaxWidth.sm`
     display: block;
     position: fixed;
     bottom: 0;
@@ -43,31 +29,60 @@ const HeroButtonLendMobile = styled.div`
     left: 0;
     z-index: 10;
   `}
-`;
+`
 
 const HeroLink = styled.div`
-  color: #0042eb;
-  cursor: pointer;
-`;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+`
+
+const HeroStatsRight = styled.div`
+    float: right;
+    color: #6c6d7a;
+`
 
 const HeroStats = styled.div`
-  h4 {
-    margin-bottom: 4px;
-    small {
-      font-size: 12px;
+    display: inline-block;
+    h5,
+    h4 {
+        font-size: 20px;
+        small {
+            font-size: 16px;
+        }
     }
-  }
-`;
+    p {
+        font-size: 12px;
+    }
+`
 
 const HeroImage = styled.div`
-  position: relative;
-`;
+    position: relative;
+    height: 100%;
+    width: 100%;
+`
+
+const HeroVideo = styled.div`
+    className: video;
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 25
+    height: 100%
+    ${MaxWidth.xs`
+        padding-top: 0;
+        margin-top: -8px;
+        margin-left: -20px;
+        margin-right: -20px;
+    `}
+`
 
 export {
-  HeroWrapper,
-  HeroCell,
-  HeroButtonLendMobile,
-  HeroLink,
-  HeroStats,
-  HeroImage
-};
+    HeroWrapper,
+    HeroCell,
+    HeroButtonLendMobile,
+    HeroLink,
+    HeroStats,
+    HeroImage,
+    HeroVideo,
+    HeroStatsRight,
+}

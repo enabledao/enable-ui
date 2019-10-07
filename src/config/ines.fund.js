@@ -12,32 +12,23 @@
 
 export default {
     1: {
-        Crowdloan: "",
-        CrowdloanFactory: "",
-        TermsContract: "",
-        TokenFaucet: "",
-        RepaymentManager: "",
+        Crowdloan: '0x2721C48B7859421251db293EdB2B3F6aEEBC5C89',
+        CrowdloanFactory: '0x1a3058D8E07b1127b855854550658aE803A4Bdec',
+        TokenFaucet: '',
     },
     3: {
-        Crowdloan: "",
-        CrowdloanFactory: "",
-        TermsContract: "",
-        TokenFaucet: "",
-        RepaymentManager: "",
+        Crowdloan: '',
+        CrowdloanFactory: '',
+        TokenFaucet: '',
     },
-    42:{
-        Crowdloan: "0x363439304c328a24fc0aC24d1c9Aaf08e074c8Cf",
-        CrowdloanFactory: "0x754F2d9bE9446a121e49dc615Cd65804f4D14419",
-        TermsContract: "0x88a91A84091399f0C07116FCfff536FB5aAb7Ce9",
-        TokenFaucet: "0x54A983EE975627D2b3c0fB1862f8D1160665637c",
-        RepaymentManager: "0xFE19c50b5436B848406A877947d81AF7Af5e28Fa"
+    42: {
+        Crowdloan: '0x6052943849a3d977a9bbb0d651e88991b9e631d6',
+        CrowdloanFactory: '0xa1E3b1B0bE47F3067AA0d96394517e1d8E9A2745',
+        TokenFaucet: '0x54A983EE975627D2b3c0fB1862f8D1160665637c',
     },
     1002: {
-        Crowdloan: "",
-        CrowdloanFactory: "",
-        TermsContract: "",
-        TokenFaucet: "",
-        RepaymentManager: ""
-    }
-    
+        Crowdloan: '',
+        CrowdloanFactory: '',
+        TokenFaucet: '',
+    },
 }

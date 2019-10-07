@@ -1,16 +1,23 @@
-const INTEREST_DECIMALS = 2;
 const LoanStatuses = {
-    NOT_STARTED: 0,
-    FUNDING_STARTED: 1,
-    FUNDING_FAILED: 2,
-    FUNDING_COMPLETE: 3,
-    REPAYMENT_CYCLE: 4,
-    REPAYMENT_COMPLETE: 5
-};
-const MILLISECONDS = 1000;
+    NOT_STARTED: 'Funding not started',
+    FUNDING_STARTED: 'Funding',
+    FUNDING_FAILED: 'Funding Failed',
+    REPAYMENT_CYCLE: 'Repayment Cycle',
+    REPAYMENT_COMPLETE: 'Repayment Complete',
+}
+const ZERO = 0
+const HUNDRED = 100
+const MILLISECONDS = 1000
+const MONTHS_IN_YEAR = 12
+const INFURA_PROVIDER = 'https://mainnet.infura.io/v3/'
+const ISA_PERCENTAGE_DECIMALS = 3
 
 export {
-    INTEREST_DECIMALS,
+    ISA_PERCENTAGE_DECIMALS,
+    INFURA_PROVIDER,
     LoanStatuses,
-    MILLISECONDS
+    MILLISECONDS,
+    MONTHS_IN_YEAR,
+    ZERO,
+    HUNDRED,
 }

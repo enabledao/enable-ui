@@ -1,64 +1,57 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const NavbarWrapper = styled.div`
-  position: relative;
-  &:before {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    content: "";
-    opacity: 0.2;
-    top: 0;
-    left: 0;
-    background-image: linear-gradient(157deg, #ffffff 0%, #f9cec3 86%);
-  }
-`;
+    position: relative;
+    background-color: #363bd3;
+`
 
 const NavbarBox = styled.div`
-  width: 100%;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
+    width: 100%;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
 
 const NavbarBrand = styled.div`
-  font-size: 20px;
-  font-weight: 600;
-  a {
-    position: relative;
-    color: black;
-  }
-`;
+    font-size: 20px;
+    font-weight: 600;
+    a {
+        position: relative;
+        color: white;
+    }
+`
 
 const NavbarBrandSmall = styled.div`
-  font-size: 12px;
-  display: inline-block;
-  margin-left: 4px;
-  font-weight: 400;
-`;
+    font-size: 12px;
+    display: inline-block;
+    font-weight: 400;
+    position: absolute;
+    top: calc(100%);
+    left: 0;
+`
 
 const NavbarMenu = styled.ul`
-  list-style: none;
-  display: flex;
-`;
+    list-style: none;
+    display: flex;
+`
 
 const NavbarItems = styled.li`
-  padding: 0 12px;
-  font-weight: 600;
-  &:last-child {
-    padding-right: 0;
-  }
-  a {
-    color: black;
-  }
-`;
+    padding: 0 12px;
+    font-weight: 400;
+    &:last-child {
+        padding-right: 0;
+    }
+    a {
+        color: white;
+    }
+`
 
 export {
-  NavbarWrapper,
-  NavbarBox,
-  NavbarBrand,
-  NavbarMenu,
-  NavbarItems,
-  NavbarBrandSmall
-};
+    NavbarWrapper,
+    NavbarBox,
+    NavbarBrand,
+    NavbarMenu,
+    NavbarItems,
+    NavbarBrandSmall,
+}
