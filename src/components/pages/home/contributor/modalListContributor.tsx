@@ -1,6 +1,6 @@
 import React from 'react'
-import { Row, Col } from '../../lib'
-import { prepBigNumber } from '../../../utils/web3Utils'
+import { Row, Col } from '../../../lib'
+import { prepBigNumber } from '../../../../utils/web3Utils'
 
 interface Contributor {
     address: string

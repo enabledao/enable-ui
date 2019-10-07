@@ -7,10 +7,12 @@ import { Checkout, LoanOfferThankYou } from './components/pages/loanOffer'
 import Faucet from './components/pages/faucet'
 import MyLoan from './components/pages/myLoan'
 import { AppPath } from './constant/appPath'
+import { Provider } from 'react-redux'
+import { store } from './store'
 
 const App: React.FC = () => {
     return (
-        <React.Fragment>
+        <Provider store={store}>
             <NormalizeStyle />
             <Router>
                 <Switch>
@@ -38,7 +40,7 @@ const App: React.FC = () => {
                     <Route component={ErrorNotFound} />
                 </Switch>
             </Router>
-        </React.Fragment>
+        </Provider>
     )
 }
 
