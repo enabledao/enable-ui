@@ -1,17 +1,18 @@
 import React from 'react'
 import { ModalWipWrapper } from './styled'
+import { connect } from 'react-redux'
 
 interface ModalWipProps {
-    networkName: string
+    networkId: number
 }
 
-const ModalWip: React.FC<ModalWipProps> = ({ networkName }) => {
+const ModalWip: React.FC<ModalWipProps> = ({ networkId }) => {
     return (
         <React.Fragment>
             <h4>🚀 This is a testnet site! 🚀</h4>
             <p>
-                This site lives on the{' '}
-                <a
+                This site lives on the {networkId}
+                {/* <a
                     href={
                         networkName === 'mainnet'
                             ? `https://etherscan.io/`
@@ -22,7 +23,7 @@ const ModalWip: React.FC<ModalWipProps> = ({ networkName }) => {
                 >
                     {networkName === 'mainnet' ? 'ethereum ' : ''} {networkName}{' '}
                     {networkName === 'mainnet' ? '' : 'testnet'}
-                </a>
+                </a> */}
                 , and uses real-life currency that doesn't have any value.
             </p>
             <ModalWipWrapper>
@@ -61,4 +62,12 @@ const ModalWip: React.FC<ModalWipProps> = ({ networkName }) => {
         </React.Fragment>
     )
 }
-export default ModalWip
+
+function mapState(state) {
+    return { networkId: state.networkId }
+}
+
+export default connect(
+    mapState,
+    {}
+)(ModalWip)

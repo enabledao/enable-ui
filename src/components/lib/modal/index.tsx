@@ -1,79 +1,83 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { ModalProps } from "./interface";
-import { ModalWrapper, ModalBody, ModalClose } from "./styled";
-import Close from "../../../images/icons/close.svg";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { ModalProps } from './interface'
+import { ModalWrapper, ModalBody, ModalClose } from './styled'
+import Close from '../../../images/icons/close.svg'
+import { store } from '../../../store'
+import { Provider } from 'react-redux'
 
 class Modal extends React.Component<ModalProps, {}> {
-  wrapperRef: any;
+    wrapperRef: any
 
-  constructor(props: ModalProps) {
-    super(props);
-    this.setWrapperRef = this.setWrapperRef.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleClickOutside = this.handleClickOutside.bind(this);
-  }
-
-  setWrapperRef(node: any) {
-    this.wrapperRef = node;
-  }
-
-  componentDidMount() {
-    document.getElementsByTagName("body")[0].style.overflow = "hidden";
-    const elApp = document.getElementById(
-      "enableInterface"
-    ) as HTMLInputElement;
-    elApp.style.filter = "blur(2px)";
-    if ("ontouchstart" in document.documentElement) {
-      document.body.style.cursor = "pointer";
+    constructor(props: ModalProps) {
+        super(props)
+        this.setWrapperRef = this.setWrapperRef.bind(this)
+        this.handleClick = this.handleClick.bind(this)
+        this.handleClickOutside = this.handleClickOutside.bind(this)
     }
-    document.addEventListener("mousedown", this.handleClickOutside);
-    document.addEventListener("keydown", e => {
-      if (e.keyCode === 27) {
-        return this.handleClick();
-      }
-    });
-  }
 
-  handleClick() {
-    const elModal = document.getElementById(
-      "enableInterfaceModal"
-    ) as HTMLInputElement;
-    if (elModal) {
-      elModal.remove();
+    setWrapperRef(node: any) {
+        this.wrapperRef = node
     }
-    document.getElementsByTagName("body")[0].style.overflow = "scroll";
-    const elApp = document.getElementById(
-      "enableInterface"
-    ) as HTMLInputElement;
-    elApp.style.filter = "none";
-  }
 
-  handleClickOutside(e: { target: any }) {
-    if (this.wrapperRef && !this.wrapperRef.contains(e.target)) {
-      this.handleClick();
+    componentDidMount() {
+        document.getElementsByTagName('body')[0].style.overflow = 'hidden'
+        const elApp = document.getElementById(
+            'enableInterface'
+        ) as HTMLInputElement
+        elApp.style.filter = 'blur(2px)'
+        if ('ontouchstart' in document.documentElement) {
+            document.body.style.cursor = 'pointer'
+        }
+        document.addEventListener('mousedown', this.handleClickOutside)
+        document.addEventListener('keydown', e => {
+            if (e.keyCode === 27) {
+                return this.handleClick()
+            }
+        })
     }
-  }
 
-  render() {
-    const { content } = this.props;
-    return (
-      <ModalWrapper>
-        <ModalBody ref={this.setWrapperRef}>
-          <ModalClose onClick={this.handleClick}>
-            <img src={Close} alt="Icon - Close" width={32} />
-          </ModalClose>
-          {content}
-        </ModalBody>
-      </ModalWrapper>
-    );
-  }
+    handleClick() {
+        const elModal = document.getElementById(
+            'enableInterfaceModal'
+        ) as HTMLInputElement
+        if (elModal) {
+            elModal.remove()
+        }
+        document.getElementsByTagName('body')[0].style.overflow = 'scroll'
+        const elApp = document.getElementById(
+            'enableInterface'
+        ) as HTMLInputElement
+        elApp.style.filter = 'none'
+    }
+
+    handleClickOutside(e: { target: any }) {
+        if (this.wrapperRef && !this.wrapperRef.contains(e.target)) {
+            this.handleClick()
+        }
+    }
+
+    render() {
+        const { content } = this.props
+        return (
+            <Provider store={store}>
+                <ModalWrapper>
+                    <ModalBody ref={this.setWrapperRef}>
+                        <ModalClose onClick={this.handleClick}>
+                            <img src={Close} alt="Icon - Close" width={32} />
+                        </ModalClose>
+                        {content}
+                    </ModalBody>
+                </ModalWrapper>
+            </Provider>
+        )
+    }
 }
 
 export default function ShowModal(content: any) {
-  const modalContainer = document.createElement("div");
-  modalContainer.setAttribute("id", "enableInterfaceModal");
-  document.body.appendChild(modalContainer);
+    const modalContainer = document.createElement('div')
+    modalContainer.setAttribute('id', 'enableInterfaceModal')
+    document.body.appendChild(modalContainer)
 
-  ReactDOM.render(<Modal content={content} />, modalContainer);
+    ReactDOM.render(<Modal content={content} />, modalContainer)
 }

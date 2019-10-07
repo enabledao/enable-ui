@@ -5,7 +5,6 @@ import TabHome from './tab'
 import ModalWip from './modalWip'
 import { getDeployedFromConfig } from '../../../utils/getDeployed'
 import contractAddresses from '../../../config/ines.fund'
-import { calcExpectedReturn } from '../../../utils/jsCalculator'
 import { getTokenDetailsFromAddress } from '../../../utils/paymentToken'
 import {
     getPrincipalToken,
@@ -20,11 +19,9 @@ import {
     getIncomeSharePercentage,
     getLoanPeriod,
 } from '../../../utils/metadata'
-import { getNetworkName } from '../../../utils/web3Utils'
 import { ShowModal } from '../../lib'
 
 export interface HomeState {
-    networkName: string
     loanPeriod: string
     interestRate: string
     principalRequested: string
@@ -37,7 +34,6 @@ export interface HomeState {
 
 class Home extends React.Component<{}, HomeState> {
     state = {
-        networkName: null,
         loanPeriod: null,
         interestRate: null,
         principalRequested: null,
@@ -49,8 +45,7 @@ class Home extends React.Component<{}, HomeState> {
     }
 
     componentDidMount = async () => {
-        const networkName = await getNetworkName()
-        ShowModal(<ModalWip networkName={networkName} />)
+        ShowModal(<ModalWip />)
 
         const crowdloanInstance = await getDeployedFromConfig(
             'Crowdloan',
@@ -78,8 +73,7 @@ class Home extends React.Component<{}, HomeState> {
         const contributors = (await Promise.all(
             Array.from(
                 new Set(fundEvents.map(event => event.returnValues.sender))
-            )
-            .map(async address => {
+            ).map(async address => {
                 const amount = await amountContributed(
                     crowdloanInstance,
                     address
@@ -89,7 +83,6 @@ class Home extends React.Component<{}, HomeState> {
         )).sort((a, b) => (+a.amount > +b.amount ? -1 : 1)) // Sort contributors from the highest lending amount to the lending amount
 
         this.setState({
-            networkName,
             loanPeriod,
             interestRate,
             expectedSalary,
