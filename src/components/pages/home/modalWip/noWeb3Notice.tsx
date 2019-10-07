@@ -4,53 +4,42 @@ import { ModalWipWrapper } from './styled'
 const NoWeb3Notice: React.FC = () => {
     return (
         <React.Fragment>
-            <h4>🚀 This is a No Web 3 site! 🚀</h4>
+            <h4>⌛ Waiting to connect to Ethereum ⌛</h4>
             <p>
-                {/* This site lives on the {networkId} */}
-                {/* <a
-                  href={
-                      networkName === 'mainnet'
-                          ? `https://etherscan.io/`
-                          : `https://${networkName}.etherscan.io/`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-              >
-                  {networkName === 'mainnet' ? 'ethereum ' : ''} {networkName}{' '}
-                  {networkName === 'mainnet' ? '' : 'testnet'}
-              </a> */}
-                , and uses real-life currency that doesn't have any value.
+                To participate in the crowdfund, you'll need one of the
+                following:
             </p>
             <ModalWipWrapper>
                 <li>
                     <p>
-                        Any "loans" made to Ines on this site are <b>NOT</b>{' '}
-                        real
+                        <a
+                            href="https://metamask.io/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <b>Metamask</b>
+                        </a>{' '}
+                        if you're on desktop
                     </p>
                 </li>
                 <li>
                     <p>
-                        Interested to help us with user testing? &nbsp;
                         <a
-                            href="https://calendly.com/felix-yuniar/"
+                            href="https://trustwallet.com/"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <b>Sign up here</b>
-                        </a>
-                    </p>
-                </li>
-                <li>
-                    <p>
-                        Learn more about &nbsp;
+                            <b>Trust Wallet</b>
+                        </a>{' '}
+                        or{' '}
                         <a
-                            href="https://www.enable.credit/"
+                            href="https://wallet.coinbase.com/"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <b>Enable</b>
-                        </a>
-                        , a initiative to build borderless stablecoin loans
+                            <b>Coinbase Wallet</b>
+                        </a>{' '}
+                        if you're on mobile
                     </p>
                 </li>
             </ModalWipWrapper>

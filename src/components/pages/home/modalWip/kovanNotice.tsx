@@ -1,25 +1,14 @@
 import React from 'react'
 import { ModalWipWrapper } from './styled'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 
 const KovanNotice: React.FC = () => {
     return (
         <React.Fragment>
-            <h4>🚀 This is a Kovan testnet site! 🚀</h4>
+            <h4>🚀 This is a Kovan testnet version of Enable! 🚀</h4>
             <p>
-                {/* This site lives on the {networkId} */}
-                {/* <a
-                  href={
-                      networkName === 'mainnet'
-                          ? `https://etherscan.io/`
-                          : `https://${networkName}.etherscan.io/`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-              >
-                  {networkName === 'mainnet' ? 'ethereum ' : ''} {networkName}{' '}
-                  {networkName === 'mainnet' ? '' : 'testnet'}
-              </a> */}
-                , and uses real-life currency that doesn't have any value.
+                This lives on a testnet that uses Kovan Dai that doesn't have
+                any value.
             </p>
             <ModalWipWrapper>
                 <li>
@@ -30,27 +19,20 @@ const KovanNotice: React.FC = () => {
                 </li>
                 <li>
                     <p>
-                        Interested to help us with user testing? &nbsp;
-                        <a
-                            href="https://calendly.com/felix-yuniar/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <b>Sign up here</b>
-                        </a>
+                        Click on the <b>Faucet</b> to get free testnet Dai
                     </p>
                 </li>
                 <li>
                     <p>
-                        Learn more about &nbsp;
                         <a
                             href="https://www.enable.credit/"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <b>Enable</b>
+                            <b>Enable</b>{' '}
                         </a>
-                        , a initiative to build borderless stablecoin loans
+                        is an open source project to build peer-to-peer
+                        stablecoin loans
                     </p>
                 </li>
             </ModalWipWrapper>
