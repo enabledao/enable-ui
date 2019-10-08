@@ -1,9 +1,11 @@
 import React from 'react'
+import axios from 'axios'
 import { Form, Field } from 'react-final-form'
 import { Margin, Padding } from '../../../../styles/utils'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { AppPath } from '../../../../constant/appPath'
 import PatternImage from '../../../../images/pattern.png'
+import { connect } from 'react-redux'
 import {
     Spinner,
     Row,
@@ -30,6 +32,7 @@ import {
 import createDecorator from 'final-form-focus'
 import { withNavbarAndFooter } from '../../../hoc'
 import IncomeShareCalculator from '../../../financial/incomeShareCalculator'
+import { INES_FUND_POST_URL } from '../../../../config/isaConstants'
 
 /**
  * Invest functionality
@@ -63,7 +66,9 @@ import {
 } from '../../../../utils/paymentToken'
 import { MILLISECONDS, ZERO } from '../../../../config/constants'
 
-interface CheckoutProps extends RouteComponentProps<any> {}
+interface CheckoutProps extends RouteComponentProps<any> {
+    networkId: number
+}
 
 interface CheckoutState {
     transacting: boolean
@@ -96,7 +101,7 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
     }
 
     onSubmit = async (values: any) => {
-        const { history } = this.props
+        const { history, networkId } = this.props
         const { name, email } = values
         const { crowdloanInstance, investmentAmount } = this.state
         if (!+investmentAmount) {
@@ -137,14 +142,6 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                 crowdloanInstance.options.address
             )
 
-            console.log(`
-            investmentAmount:       ${investmentAmount}
-            valueInERC20:           ${valueInERC20}
-            Approved Balance:       ${approvedBalance}
-            Name:                   ${name}
-            Email:                  ${email}
-            `)
-
             let tx
             if (BN(approvedBalance).lt(BN(valueInERC20))) {
                 tx = await approveAndFund(
@@ -155,7 +152,39 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
             } else {
                 tx = await fund(crowdloanInstance, valueInERC20)
             }
-            console.log(tx)
+            // console.log(tx)
+
+            // console.log(`
+            // investmentAmount:       ${investmentAmount}
+            // valueInERC20:           ${valueInERC20}
+            // Approved Balance:       ${approvedBalance}
+            // ================
+            // Sender:                 ${tx.from}
+            // TransactionHash:        ${tx.transactionHash}
+            // Network:                ${networkId}
+            // Amount:                 ${tx.events.Fund.returnValues.amount}
+            // Email:                  ${email}
+            // Name:                   ${name}
+            // GasUsed:                ${tx.gasUsed}
+            // CumulativeGasUsed:      ${tx.cumulativeGasUsed}
+            // `)
+
+            try {
+                const resp = await axios.post(INES_FUND_POST_URL, {
+                    sender: tx.from,
+                    transactionHash: tx.transactionHash,
+                    network: networkId.toString(),
+                    amount: tx.events.Fund.returnValues.amount,
+                    email: email,
+                    name: name,
+                    gasUsed: tx.gasUsed.toString(),
+                    cumulativeGasUsed: tx.cumulativeGasUsed.toString(),
+                })
+                console.log(resp)
+            } catch (error) {
+                console.error(error)
+            }
+
             this.setState({ transacting: false })
 
             history.push(AppPath.LoanOfferThankYou)
@@ -504,4 +533,15 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
     }
 }
 
-export default withRouter<CheckoutProps>(withNavbarAndFooter(Checkout))
+function mapState(state) {
+    return { networkId: state.networkId }
+}
+
+export default withRouter<CheckoutProps>(
+    withNavbarAndFooter(
+        connect(
+            mapState,
+            {}
+        )(Checkout)
+    )
+)

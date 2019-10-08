@@ -15,6 +15,8 @@ const ISA_DURATION_MONTHS = 72
 const ISA_EXPECTED_SALARY = BN(Web3.utils.toWei('86320', 'ether'))
 const SIMULATION_MAX_SALARY = 120000
 const SIMULATION_MIN_SALARY = 25000
+const INES_FUND_POST_URL =
+    'https://80n55mslyg.execute-api.us-east-1.amazonaws.com/prod/transactions'
 
 export {
     ISA_PERCENTAGE,
@@ -26,4 +28,5 @@ export {
     ISA_EXPECTED_SALARY,
     SIMULATION_MAX_SALARY,
     SIMULATION_MIN_SALARY,
+    INES_FUND_POST_URL,
 }
