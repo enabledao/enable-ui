@@ -78,7 +78,6 @@ class SimuLationReturn extends React.Component<
 
     render() {
         const { contributors, paymentToken } = this.props
-        console.log(contributors)
         const { investmentAmount, salaryMin, salaryMax, salary } = this.state
         const {
             minRepayment,
@@ -129,7 +128,6 @@ class SimuLationReturn extends React.Component<
                         </Padding>
                     </SocialContent>
                 </Margin> */}
-
                 <Margin top={40}>
                     <h5>Simulate Returns</h5>
                 </Margin>
