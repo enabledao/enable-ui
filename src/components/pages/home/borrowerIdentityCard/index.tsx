@@ -22,9 +22,9 @@ const borrowerIdentityCard: any = () => (
             </Col>
         </Row>
         <div style={{ position: 'absolute' }}>
-            <img src={InesSquare} alt="Ines - Square" />
+            <img src={InesSquare} alt="Ines - Square" width="60" />
         </div>
-        <Padding left={124}>
+        <Padding left={74}>
             <h5>Widya Imanesti</h5>
             <p>Jakarta - Indonesia</p>
             <Margin top={16}>
