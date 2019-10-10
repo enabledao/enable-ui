@@ -5,6 +5,7 @@ import { prepBigNumber } from '../../../../utils/web3Utils'
 interface Contributor {
     address: string
     amount: string
+    lastContribution?: string
 }
 interface ModalListContributorProps {
     contributors: Contributor[]

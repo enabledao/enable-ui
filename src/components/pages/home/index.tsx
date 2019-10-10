@@ -6,6 +6,7 @@ import ModalWip from './modalWip'
 import { getDeployedFromConfig } from '../../../utils/getDeployed'
 import contractAddresses from '../../../config/ines.fund'
 import { getTokenDetailsFromAddress } from '../../../utils/paymentToken'
+import { getBlock } from '../../../utils/web3Utils'
 import {
     getPrincipalToken,
     getPrincipalRequested,
@@ -77,8 +78,10 @@ class Home extends React.Component<{}, HomeState> {
                 const amount = await amountContributed(
                     crowdloanInstance,
                     address
-                )
-                return { address, amount }
+                );
+                const contributions = fundEvents.filter(event => event.returnValues.sender === address).sort((a,b) => a.blockNumber > b.blockNumber ? 1 : 0);
+                const lastContribution = (await getBlock(contributions[contributions.length-1].blockHash)).timestamp;
+                return { address, amount, lastContribution }
             })
         )).sort((a, b) => (+a.amount > +b.amount ? -1 : 1)) // Sort contributors from the highest lending amount to the lending amount
 

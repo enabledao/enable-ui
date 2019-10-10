@@ -1,11 +1,13 @@
 import React from 'react'
 import { Margin } from '../../../../styles/utils'
 import { Row, Col } from '../../../lib'
+import { calDaysSinceTimestamp } from '../../../../utils/jsCalculator'
 import { prepBigNumber } from '../../../../utils/web3Utils'
 
 interface Contributor {
     address: string
     amount: string
+    lastContribution: string
 }
 interface ListContributorProps {
     contributors: Contributor[]
@@ -62,7 +64,7 @@ const ListContributor: any = ({
                                     Dai
                                 </h6>
                                 <small>
-                                    <p>12 Days ago</p>
+                                    <p>{calDaysSinceTimestamp(contributor.lastContribution)} Day(s) ago</p>
                                 </small>
                             </Col>
                             <Margin vertical={50} />
