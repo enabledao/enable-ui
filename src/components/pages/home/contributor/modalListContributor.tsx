@@ -5,6 +5,7 @@ import { prepBigNumber } from '../../../../utils/web3Utils'
 interface Contributor {
     address: string
     amount: string
+    lastContribution?: string
 }
 interface ModalListContributorProps {
     contributors: Contributor[]
@@ -32,7 +33,7 @@ const ModalListContributor: any = ({
                             </p>
                         </small>
                         <p>
-                            Contribute{' '}
+                            Contributed{' '}
                             <b>
                                 {prepBigNumber(
                                     contributor.amount || 0,

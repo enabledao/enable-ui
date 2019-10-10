@@ -1,6 +1,7 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
+
 import React from 'react'
 import { ModalWipWrapper } from './styled'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
 
 const KovanNotice: React.FC = () => {
     return (
