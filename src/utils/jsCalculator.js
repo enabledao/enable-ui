@@ -1,5 +1,7 @@
 import {
     HUNDRED,
+    MILLISECONDS,
+    SECONDS_IN_DAY,
     MONTHS_IN_YEAR,
     ISA_PERCENTAGE_DECIMALS,
 } from '../config/constants'
@@ -125,6 +127,10 @@ const calcMaxRepayment = investmentAmount => {
     )
 }
 
+const calDaysSinceTimestamp = timestamp => {
+    return BN(new Date().getTime()).div(BN(MILLISECONDS)).sub(BN(timestamp)).div(BN(SECONDS_IN_DAY)).toString();
+}
+
 export {
     availableWithdrawal,
     simulateReturns,
@@ -134,4 +140,5 @@ export {
     calcExpectedTotalReturn,
     calcMinRepayment,
     calcMaxRepayment,
+    calDaysSinceTimestamp
 }
