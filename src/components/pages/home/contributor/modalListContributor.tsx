@@ -33,7 +33,7 @@ const ModalListContributor: any = ({
                             </p>
                         </small>
                         <p>
-                            Contribute{' '}
+                            Contributed{' '}
                             <b>
                                 {prepBigNumber(
                                     contributor.amount || 0,
