@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
 import React from 'react'
 import { ModalWipWrapper } from './styled'
 
