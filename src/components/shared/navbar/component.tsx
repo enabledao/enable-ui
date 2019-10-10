@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
+
 import React from 'react'
 import { Container } from '../../../styles/bases'
 import { NavLink } from 'react-router-dom'
@@ -27,7 +29,9 @@ const Navbar: React.FC<NavbarProps> = ({ networkId }) => {
                     <NavbarBrand>
                         <NavLink exact={true} to={AppPath.home}>
                             Ines Fund
-                            <NavbarBrandSmall>By Enable 🙌</NavbarBrandSmall>
+                            <NavbarBrandSmall>
+                                By Enable <span>🙌</span>
+                            </NavbarBrandSmall>
                         </NavLink>
                     </NavbarBrand>
                     <NavbarMenu>

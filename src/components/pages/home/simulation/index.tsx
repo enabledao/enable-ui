@@ -1,20 +1,15 @@
 import React from 'react'
-import { TextField, Row, Col, Button } from '../../../lib'
+import { TextField, Button } from '../../../lib'
 import { Margin, Padding } from '../../../../styles/utils'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import CornellLogo from '../../../../images/cornell.png'
-import BloomLogo from '../../../../images/bloomLogo.png'
 import { AppPath } from '../../../../constant/appPath'
 import {
     SliderInput,
     SliderMinMax,
     ButtonLendSimulation,
     SimulationWrapper,
-    SocialContent,
-    SocialAvatar,
 } from './styled'
-import AvatarBrahma from '../../../../images/avatar/brahma.jpg'
-import { prepBigNumber } from '../../../../utils/web3Utils'
 import { formatBN } from '../../../../utils/formatters'
 import { simulateReturns } from '../../../../utils/jsCalculator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

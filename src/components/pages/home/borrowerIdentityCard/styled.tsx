@@ -14,4 +14,12 @@ const ProfileSocialLink = styled.a`
         filter: grayscale();
     }
 `
-export { ProfileSocialLink, IdentityBox }
+
+const TweakOfProfileBox = styled.div`
+    > .threeboxProfileHover__style_boxAddressWrap {
+        float: none;
+        overflow: hidden;
+    }
+`
+
+export { ProfileSocialLink, IdentityBox, TweakOfProfileBox }

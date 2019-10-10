@@ -1,14 +1,8 @@
 import React from 'react'
-import { TextField, Button } from '../../lib'
 import { Margin, Padding } from '../../../styles/utils'
 import CornellLogo from '../../../images/cornell.png'
 import InesPhoto from '../../../images/inesSquare.png'
-import {
-    SliderInput,
-    SliderMinMax,
-    ButtonLendSimulation,
-    SimulationWrapper,
-} from './styled'
+import { SliderInput, SliderMinMax, SimulationWrapper } from './styled'
 import { formatBN } from '../../../utils/formatters'
 import { simulateReturns } from '../../../utils/jsCalculator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -68,7 +62,7 @@ class IncomeShareCalculator extends React.Component<
                                         width: '70px',
                                     }}
                                 >
-                                    <img src={InesPhoto} alt="Ines - Photo" />
+                                    <img src={InesPhoto} alt="Ines - Avatar" />
                                 </div>
                                 <Padding left={80}>
                                     <small>
