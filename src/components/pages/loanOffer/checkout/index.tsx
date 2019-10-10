@@ -26,7 +26,6 @@ import {
     requiredField,
     emailFormat,
     composeValidators,
-    mustBeNumber,
     requiredChecked,
 } from '../../../../constant/validation'
 import createDecorator from 'final-form-focus'
