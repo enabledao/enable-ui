@@ -1,5 +1,5 @@
 import BoxLogo from '../../../../images/3boxLogo.png'
-import { IdentityBox, ProfileSocialLink } from './styled'
+import { IdentityBox, ProfileSocialLink, TweakOfProfileBox } from './styled'
 import Facebook from '../../../../images/socialMedia/facebook.svg'
 import InesSquare from '../../../../images/inesSquare.png'
 import Instagram from '../../../../images/socialMedia/instagram.svg'
@@ -22,9 +22,9 @@ const borrowerIdentityCard: any = () => (
             </Col>
         </Row>
         <div style={{ position: 'absolute' }}>
-            <img src={InesSquare} alt="Ines - Square" />
+            <img src={InesSquare} alt="Ines - Square" width="60" />
         </div>
-        <Padding left={124}>
+        <Padding left={74}>
             <h5>Widya Imanesti</h5>
             <p>Jakarta - Indonesia</p>
             <Margin top={16}>
@@ -58,30 +58,32 @@ const borrowerIdentityCard: any = () => (
                 </ProfileSocialLink>
             </Margin>
         </Padding>
-        <ProfileHover
-            noTheme
-            orientation={'top'}
-            address={'0xf585e6B4173914A296c9b3AFa83f86bfaF4240f6'}
-        >
-            <Margin top={24}>
-                <div
-                    style={{
-                        backgroundColor: '#f7f7f7',
-                        padding: 16,
-                        marginTop: 24,
-                        overflow: 'hidden',
-                    }}
-                >
-                    <b>
-                        <small>ETH Wallet Key</small>
-                    </b>
+        <TweakOfProfileBox>
+            <ProfileHover
+                noTheme
+                orientation={'top'}
+                address={'0xf585e6B4173914A296c9b3AFa83f86bfaF4240f6'}
+            >
+                <Margin top={24}>
+                    <div
+                        style={{
+                            backgroundColor: '#f7f7f7',
+                            padding: 16,
+                            marginTop: 24,
+                            overflow: 'scroll',
+                        }}
+                    >
+                        <b>
+                            <small>ETH Wallet Key</small>
+                        </b>
 
-                    <small>
-                        <p>0xf585e6B4173914A296c9b3AFa83f86bfaF4240f6</p>
-                    </small>
-                </div>
-            </Margin>
-        </ProfileHover>
+                        <small>
+                            <p>0xf585e6B4173914A296c9b3AFa83f86bfaF4240f6</p>
+                        </small>
+                    </div>
+                </Margin>
+            </ProfileHover>
+        </TweakOfProfileBox>
         <Margin top={24}>
             <h6 style={{ color: '#21b549', cursor: 'pointer' }}>
                 Admission Proof Document
