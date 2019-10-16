@@ -28,14 +28,6 @@ const getWeb3 = () =>
             if (window.ethereum) {
                 console.log('Injected ethereum provider detected.')
                 _web3 = new Web3(window.ethereum)
-                try {
-                    // Request account access if needed
-                    await window.ethereum.enable()
-                    // Acccounts now exposed
-                } catch (error) {
-                    gettingWeb3 = false
-                    reject(error)
-                }
             }
             // Legacy dapp browsers...
             else if (window.web3) {
@@ -52,7 +44,6 @@ const getWeb3 = () =>
                     'No web3 instance injected, using Infura/Local web3.'
                 )
             }
-            _web3.eth.defaultAccount = (await _web3.eth.getAccounts())[0]
             const networkId = await _web3.eth.net.getId()
             store.dispatch(setNetworkId(networkId))
             web3 = _web3
@@ -71,6 +62,21 @@ const getGanacheWeb3 = () => {
     return web3
 }
 
+const connectToWallet = async () => {
+    await resolveWeb3()
+    try {
+        if (!web3.eth.defaultAccount && window.ethereum) {
+            // Request account access if needed
+            await window.ethereum.enable()
+            // Acccounts now exposed
+        }
+        web3.eth.defaultAccount = (await web3.eth.getAccounts())[0]
+    } catch (error) {
+        console.error(error)
+        throw error
+    }
+}
+
 const resolveWeb3 = async () => {
     if (!web3) {
         if (gettingWeb3) {
@@ -84,4 +90,4 @@ const resolveWeb3 = async () => {
 }
 
 export default resolveWeb3
-export { getGanacheWeb3 }
+export { getGanacheWeb3, connectToWallet }
