@@ -60,6 +60,7 @@ import {
 import { getDeployedFromConfig } from '../../../../utils/getDeployed'
 import {
     allowance,
+    balanceOf,
     getInstance,
     getTokenDetailsFromAddress,
 } from '../../../../utils/paymentToken'
@@ -71,6 +72,7 @@ interface CheckoutProps extends RouteComponentProps<any> {
 
 interface CheckoutState {
     transacting: boolean
+    txError: string
     investmentAmount: number
     crowdloanInstance: any
     loanParams: any
@@ -84,6 +86,7 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
         super(props)
         this.state = {
             transacting: false,
+            txError: '',
             investmentAmount: 1000,
             crowdloanInstance: null,
             loanParams: {
@@ -108,6 +111,7 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
         }
 
         try {
+            let txError
             this.setState({ transacting: true })
             // Note: Assuming lender can only fund a loan when the loan is started
             const isLoanStarted =
@@ -122,11 +126,12 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                 )
 
             if (!isLoanStarted) {
-                return console.error('Crowdloan not yet started')
+                txError = 'Crowdloan not yet started'
             }
             if (isLoanEnded) {
-                return console.error('Crowdloan already completed')
+                txError = 'Crowdloan already completed'
             }
+
             const paymentTokenInstance = await getInstance(
                 this.state.paymentToken.address
             )
@@ -135,6 +140,28 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                 investmentAmount,
                 this.state.paymentToken.decimals
             )
+
+            const tokenBalance = await balanceOf(
+                paymentTokenInstance,
+                await getInjectedAccountAddress()
+            )
+
+            if (BN(tokenBalance).lt(BN(valueInERC20))) {
+                txError = `Insufficient balance: ${prepBigNumber(
+                    tokenBalance,
+                    this.state.paymentToken.decimals,
+                    true
+                )} Dai`
+            }
+
+            if (txError) {
+                this.setState({
+                    transacting: false,
+                    txError,
+                })
+                return console.error(txError)
+            }
+
             const approvedBalance = await allowance(
                 paymentTokenInstance,
                 await getInjectedAccountAddress(),
@@ -246,7 +273,7 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
     }
 
     render() {
-        const { investmentAmount, transacting } = this.state
+        const { investmentAmount, transacting, txError } = this.state
         return (
             <CheckoutWrapper>
                 <HeroWrapper>
@@ -496,6 +523,19 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                                             <Row>
                                                 <Col lg={12} md={12}>
                                                     <Margin top={8}>
+                                                        {txError && (
+                                                            <Padding left={8}>
+                                                                <Margin
+                                                                    bottom={8}
+                                                                >
+                                                                    <FieldError>
+                                                                        {
+                                                                            txError
+                                                                        }
+                                                                    </FieldError>
+                                                                </Margin>
+                                                            </Padding>
+                                                        )}
                                                         <Button
                                                             type="submit"
                                                             color="green"
