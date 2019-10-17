@@ -4,7 +4,13 @@ import { ChasingDots } from 'styled-spinkit'
 import { Container, MainContainer } from '../../../styles/bases'
 import { Margin } from '../../../styles/utils'
 import { Button, Row, Col } from '../../lib'
-import { BoldDetails, HeroWrapper, HeroContent, BoxStats, HeroTitle } from './styled'
+import {
+    BoldDetails,
+    HeroWrapper,
+    HeroContent,
+    BoxStats,
+    HeroTitle,
+} from './styled'
 import BorrowerActions from './borrowerActions'
 import Withdrawal from './withdrawals'
 import RepaymentStatus from './repaymentStatus'
@@ -26,6 +32,7 @@ import {
 } from '../../../utils/paymentToken'
 import { availableWithdrawal } from '../../../utils/jsCalculator'
 import { connectToWallet } from '../../../utils/web3Utils'
+import RenderBorrowerLoan from './renderBorrowerLoan'
 
 import {
     getBorrower,
@@ -108,12 +115,12 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         try {
             this.setState({ transacting: true })
 
-            const tx = await withdrawRepayment(
-                crowdloanInstance
-            )
+            const tx = await withdrawRepayment(crowdloanInstance)
             console.log(tx)
 
-            this.setState({ transacting: false, loaded: false }, () => this.loadInvestment())
+            this.setState({ transacting: false, loaded: false }, () =>
+                this.loadInvestment()
+            )
             return
         } catch (e) {
             this.setState({ transacting: false })
@@ -135,7 +142,9 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             const tx = await startCrowdfund(crowdloanInstance)
             console.log(tx)
 
-            this.setState({ transacting: false, loaded: false }, () => this.loadInvestment())
+            this.setState({ transacting: false, loaded: false }, () =>
+                this.loadInvestment()
+            )
             return
         } catch (e) {
             this.setState({ transacting: false })
@@ -160,7 +169,9 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             )
             console.log(tx)
 
-            this.setState({ transacting: false, loaded: false }, () => this.loadInvestment())
+            this.setState({ transacting: false, loaded: false }, () =>
+                this.loadInvestment()
+            )
             return
         } catch (e) {
             this.setState({ transacting: false })
@@ -217,7 +228,9 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
             console.log(tx)
 
-            this.setState({ transacting: false, loaded: false }, () => this.loadInvestment())
+            this.setState({ transacting: false, loaded: false }, () =>
+                this.loadInvestment()
+            )
             return
         } catch (e) {
             this.setState({ transacting: false })
@@ -500,39 +513,42 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         <Row>
                             <Col lg="hidden" md="hidden" sm="hidden" xs={12}>
                                 <BoxStats>
-                                    <p>Account Balance
+                                    <p>
+                                        Account Balance
                                         <BoldDetails>
                                             {!releaseAllowance
                                                 ? '0'
                                                 : prepBigNumber(
-                                                        releaseAllowance,
-                                                        paymentToken.decimals,
-                                                        true
-                                                    )}{' '}
+                                                      releaseAllowance,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{' '}
                                             Dai
                                         </BoldDetails>
                                     </p>
-                                    <p>Repaid
+                                    <p>
+                                        Repaid
                                         <BoldDetails>
                                             {!released
                                                 ? '0'
                                                 : prepBigNumber(
-                                                        released,
-                                                        paymentToken.decimals,
-                                                        true
-                                                    )}{' '}
+                                                      released,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{' '}
                                             Dai
                                         </BoldDetails>
                                     </p>
-                                    <p>Invested Amount
+                                    <p>
+                                        Invested Amount
                                         <BoldDetails>
                                             {!shares
                                                 ? '0'
                                                 : prepBigNumber(
-                                                        shares,
-                                                        paymentToken.decimals,
-                                                        true
-                                                    )}{' '}
+                                                      shares,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{' '}
                                             Dai
                                         </BoldDetails>
                                     </p>
@@ -590,7 +606,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             <MainContainer>
                 <div style={{ position: 'relative', top: -80 }}>
                     <Row>
-                        <Col  lg="hidden" md="hidden" sm="hidden" xs={12}>
+                        <Col lg="hidden" md="hidden" sm="hidden" xs={12}>
                             <Tabs
                                 borrower={false}
                                 allowance={releaseAllowance}
@@ -621,206 +637,6 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         </HeroWrapper>
     )
 
-    renderBorrowerLoan = (
-        paymentToken,
-        principalDisbursed,
-        totalPaid,
-        totalReleased,
-        totalShares,
-        repayments
-    ) => (
-        <HeroWrapper>
-            <HeroTitle>
-                <img
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        height: '100%',
-                        left: 0,
-                        transform: 'scaleX(-1)',
-                    }}
-                    src={PatternImage}
-                    alt="pattern"
-                />
-                <img
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        height: '100%',
-                        right: 0,
-                    }}
-                    src={PatternImage}
-                    alt="pattern"
-                />
-                <Container>
-                    <Margin vertical={48}>
-                        <Row>
-                            <Col lg="hidden" md="hidden" sm="hidden" xs={12}>
-                                <BoxStats>
-                                    <p>Amount raised
-                                        <BoldDetails>
-                                            {!totalShares
-                                                ? '0'
-                                                : prepBigNumber(
-                                                        totalShares,
-                                                        paymentToken.decimals,
-                                                        true
-                                                    )}{' '}
-                                            Dai
-                                        </BoldDetails>
-                                    </p>
-                                    <p>Loan Disbursed
-                                        <BoldDetails>
-                                            {!principalDisbursed
-                                                ? '0'
-                                                : prepBigNumber(
-                                                        principalDisbursed,
-                                                        paymentToken.decimals,
-                                                        true
-                                                    )}{' '}
-                                            Dai
-                                        </BoldDetails>
-                                    </p>
-                                    <p>Amount Repaid
-                                        <BoldDetails>
-                                            {!totalPaid
-                                                ? '0'
-                                                : prepBigNumber(
-                                                        totalPaid,
-                                                        paymentToken.decimals,
-                                                        true
-                                                    )}{' '}
-                                            Dai
-                                        </BoldDetails>
-                                    </p>
-                                    <p>Amount withdrawn
-                                        <BoldDetails>
-                                            {!totalReleased
-                                                ? '0'
-                                                : prepBigNumber(
-                                                        totalReleased,
-                                                        paymentToken.decimals,
-                                                        true
-                                                    )}{' '}
-                                            Dai
-                                        </BoldDetails>
-                                    </p>
-                                    <p>Status
-                                        <BoldDetails>
-                                            {this.loanStatus()}
-                                        </BoldDetails>
-                                    </p>
-                                </BoxStats>
-                            </Col>
-                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
-                                <BoxStats>
-                                    <p>Amount raised</p>
-                                    <h4>
-                                        {!totalShares
-                                            ? '0'
-                                            : prepBigNumber(
-                                                  totalShares,
-                                                  paymentToken.decimals,
-                                                  true
-                                              )}{' '}
-                                        Dai
-                                    </h4>
-                                </BoxStats>
-                            </Col>
-                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
-                                <BoxStats>
-                                    <p>Loan Disbursed</p>
-                                    <h4>
-                                        {!principalDisbursed
-                                            ? '0'
-                                            : prepBigNumber(
-                                                  principalDisbursed,
-                                                  paymentToken.decimals,
-                                                  true
-                                              )}{' '}
-                                        Dai
-                                    </h4>
-                                </BoxStats>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
-                                <BoxStats>
-                                    <p>Amount Repaid</p>
-                                    <h4>
-                                        {!totalPaid
-                                            ? '0'
-                                            : prepBigNumber(
-                                                  totalPaid,
-                                                  paymentToken.decimals,
-                                                  true
-                                              )}{' '}
-                                        Dai
-                                    </h4>
-                                </BoxStats>
-                            </Col>
-                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
-                                <BoxStats>
-                                    <p>Amount withdrawn</p>
-                                    <h4>
-                                        {!totalReleased
-                                            ? '0'
-                                            : prepBigNumber(
-                                                  totalReleased,
-                                                  paymentToken.decimals,
-                                                  true
-                                              )}{' '}
-                                        Dai
-                                    </h4>
-                                </BoxStats>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
-                                <BoxStats>
-                                    <p>Status</p>
-                                    <h4>{this.loanStatus()}</h4>
-                                </BoxStats>
-                            </Col>
-                        </Row>
-                    </Margin>
-                </Container>
-            </HeroTitle>
-            <MainContainer>
-                <div style={{ position: 'relative', top: -80 }}>
-                    <Row>
-                        <Col lg="hidden" md="hidden" sm="hidden" xs={12}>
-                            <Tabs
-                                borrower={true}
-                                transacting={this.state.transacting}
-                                loanStatus={this.loanStatus()}
-                                onborrowerwithdraw={this.onborrowerwithdraw}
-                                onrepay={this.onrepay}
-                                onstartcrowdfund={this.onstartcrowdfund}
-                                repayments={repayments}
-                            />
-                        </Col>
-                        <Col lg={6} md={12} xs="hidden">
-                            <HeroContent>
-                                <RepaymentStatus repayments={repayments} />
-                            </HeroContent>
-                        </Col>
-                        <Col lg={6} md={12} xs="hidden">
-                            <HeroContent>
-                                <BorrowerActions
-                                    transacting={this.state.transacting}
-                                    loanStatus={this.loanStatus()}
-                                    onborrowerwithdraw={this.onborrowerwithdraw}
-                                    onrepay={this.onrepay}
-                                    onstartcrowdfund={this.onstartcrowdfund}
-                                />
-                            </HeroContent>
-                        </Col>
-                    </Row>
-                </div>
-            </MainContainer>
-        </HeroWrapper>
-    )
     render() {
         const {
             injectedAccountAddress,
@@ -846,24 +662,31 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         this.renderConnectWallet()
                     ) : (
                         borrower &&
-                        (isBorrower
-                            ? this.renderBorrowerLoan(
-                                  paymentToken,
-                                  principalDisbursed,
-                                  totalPaid,
-                                  totalReleased,
-                                  totalShares,
-                                  repayments
-                              )
-                            : this.renderLenderLoan(
-                                  paymentToken,
-                                  shares,
-                                  released,
-                                  releaseAllowance,
-                                  transacting,
-                                  repayments,
-                                  withdrawals
-                              ))
+                        (isBorrower ? (
+                            <RenderBorrowerLoan
+                                loanStatus={this.loanStatus()}
+                                paymentToken={paymentToken}
+                                principalDisbursed={principalDisbursed}
+                                transacting={this.state.transacting}
+                                totalPaid={totalPaid}
+                                totalReleased={totalReleased}
+                                totalShares={totalShares}
+                                onborrowerwithdraw={this.onborrowerwithdraw}
+                                onrepay={this.onrepay}
+                                onstartcrowdfund={this.onstartcrowdfund}
+                                repayments={repayments}
+                            />
+                        ) : (
+                            this.renderLenderLoan(
+                                paymentToken,
+                                shares,
+                                released,
+                                releaseAllowance,
+                                transacting,
+                                repayments,
+                                withdrawals
+                            )
+                        ))
                     )
                 ) : (
                     <ChasingDots />
