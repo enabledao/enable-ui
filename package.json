@@ -2,6 +2,9 @@
     "name": "enable-ui",
     "version": "0.1.2",
     "private": true,
+    "peerDependencies": {
+        "@enabledao/enable-contracts": "0.2.x"
+    },
     "dependencies": {
         "@enabledao/enable-contracts": "^0.2.1",
         "@fortawesome/fontawesome-svg-core": "^1.2.24",

@@ -20,6 +20,7 @@ import { LoanStatuses, MILLISECONDS, ZERO } from '../../../config/constants.js'
 import PatternImage from '../../../images/pattern.png'
 import {
     BN,
+    connectToWallet,
     getBlock,
     getInjectedAccountAddress,
     prepBigNumber,
@@ -31,7 +32,6 @@ import {
     getTokenDetailsFromAddress,
 } from '../../../utils/paymentToken'
 import { availableWithdrawal } from '../../../utils/jsCalculator'
-import { connectToWallet } from '../../../utils/web3Utils'
 import RenderBorrowerLoan from './renderBorrowerLoan'
 
 import {
@@ -243,7 +243,6 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     connectWallet = async () => {
         try {
             this.setState({ loaded: false })
-            await connectToWallet()
             this.loadInvestment()
         } catch {
             this.setState({ loaded: true })
@@ -252,6 +251,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
     loadInvestment = async () => {
         try {
+            await connectToWallet()
             const crowdloanInstance = await getDeployedFromConfig(
                 'Crowdloan',
                 contractAddresses

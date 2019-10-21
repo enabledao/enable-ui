@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import getWeb3 from './getWeb3'
+import getWeb3, { connectToWallet as connectToWeb3Wallet } from './getWeb3'
 
 const BN = number => Web3.utils.toBN(number)
 
@@ -25,7 +25,7 @@ const getNetworkName = async () => {
 }
 
 const connectToWallet = async () => {
-    return await window.ethereum.enable()
+    return await connectToWeb3Wallet()
 }
 
 const getAccounts = async web3 => {
