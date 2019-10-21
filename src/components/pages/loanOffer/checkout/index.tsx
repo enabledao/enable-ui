@@ -54,6 +54,7 @@ import {
 import contractAddresses from '../../../../config/ines.fund'
 import {
     BN,
+    connectToWallet,
     getInjectedAccountAddress,
     prepBigNumber,
 } from '../../../../utils/web3Utils'
@@ -223,6 +224,7 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
 
     componentDidMount = async () => {
         // Get the contract instances for Ines (We'll just bake these in for now).
+        await connectToWallet()
 
         const crowdloanInstance = await getDeployedFromConfig(
             'Crowdloan',

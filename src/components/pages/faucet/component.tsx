@@ -7,7 +7,7 @@ import { Margin, Padding } from '../../../styles/utils'
 import { Row, Col, Button, Spinner } from '../../lib'
 import { FaucetActionMobile, FaucetBox, FaucetWrapper } from './styled'
 import contractAddresses from '../../../config/ines.fund.js'
-import { prepBigNumber } from '../../../utils/web3Utils'
+import { connectToWallet, prepBigNumber } from '../../../utils/web3Utils'
 import { getDeployedFromConfig } from '../../../utils/getDeployed'
 import { request } from '../../../utils/tokenFaucet'
 import {
@@ -64,6 +64,7 @@ class Faucet extends React.Component<FaucetProps, FaucetState> {
 
     componentDidMount = async () => {
         try {
+            await connectToWallet()
             const crowdloanInstance = await getDeployedFromConfig(
                 'Crowdloan',
                 contractAddresses
@@ -164,9 +165,9 @@ class Faucet extends React.Component<FaucetProps, FaucetState> {
                                                         onClick={this.onRequest}
                                                     >
                                                         Request
-                                                        {transacting &&
-                                                            <Spinner size="16"/>
-                                                        }
+                                                        {transacting && (
+                                                            <Spinner size="16" />
+                                                        )}
                                                     </Button>
                                                 </Col>
                                             </Row>
@@ -178,9 +179,9 @@ class Faucet extends React.Component<FaucetProps, FaucetState> {
                                                 onClick={this.onRequest}
                                             >
                                                 Request
-                                                {transacting &&
-                                                    <Spinner size="16"/>
-                                                }
+                                                {transacting && (
+                                                    <Spinner size="16" />
+                                                )}
                                             </Button>
                                         </FaucetActionMobile>
                                     </Col>

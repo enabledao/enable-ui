@@ -4,7 +4,13 @@ import { ChasingDots } from 'styled-spinkit'
 import { Container, MainContainer } from '../../../styles/bases'
 import { Margin } from '../../../styles/utils'
 import { Button, Row, Col } from '../../lib'
-import { BoldDetails, HeroWrapper, HeroContent, BoxStats, HeroTitle } from './styled'
+import {
+    BoldDetails,
+    HeroWrapper,
+    HeroContent,
+    BoxStats,
+    HeroTitle,
+} from './styled'
 import BorrowerActions from './borrowerActions'
 import Withdrawal from './withdrawals'
 import RepaymentStatus from './repaymentStatus'
@@ -14,6 +20,7 @@ import { LoanStatuses, MILLISECONDS, ZERO } from '../../../config/constants.js'
 import PatternImage from '../../../images/pattern.png'
 import {
     BN,
+    connectToWallet,
     getBlock,
     getInjectedAccountAddress,
     prepBigNumber,
@@ -25,7 +32,6 @@ import {
     getTokenDetailsFromAddress,
 } from '../../../utils/paymentToken'
 import { availableWithdrawal } from '../../../utils/jsCalculator'
-import { connectToWallet } from '../../../utils/web3Utils'
 
 import {
     getBorrower,
@@ -108,12 +114,12 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         try {
             this.setState({ transacting: true })
 
-            const tx = await withdrawRepayment(
-                crowdloanInstance
-            )
+            const tx = await withdrawRepayment(crowdloanInstance)
             console.log(tx)
 
-            this.setState({ transacting: false, loaded: false }, () => this.loadInvestment())
+            this.setState({ transacting: false, loaded: false }, () =>
+                this.loadInvestment()
+            )
             return
         } catch (e) {
             this.setState({ transacting: false })
@@ -135,7 +141,9 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             const tx = await startCrowdfund(crowdloanInstance)
             console.log(tx)
 
-            this.setState({ transacting: false, loaded: false }, () => this.loadInvestment())
+            this.setState({ transacting: false, loaded: false }, () =>
+                this.loadInvestment()
+            )
             return
         } catch (e) {
             this.setState({ transacting: false })
@@ -160,7 +168,9 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             )
             console.log(tx)
 
-            this.setState({ transacting: false, loaded: false }, () => this.loadInvestment())
+            this.setState({ transacting: false, loaded: false }, () =>
+                this.loadInvestment()
+            )
             return
         } catch (e) {
             this.setState({ transacting: false })
@@ -217,7 +227,9 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
             console.log(tx)
 
-            this.setState({ transacting: false, loaded: false }, () => this.loadInvestment())
+            this.setState({ transacting: false, loaded: false }, () =>
+                this.loadInvestment()
+            )
             return
         } catch (e) {
             this.setState({ transacting: false })
@@ -230,7 +242,6 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
     connectWallet = async () => {
         try {
             this.setState({ loaded: false })
-            await connectToWallet()
             this.loadInvestment()
         } catch {
             this.setState({ loaded: true })
@@ -239,6 +250,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
     loadInvestment = async () => {
         try {
+            await connectToWallet()
             const crowdloanInstance = await getDeployedFromConfig(
                 'Crowdloan',
                 contractAddresses
@@ -500,39 +512,42 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         <Row>
                             <Col lg="hidden" md="hidden" sm="hidden" xs={12}>
                                 <BoxStats>
-                                    <p>Account Balance
+                                    <p>
+                                        Account Balance
                                         <BoldDetails>
                                             {!releaseAllowance
                                                 ? '0'
                                                 : prepBigNumber(
-                                                        releaseAllowance,
-                                                        paymentToken.decimals,
-                                                        true
-                                                    )}{' '}
+                                                      releaseAllowance,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{' '}
                                             Dai
                                         </BoldDetails>
                                     </p>
-                                    <p>Repaid
+                                    <p>
+                                        Repaid
                                         <BoldDetails>
                                             {!released
                                                 ? '0'
                                                 : prepBigNumber(
-                                                        released,
-                                                        paymentToken.decimals,
-                                                        true
-                                                    )}{' '}
+                                                      released,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{' '}
                                             Dai
                                         </BoldDetails>
                                     </p>
-                                    <p>Invested Amount
+                                    <p>
+                                        Invested Amount
                                         <BoldDetails>
                                             {!shares
                                                 ? '0'
                                                 : prepBigNumber(
-                                                        shares,
-                                                        paymentToken.decimals,
-                                                        true
-                                                    )}{' '}
+                                                      shares,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{' '}
                                             Dai
                                         </BoldDetails>
                                     </p>
@@ -590,7 +605,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
             <MainContainer>
                 <div style={{ position: 'relative', top: -80 }}>
                     <Row>
-                        <Col  lg="hidden" md="hidden" sm="hidden" xs={12}>
+                        <Col lg="hidden" md="hidden" sm="hidden" xs={12}>
                             <Tabs
                                 borrower={false}
                                 allowance={releaseAllowance}
@@ -657,62 +672,67 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                         <Row>
                             <Col lg="hidden" md="hidden" sm="hidden" xs={12}>
                                 <BoxStats>
-                                    <p>Amount raised
+                                    <p>
+                                        Amount raised
                                         <BoldDetails>
                                             {!totalShares
                                                 ? '0'
                                                 : prepBigNumber(
-                                                        totalShares,
-                                                        paymentToken.decimals,
-                                                        true
-                                                    )}{' '}
+                                                      totalShares,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{' '}
                                             Dai
                                         </BoldDetails>
                                     </p>
-                                    <p>Loan Disbursed
+                                    <p>
+                                        Loan Disbursed
                                         <BoldDetails>
                                             {!principalDisbursed
                                                 ? '0'
                                                 : prepBigNumber(
-                                                        principalDisbursed,
-                                                        paymentToken.decimals,
-                                                        true
-                                                    )}{' '}
+                                                      principalDisbursed,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{' '}
                                             Dai
                                         </BoldDetails>
                                     </p>
-                                    <p>Amount Repaid
+                                    <p>
+                                        Amount Repaid
                                         <BoldDetails>
                                             {!totalPaid
                                                 ? '0'
                                                 : prepBigNumber(
-                                                        totalPaid,
-                                                        paymentToken.decimals,
-                                                        true
-                                                    )}{' '}
+                                                      totalPaid,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{' '}
                                             Dai
                                         </BoldDetails>
                                     </p>
-                                    <p>Amount withdrawn
+                                    <p>
+                                        Amount withdrawn
                                         <BoldDetails>
                                             {!totalReleased
                                                 ? '0'
                                                 : prepBigNumber(
-                                                        totalReleased,
-                                                        paymentToken.decimals,
-                                                        true
-                                                    )}{' '}
+                                                      totalReleased,
+                                                      paymentToken.decimals,
+                                                      true
+                                                  )}{' '}
                                             Dai
                                         </BoldDetails>
                                     </p>
-                                    <p>Status
+                                    <p>
+                                        Status
                                         <BoldDetails>
                                             {this.loanStatus()}
                                         </BoldDetails>
                                     </p>
                                 </BoxStats>
                             </Col>
-                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
+                            <Col lg={6} md={6} sm={6} xs={'hidden'}>
                                 <BoxStats>
                                     <p>Amount raised</p>
                                     <h4>
@@ -727,7 +747,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                     </h4>
                                 </BoxStats>
                             </Col>
-                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
+                            <Col lg={6} md={6} sm={6} xs={'hidden'}>
                                 <BoxStats>
                                     <p>Loan Disbursed</p>
                                     <h4>
@@ -744,7 +764,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                             </Col>
                         </Row>
                         <Row>
-                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
+                            <Col lg={6} md={6} sm={6} xs={'hidden'}>
                                 <BoxStats>
                                     <p>Amount Repaid</p>
                                     <h4>
@@ -759,7 +779,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                     </h4>
                                 </BoxStats>
                             </Col>
-                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
+                            <Col lg={6} md={6} sm={6} xs={'hidden'}>
                                 <BoxStats>
                                     <p>Amount withdrawn</p>
                                     <h4>
@@ -776,7 +796,7 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                             </Col>
                         </Row>
                         <Row>
-                            <Col lg={6} md={6} sm={6} xs={"hidden"}>
+                            <Col lg={6} md={6} sm={6} xs={'hidden'}>
                                 <BoxStats>
                                     <p>Status</p>
                                     <h4>{this.loanStatus()}</h4>
