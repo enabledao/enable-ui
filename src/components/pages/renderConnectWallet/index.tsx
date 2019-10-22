@@ -1,13 +1,13 @@
 import React from 'react'
-import { Container } from '../../../../styles/bases'
-import { BoxStats, HeroWrapper, HeroTitle } from '../styled'
-import { Margin } from '../../../../styles/utils'
-import { Button, Row, Col } from '../../../lib'
-import PatternImage from '../../../../images/pattern.png'
+import { Container } from '../../../styles/bases'
+import { BoxStats, HeroWrapper, HeroTitle } from '../myLoan/styled'
+import { Margin } from '../../../styles/utils'
+import { Button, Row, Col } from '../../lib'
+import PatternImage from '../../../images/pattern.png'
 import {
     connectToWallet,
     getInjectedAccountAddress,
-} from '../../../../utils/web3Utils'
+} from '../../../utils/web3Utils'
 
 const renderConnect = connectWallet => (
     <HeroWrapper>
@@ -96,7 +96,7 @@ class renderConnectWallet extends React.Component<
     RenderConnectWalletState
 > {
     state = {
-        loaded: true,
+        loaded: false,
     }
     UNSAFE_componentWillMount = async () => {
         await this.connectWallet()
@@ -113,7 +113,7 @@ class renderConnectWallet extends React.Component<
         } catch {
             this.setState({ loaded: false })
         }
-        this.forceUpdate()
+        // this.forceUpdate()
     }
 
     render() {
