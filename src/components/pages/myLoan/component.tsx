@@ -1,15 +1,11 @@
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { ChasingDots } from 'styled-spinkit'
-import { Container } from '../../../styles/bases'
-import { Margin } from '../../../styles/utils'
-import { Button, Row, Col } from '../../lib'
-import { HeroWrapper, BoxStats, HeroTitle } from './styled'
 import RenderBorrowerLoan from './renderBorrowerLoan'
 import RenderLenderLoan from './renderLenderLoan'
+import RenderConnectWallet from './renderConnectWallet'
 import contractAddresses from '../../../config/ines.fund.js'
 import { LoanStatuses, MILLISECONDS, ZERO } from '../../../config/constants.js'
-import PatternImage from '../../../images/pattern.png'
 import {
     BN,
     connectToWallet,
@@ -231,15 +227,6 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
     componentDidMount = async () => await this.loadInvestment()
 
-    connectWallet = async () => {
-        try {
-            this.setState({ loaded: false })
-            this.loadInvestment()
-        } catch {
-            this.setState({ loaded: true })
-        }
-    }
-
     loadInvestment = async () => {
         try {
             await connectToWallet()
@@ -390,83 +377,6 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         return loanStatus
     }
 
-    renderConnectWallet = () => (
-        <HeroWrapper>
-            <HeroTitle>
-                <img
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        height: '100%',
-                        left: 0,
-                        transform: 'scaleX(-1)',
-                    }}
-                    src={PatternImage}
-                    alt="pattern"
-                />
-                <img
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        height: '100%',
-                        right: 0,
-                    }}
-                    src={PatternImage}
-                    alt="pattern"
-                />
-                <HeroTitle>
-                    <img
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            height: '100%',
-                            left: 0,
-                            transform: 'scaleX(-1)',
-                        }}
-                        src={PatternImage}
-                        alt="pattern"
-                    />
-                    <img
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            height: '100%',
-                            right: 0,
-                        }}
-                        src={PatternImage}
-                        alt="pattern"
-                    />
-                    <Container>
-                        <Margin vertical={48}>
-                            <Row>
-                                <Col lg={12} md={12} sm={12} xs={12}>
-                                    <BoxStats>
-                                        <Col lg={9} md={12}>
-                                            <p>
-                                                Connect your wallet to see your
-                                                investment
-                                            </p>
-                                        </Col>
-                                        <Col lg={3} md={12}>
-                                            <Button
-                                                color="green"
-                                                onClick={async () =>
-                                                    await this.connectWallet()
-                                                }
-                                            >
-                                                Connect Wallet
-                                            </Button>
-                                        </Col>
-                                    </BoxStats>
-                                </Col>
-                            </Row>
-                        </Margin>
-                    </Container>
-                </HeroTitle>
-            </HeroTitle>
-        </HeroWrapper>
-    )
-
     render() {
         const {
             injectedAccountAddress,
@@ -487,10 +397,8 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         const isBorrower = injectedAccountAddress === borrower
         return (
             <React.Fragment>
-                {this.state.loaded ? (
-                    !injectedAccountAddress ? (
-                        this.renderConnectWallet()
-                    ) : (
+                <RenderConnectWallet onConnect={this.loadInvestment}>
+                    {this.state.loaded ? (
                         borrower &&
                         (isBorrower ? (
                             <RenderBorrowerLoan
@@ -518,10 +426,10 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                                 onWithdraw={this.onWithdraw}
                             />
                         ))
-                    )
-                ) : (
-                    <ChasingDots />
-                )}
+                    ) : (
+                        <ChasingDots />
+                    )}
+                </RenderConnectWallet>
             </React.Fragment>
         )
     }
