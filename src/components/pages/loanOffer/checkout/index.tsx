@@ -31,6 +31,7 @@ import {
 import createDecorator from 'final-form-focus'
 import { withNavbarAndFooter } from '../../../hoc'
 import IncomeShareCalculator from '../../../financial/incomeShareCalculator'
+import RenderConnectWallet from '../../renderConnectWallet'
 import { INES_FUND_POST_URL } from '../../../../config/isaConstants'
 
 /**
@@ -222,7 +223,7 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
         }
     }
 
-    componentDidMount = async () => {
+    loadCheckout = async () => {
         // Get the contract instances for Ines (We'll just bake these in for now).
         await connectToWallet()
 
@@ -264,6 +265,8 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
         }
     }
 
+    componentDidMount = async () => await this.loadCheckout()
+
     handleChange(e: { target: { value: any } }) {
         this.setState({
             investmentAmount: +e.target.value,
@@ -277,299 +280,318 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
     render() {
         const { investmentAmount, transacting, txError } = this.state
         return (
-            <CheckoutWrapper>
-                <HeroWrapper>
-                    <img
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            height: '50vh',
-                            left: 0,
-                            transform: 'scaleX(-1)',
-                        }}
-                        src={PatternImage}
-                        alt="pattern"
-                    />
-                    <img
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            height: '50vh',
-                            right: 0,
-                        }}
-                        src={PatternImage}
-                        alt="pattern"
-                    />
-                </HeroWrapper>
-                <CheckoutContainer>
-                    {/* <MainContainer> */}
-                    <HeroCell>
-                        <Row>
-                            <Col lg={6} md={12}>
-                                <Form
-                                    onSubmit={this.onSubmit}
-                                    decorators={[focusOnErrors]}
-                                    render={({ handleSubmit }) => (
-                                        <form onSubmit={handleSubmit}>
-                                            <h5>Complete Your Investment</h5>
-                                            <Margin top={40}>
-                                                <h6>Investment Amount</h6>
-                                            </Margin>
-                                            <Margin top={10} horizontal={15}>
-                                                <Row>
-                                                    <RowButton
-                                                        value={100}
-                                                        onClick={
-                                                            this
-                                                                .handleAmountSelected
-                                                        }
-                                                    />
-                                                    <RowButton
-                                                        value={250}
-                                                        onClick={
-                                                            this
-                                                                .handleAmountSelected
-                                                        }
-                                                    />
-                                                    <RowButton
-                                                        value={1000}
-                                                        onClick={
-                                                            this
-                                                                .handleAmountSelected
-                                                        }
-                                                    />
-                                                    <RowButton
-                                                        value={5000}
-                                                        onClick={
-                                                            this
-                                                                .handleAmountSelected
-                                                        }
-                                                    />
-                                                </Row>
-                                            </Margin>
-
-                                            <Margin top={10} bottom={32}>
-                                                <Field
-                                                    name="amount"
-                                                    type="number"
-                                                    // validate={mustBeNumber}
-                                                    render={({
-                                                        input,
-                                                        meta,
-                                                    }) => (
-                                                        <React.Fragment>
-                                                            <TextField
-                                                                // label="Investment Amount"
-                                                                placeholder="e.g. 100"
-                                                                autoFocus={true}
-                                                                value={
-                                                                    investmentAmount
-                                                                }
-                                                                onChange={
-                                                                    this
-                                                                        .handleChange
-                                                                }
-                                                                // {...input}
-                                                                {...meta}
-                                                            />
-                                                            {meta.touched &&
-                                                                meta.error && (
-                                                                    <FieldError>
-                                                                        {
-                                                                            meta.error
-                                                                        }
-                                                                    </FieldError>
-                                                                )}
-                                                        </React.Fragment>
-                                                    )}
-                                                />
-                                                <Margin top={5}>
-                                                    <small>
-                                                        Minimum 10 Dai
-                                                    </small>
+            <RenderConnectWallet onConnect={this.loadCheckout}>
+                <CheckoutWrapper>
+                    <HeroWrapper>
+                        <img
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                height: '50vh',
+                                left: 0,
+                                transform: 'scaleX(-1)',
+                            }}
+                            src={PatternImage}
+                            alt="pattern"
+                        />
+                        <img
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                height: '50vh',
+                                right: 0,
+                            }}
+                            src={PatternImage}
+                            alt="pattern"
+                        />
+                    </HeroWrapper>
+                    <CheckoutContainer>
+                        {/* <MainContainer> */}
+                        <HeroCell>
+                            <Row>
+                                <Col lg={6} md={12}>
+                                    <Form
+                                        onSubmit={this.onSubmit}
+                                        decorators={[focusOnErrors]}
+                                        render={({ handleSubmit }) => (
+                                            <form onSubmit={handleSubmit}>
+                                                <h5>
+                                                    Complete Your Investment
+                                                </h5>
+                                                <Margin top={40}>
+                                                    <h6>Investment Amount</h6>
                                                 </Margin>
-                                            </Margin>
-                                            <Margin top={32} bottom={32}>
-                                                <Field
-                                                    name="name"
-                                                    validate={requiredField}
-                                                    render={({
-                                                        input,
-                                                        meta,
-                                                    }) => (
-                                                        <React.Fragment>
-                                                            <TextField
-                                                                label="Name"
-                                                                placeholder="Enter your name"
-                                                                autoFocus={true}
-                                                                {...input}
-                                                                {...meta}
-                                                            />
-                                                            {meta.touched &&
-                                                                meta.error && (
-                                                                    <FieldError>
-                                                                        {
-                                                                            meta.error
-                                                                        }
-                                                                    </FieldError>
-                                                                )}
-                                                        </React.Fragment>
-                                                    )}
-                                                />
-                                            </Margin>
-                                            <Margin bottom={32}>
-                                                <Field
-                                                    name="email"
-                                                    validate={composeValidators(
-                                                        requiredField,
-                                                        emailFormat
-                                                    )}
-                                                    render={({
-                                                        input,
-                                                        meta,
-                                                    }) => (
-                                                        <React.Fragment>
-                                                            <TextField
-                                                                type="email"
-                                                                label="Email"
-                                                                placeholder="Enter your email"
-                                                                {...input}
-                                                                {...meta}
-                                                            />
-                                                            {meta.touched &&
-                                                                meta.error && (
-                                                                    <FieldError>
-                                                                        {
-                                                                            meta.error
-                                                                        }
-                                                                    </FieldError>
-                                                                )}
-                                                        </React.Fragment>
-                                                    )}
-                                                />
-                                            </Margin>
-                                            <Margin top={24}>
-                                                <b>
-                                                    <p>Disclaimers:</p>
-                                                </b>
-                                            </Margin>
-                                            <Margin vertical={16}>
-                                                <Field
-                                                    name="tac"
-                                                    type="checkbox"
-                                                    validate={requiredChecked}
-                                                    render={({
-                                                        input,
-                                                        meta,
-                                                    }) => (
-                                                        <React.Fragment>
-                                                            <Checkbox
-                                                                id="tac"
-                                                                label="I have read the terms and conditions of this loan"
-                                                                {...input}
-                                                                {...meta}
-                                                            />
-                                                            {meta.touched &&
-                                                                meta.error && (
-                                                                    <Padding
-                                                                        left={
-                                                                            24
-                                                                        }
-                                                                    >
-                                                                        <FieldError>
-                                                                            {
-                                                                                meta.error
-                                                                            }
-                                                                        </FieldError>
-                                                                    </Padding>
-                                                                )}
-                                                        </React.Fragment>
-                                                    )}
-                                                />
-                                            </Margin>
-                                            <Margin vertical={16}>
-                                                <Field
-                                                    name="risk"
-                                                    type="checkbox"
-                                                    validate={requiredChecked}
-                                                    render={({
-                                                        input,
-                                                        meta,
-                                                    }) => (
-                                                        <React.Fragment>
-                                                            <Checkbox
-                                                                id="risk"
-                                                                name="risk"
-                                                                label="I acknowledge the risks of this experiment"
-                                                                {...input}
-                                                                {...meta}
-                                                            />
-                                                            {meta.touched &&
-                                                                meta.error && (
-                                                                    <Padding
-                                                                        left={
-                                                                            24
-                                                                        }
-                                                                    >
-                                                                        <FieldError>
-                                                                            {
-                                                                                meta.error
-                                                                            }
-                                                                        </FieldError>
-                                                                    </Padding>
-                                                                )}
-                                                        </React.Fragment>
-                                                    )}
-                                                />
-                                            </Margin>
-                                            <Row>
-                                                <Col lg={12} md={12}>
-                                                    <Margin top={8}>
-                                                        {txError && (
-                                                            <Padding left={8}>
-                                                                <Margin
-                                                                    bottom={8}
-                                                                >
-                                                                    <FieldError>
-                                                                        {
-                                                                            txError
-                                                                        }
-                                                                    </FieldError>
-                                                                </Margin>
-                                                            </Padding>
-                                                        )}
-                                                        <Button
-                                                            type="submit"
-                                                            color="green"
-                                                            disabled={
-                                                                transacting ||
-                                                                !this.state
-                                                                    .crowdloanInstance
+                                                <Margin
+                                                    top={10}
+                                                    horizontal={15}
+                                                >
+                                                    <Row>
+                                                        <RowButton
+                                                            value={100}
+                                                            onClick={
+                                                                this
+                                                                    .handleAmountSelected
                                                             }
-                                                        >
-                                                            {transacting ? (
-                                                                <Spinner size="20" />
-                                                            ) : (
-                                                                'Place my Investment'
-                                                            )}
-                                                        </Button>
+                                                        />
+                                                        <RowButton
+                                                            value={250}
+                                                            onClick={
+                                                                this
+                                                                    .handleAmountSelected
+                                                            }
+                                                        />
+                                                        <RowButton
+                                                            value={1000}
+                                                            onClick={
+                                                                this
+                                                                    .handleAmountSelected
+                                                            }
+                                                        />
+                                                        <RowButton
+                                                            value={5000}
+                                                            onClick={
+                                                                this
+                                                                    .handleAmountSelected
+                                                            }
+                                                        />
+                                                    </Row>
+                                                </Margin>
+
+                                                <Margin top={10} bottom={32}>
+                                                    <Field
+                                                        name="amount"
+                                                        type="number"
+                                                        // validate={mustBeNumber}
+                                                        render={({
+                                                            input,
+                                                            meta,
+                                                        }) => (
+                                                            <React.Fragment>
+                                                                <TextField
+                                                                    // label="Investment Amount"
+                                                                    placeholder="e.g. 100"
+                                                                    autoFocus={
+                                                                        true
+                                                                    }
+                                                                    value={
+                                                                        investmentAmount
+                                                                    }
+                                                                    onChange={
+                                                                        this
+                                                                            .handleChange
+                                                                    }
+                                                                    // {...input}
+                                                                    {...meta}
+                                                                />
+                                                                {meta.touched &&
+                                                                    meta.error && (
+                                                                        <FieldError>
+                                                                            {
+                                                                                meta.error
+                                                                            }
+                                                                        </FieldError>
+                                                                    )}
+                                                            </React.Fragment>
+                                                        )}
+                                                    />
+                                                    <Margin top={5}>
+                                                        <small>
+                                                            Minimum 10 Dai
+                                                        </small>
                                                     </Margin>
-                                                </Col>
-                                            </Row>
-                                        </form>
-                                    )}
-                                />
-                            </Col>
-                            <Col lg={6} md={12}>
-                                <IncomeShareCalculator
-                                    investmentAmount={investmentAmount}
-                                />
-                            </Col>
-                        </Row>
-                    </HeroCell>
-                    {/* </MainContainer> */}
-                </CheckoutContainer>
-            </CheckoutWrapper>
+                                                </Margin>
+                                                <Margin top={32} bottom={32}>
+                                                    <Field
+                                                        name="name"
+                                                        validate={requiredField}
+                                                        render={({
+                                                            input,
+                                                            meta,
+                                                        }) => (
+                                                            <React.Fragment>
+                                                                <TextField
+                                                                    label="Name"
+                                                                    placeholder="Enter your name"
+                                                                    autoFocus={
+                                                                        true
+                                                                    }
+                                                                    {...input}
+                                                                    {...meta}
+                                                                />
+                                                                {meta.touched &&
+                                                                    meta.error && (
+                                                                        <FieldError>
+                                                                            {
+                                                                                meta.error
+                                                                            }
+                                                                        </FieldError>
+                                                                    )}
+                                                            </React.Fragment>
+                                                        )}
+                                                    />
+                                                </Margin>
+                                                <Margin bottom={32}>
+                                                    <Field
+                                                        name="email"
+                                                        validate={composeValidators(
+                                                            requiredField,
+                                                            emailFormat
+                                                        )}
+                                                        render={({
+                                                            input,
+                                                            meta,
+                                                        }) => (
+                                                            <React.Fragment>
+                                                                <TextField
+                                                                    type="email"
+                                                                    label="Email"
+                                                                    placeholder="Enter your email"
+                                                                    {...input}
+                                                                    {...meta}
+                                                                />
+                                                                {meta.touched &&
+                                                                    meta.error && (
+                                                                        <FieldError>
+                                                                            {
+                                                                                meta.error
+                                                                            }
+                                                                        </FieldError>
+                                                                    )}
+                                                            </React.Fragment>
+                                                        )}
+                                                    />
+                                                </Margin>
+                                                <Margin top={24}>
+                                                    <b>
+                                                        <p>Disclaimers:</p>
+                                                    </b>
+                                                </Margin>
+                                                <Margin vertical={16}>
+                                                    <Field
+                                                        name="tac"
+                                                        type="checkbox"
+                                                        validate={
+                                                            requiredChecked
+                                                        }
+                                                        render={({
+                                                            input,
+                                                            meta,
+                                                        }) => (
+                                                            <React.Fragment>
+                                                                <Checkbox
+                                                                    id="tac"
+                                                                    label="I have read the terms and conditions of this loan"
+                                                                    {...input}
+                                                                    {...meta}
+                                                                />
+                                                                {meta.touched &&
+                                                                    meta.error && (
+                                                                        <Padding
+                                                                            left={
+                                                                                24
+                                                                            }
+                                                                        >
+                                                                            <FieldError>
+                                                                                {
+                                                                                    meta.error
+                                                                                }
+                                                                            </FieldError>
+                                                                        </Padding>
+                                                                    )}
+                                                            </React.Fragment>
+                                                        )}
+                                                    />
+                                                </Margin>
+                                                <Margin vertical={16}>
+                                                    <Field
+                                                        name="risk"
+                                                        type="checkbox"
+                                                        validate={
+                                                            requiredChecked
+                                                        }
+                                                        render={({
+                                                            input,
+                                                            meta,
+                                                        }) => (
+                                                            <React.Fragment>
+                                                                <Checkbox
+                                                                    id="risk"
+                                                                    name="risk"
+                                                                    label="I acknowledge the risks of this experiment"
+                                                                    {...input}
+                                                                    {...meta}
+                                                                />
+                                                                {meta.touched &&
+                                                                    meta.error && (
+                                                                        <Padding
+                                                                            left={
+                                                                                24
+                                                                            }
+                                                                        >
+                                                                            <FieldError>
+                                                                                {
+                                                                                    meta.error
+                                                                                }
+                                                                            </FieldError>
+                                                                        </Padding>
+                                                                    )}
+                                                            </React.Fragment>
+                                                        )}
+                                                    />
+                                                </Margin>
+                                                <Row>
+                                                    <Col lg={12} md={12}>
+                                                        <Margin top={8}>
+                                                            {txError && (
+                                                                <Padding
+                                                                    left={8}
+                                                                >
+                                                                    <Margin
+                                                                        bottom={
+                                                                            8
+                                                                        }
+                                                                    >
+                                                                        <FieldError>
+                                                                            {
+                                                                                txError
+                                                                            }
+                                                                        </FieldError>
+                                                                    </Margin>
+                                                                </Padding>
+                                                            )}
+                                                            <Button
+                                                                type="submit"
+                                                                color="green"
+                                                                disabled={
+                                                                    transacting ||
+                                                                    !this.state
+                                                                        .crowdloanInstance
+                                                                }
+                                                            >
+                                                                {transacting ? (
+                                                                    <Spinner size="20" />
+                                                                ) : (
+                                                                    'Place my Investment'
+                                                                )}
+                                                            </Button>
+                                                        </Margin>
+                                                    </Col>
+                                                </Row>
+                                            </form>
+                                        )}
+                                    />
+                                </Col>
+                                <Col lg={6} md={12}>
+                                    <IncomeShareCalculator
+                                        investmentAmount={investmentAmount}
+                                    />
+                                </Col>
+                            </Row>
+                        </HeroCell>
+                        {/* </MainContainer> */}
+                    </CheckoutContainer>
+                </CheckoutWrapper>
+            </RenderConnectWallet>
         )
     }
 }

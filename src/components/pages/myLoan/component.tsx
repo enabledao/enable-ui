@@ -3,7 +3,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { ChasingDots } from 'styled-spinkit'
 import RenderBorrowerLoan from './renderBorrowerLoan'
 import RenderLenderLoan from './renderLenderLoan'
-import RenderConnectWallet from './renderConnectWallet'
+import RenderConnectWallet from '../renderConnectWallet'
 import contractAddresses from '../../../config/ines.fund.js'
 import { LoanStatuses, MILLISECONDS, ZERO } from '../../../config/constants.js'
 import {
