@@ -77,6 +77,12 @@ const connectToWallet = async () => {
     }
 }
 
+const networksExplorer = {
+    0: '127.0.0.1:7545',
+    1: 'https://etherscan.io',
+    42: 'https://kovan.etherscan.io',
+}
+
 const resolveWeb3 = async () => {
     if (!web3) {
         if (gettingWeb3) {
@@ -90,4 +96,4 @@ const resolveWeb3 = async () => {
 }
 
 export default resolveWeb3
-export { getGanacheWeb3, connectToWallet }
+export { getGanacheWeb3, connectToWallet, networksExplorer }
