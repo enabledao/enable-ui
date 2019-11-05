@@ -17190,10 +17190,10 @@ rgba-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/rgba-regex/-/rgba-regex-1.0.0.tgz#43374e2e2ca0968b0ef1523460b7d730ff22eeb3"
   integrity sha1-QzdOLiyglosO8VI0YLfXMP8i7rM=
 
-rimble-ui@^0.9.8:
-  version "0.9.8"
-  resolved "https://registry.yarnpkg.com/rimble-ui/-/rimble-ui-0.9.8.tgz#9d4fd612e2ca24b413ffa3b7daa36c418922e8e8"
-  integrity sha512-brhTTh4UwpRZusqclcqrbj2N9zgejIxMty+/gIdCLT0Gsgfz1OZes0OeFDFjqVYCHK5DrRiaCjybpCG+rtfNfw==
+rimble-ui@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/rimble-ui/-/rimble-ui-0.10.0.tgz#34ba861310b91648082a17d3705fcae12da4f33f"
+  integrity sha512-AHcEjY3Nkjj+p/fzKdNixMN3xjtjwPG3c5E30ewbSmHft0kYG5tZq0a98IT3uQ44Db8yrCeEkMzzXuMkMtv1+A==
   dependencies:
     "@d8660091/react-popper" "^1.0.4"
     "@svgr/rollup" "^4.2.0"
