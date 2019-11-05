@@ -63,7 +63,7 @@ const contractMethodTransaction = async (contract, method, ...args) => {
     let contractEvents = {}
     let txOptions = {} //set default value for txOptions
 
-    txOptions = args[args.length - 1] || txOptions
+    txOptions = args[args.length - 1]
     if (args.length > 0 && !txOptions) {
         //remove UNDEFINED txOptions
         args = args.slice(0, args.length - 1)
@@ -77,6 +77,7 @@ const contractMethodTransaction = async (contract, method, ...args) => {
             !txOptions.gasPrice &&
             !txOptions.txEvents)
     ) {
+        txOptions = {}
     } else {
         args = args.slice(0, args.length - 1) //remove txOptions from args array
     }

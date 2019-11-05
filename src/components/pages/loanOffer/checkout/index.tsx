@@ -60,7 +60,6 @@ import {
     connectToWallet,
     getInjectedAccountAddress,
     prepBigNumber,
-    setTransactionEvents,
 } from '../../../../utils/web3Utils'
 import { getDeployedFromConfig } from '../../../../utils/getDeployed'
 import {

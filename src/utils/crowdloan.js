@@ -40,8 +40,8 @@ const totalRepaymentWithdrawn = instance =>
     contractMethodCall(instance, 'totalRepaymentWithdrawn')
 
 // Transactions
-const startCrowdfund = instance =>
-    contractMethodTransaction(instance, 'startCrowdfund')
+const startCrowdfund = (instance, txOptions) =>
+    contractMethodTransaction(instance, 'startCrowdfund', txOptions)
 const fund = (instance, amount, txOptions) =>
     contractMethodTransaction(instance, 'fund', amount, txOptions)
 const withdrawPrincipal = (instance, amount, txOptions) =>

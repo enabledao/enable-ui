@@ -1,11 +1,13 @@
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { ChasingDots } from 'styled-spinkit'
+import { store } from '../../../store'
 import RenderBorrowerLoan from './renderBorrowerLoan'
 import RenderLenderLoan from './renderLenderLoan'
 import RenderConnectWallet from '../renderConnectWallet'
 import contractAddresses from '../../../config/ines.fund.js'
 import { LoanStatuses, MILLISECONDS, ZERO } from '../../../config/constants.js'
+import { networksExplorer } from '../../../utils/getWeb3'
 import {
     BN,
     connectToWallet,
@@ -92,6 +94,31 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         },
     }
 
+    get txEvents() {
+        const { networkId, toastProvider } = store.getState()
+        return {
+            onTransactionHash: hash =>
+                toastProvider.addMessage('Processing transaction...', {
+                    secondaryMessage: 'Check progress on Etherscan',
+                    actionHref: `${networksExplorer[networkId]}/tx/${hash}`,
+                    actionText: 'Check',
+                    variant: 'processing',
+                }),
+            onReceipt: receipt =>
+                toastProvider.addMessage('Transaction completed...', {
+                    secondaryMessage: 'View transaction Etherscan',
+                    actionHref: `${networksExplorer[networkId]}/tx/${receipt.transactionHash}`,
+                    actionText: 'View',
+                    variant: 'success',
+                }),
+            onError: error =>
+                toastProvider.addMessage('Transaction failed...', {
+                    secondaryMessage: `${error.message || error}`,
+                    variant: 'failure',
+                }),
+        }
+    }
+
     onWithdraw = async () => {
         // const {history} = this.props;
         const { releaseAllowance, crowdloanInstance } = this.state
@@ -102,7 +129,9 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
         try {
             this.setState({ transacting: true })
 
-            const tx = await withdrawRepayment(crowdloanInstance)
+            const tx = await withdrawRepayment(crowdloanInstance, {
+                txEvents: this.txEvents,
+            })
             console.log(tx)
 
             this.setState({ transacting: false, loaded: false }, () =>
@@ -126,7 +155,9 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 return console.error('Crowdfund already started')
             }
 
-            const tx = await startCrowdfund(crowdloanInstance)
+            const tx = await startCrowdfund(crowdloanInstance, {
+                txEvents: this.txEvents,
+            })
             console.log(tx)
 
             this.setState({ transacting: false, loaded: false }, () =>
@@ -152,7 +183,10 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
 
             const tx = await withdrawPrincipal(
                 crowdloanInstance,
-                prepBigNumber(amount, paymentToken.decimals)
+                prepBigNumber(amount, paymentToken.decimals),
+                {
+                    txEvents: this.txEvents,
+                }
             )
             console.log(tx)
 
@@ -207,10 +241,15 @@ class MyLoan extends React.Component<MyLoanProps, MyLoanState> {
                 tx = await approveAndPay(
                     paymentTokenInstance,
                     crowdloanInstance,
-                    amountInERC20
+                    amountInERC20,
+                    {
+                        txEvents: this.txEvents,
+                    }
                 )
             } else {
-                tx = await repay(crowdloanInstance, amountInERC20)
+                tx = await repay(crowdloanInstance, amountInERC20, {
+                    txEvents: this.txEvents,
+                })
             }
 
             console.log(tx)
