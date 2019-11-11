@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { AppPath } from '../../../../constant/appPath'
 import PatternImage from '../../../../images/pattern.png'
 import { connect } from 'react-redux'
+import { store } from '../../../../store'
 import {
     Spinner,
     Row,
@@ -53,6 +54,7 @@ import {
     getLoanPeriod,
 } from '../../../../utils/metadata'
 import contractAddresses from '../../../../config/ines.fund'
+import { networksExplorer } from '../../../../utils/getWeb3'
 import {
     BN,
     connectToWallet,
@@ -108,6 +110,55 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
         const { history, networkId } = this.props
         const { name, email } = values
         const { crowdloanInstance, investmentAmount } = this.state
+
+        const { toastProvider } = store.getState()
+
+        const localError = error =>
+            toastProvider.addMessage('Error occured', {
+                secondaryMessage: `${error.message || error}`,
+                variant: 'failure',
+            })
+
+        const logDetails = async tx => {
+            try {
+                const resp = await axios.post(INES_FUND_POST_URL, {
+                    sender: tx.from,
+                    transactionHash: tx.transactionHash,
+                    network: networkId.toString(),
+                    amount: tx.events.Fund.returnValues.amount,
+                    email: email,
+                    name: name,
+                    gasUsed: tx.gasUsed.toString(),
+                    cumulativeGasUsed: tx.cumulativeGasUsed.toString(),
+                })
+                console.log(resp)
+            } catch (error) {
+                localError(error)
+                console.error(error)
+            }
+        }
+
+        const txEvents = {
+            onTransactionHash: hash =>
+                toastProvider.addMessage('Processing investment...', {
+                    secondaryMessage: 'Check progress on Etherscan',
+                    actionHref: `${networksExplorer[networkId]}/tx/${hash}`,
+                    actionText: 'Check',
+                    variant: 'processing',
+                }),
+            onReceipt: receipt =>
+                toastProvider.addMessage('Investment completed...', {
+                    secondaryMessage: 'View transaction Etherscan',
+                    actionHref: `${networksExplorer[networkId]}/tx/${receipt.transactionHash}`,
+                    actionText: 'View',
+                    variant: 'success',
+                }),
+            onError: error =>
+                toastProvider.addMessage('Investment failed...', {
+                    secondaryMessage: `${error.message || error}`,
+                    variant: 'failure',
+                }),
+        }
         if (!+investmentAmount) {
             return console.error('Can not contribute Zero(0)')
         }
@@ -161,6 +212,7 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
                     transacting: false,
                     txError,
                 })
+                txEvents.onError(txError)
                 return console.error(txError)
             }
 
@@ -172,14 +224,16 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
 
             let tx
             if (BN(approvedBalance).lt(BN(valueInERC20))) {
-                tx = await approveAndFund(
+                tx = approveAndFund(
                     paymentTokenInstance,
                     crowdloanInstance,
-                    valueInERC20
+                    valueInERC20,
+                    { txEvents }
                 )
             } else {
-                tx = await fund(crowdloanInstance, valueInERC20)
+                tx = fund(crowdloanInstance, valueInERC20, { txEvents })
             }
+
             // console.log(tx)
 
             // console.log(`
@@ -197,27 +251,16 @@ class Checkout extends React.Component<CheckoutProps, CheckoutState> {
             // CumulativeGasUsed:      ${tx.cumulativeGasUsed}
             // `)
 
-            try {
-                const resp = await axios.post(INES_FUND_POST_URL, {
-                    sender: tx.from,
-                    transactionHash: tx.transactionHash,
-                    network: networkId.toString(),
-                    amount: tx.events.Fund.returnValues.amount,
-                    email: email,
-                    name: name,
-                    gasUsed: tx.gasUsed.toString(),
-                    cumulativeGasUsed: tx.cumulativeGasUsed.toString(),
-                })
-                console.log(resp)
-            } catch (error) {
-                console.error(error)
-            }
+            tx = await tx
+            console.log(tx)
+            await logDetails(tx)
 
             this.setState({ transacting: false })
 
             history.push(AppPath.LoanOfferThankYou)
             return
         } catch (e) {
+            txEvents.onError(e)
             this.setState({ transacting: false })
             return console.error(e)
         }

@@ -2,12 +2,14 @@ import React from 'react'
 import { ChasingDots } from 'styled-spinkit'
 import walletIcon from '../../../images/icons/wallet.svg'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { store } from '../../../store'
 import { Container } from '../../../styles/bases'
 import { Margin, Padding } from '../../../styles/utils'
 import { Row, Col, Button, Spinner } from '../../lib'
 import { FaucetActionMobile, FaucetBox, FaucetWrapper } from './styled'
 import RenderConnectWallet from '../renderConnectWallet'
 import contractAddresses from '../../../config/ines.fund.js'
+import { networksExplorer } from '../../../utils/getWeb3'
 import { connectToWallet, prepBigNumber } from '../../../utils/web3Utils'
 import { getDeployedFromConfig } from '../../../utils/getDeployed'
 import { request } from '../../../utils/tokenFaucet'
@@ -37,6 +39,31 @@ class Faucet extends React.Component<FaucetProps, FaucetState> {
         loaded: false,
     }
 
+    get txEvents() {
+        const { networkId, toastProvider } = store.getState()
+        return {
+            onTransactionHash: hash =>
+                toastProvider.addMessage('Processing request...', {
+                    secondaryMessage: 'Check progress on Etherscan',
+                    actionHref: `${networksExplorer[networkId]}/tx/${hash}`,
+                    actionText: 'Check',
+                    variant: 'processing',
+                }),
+            onReceipt: receipt =>
+                toastProvider.addMessage('Request successful...', {
+                    secondaryMessage: 'View transaction Etherscan',
+                    actionHref: `${networksExplorer[networkId]}/tx/${receipt.transactionHash}`,
+                    actionText: 'View',
+                    variant: 'success',
+                }),
+            onError: error =>
+                toastProvider.addMessage('Request failed...', {
+                    secondaryMessage: `${error.message || error}`,
+                    variant: 'failure',
+                }),
+        }
+    }
+
     onRequest = async () => {
         // const {history} = this.props;
         const {
@@ -52,7 +79,9 @@ class Faucet extends React.Component<FaucetProps, FaucetState> {
         try {
             this.setState({ transacting: true })
 
-            const tx = await request(faucetInstance, address)
+            const tx = await request(faucetInstance, address, {
+                txEvents: this.txEvents,
+            })
             console.log(tx)
 
             this.setState({ transacting: false })
