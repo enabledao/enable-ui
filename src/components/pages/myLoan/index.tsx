@@ -1,4 +1,4 @@
-import MyLoan from "./component";
-import { withNavbarAndFooter } from "../../hoc";
+import MyLoan from './component'
+import { withNavbarAndFooter } from '../../hoc'
 
-export default withNavbarAndFooter(MyLoan);
+export default withNavbarAndFooter(MyLoan)

@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import getWeb3 from './getWeb3'
+import getWeb3, { connectToWallet as connectToWeb3Wallet } from './getWeb3'
 
 const BN = number => Web3.utils.toBN(number)
 
@@ -25,7 +25,7 @@ const getNetworkName = async () => {
 }
 
 const connectToWallet = async () => {
-    return await window.ethereum.enable()
+    return await connectToWeb3Wallet()
 }
 
 const getAccounts = async web3 => {
@@ -60,7 +60,10 @@ const contractMethodCall = async (contract, method, ...args) => {
 }
 
 const contractMethodTransaction = async (contract, method, ...args) => {
-    let txOptions = args[args.length - 1]
+    let contractEvents = {}
+    let txOptions = {} //set default value for txOptions
+
+    txOptions = args[args.length - 1]
     if (args.length > 0 && !txOptions) {
         //remove UNDEFINED txOptions
         args = args.slice(0, args.length - 1)
@@ -71,22 +74,43 @@ const contractMethodTransaction = async (contract, method, ...args) => {
         (!txOptions.from &&
             !txOptions.data &&
             !txOptions.gas &&
-            !txOptions.gasPrice)
+            !txOptions.gasPrice &&
+            !txOptions.txEvents)
     ) {
-        txOptions = {} //set default value for txOptions
+        txOptions = {}
     } else {
         args = args.slice(0, args.length - 1) //remove txOptions from args array
     }
     await getWeb3() //Ensure Web3 is fully loaded
+    if (txOptions && txOptions.txEvents) {
+        contractEvents = txOptions.txEvents
+    }
     txOptions = await prepTransactionOptions(txOptions)
 
     try {
-        return await contract.methods[method](...args).send(txOptions)
+        const tx = contract.methods[method](...args).send(txOptions)
+        setTransactionEvents(tx, contractEvents)
+        return tx
     } catch (e) {
         console.error(method, ...args)
         console.error(e)
         throw e
     }
+}
+
+const setTransactionEvents = (
+    tx,
+    {
+        onTransactionHash = null,
+        onReceipt = null,
+        onConfirmation = null,
+        onError = null,
+    }
+) => {
+    onTransactionHash && tx.once('transactionHash', onTransactionHash)
+    onConfirmation && tx.on('confirmation', onConfirmation)
+    onReceipt && tx.on('receipt', onReceipt)
+    onError && tx.on('error', onError)
 }
 
 const contractGetEvents = (
@@ -163,6 +187,7 @@ export {
     contractGetPastEvents,
     contractMethodCall,
     contractMethodTransaction,
+    setTransactionEvents,
     getAccounts,
     getBlock,
     getInjectedAccountAddress,
